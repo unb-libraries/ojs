@@ -1,0 +1,177 @@
+/**
+ * The XSL transform of Erudit Article 3.0 XML with stylesheeet
+ * 'erudit-to-html.xsl' creates HTML with the following CSS selectors.
+ * 
+ * Indent level indicates selector hierarchy.
+ * 
+ * This file is for reference only; styles should be defined elsewhere,
+ * probably site-wide and/or journal-specific CSS stylesheets.
+ */
+
+/**
+ * Front matter
+ */	 
+ 
+#front-matter {}
+    div.title-group {}
+        h2.supertitle {}
+        h3.article-title
+        h3.biblioref {}
+        h4.subtitle {}
+
+    div.author-group {}
+        div.author {}
+            div.affiliation {}
+            div.email {}
+
+    div.editorial-note{}
+    
+    div.abstract {}
+        h4.abstract-title {}
+        div.abstract p {}
+    
+    div.keyword-group {}
+        span.keyword {}
+        
+/**
+ * Document body
+ */
+ 
+#document-body {}
+
+    div.dedication {}
+    
+    div.document-body-text {}
+    
+    div.section1 {}
+        h1 {}
+        
+        div.section2 {}
+            h2 {}
+            
+            div.section3 {}
+                h3 {}
+                
+                div.section4 {}
+                    h4 {}
+                    
+                    div.section5 {}
+                        h5 {}
+                        
+                        div.section6 {}
+                            h6 {}
+                            
+    div.title-block {}
+    
+/**
+ * Back matter 
+ */    
+ 
+#back-matter {}
+    
+    div.appendix {}
+    
+    div.acknowledgments {}
+        div.acknowledgments p {}
+        
+    div.notebio-group {}
+        div.notebio {}
+        
+    div.biblio {}
+        div.divbiblio {}
+            div.refbiblio {}
+            
+    div.note-group {}
+        div.note {}
+        
+/**
+ * Text blocks
+ */      
+ 
+div.citation {}
+
+div.epigraph {}
+    div.epigraph p {} 
+    
+div.verbatim {}
+    div.verbatim-block {}
+    
+div.source {}
+
+div.para {}
+    div.para p {}
+        div.para p span.no {}
+        
+div.legend {}
+
+/**
+ * Text elements 
+ */
+
+sup {}
+sub {}
+
+strong {}
+i {}
+span.strikethrough {}
+span.uppercase {}
+span.smallcaps {}
+span.underline {}
+
+/**
+ * Links 
+ */
+
+a {}
+a.footnote {}
+                        
+
+/**
+ * Names
+ */ 
+ 
+span.name-pers {}
+span.name-prefix {}
+span.name-given {}
+span.name-middle {}
+span.name-surname {}
+span.name-org {}
+
+/**
+ * Images
+ */
+
+image {}
+image.equation {}
+    span.image-title {}
+    
+/**
+ * Lists
+ */    
+ 
+ul.bullet-square {}
+ul.bullet-circle {}
+ul.bullet-dash {}
+ul.bullet-disc {}
+ul.bullet-none {}
+
+ol.bullet-lower-alpha {}
+ol.bullet-upper-alpha {}
+ol.bullet-lower-roman {}
+ol.bullet-upper-roman {}
+ol.bullet-decimal {}
+
+li {}
+
+/**
+ * Figures
+ */
+ 
+div.figure-block {}
+    div.figure-block span.image-title {}
+
+/**
+ * Tables
+ */
+ 
+div.table-block {}

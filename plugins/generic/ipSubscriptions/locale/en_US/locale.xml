@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../locale/locale.dtd">
+
+<!--
+  * locale.xml
+  *
+  * Localization strings for the en_US (U.S. English) locale.
+  -->
+ 
+<locale name="en_US" full_name="U.S. English">
+	<message key="plugins.generic.ipSubscriptions.name">CRKN IP Subscriptions</message>
+	<message key="plugins.generic.ipSubscriptions.description">Grants access to CRKN journals based on CRKN subscriber IP ranges provided by Éruidit.</message>
+</locale>

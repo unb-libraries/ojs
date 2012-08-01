@@ -1,0 +1,669 @@
+#!/usr/bin/perl
+
+###############################################################################
+# cleanUp
+#
+# Massive & ugly 'god script' that cleans up not-yet-valid XML of articles
+# receiving full markup in journal production. This script:
+#   - strips / replaces old or incorrect markup
+#   - replaces / inserts id attribute values
+#   - replaces / inserts <no> elements used to number article elements
+#   - replaces / inserts markup for figures and tables
+#   - replaces / inserts XLink XML for figure & table images
+#   - replaces / inserts <infoarticle> with page, word, figure, etc. counts
+#
+# What was meant to be a quick script to solve one problem (find & replace
+# old or bad markup & character entities) has grown to include more code
+# to automate repetitious XML coding.
+#
+# While there are any number of reasons why this script should be split into
+# pieces, each intended to handle a discrete task, we'll hold off until we
+# have evaluated Tournesol, U. de M's journal production application -- it may
+# remove the need to do this kind of processing on Erudit XML files.
+#
+# In the meantime: tread carefully.  Closures have been used to restrict the 
+# number of variables in global scope & the Readonly module throws a fit on
+# attempts, accidental or otherwise, to update values intended as constants.
+#
+# @todo
+# split this file into multiple scripts & write a bash file to run them
+# -- string replacer
+# -- element numberer
+# -- XML fixer(s) / transformers
+###############################################################################
+
+use strict;
+use warnings;
+
+# Set default input/output encoding
+# use open ':encoding(utf8)'; 
+
+use Carp;
+use File::Basename;
+use File::Spec;
+use List::MoreUtils qw( any );
+use Readonly;
+use XML::LibXML;
+
+# Usage & error messages
+Readonly my $USAGE          => 'Usage: cleanUp <file.xml>';
+Readonly my $NOT_FOUND      => 'File not found';
+Readonly my $NOT_READABLE   => 'File not readable';
+Readonly my $NOT_WRITEABLE  => 'File not writeable';
+
+###############################################################################
+#  Open & slurp XML file
+###############################################################################
+# Globals set up in this block
+my $xml_file;
+my $content; 
+
+# begin block of file-handling code 
+{
+  # we expect a single file -- complain if we find otherwise
+  croak $USAGE if scalar @ARGV > 1;
+
+  # fine.
+  ($xml_file) = @ARGV;
+
+  croak $USAGE                      if ! defined $xml_file;
+  croak "$NOT_FOUND: $xml_file"     if ! -f $xml_file;
+  croak "$NOT_READABLE: $xml_file"  if ! -r $xml_file;
+
+  # slurp contents 
+  open my $fh, "<", $xml_file or croak $!;
+  $content = do { local $/; <$fh> };
+  close $fh;
+}
+###############################################################################
+#  Initialize global variables that are based on location or content of XML
+#  file. Die if any of the following aren't found or don't appear to be
+#  reasonable values.
+###############################################################################
+# Globals set up in this block
+my $article_id;
+my $image_file_path;
+
+# begin block of variable initialization code
+{
+  # Article ID is a combination of journal ID, volume and/or issue number,
+  # article type abbreviation, and article number, stored in the idproprio
+  # attribute of the <article> element.  Used in image handling code, below.  Die
+  # if it's not found.
+  croak 
+    "[error] idproprio attribute is empty and required for image handling.\n".
+    "        Fix attribute and re-run script."
+    unless $content =~ /<article[^>]*?idproprio="([^"]+)"/ms;
+
+  $article_id = $1;
+
+  # Image files are stored in a directory structure that mirrors that used to 
+  # store journal source files. Get the directory of the current XML file & 
+  # do a quick assessment of its validity.  If it seems ok, convert it from
+  # a source file path to an image file path.
+  if (File::Spec->rel2abs(dirname($xml_file)) =~ /^\/etcdata\/journals\/etc_journals\/(.*?)\/XML/) {
+    $image_file_path = "/journalimages/$1";
+  }
+  else {
+    # An empty string is fine, but warn someone first:
+    $image_file_path = '';
+    
+    carp "[warning] XML file '$xml_file' is not in a journals source file directory;\n".
+         "          image file paths will not be included in <pointeur href=\"\"> attributes";
+  }
+}
+###############################################################################
+#  Replace patterns defined above and normalize whitespace
+###############################################################################
+# Begin block of pattern-replacment code
+{
+  # Replacement patterns
+  # @todo: remove patterns no longer needed; journal production has
+  # changed considerably since this script was written.
+
+  Readonly my %REPLACEMENTS => (
+    '</?(?:web)?normal>'  => q{},
+    '<p/>'                => q{},
+    '<p>&\#12;</p>'       => q{},
+    '&\#7;'               => q{},
+    '&\#11;'              => q{},
+    '&amp;\#xAD;'         => q{},
+    '&\#x201C;'           => '&#x22;',   # left curly double quote
+    '&\#x201D;'           => '&#x22;',   # right curly double quote
+    '&\#x92;'             => '&#x27;',   # apostrophe
+  );
+
+  # replace the replacements
+  foreach my $find (keys %REPLACEMENTS) {
+    $content =~ s{ $find }{ $REPLACEMENTS{$find} }xmsige;
+  }
+
+  # normalize the whitespace, but leave line breaks alone
+  $content =~ s{ [ \t]{2,} }{ }xmsg;
+  
+} # end block of patten-replacement code
+
+###############################################################################
+#  Element numbering
+###############################################################################
+
+#
+# Sections
+#
+# Erudit Article 3.0 DTD defines 6 levels of sections to organize content. 
+# Section elements are numbered sequentially ACROSS HIERARCHIES, i.e., section
+# numbering for level N does not restart at 1 with a change of parent at level
+# N-1.
+#
+{
+  Readonly my $SECTION_FIRST => 1;
+  Readonly my $SECTION_LAST  => 6;
+
+  # For each section level $sl:
+  for my $sl ($SECTION_FIRST..$SECTION_LAST) {
+  
+    # Match element at current section level. The markup may contain hand-coded
+    # id attributes and/or <no> elements: replace & renumber these.
+    my $match = qr/<section$sl[^>]*> (?:\s* <no>\d*<\/no>)? /xs;
+
+    # initialize section number $sn for current section level 
+    my $sn = 1;
+
+    # Add an id attribute and <no> element for all sections at this level
+    $content =~ s{ $match }{ "<section$sl id=\"s${sl}n${sn}\"><no>" . $sn++ . "</no>" }xmsge;
+  }
+}
+
+#
+# Paragraphs
+#
+# Assign a sequentially-numbered id attribute to all <para> elements.
+#
+# Some <para> elements represent numbered paragraphs: those that do will
+# contain an empty <no> element. Add a sequentially-numbered value to all <no>
+# elements.  In some cases, the value in <no> will not correspond with the
+# value in the id attribute. 
+#
+{
+  my $id = 1;
+  $content =~ s{ <para[^>]*> }{ '<para id="pa' . $id++ . '">' }xmsige;
+
+  my $no = 1;
+  $content =~ s{ (<para[^>]*>) \s* <no>[^<]*</no> }{ $1 . '<no>' . $no++ . '</no>' }xmsige;
+}
+
+#
+# Footnotes
+#
+{
+  my $id = 1;
+  $content =~ s{ <renvoi[^>]*> }{ '<renvoi id="re'. $id .'no'. $id .'" idref="no'. $id++ .'" typeref="note">' }xmsige;
+}
+
+#
+# Notes
+#
+{
+  my $id = 1;
+  $content =~ s{ <note[^>]*> \s* <no>[^<]*</no> }{ '<note id="no' . $id . '"><no>' . $id++ . '</no>' }xmsige;
+}
+
+#
+# Citations
+#
+{
+  my $id = 1;
+  $content =~ s{ <refbiblio[^>]*> }{ '<refbiblio id="re' . $id++ . '">' }xmsige;
+}
+
+#
+# Links
+#
+{
+  my $id = 1;
+  $content =~ s{ <liensimple \s+ id="li[^"]*" }{ '<liensimple id="li' . $id++ . '"' }xmsige;
+}
+
+###############################################################################
+# Images: tables, equations, and figures
+#
+# We expect <figure> elements to have minimal encoding. The only manual
+# encoding we require is the legend language attribute, legend text, and image
+# type attribute ('figure', 'equation', or 'tableau'), e.g.,
+#
+# <figure id="">
+#    <no></no>
+#    <legende lang="en">
+#      <alinea>Legend goes here</alinea>
+#    </legende>
+#    <objetmedia>
+#      <image id="" typeimage="figure"/>
+#    </objetmedia>
+#  </figure>
+#
+# For each <figure> or <tableau> element:
+#
+#   * Fill in <figure> id attribute based on image type. Images of each type
+#     are numbered across the entire article, with a prefix based on type:
+#       figure   => fig1, fig2, fig3 ...
+#       equation => eq1, eq2, ...
+#       tableau  => ta1, ta2, ...
+# 
+#   * If image type is 'figure' or 'tableau', follow <figure> with <no>
+#     element containing text description of image, e.g., "Figure 7",
+#     "Table 2".
+#
+#   * Fill in <image> id attribute. Images are numbered sequentially across the
+#     entire article and have 'im' as a prefix, e.g., 'im1', 'im2', 'im3',
+#     regardless of image type.
+#
+#   * Generate XLink <pointeur> elements to point to source images and <lien>
+#     elements to define image links (e.g., link full-size image to thumnbnail)
+#
+###############################################################################
+# Begin massive block of image handling code
+{
+  #############################################################################
+  # Readonly constants for finding, numbering, and labelling images
+  #############################################################################  
+  
+  # Fairly extensive match for adding links to images in <figure> or <table> elements.
+  Readonly my $FIGURE_REGEXP => qr{
+    (
+      <                           # capture entire <figure> or <tableau> element ($1)
+      (figure|tableau)            # figure or table element ($2)
+      .*?                         # attributes, maybe
+      >                           # end <figure> or <tableau>
+        .*?                       # elements preceeding <image> tag
+          <image \s+ .*?          # attributes, maybe
+            typeimage="([^"]+)"   # image type, $3
+          .*?\/>                  # more image attributes, maybe
+        .*?                       # elements following image tag, maybe
+      </\2>                       # closing tag for match in $2
+    )
+  }xmsi;
+  
+  # Allowable values for typeimage attribute of <image> element
+  Readonly my @IMAGE_TYPES => qw( equation figure tableau );
+  
+  # Labels corresponding to typeimage attribute values
+  Readonly my %IMAGE_TYPE_LABEL => (
+    'equation'  => 'Equation',
+    'figure'    => 'Figure',
+    'tableau'   => 'Table',
+  );
+  
+  # Type-specific prefixes for <figure> ID attribute value
+  Readonly my %FIGURE_ID_PREFIX => (
+    'equation'  => 'eq',
+    'figure'    => 'fig',
+    'tableau'   => 'ta',
+  );
+  
+  # Prefix for <image> ID attribute value
+  Readonly my $IMAGE_ID_PREFIX => 'im';
+
+  #############################################################################  
+  # Set up loop variables
+  #############################################################################
+  
+  # Current image id 
+  my $image_id = 1;
+  
+  # Current figure id, indexed by type
+  my %figure_id = ();
+  foreach my $image_type (keys %FIGURE_ID_PREFIX) {
+    $figure_id{$image_type} = 1;
+  }
+  
+  # We look for <figure> or <tableau> elements, modify them as needed, then
+  # swap them back into $content.  Search a copy of $content so the swap
+  # doesn't disrupt the search.
+  my $search_content = $content;
+  
+  #############################################################################  
+  # Begin massive loop of image handling
+  #############################################################################
+  
+  FIGURE:
+    while ($search_content =~ /$FIGURE_REGEXP/xmsig) {
+
+      # Grab the matched portions.  Initialize a spare copy ($matched_element)
+      # of the matched element: we will find it & replace it with the modified
+      # element we'll work on in $element.
+      
+      my ( $matched_element,
+           $element, 
+           $element_name, 
+           $image_type ) = ($1, $1, $2, $3);
+
+      # Validation on the cheap
+      croak "Bad image type: $image_type" 
+        if ! grep {/$image_type/} @IMAGE_TYPES;
+        
+      # Drop an ID into the <figure> or <tableau> element & increment 
+      $element =~ s/<$element_name[^>]*?>/<$element_name id="$FIGURE_ID_PREFIX{$image_type}$figure_id{$image_type}">/;
+        
+      # If image is a figure or table (i.e., not an equation), replace or
+      # insert a <no> elememt with a label and the figure ID used in the
+      # <figure> ID attribute
+      if ($image_type ne 'equation') {
+        
+        # Replace or insert <no> after <figure> or <tableau>
+        $element =~ s{
+          (
+            <$element_name[^>]*?>           # capture entire <figure> or <tableau> $1
+          )
+          \s*                               # some whitespace, maybe
+          (?:                               # begin choice of:
+            (?:<no\/>)                      # <no/>
+              |                             # OR
+            (?:<no>[^<]*<\/no>)             # <no>....</no>
+          )?                                # end choice: may or may not be present
+          }{$1<no>$IMAGE_TYPE_LABEL{$image_type} $figure_id{$image_type}</no>}xms;
+      }
+
+      # Next, replace or insert image ID attribute
+      $element =~ s{
+        <image \s+
+          (.*?)             # attributes, maybe: $1
+          id="[^"]*"        # image attribute, maybe
+          (.*?)             # more attributes, maybe: $2
+        />                   # close element
+      }{ <image id="$IMAGE_ID_PREFIX$image_id" $1 $2 /> }xms;
+      
+      # Search for the $matched_element & replace it with our updated version
+      $matched_element = quotemeta($matched_element);
+      $content =~ s/$matched_element/$element/;
+      
+      # Increment figure & image IDs for the next round
+      $figure_id{$image_type}++;
+      $image_id++;
+      
+    } # end FIGURE
+    
+} # end massive block of image handling code
+
+###############################################################################
+# At this point, the XML should be valid....
+###############################################################################
+# Begin block of XML manipulation code... 
+{
+  my $parser = XML::LibXML->new();
+  my $doc;
+  
+  # Load $doc with $content....
+  eval { 
+    $doc = $parser->parse_string($content);
+  };
+  
+  # Die if the XML's not ok
+  # Look! a goto! 
+  carp "[error] Invalid XML. Fix XML and re-run script: $@" and goto END if $@;
+
+  # Begin a block in which we count things.
+  {
+    # Create a new <infoarticle> node & add child elements
+    my $article_info_node = XML::LibXML::Element->new('infoarticle');
+  
+    # We can't determine pagination from the markup: append <pagination> and
+    # <nbpage> elements from source doc
+    $article_info_node->appendChild($doc->findnodes('/article/admin/infoarticle/pagination')->get_node(1));
+    $article_info_node->appendChild($doc->findnodes('/article/admin/infoarticle/nbpage')->get_node(1));
+  
+    # Count numbered paragraphs: <para> elements child <no> element
+    my @para_nodes = $doc->findnodes('//para[child::no]');
+    $article_info_node->appendTextChild('nbpara', scalar(@para_nodes));
+  
+    # Count words in <corps>
+    my @words = split(/\s+/ms, $doc->find('/article/corps')->get_node(1)->textContent);
+    $article_info_node->appendTextChild('nbmot', scalar(@words));
+  
+    # Count figures: <figure> elements with child <image typeimage="figure">
+    my @figure_nodes = $doc->findnodes('//figure[descendant::image[@typeimage=\'figure\']]');
+    $article_info_node->appendTextChild('nbfig', scalar(@figure_nodes));
+  
+    # Count tables: <tableau> elements
+    my @table_nodes = $doc->findnodes('//tableau');
+    $article_info_node->appendTextChild('nbtabl', scalar(@table_nodes));
+  
+    # Count equations: <figure> elements with child <image typeimage='equation'>
+    my @equation_nodes = $doc->findnodes('//figure[descendant::image[@typeimage=\'equation\']]');
+    $article_info_node->appendTextChild('nbeq', scalar(@equation_nodes));
+  
+    # All media objects: <objetmedia> elements
+    my @media_object_nodes = $doc->findnodes('//objetmedia');
+    $article_info_node->appendTextChild('nbom', scalar(@media_object_nodes));
+
+    # All images: <image> elements
+    my @image_nodes = $doc->findnodes('//image');
+    $article_info_node->appendTextChild('nbimage', scalar(@image_nodes));
+  
+    # Audio files: <audio> elements
+    my @audio_nodes = $doc->findnodes('//audio');
+    $article_info_node->appendTextChild('nbaudio', scalar(@audio_nodes));
+  
+    # video files: <video> elements
+    my @video_nodes = $doc->findnodes('//video');
+    $article_info_node->appendTextChild('nbvideo', scalar(@video_nodes));
+  
+    # Biblio references: <refbiblio> elements
+    my @ref_nodes = $doc->findnodes('//refbiblio');
+    $article_info_node->appendTextChild('nbrefbiblio', scalar(@ref_nodes));
+
+    # Notes: <note> elements
+    my @note_nodes = $doc->findnodes('//note');
+    $article_info_node->appendTextChild('nbnote', scalar(@note_nodes));
+  
+    # Replace existing <infoarticle> with our more better one
+    $doc->findnodes('/article/admin/infoarticle')->get_node(1)->replaceNode($article_info_node);
+    
+  } # end block in which we count things
+  
+  # Begin a block to add XLink markup for images and notes
+  {
+    my %figure_desc = (
+      'equation'  => 'equation',
+      'figure'    => 'figure',
+      'tableau'   => 'table',
+    );
+    my $grlien_node = XML::LibXML::Element->new('grlien');
+    
+    # Get all the tables and figures
+    foreach my $figure_node ($doc->findnodes('descendant::*[name()="figure" or name()="tableau"]')) {
+      
+      my $figure_id = $figure_node->getAttribute('id');
+      ( my $figure_no = $figure_id )    =~ s/[^\d]+//;
+
+      my $image_node = $figure_node->findnodes('objetmedia/image')->get_node(1);
+      my $image_type = $image_node->getAttribute('typeimage');
+      my $image_id = $image_node->getAttribute('id');
+      
+      # <!-- Figure 7 -->
+      $grlien_node->appendChild($doc->createComment(' '.  ucfirst($figure_desc{$image_type}) . " $figure_no "));
+      
+      # All images have a pointer to a large version;
+      # <pointeur 
+      #   xlink:href="/journalimages/AGEO/2003/Vol_39/No_02/ageo39_2art03_eq1.jpg" 
+      #   xlink:label="im8n" 
+      #   xlink:title="Large image of Equation 1" 
+      #   typemime="image:jpeg" 
+      #   desc="ageo39_2art03_eq1.jpg" 
+      #   xlink:type="locator"/>
+      my $image_pointer = XML::LibXML::Element->new('pointeur');
+      $image_pointer->setAttribute('xlink:href',  "$image_file_path/${article_id}_${figure_id}.jpg");
+      $image_pointer->setAttribute('xlink:label', "${image_id}n");
+      $image_pointer->setAttribute('xlink:title', "Large image of ". ucfirst($figure_desc{$image_type}) . " $figure_no");
+      $image_pointer->setAttribute('xlink:type',  'locator'); 
+      $image_pointer->setAttribute('typemime',    'image:jpeg');
+      $image_pointer->setAttribute('desc',        "${article_id}_${figure_id}.jpg");
+      
+      $grlien_node->appendChild($image_pointer);
+      
+      # Figures and tables (i.e., all but equations) also have thumbail images
+      # and links to point from one to the other.  Carry on, if current image is 
+      # not an equation
+      next if $image_type eq 'equation';
+      
+      # <pointeur 
+      #   xlink:href="/journalimages/AGEO/2003/Vol_39/No_02/ageo39_2art03_fig6.jpg" 
+      #   xlink:label="im7t" 
+      #   xlink:title="Thumbnail of Figure 6" 
+      #   typemime="image:jpeg"
+      #   desc="ageo39_2art03_fig6.jpg"
+      #   xlink:type="locator"/>
+      my $thumbnail_pointer = XML::LibXML::Element->new('pointeur');
+      $thumbnail_pointer->setAttribute('xlink:href',  "$image_file_path/${article_id}_${figure_id}.jpg");
+      $thumbnail_pointer->setAttribute('xlink:label', "${image_id}t");
+      $thumbnail_pointer->setAttribute('xlink:title', "Thumbnail of ". ucfirst($figure_desc{$image_type}) . " $figure_no");
+      $thumbnail_pointer->setAttribute('xlink:type',  'locator'); 
+      $thumbnail_pointer->setAttribute('typemime',    'image:jpeg');
+      $thumbnail_pointer->setAttribute('desc',        "${article_id}_${figure_id}.jpg");
+      
+      $grlien_node->appendChild($thumbnail_pointer);
+      
+      # Create link for large image:
+      # <lien 
+      #   xlink:type="arc" 
+      #   xlink:from="im7" 
+      #   xlink:to="im7n" 
+      #   xlink:show="embed" 
+      #   xlink:actuate="onRequest" 
+      #   xlink:title="Display large image of Figure 6"/>
+      my $image_link = XML::LibXML::Element->new('lien');
+      $image_link->setAttribute('xlink:type',     'arc');
+      $image_link->setAttribute('xlink:from',     $image_id);
+      $image_link->setAttribute('xlink:to',       "${image_id}n");
+      $image_link->setAttribute('xlink:show',     'embed');
+      $image_link->setAttribute('xlink:actuate',  'onRequest');
+      $image_link->setAttribute('xlink:title',    'Display large image of '. ucfirst($figure_desc{$image_type}) . " $figure_no");
+      
+      $grlien_node->appendChild($image_link);
+      
+      # and the thumbnail:
+      # <lien 
+      #   xlink:type="arc" 
+      #   xlink:from="im7" 
+      #   xlink:to="im7t" 
+      #   xlink:show="embed" 
+      #   xlink:actuate="onLoad" 
+      #   xlink:title="Display Thumbnail of Figure 6"/>
+      my $thumbnail_link = XML::LibXML::Element->new('lien');
+      $thumbnail_link->setAttribute('xlink:type',     'arc');
+      $thumbnail_link->setAttribute('xlink:from',     $image_id);
+      $thumbnail_link->setAttribute('xlink:to',       "${image_id}t");
+      $thumbnail_link->setAttribute('xlink:show',     'embed');
+      $thumbnail_link->setAttribute('xlink:actuate',  'onLoad');
+      $thumbnail_link->setAttribute('xlink:title',    'Display thumbnail of '. ucfirst($figure_desc{$image_type}) . " $figure_no");
+      
+    }
+    
+    # Get all notes
+    foreach my $node ($doc->findnodes('//note')) {
+      my $id = $node->getAttribute('id');
+      ( my $no = $id ) =~ s/no//;
+      
+      # <pointeur 
+      #   xlink:label="no1" 
+      #   xlink:href="#xpointer(id('no1')/no)" 
+      #   xlink:title="Note 1" 
+      #   typemime="none" 
+      #   xlink:type="locator"/>
+      my $note_pointer = XML::LibXML::Element->new('pointeur');
+      $note_pointer->setAttribute('xlink:label',  $id);
+      $note_pointer->setAttribute('xlink:href',   "#xpointer(id('$id')/no)");
+      $note_pointer->setAttribute('xlink:title',  "Note $no");
+      $note_pointer->setAttribute('typemime',     'none');      
+      $note_pointer->setAttribute('xlink:type',   'locator');
+      
+      # <pointeur
+      #   xlink:label="re1no1"
+      #   xlink:href="#re1no1"
+      #   xlink:title="Return to Note 1" 
+      #   xlink:type="locator"
+      #   typemime="none"/>
+      my $return_pointer = XML::LibXML::Element->new('pointeur');
+      $return_pointer->setAttribute('xlink:label',  "re$no$id");
+      $return_pointer->setAttribute('xlink:href',   "#re$no$id");
+      $return_pointer->setAttribute('xlink:title',  "Return to Note $no");
+      $return_pointer->setAttribute('typemime',     'none');      
+      $return_pointer->setAttribute('xlink:type',   'locator');
+      
+      # <lien
+      #   xlink:from="re1no1"
+      #   xlink:to="no1"
+      #   xlink:title="Go to Note 1"
+      #   xlink:actuate="onRequest"
+      #   xlink:show="replace"
+      #   xlink:type="arc"/>
+      my $note_link = XML::LibXML::Element->new('lien');
+      $note_link->setAttribute('xlink:from',    "re$no$id");
+      $note_link->setAttribute('xlink:to',      $id);
+      $note_link->setAttribute('xlink:title',   "Go to Note $no");
+      $note_link->setAttribute('xlink:actuate', 'onRequest');
+      $note_link->setAttribute('xlink:show',    'replace');    
+      $note_link->setAttribute('xlink:type',    'arc');
+      
+      # <lien 
+      #   xlink:from="no1" 
+      #   xlink:to="re1no1" 
+      #   xlink:title="Return to Anchor for Note 1" 
+      #   xlink:actuate="onRequest" 
+      #   xlink:show="replace" 
+      #   xlink:type="arc"/>
+      my $return_link = XML::LibXML::Element->new('lien');
+      $return_link->setAttribute('xlink:from',    $id);
+      $return_link->setAttribute('xlink:to',      "re$no$id");
+      $return_link->setAttribute('xlink:title',   "Return to Anchor for Note $no");
+      $return_link->setAttribute('xlink:actuate', 'onRequest');
+      $return_link->setAttribute('xlink:show',    'replace');    
+      $return_link->setAttribute('xlink:type',    'arc');
+
+      # <!-- Figure 7 -->
+      $grlien_node->appendChild($doc->createComment(" Note $no "));
+
+      # add note pointers & links
+      $grlien_node->appendChild($note_pointer);
+      $grlien_node->appendChild($return_pointer);
+      $grlien_node->appendChild($note_link);
+      $grlien_node->appendChild($return_link);
+    }
+
+    # Does <grlien/> have any child nodes? If so, insert in $doc. Otherwise,
+    # search $doc for existing <grlien/> and remove if found.
+    if ($grlien_node->hasChildNodes()) {
+        if ($doc->findnodes('/article/grlien')) {
+          # replace existing <grlien/>
+          $doc->findnodes('/article/grlien')->get_node(1)->replaceNode($grlien_node);
+        }
+        else {
+          # insert new <grlien/>
+          $doc->documentElement()->insertBefore($grlien_node, $doc->findnodes('/article/liminaire')->get_node(1));
+        }
+    }
+    else {
+      # No elements in <grlien/>. If found in $doc, remove it.
+      if ($doc->findnodes('/article/grlien')) {
+        $doc->getDocumentElement()->removeChild($doc->findnodes('/article/grlien')->get_node(1));
+      }
+    }
+    
+  } # end XLink markup in <grlien>
+  
+  # write modified XML back to $content
+  $content = $doc->toString(0);
+}
+
+###############################################################################
+# Write modified XML back to source file
+###############################################################################
+END:
+  # This strikes me as risky.
+  croak "$NOT_WRITEABLE: $xml_file" if ! open FILE, ">$xml_file";
+  print FILE $content;
+  close FILE;
+
+exit 0;
+
+
+

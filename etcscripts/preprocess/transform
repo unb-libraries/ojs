@@ -1,0 +1,74 @@
+#!/bin/sh
+########################################################################
+##
+## XSLT Transformation Script
+## Electronic Text Centre, University of New Brunswick
+## Copyright 2005-2011
+##
+## Revision History:  
+##
+##  Version 1.0 (April 25, 2005), jnugent@unb.ca
+##    - Initial Revision
+##
+##  Updated 14 July 2011, jwhitney@unb.ca
+##    - Script modified to use new default stylesheet
+##
+########################################################################
+
+  # define a path to a generic style sheet if none is provided
+  XSLT_SHEET=/etcdata/etcdev_www/ojs-dev/etcscripts/render/erudit-to-html.xsl;
+  
+  # define our path to our java binary
+  JAVA=/usr/bin/java;
+
+  # define our path to our Saxon JAR file
+  SAXON9=/usr/local/saxon/saxon9.jar;
+
+  #define default directory for XML
+  XML_DIR=.;
+
+function usage() {
+
+  echo "";
+  echo "Usage:  $0 [stylesheet] [XMLdirectory]";
+  echo " ";
+  echo " Examples: ";
+  echo " ";
+  echo " $0 /home/username/my-special-stylesheet.xsl . ";
+  echo " $0 fancy-stylesheet.xsl /www/Texts/xml";
+  echo " ";
+  echo "Run the script without options to use the default stylesheet and XML directory.";
+  echo "These are: ";
+  echo "Stylesheet: $XSLT_SHEET";
+  echo "XML Directory: $XML_DIR";
+  echo "";
+}
+
+
+  case $# in
+
+    0) ;;
+
+
+   1)  usage
+       exit
+       ;;  
+
+   2) XSLT_SHEET="$1";
+      XML_DIR="$2";
+      ;; 
+
+   *) usage 
+      exit 
+      ;;
+
+  esac
+
+  for i in `ls *.xml`
+    do
+      BASE_NAME=`echo $i | cut -d . -f 1`
+      echo "Now transforming ${BASE_NAME}.xml -->";
+      $JAVA -jar $SAXON9 -t -w0 $i $XSLT_SHEET > ${BASE_NAME}.html
+      perl -pi -e 's/^\s*$//' ${BASE_NAME}.html
+    done
+

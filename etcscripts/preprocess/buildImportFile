@@ -1,0 +1,1184 @@
+#!/usr/local/bin/php
+<?php
+/**
+ @todo: describe me
+ *
+ @todo: better error reporting throughout
+ *
+ * To keep the usage of this script as simple as possible, declare all classes
+ * in this file; split into re-usable class files later, if needed.
+ */
+
+/* ========================================================================= */
+//  Abstract class OJSImportable:
+//  An OJS-ish importable object
+/* ========================================================================= */
+abstract class OJSImportable {
+  
+  // All importables return doc fragments
+  // All importables return XML
+  // *Some* importables produce DTD-valid OJS-importable XML: issue, article:
+  // OJSImportable a subclass of OJSFragment, or similar?
+  
+  const OJS_PUBLIC_ID = '-//PKP//OJS Articles and Issues XML//EN';
+  const OJS_SYSTEM_ID = 'http://pkp.sfu.ca/ojs/dtds/native.dtd';
+  
+  abstract public function get_xml();
+  abstract protected function get_xml_document();
+  
+  // All OJSImportables can share a DOMImplementation object
+  private static $dom_implementation = NULL;
+  
+  // Accessor for the DOMImplementation
+  protected static function get_dom_implementation() {
+    if (is_null(self::$dom_implementation)) {
+      self::$dom_implementation = new DOMImplementation();  
+    }
+    return self::$dom_implementation;
+  }
+  
+  // A convenience method to create text-only, properly-escaped text nodes.
+  protected function create_text_node($parent_node, $node_name, $node_value = '') {
+   $document  = $parent_node->ownerDocument;
+   $text_node = $document->createTextNode($node_value);
+   $node      = $document->createElement($node_name);
+   
+   $node->appendChild($text_node);
+   
+   return $node;
+  }
+}
+
+/* ========================================================================= */
+//  Class OJSIssue: 
+//  Represents an issue, with one or more articles, to be imported to OJS.
+/* ========================================================================= */
+class OJSIssue extends OJSImportable {
+  
+  private $title = '';
+  private $volume = '';
+  private $issue_number = '';
+  private $year = '';
+  private $date_published = '';
+  
+  // A list of OJSIssueSection objects, indexed by section ID
+  private $section_list = array();
+  
+  function __construct() {
+    // does nothing
+  }
+  
+  /** issue title */
+  public function get_title() {
+    return $this->title;
+  }
+  public function set_title($title) {
+    $this->title = $title;
+  }
+  
+  /** volume */  
+  public function get_volume() {
+    return $this->volume;
+  }
+  public function set_volume($volume) {
+    $this->volume = $volume;
+  }
+
+  /** issue number */
+  public function get_issue_number() {
+    return $this->issue_number;
+  }
+  public function set_issue_number($issue_number) {
+    $this->issue_number = $issue_number;
+  }
+
+  /** year of publication: yyyy */
+  public function get_year() {
+    return $this->year;
+  }
+  public function set_year($year) {
+    $this->year = $year;
+  }
+
+  /** date published: yyyy-mm-dd */
+  public function get_date_published() {
+    return $this->date_published;
+  }
+  public function set_date_published($date_published) {
+    $this->date_published = $date_published;
+  }
+  
+  /** Look up a section by section ID */
+  public function get_section($section_id) {
+    $ojs_section = NULL;
+    
+    if (array_key_exists($section_id, $this->section_list)) {
+      $ojs_section = $this->section_list[$section_id];
+    }
+    
+    return $ojs_section;
+  }
+
+  /** Add a section */
+  public function add_section($section) {
+    if (! array_key_exists($section->get_section_id(), $this->section_list)) {
+      $this->section_list[$section->get_section_id()] = $section;
+    }
+  }
+  
+  /** Get all sections */
+  public function get_section_list() {
+    return $this->section_list;
+  }
+  
+  /** OJS-importable XML */
+  /** @override */
+  protected function get_xml_document() {
+    $document = new DOMDocument('1.0', 'utf-8'); 
+    
+    $issues_node = $document->appendChild($document->createElement('issues'));
+    $issue_node = $issues_node->appendChild($document->createElement('issue'));
+    
+    /**
+     @fixme hard-coded for now. is_published, is_current are not readable from Erudit XML
+     */
+   $issue_node->setAttribute('published', 'true');     
+   $issue_node->setAttribute('current', 'true');    
+
+    // title, volume, number, year, date published
+    $issue_node->appendChild( $this->create_text_node($issue_node, 'title',           $this->get_title()) );
+    $issue_node->appendChild( $this->create_text_node($issue_node, 'volume',          $this->get_volume()) );     
+    $issue_node->appendChild( $this->create_text_node($issue_node, 'number',          $this->get_issue_number()) );     
+    $issue_node->appendChild( $this->create_text_node($issue_node, 'year',            $this->get_year()) );     
+    $issue_node->appendChild( $this->create_text_node($issue_node, 'date_published',  $this->get_date_published()) );     
+
+    // Import & append sections
+    foreach ($this->get_section_list() as $section) {
+      $issue_node->appendChild(
+        $document->importNode($section->get_xml_document(), TRUE)
+      );
+    }
+
+    return $issues_node;
+  }
+
+  /**
+    @todo remove hard-coded doc type name, root element, ? 
+    */
+  /** @override */
+  public function get_xml() {
+    $document = $this->get_dom_implementation()->createDocument();
+
+    // Appending an imported node encodes non-ASCII chars as entities. Loading XML doesn't.
+    $document->loadXML($this->get_xml_document()->ownerDocument->saveXML());
+
+    $doctype = $this->get_dom_implementation()->createDocumentType( 'issues', self::OJS_PUBLIC_ID, self::OJS_SYSTEM_ID );
+    $document->insertBefore( $doctype, $document->documentElement );
+
+    // Hack to preserve CDATA sections. 
+    $document_xml = preg_replace("/&lt;!\[CDATA\[&lt;(\/?([^&]+?))&gt;\]\]&gt;/s", "<![CDATA[<$1>]]>", $document->saveXML());
+    
+    return $document_xml;
+  }
+}
+
+/* ========================================================================= */
+//  Class OJSIssueSection: 
+//  A section of an issue.  Has an ID, a title, and one or more OJSArticles.
+/* ========================================================================= */
+class OJSIssueSection extends OJSImportable {
+  private $section_id;
+  private $section_title;
+  
+  // A list of OJSArticle objects, indexed by article ID
+  private $article_list = array();
+  
+  function __construct() {
+    // does nothing
+  }
+  
+  /** Section ID */
+  public function get_section_id() {
+    return $this->section_id;
+  }
+  public function set_section_id($section_id) {
+    $this->section_id = $section_id;
+  }
+  
+  /** Section title */
+  public function get_section_title() {
+    return $this->section_title;
+  }
+  public function set_section_title($section_title) {
+    $this->section_title = $section_title;
+  }
+
+  /** Article list */
+  public function get_article_list() {
+    return $this->article_list;
+  }
+  public function set_article_list($article_list) {
+    $this->article_list = $article_list;
+  }
+  public function add_article($article) {
+    $this->article_list[$article->get_article_id()] = $article;
+  }
+  
+  /** @override */
+  public function get_xml() {
+    return $this->get_xml_document()->saveXML();
+  }
+  
+  /** @override */
+  protected function get_xml_document() {
+    
+    $document = new DOMDocument('1.0', 'utf-8'); 
+    $section_node = $document->appendChild($document->createElement('section'));
+
+    // Section title and ID 
+    $section_node->appendChild( $this->create_text_node($section_node, 'title', $this->get_section_title()) );
+    $section_node->appendChild( $this->create_text_node($section_node, 'abbrev', $this->get_section_id()) );
+
+    foreach ($this->get_article_list() as $article) {
+      // A helpful identifier.
+      $section_node->appendChild(
+        $document->createComment(
+          ' '. $article->get_article_id() .': pp. '. $article->get_start_page() . '-' . $article->get_end_page() .' '
+        )
+      );
+      
+      $section_node->appendChild(
+        $document->importNode($article->get_xml_document(), TRUE)
+      );
+    }
+
+    return $section_node;
+  }
+}
+
+/* ========================================================================= */
+//  Class OJSArticle:
+//  An OJS journal article, generated by the EruditUnmarshaller from an
+//  Erudit-encoded XML file.
+/* ========================================================================= */
+class OJSArticle extends OJSImportable {
+
+  private $article_id = '';
+  private $type = '';
+  private $title = '';
+  private $date_published = '';
+  private $start_page = '';
+  private $end_page = '';
+  
+  // An article may have abstracts in different langauges
+  private $abstract = array();
+  
+  // An article is published in a section
+  /** 
+   @todo: this is backwards: an issue has sections
+   */
+  private $section_id = '';
+  private $section_title = '';
+  
+  // An article has a list of zero or more OJSAuthor objects
+  private $author_list = array();
+    
+  // An article may have PDF and/or HTML galley files
+  private $pdf_galley = '';
+  private $html_galley = '';
+  
+  function __construct() {
+    // does nothing
+  }
+
+  /** article ID **/
+  public function get_article_id() {
+    return $this->article_id;
+  }
+  public function set_article_id($article_id) {
+    $this->article_id = $article_id;
+  }
+  
+  /** article type: one of 'article', 'compterendu', 'note', or 'autre' */
+  public function get_type() {
+    return $this->type;
+  }
+  public function set_type($type) {
+    $this->type = $type;
+  }
+  
+  /** article title */
+  public function get_title() {
+    return $this->title;
+  }
+  public function set_title($title) {
+    $this->title = $title;
+  }
+  
+  /** 
+  * An array of one or more abstracts, indexed by language code, e.g.,
+  *   array('en_US' => 'This article...')
+  */
+  public function get_abstracts() {
+    return $this->abstracts;
+  }
+  public function set_abstracts($abstracts) {
+    $this->abstracts = $abstracts;
+  }
+  
+  /** start page */
+  public function get_start_page() {
+    return $this->start_page;
+  }
+  public function set_start_page($start_page) {
+    $this->start_page = $start_page;
+  }
+
+  /** end page */
+  public function get_end_page() {
+    return $this->end_page;
+  }
+  public function set_end_page($end_page) {
+    $this->end_page = $end_page;
+  }
+  
+  /** date published: YYYY-MM-DD */
+  public function get_date_published() {
+    return $this->date_published;
+  }
+  public function set_date_published($date_published) {
+    $this->date_published = $date_published;
+  }
+  
+  /** Author(s) */
+  public function get_authors() {
+    return $this->author_list;
+  }
+  public function set_authors($author_list) {
+    $this->author_list = $author_list;
+  }
+  
+  /** Section ID */
+  public function get_section_id() {
+    return $this->section_id;
+  }
+  public function set_section_id($section_id) {
+    $this->section_id = $section_id;
+  }
+  
+  /** Section title */
+  public function get_section_title() {
+    return $this->section_title;
+  }
+  public function set_section_title($section_title) {
+    $this->section_title = $section_title;
+  }
+
+  /** PDF galley */
+  public function get_pdf_galley() {
+    return $this->pdf_galley;
+  }
+  public function set_pdf_galley($pdf_galley) {
+    $this->pdf_galley = $pdf_galley;
+  }
+
+  /** HTML galley */
+  public function get_html_galley() {
+    return $this->html_galley;
+  }
+  public function set_html_galley($html_galley) {
+    $this->html_galley = $html_galley;
+  }
+
+  /** @override */
+  /** @fixme: this should return a full document, not just a fragment; or flag to choose */
+  public function get_xml() {
+    return $this->get_xml_document()->saveXML();
+  }
+  
+  /** @override */
+  protected function get_xml_document() {
+    
+    $document = new DOMDocument('1.0', 'utf-8'); 
+    
+    // The article
+    $article_node = $document->appendChild($document->createElement('article'));
+
+    // Article title
+    $article_node->appendChild( $this->create_text_node($article_node, 'title', str_replace('&', '&amp;', $this->get_title())) );
+    
+    // One or more abstracts
+    foreach ($this->get_abstracts() as $lang => $text) {
+      $abstract_node = $document->createElement('abstract', str_replace('&', '&amp;', $text));
+      $abstract_node->setAttribute('locale', $lang);
+      $article_node->appendChild($abstract_node);      
+    }    
+    
+    // An article has zero or more authors, but OJS requires an author-type
+    // construct: submit an empty author
+    // See http://pkp.sfu.ca/bugzilla/show_bug.cgi?id=6744
+    /** 
+     @fixme empty author check should be done during unmarshalling
+     */
+    $author_list = $this->get_authors();
+    if (empty($author_list)) {
+      $author_node = $article_node->appendChild($document->createElement('author'));
+      
+      $author_node->appendChild($document->createElement('firstname', ' '));
+      $author_node->appendChild($document->createElement('lastname', ' '));
+      $author_node->appendChild($document->createElement('email', 'none'));
+    }
+    else {
+      // Node 'em up
+      foreach ($author_list as $author) {
+        $article_node->appendChild(
+          $document->importNode($author->get_xml_document(), TRUE)
+        );
+      }
+    }  
+    
+    // Date published
+    $article_node->appendChild( $this->create_text_node($article_node, 'date_published', $this->get_date_published()) );    
+    
+    // An HTML galley?
+    // @fixme too much copy/paste
+
+    if ($this->get_html_galley()) {
+      $html_galley_node = $article_node->appendChild($document->createElement('htmlgalley'));
+
+      // Child elements of <htmlgalley>
+      $label_node = $html_galley_node->appendChild($document->createElement('label', 'HTML'));
+      $file_node  = $html_galley_node->appendChild($document->createElement('file'));
+      
+      // Child elements of <file>
+      $href_node = $file_node->appendChild($document->createElement('href'));
+      $href_node->setAttribute('src', $this->get_html_galley());
+      $href_node->setAttribute('mime_type', 'text/html');
+    }
+        
+    // A PDF galley?
+    if ($this->get_pdf_galley()) {
+      $galley_node = $article_node->appendChild($document->createElement('galley'));
+
+      // Child elements of <galley>
+      $label_node = $galley_node->appendChild($document->createElement('label', 'PDF'));
+      $file_node  = $galley_node->appendChild($document->createElement('file'));
+      
+      // Child elements of <file>
+      $href_node = $file_node->appendChild($document->createElement('href'));
+      $href_node->setAttribute('src', $this->get_pdf_galley());
+      $href_node->setAttribute('mime_type', 'application/pdf');
+    }
+    
+    return $article_node;
+  }
+}
+
+/* ========================================================================= */
+//  Class OJSAuthor:
+//  An OJS article author, generated by the EruditUnmarshaller from an
+//  Erudit-encoded XML file.
+/* ========================================================================= */
+class OJSAuthor extends OJSImportable {
+  private $firstname = '';
+  private $middlename = '';
+  private $lastname = '';
+  private $affiliation = '';
+  private $email = '';
+  
+  /* Firstname */
+  public function get_firstname() {
+    return $this->firstname;
+  }
+  public function set_firstname($firstname) {
+    $this->firstname = $firstname;
+  }
+  
+  /* Middlename */
+  public function get_middlename() {
+    return $this->middlename;
+  }
+  public function set_middlename($middlename) {
+    $this->middlename = $middlename;
+  }
+
+  /* Last name */
+  public function get_lastname() {
+    return $this->lastname;
+  }
+  public function set_lastname($lastname) {
+    $this->lastname = $lastname;
+  }
+  
+  /* Affiliation */
+  public function get_affiliation() {
+    return $this->affiliation;
+  }
+  public function set_affiliation($affiliation) {
+    $this->affiliation = $affiliation;
+  }
+
+  /* Email */
+  public function get_email() {
+    return $this->email;
+  }
+  public function set_email($email) {
+    $this->email = $email;
+  }
+  
+  /** @override */
+  public function get_xml() {
+    return $this->get_xml_document()->saveXML();
+  }
+  
+  /** @override */
+  protected function get_xml_document() {
+    $document = new DOMDocument('1.0', 'utf-8'); 
+    $author_node = $document->appendChild($document->createElement('author')); 
+    
+    // firstname, middlename, lastname  
+    if ($this->get_firstname()) {
+      $author_node->appendChild( $this->create_text_node($author_node, 'firstname', $this->get_firstname()) );
+    }
+    if ($this->get_middlename()) {
+      $author_node->appendChild( $this->create_text_node($author_node, 'middlename', $this->get_middlename()) );
+    }
+    if ($this->get_lastname()) {
+      $author_node->appendChild( $this->create_text_node($author_node, 'lastname', $this->get_lastname()) );
+    }
+    
+    // Affiliation
+    if ($this->get_affiliation()) {
+      $author_node->appendChild( $this->create_text_node($author_node, 'affiliation', $this->get_affiliation()) );
+    }
+
+    // E-mail a bit of a special case
+    $email = $this->get_email(); 
+    if (empty($email)) {
+      $email = 'none';
+    }
+
+    $author_node->appendChild( $this->create_text_node($author_node, 'email', $email) );
+    
+    return $author_node;
+  }
+  
+}
+
+/* ========================================================================= */
+//  Class EruditeUnmarshaller:
+//  Unmarshalls contents of Erudit-encoded XML files into OJS-ish objects
+/* ========================================================================= */
+class EruditUnmarshaller {
+  
+  /**
+   * DOM & XPathDOM objects used to retrieve OJS object properties
+   */
+  private $dom;
+  private $xpath_dom;
+  
+  /**
+   * Ugly hack to handle Erudit DTD & schema XML: use namespaces to when 
+   * source XML is schema-flavoured, otherwise not.
+   */
+  private $schema = FALSE;
+  private $ns_uri = '';
+  private $ns     = '';
+  private $nsp    = ''; // namespace prefix in XPath statements
+  private $nsdec  = ''; // namespace declaration in markup preservation XSL
+
+   /**
+    * Occasionally we want to retain, in the OJS import file, text formatting
+    * information captured in Erudit tags. Provide XPath expressions to find
+    * Erudit markup, to be substituted with HTML wrapped in CDATA sections.
+    *
+    */
+  private $xpath_to_markup = array(
+    'exposant' => 'sup',
+    'indice'  => 'sub',
+    "marquage[@typemarq='gras']" => 'strong',
+    "marquage[@typemarq='italique']" => 'em',
+  );   
+  
+  /**
+   * Erudit & OJS use different language codes
+   */
+  private $erudit_langcodes = array(
+    'en' => 'en_US',
+    'fr' => 'fr_CA',
+  );
+  
+  function __construct($xml) {
+    // Create a temporary DOM from source XML
+    $dom = new DOMDocument('1.0', 'utf-8');
+    $dom->loadXML($xml);
+
+        
+    // Schema or DTD XML?
+    $node_list = $dom->getElementsByTagName('dtd');
+    if (! $node_list->length) {
+      $this->schema = TRUE;
+      $this->ns_uri = 'http://www.erudit.org/xsd/article';
+      $this->ns     = 'erudit';
+      $this->nsp    = $this->ns . ':';
+      $this->nsdec  = "xmlns:{$this->ns}=\"{$this->ns_uri}\" ";
+    }
+    
+    // Get schema- or DTD-happy XSL to transform some Erudit elements to HTML
+    // markup, preserved in CDATA sections
+    $xsl_dom = new DOMDocument('1.0', 'utf-8');
+    $xsl_dom->loadXML($this->_get_markup_preservation_stylesheet());
+    $processor = new XSLTProcessor();
+    $processor->importStylesheet($xsl_dom);
+    
+    // Transform & store
+    $this->dom = $processor->transformToDoc($dom);
+
+    // Create an XPath object to locate values to populate OJSArticle object
+    $this->xpath_dom = new DOMXPath($this->dom);
+    $this->xpath_dom->registerNamespace($this->ns, $this->ns_uri);
+  }
+
+  public function unmarshall_issue() {
+    // Set issue properties
+    $ojs_issue = new OJSIssue();
+
+    $ojs_issue->set_date_published($this->_get_date_published());
+    $ojs_issue->set_year($this->_get_year());
+    $ojs_issue->set_volume($this->_get_volume());
+    $ojs_issue->set_issue_number($this->_get_issue_number());
+    
+    // Issue title is a concatenation of volume, number & year published
+    $ojs_issue->set_title(
+      $this->_get_issue_title(
+        $ojs_issue->get_volume(),
+        $ojs_issue->get_issue_number(),
+        $ojs_issue->get_year()
+      )
+    );
+
+    // hand back the issue
+    return $ojs_issue;
+  }
+  
+  public function unmarshall_article() {
+    // Initialize OJSArticle with values read from Erudit-encoded article
+    $ojs_article = new OJSArticle();
+    
+    $ojs_article->set_article_id($this->_get_article_id());
+    $ojs_article->set_type($this->_get_type());
+    $ojs_article->set_title($this->_get_article_title());
+    $ojs_article->set_abstracts($this->_get_abstracts());
+    $ojs_article->set_date_published($this->_get_date_published());
+    $ojs_article->set_start_page($this->_get_start_page());
+    $ojs_article->set_end_page($this->_get_end_page());    
+    
+    // @fixme: not so clever, sections belong to issues
+    $ojs_article->set_section_id($this->_get_section_id());
+    $ojs_article->set_section_title($this->_get_section_title());
+
+    // Unmarsall & add authors
+    $ojs_article->set_authors($this->unmarshall_article_authors());
+
+    // pass back the article
+    return $ojs_article;
+  }
+
+  public function unmarshall_article_authors() {
+    // Build and return a (possibly empty) list of OJSAuthor objects
+    $author_list = array();
+    
+    // Get a list of author elements
+    $node_list = $this->xpath_dom->query("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}grauteur/{$this->nsp}auteur");
+
+    foreach ($node_list as $node) {
+      $author = new OJSAuthor();
+
+      $author->set_firstname($this->_get_author_firstname($node));
+      $author->set_middlename($this->_get_author_middlename($node));
+      $author->set_lastname($this->_get_author_lastname($node));
+      $author->set_affiliation($this->_get_author_affiliation($node));
+      $author->set_email($this->_get_author_email($node));
+
+      $author_list[] = $author;
+    }
+
+    return $author_list;
+  }
+  
+  /** Builds issue title from article-level metadata */
+  private function _get_issue_title($volume, $issue, $year) {
+    // Issue title is a concatenation of volume, issue, and year
+    $title = '';
+
+    if (! empty($volume)) {
+      $title .= "Volume $volume";
+    }
+    
+    if (! empty($issue)) {
+      
+      // Volume may have been added; follow w/ a comma
+      if (! empty($title)) {
+        $title .= ', ';
+      }
+      
+      $title .= 'Number';
+
+      // there may be multiple issues: replace commas with ' and ' for
+      // readability
+      if (strpos($issue, '-') >= 0) {
+        $title .= 's';
+        $issue = str_replace('-', ' and ', $issue);
+      }
+      
+      // add issue number(s)
+      $title .= ' ' . $issue;
+    }
+    
+    if (! empty($year)) {
+      // Volume and/or issue may have been added, follow w/ space
+      if (! empty($title)) {
+        $title .= ' ';
+      }
+      $title .= "($year)";
+    }
+    
+    return $title;
+  }
+  
+  /** Gets article ID */
+  private function _get_article_id() {
+    return $this->_eval_query_as_string("/{$this->nsp}article/@idproprio");
+  }
+  
+  /** Gets article type */
+  private function _get_type() {
+    return $this->_eval_query_as_string("/{$this->nsp}article/@typeart");
+  }
+  
+  /** An article belongs to a section */
+  private function _get_section_id() {
+    $section_id = '';
+
+    // In DTD XML, we used to extract a substring of article ID to get a unique
+    // section ID. This is not possible with schema XML as Tournesol uses a 
+    // a different convention for generating article IDs. 
+    
+    // Instead, base section ID on section title.  Remove whitespace and
+    // punctuation and encode down to Latin-1 characters.
+    $section_id = 
+      strtoupper(
+        preg_replace(
+          "/[[:punct:][:space:]]/",   // remove whitespace & punct.
+          "",
+          iconv('UTF-8', 'ASCII//TRANSLIT', $this->_get_section_title())  // after down-coding to ASCII
+        )
+      );
+    
+    return $section_id;
+  }
+  
+  /**
+   * A section has a title
+   */
+  private function _get_section_title() {
+    // Element may appear once or not at all
+    return $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}grtitre/{$this->nsp}surtitre");
+  }
+  
+  /**
+   * Builds article title
+   */
+  private function _get_article_title() {
+    $title = '';
+
+    // Query for title
+    $title_nodelist = $this->xpath_dom->query("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}grtitre/{$this->nsp}titre");
+
+    // Erudit DTD permits a single title in the title group    
+    if ($title_nodelist->length) {
+      $title = $title_nodelist->item(0)->nodeValue;
+
+      // Title may be followed by (at most) one subtitle element
+      $subtitle_nodelist = $this->xpath_dom->query("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}grtitre/{$this->nsp}sstitre");
+      
+      if ($subtitle_nodelist->length) {
+        // add subtitle
+        $title .= ' ' . $subtitle_nodelist->item(0)->nodeValue;
+      }
+    }
+
+    // If no title found in <titre>, check <trefbiblio>
+    $trefbiblio_nodelist = $this->xpath_dom->query("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}grtitre/{$this->nsp}trefbiblio");
+    
+    // DTD allows 0 or more <trefbiblio> elements
+    $biblio_title_list = array();
+    
+    foreach ($trefbiblio_nodelist as $trefbiblio_node) {
+      $biblio_title_list[] = $trefbiblio_node->nodeValue; 
+    }
+    
+    if (sizeof($biblio_title_list)) {
+      $title = implode(' ', $biblio_title_list);
+    }
+
+    return $title;
+  }
+  
+  /**
+   * Build array of abstracts keyed by language code
+   */
+  private function _get_abstracts() {
+    $abstracts = array();
+    $abstract_nodes = $this->xpath_dom->query("/{$this->nsp}article/{$this->nsp}liminaire/{$this->nsp}resume");
+    
+    foreach ($abstract_nodes as $node) {
+      $langcode = $this->_eval_query_as_string('@lang', $node);
+      $text = $this->_eval_query_as_string("{$this->nsp}alinea", $node);
+
+      // Erudit & OJS use different language codes
+      $abstracts[$this->erudit_langcodes[$langcode]] = $text;
+    }
+
+    return $abstracts;
+  }
+  
+  /** Gets date published: YYYY-MM-DD */
+  private function _get_date_published() {
+    // Element is required and may appear once only
+    return $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}numero/{$this->nsp}pubnum/{$this->nsp}date");
+  }
+  
+  /** Article start page */
+  private function _get_start_page() {
+    // Element is optional
+    $start_page = $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}infoarticle/{$this->nsp}pagination/{$this->nsp}ppage");    
+    
+    if (intval($start_page)) {
+      $start_page = intval($start_page);
+    }
+    
+    return $start_page;
+  }
+  
+  /** Article end page */
+  private function _get_end_page() {
+    // Element is optional
+    $end_page = $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}infoarticle/{$this->nsp}pagination/{$this->nsp}dpage");
+    
+    if (intval($end_page)) {
+      $end_page = intval($end_page);
+    }
+    
+    return $end_page;
+  }
+  
+  /** Gets year published: YYYY */
+  private function _get_year() {
+    // Element is required and may appear once only
+    return $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}numero/{$this->nsp}pub/{$this->nsp}annee");
+  }
+  
+  /** Gets volume number of issue in which article is published */
+  private function _get_volume() {
+    // Element may appear once or not at all 
+    return $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}numero/{$this->nsp}volume");
+  }
+
+  /** Gets number of issue in which article is published */
+  private function _get_issue_number() {  
+    // Element may appear zero or more times; concatenate repeated values
+    return $this->_eval_query_as_string("/{$this->nsp}article/{$this->nsp}admin/{$this->nsp}numero/{$this->nsp}nonumero", NULL, '-');
+  }
+    
+  /** Author first name. Requires context node for disambiguation. */
+  private function _get_author_firstname($author_node) {
+    // Element is required and may appear only once per author
+    return $this->_eval_query_as_string("{$this->nsp}nompers/{$this->nsp}prenom", $author_node);
+  }    
+    
+  /** Author middle name. Requires context node for disambiguation. */
+  private function _get_author_middlename($author_node) {
+    // Element may appear once per author or not at all
+    return $this->_eval_query_as_string("{$this->nsp}nompers/{$this->nsp}autreprenom", $author_node);
+  }
+  
+  /** Author surname. Requires context node for disambiguation. */
+  private function _get_author_lastname($author_node) {
+    // Element is required and may appear only once per author
+    return $this->_eval_query_as_string("{$this->nsp}nompers/{$this->nsp}nomfamille", $author_node);
+  }
+  
+  /** Author affiliation. Requires context node for disambiguation. */
+  private function _get_author_affiliation($author_node) {
+    // May appear once per author or not at all. Affiliation has 1 or more
+    // child <alinea> elements.  Concatenate these with whitespace.
+    return $this->_eval_query_as_string("{$this->nsp}affiliation/{$this->nsp}alinea", $author_node, ' ');
+  }
+  
+  /** Author e-mail. Requires context node for disambiguation. */
+  private function _get_author_email($author_node) {
+    // May appear once per author or not at all
+    return $this->_eval_query_as_string("{$this->nsp}courriel", $author_node);
+  }
+  
+  /**
+   * Given an XPath query, and an optional concatenation string,
+   * returns a concatenated string of zero or more values
+   */
+  private function _eval_query_as_string($xpath, $context_node = NULL, $glue = ' ') {
+    $value_list = $this->_eval_query_as_array($xpath, $context_node);
+    return implode($glue, $value_list);
+  }
+
+  /** 
+   * Given an XPath query, returns an array of values
+   */
+  private function _eval_query_as_array($xpath, $context_node = NULL) {
+    // Some queries require context. DOMXPath->query() will fail if context node is NULL.
+    if (is_null($context_node)) {
+      $context_node = $this->xpath_dom->document->documentElement;
+    }
+    
+    $value_list = array();
+    $nodelist = $this->xpath_dom->query($xpath, $context_node);
+    
+    foreach ($nodelist as $node) {
+      $value_list[] = $node->nodeValue;
+    }
+    
+    return $value_list;
+  }
+
+  private function _get_markup_preservation_stylesheet() {
+    $xsl = <<<EOD_XSL_HEADER
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet {$this->nsdec} xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+  <xsl:output method="xml" encoding="UTF-8"/>
+
+EOD_XSL_HEADER;
+
+    foreach ($this->xpath_to_markup as $xpath => $markup) {
+      $xsl .= $this->_get_markup_preservation_template($xpath, $markup);
+    }
+
+    $xsl.= <<<EOD_XSL_FOOTER
+      <xsl:template match="*">
+        <xsl:copy>
+          <xsl:copy-of select="@*"/>
+          <xsl:apply-templates/>
+        </xsl:copy>
+      </xsl:template>
+</xsl:stylesheet>
+
+EOD_XSL_FOOTER;
+
+    return $xsl;
+  }
+  
+  private function _get_markup_preservation_template($xpath, $markup) {
+    $template = <<<EOD_XSL_TEMPLATE
+      <xsl:template match="{$this->nsp}{$xpath}">
+        <xsl:text disable-output-escaping="yes">&lt;![CDATA[&lt;{$markup}&gt;]]&gt;</xsl:text>
+        <xsl:apply-templates/>
+        <xsl:text disable-output-escaping="yes">&lt;![CDATA[&lt;/{$markup}&gt;]]&gt;</xsl:text>
+      </xsl:template>
+      
+EOD_XSL_TEMPLATE;
+
+    return $template;
+  }
+}
+
+/* ========================================================================= */
+//  Class ExceptionReporter
+//  Convert standard error-reporting of internal PHP functions to exceptions
+/* ========================================================================= */
+class ExceptionReporter {
+  
+  public static function exception($severity, $message, $file_name, $line_number) {
+    // We don't really have an exception code: fake it
+    $exception_code = 0;
+    
+    throw new ErrorException($message, $exception_code, $severity, $file_name, $line_number);
+  }
+
+}
+
+/* ========================================================================= */
+//  Constants
+/* ========================================================================= */
+
+define('HTML_DIR',  'HTML');
+define('PDF_DIR',   'PDF');
+define('XML_DIR',   'XML');
+
+define('HTML_FILE_EXT', 'html');
+define('XML_FILE_EXT',  'xml');
+define('PDF_FILE_EXT',  'pdf');
+
+define('OJS_IMPORT_FILE', 'ojs_import.xml');
+
+/* ========================================================================= */
+//  Error handling
+/* ========================================================================= */
+
+set_error_handler("ExceptionReporter::exception");
+
+/* ========================================================================= */
+//  Argument handling
+/* ========================================================================= */
+// ...except there are no arguments. The script should be run from a directory
+// containing 'HTML', 'PDF', and 'XML' subdirectories. 
+$issue_dir = getcwd();
+
+foreach (array(HTML_DIR, PDF_DIR, XML_DIR) as $dir) {
+  
+  if (! file_exists($issue_dir .'/'. $dir)) {
+    exit("Not found: $issue_dir/$dir". PHP_EOL);
+  }
+  if (! is_dir($issue_dir .'/'. $dir)) {  
+    exit("Not a directory: $issue_dir/$dir". PHP_EOL);
+  }
+}
+
+// Make sure $issue_dir is writeable so we can create an OJS-importable file
+if (! is_writable($issue_dir)) {
+  exit ("Not writable: $issue_dir". PHP_EOL);
+}
+
+/* ========================================================================= */
+//  Locate source XML files
+/* ========================================================================= */
+
+// Find XML-encoded article files
+$xml_files = glob($issue_dir . '/' . XML_DIR . '/*.' . XML_FILE_EXT);
+
+// Give up if there are no XML files
+if ($xml_files === FALSE or empty($xml_files)) {
+  echo 'No XML files found', PHP_EOL, PHP_EOL;
+  exit();
+}
+
+/* ========================================================================= */
+//  Build issue, section, article objects from source XML
+/* ========================================================================= */
+
+// Each XML file encodes an article and includes issue-level metadata for the
+// issue in which the article is published.  Since the XML files in the given
+// directory combine to form a single issue, we can grab any one XML file and
+// unmarshall it into an OJSIssue object.
+$ojs_issue = NULL;
+
+// Create an OJSArticle from each XML file.  Add to list, indexed by article ID
+$article_list = array();
+
+// List of article start pages, indexed by article ID, for sorting
+$article_page_index = array();
+
+foreach($xml_files as $xml_file) {
+  // Get source file XML & decompose into OJS importables
+  $unmarshaller = new EruditUnmarshaller( file_get_contents($xml_file) );
+  
+  // Create the issue, if not already.
+  if (! $ojs_issue) {
+    try {
+      $ojs_issue = $unmarshaller->unmarshall_issue();
+    }
+    catch (ErrorException $e) {
+      exit( basename($xml_file) . ': '. $e->getMessage() . PHP_EOL);
+    }
+  }
+  
+  // Create the article
+  try {
+    $ojs_article = $unmarshaller->unmarshall_article();
+  }
+  catch(ErrorException $e) {
+    echo basename($xml_file), ': ', $e->getMessage(), PHP_EOL;
+    // @todo: get severity, exit if catastrophic, continue if not
+    continue;
+  }
+  
+  // Look for the article's PDF galley file
+  $pdf_galley_file  = $issue_dir .'/'. PDF_DIR .'/'.  basename($xml_file, '.' . XML_FILE_EXT) .'.'. PDF_FILE_EXT;
+
+  if (file_exists($pdf_galley_file)) {
+    $ojs_article->set_pdf_galley($pdf_galley_file);
+  }
+  else {
+    echo "PDF galley not found: ", $pdf_galley_file, PHP_EOL;
+  }
+
+  // Look for the article's HTML galley file  
+  $html_galley_file = $issue_dir .'/'. HTML_DIR .'/'. basename($xml_file, '.' . XML_FILE_EXT) .'.'. HTML_FILE_EXT;
+
+  if (file_exists($html_galley_file)) {
+    $ojs_article->set_html_galley($html_galley_file);
+  }
+  else {
+    echo "HTML galley not found: ", $html_galley_file, PHP_EOL;
+  }
+  
+  // Update article & page lists
+  $article_list[$ojs_article->get_article_id()] = $ojs_article;
+  $article_page_index[$ojs_article->get_article_id()] = $ojs_article->get_start_page();
+
+} // end foreach
+
+
+// This next part is a bit backwards: an issue has sections, each of which
+// has articles, but sections are identified in article-level XML documents.
+// 
+// We also need to order sections and articles by page number.
+//
+// Add sections to $ojs_issue now, by getting the current article's section.
+// If the section hasn't yet been added to the issue, create and add a new
+// section. Add the article to the section.
+
+// Sort the article page index, maintaining key association
+asort($article_page_index);
+
+// Work through the articles in order & let the sections take care of themselves
+foreach(array_keys($article_page_index) as $article_id) {
+  $ojs_article = $article_list[$article_id];
+  
+  $ojs_section = $ojs_issue->get_section($ojs_article->get_section_id());
+
+  if (! $ojs_section) {
+    $ojs_section = new OJSIssueSection();
+
+    $ojs_section->set_section_id($ojs_article->get_section_id());
+    $ojs_section->set_section_title($ojs_article->get_section_title());
+
+    $ojs_issue->add_section($ojs_section);
+  }
+
+  // Finally, add the article to the section
+  $ojs_section->add_article($ojs_article);
+}
+
+/* ========================================================================= */
+//  Write OJS-importable XML to disk
+/* ========================================================================= */
+
+$issue_xml = $ojs_issue->get_xml();
+
+if (file_exists($issue_dir .'/'. OJS_IMPORT_FILE)) {
+  // Default timezone must be set explicitly. It's fine here, for now; this is
+  // the only date/time function used in the script
+  date_default_timezone_set('America/Halifax');
+  
+  $backup_file = OJS_IMPORT_FILE .'-'. date('Y-m-d-H:i:s');
+  copy($issue_dir .'/'. OJS_IMPORT_FILE, $issue_dir .'/'. $backup_file);
+}
+
+file_put_contents(OJS_IMPORT_FILE, $issue_xml);
+
+/* ========================================================================= */
+//  Finis.
+/* ========================================================================= */
+
+exit(0);
+
+?>

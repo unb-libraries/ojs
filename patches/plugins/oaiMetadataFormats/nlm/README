@@ -1,0 +1,7 @@
+Patch to OJS OAI Metadata Format plugin for NLM metadata
+
+Patches [ojs]/plugins/oaiMetadataFormats/nlm/OAIMetadataFormat_NLM.inc.php
+
+This patch modifies the OAI dissemination of NLM metadata to include issue and
+volume information. 
+

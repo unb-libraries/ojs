@@ -1,0 +1,220 @@
+#!/usr/bin/perl
+###############################################################################
+#
+# eruditify article.html [article2.html ...]
+#
+# Describe me.
+#
+###############################################################################
+use strict;
+use warnings;
+
+use Carp;
+use English;
+use Fatal qw( open close unlink ); # Force builtins to throw exceptions on failure
+use File::Basename;
+use Getopt::Long;
+use HTML::Entities;
+use IO::Interactive qw( interactive );
+use IO::Prompt;
+use Perl6::Slurp;
+use Readonly;
+use Regexp::DefaultFlags qw( xmsi ); # Regexes in this namespace /xmsi-modified
+
+###############################################################################
+# Process command line 
+###############################################################################
+
+# Variables set in response to command-line arguments, with defaults
+my $infile    = '-';
+my $outfile   = '-';
+my $delete    = 0;
+my $overwrite = 0;
+my $verbose   = 0;
+
+# Process command line...
+my $options_ok = GetOptions (
+  # Application-specific options
+  'delete'    => \$delete,        # --delete flag is boolean
+  'overwrite' => \$overwrite,     # --overwrite flag is boolean
+  'verbose'   => \$verbose,       # --verbose flag is boolean
+  
+  # Standard meta-options
+  'usage'   => sub { print show_usage() and exit; },
+  'help'    => sub { print show_help() and exit; },
+);
+
+# Fail if unknown arguments encountered
+croak show_usage() if ! $options_ok;
+
+###############################################################################
+# Process the files
+###############################################################################
+Readonly my $NEWLINE  => "\n";
+Readonly my $SPACE    => ' ';
+Readonly my $XML_EXT  => '.xml';
+
+# Regular expressions
+Readonly my $IS_HTML  => qr{ \.html \s* \z };
+
+Readonly my @REPLACEABLES => (
+  # Discard style-based markup that conveys nothing useful: 
+  # replace with $SPACE to preserve word breaks
+  sub { $_[0] =~ s{ <br /? >  }{$SPACE}g; },   # <br/> or <br>
+  sub { $_[0] =~ s{ </?code>  }{$SPACE}g; },   # <small> or </small>
+  sub { $_[0] =~ s{ </?small> }{$SPACE}g; },   # <code> or </code>
+  
+  # Discard <h1>, <h2>, ... <h6> headings
+  sub { $_[0] =~ s{ < /? h ([123456]) > }{$SPACE}g; },
+  
+  # Translate style-based markup to Érudit equivalents
+  sub { $_[0] =~ s{ <i>   (.*?) </i>   }{<marquage typemarq="italique">$1</marquage>}g; },  # and <em>?
+  sub { $_[0] =~ s{ <b>   (.*?) </b>   }{<marquage typemarq="gras">$1</marquage>}g; },      # and <strong>?
+  sub { $_[0] =~ s{ <sup> (.*?) </sup> }{<exposant>$1</exposant>}g; },
+  sub { $_[0] =~ s{ <sub> (.*?) </sub> }{<indice>$1</indice>}g; },
+  
+  # Hack to work around Gemini's inconsistent character encoding: in converting
+  # PDF to HTML, some non-ASCII characters entity-encoded, most are not.
+  # Double-encode &, <, and > so the call to decode_entities() results in 
+  # uniformly decoded characters with properly-escaped special characters.
+  sub { $_[0] =~ s{ &amp; }{&amp;amp;}g; },
+  sub { $_[0] =~ s{ &gt;  }{&amp;gt;}g; },
+  sub { $_[0] =~ s{ &lt;  }{&amp;lt;}g; },  
+);
+
+# Begin file processing block
+{
+  local $OUTPUT_RECORD_SEPARATOR  = $NEWLINE;   # Newline after each print
+  
+  # Shift files out of @ARGV so we can prompt for input later on
+  # @fixme I don't like this
+  my @files;
+  while (my $file = shift @ARGV) {
+    push @files, $file;
+  }
+  
+  if (! @files) {
+    carp "No XML files to process";
+    croak show_usage();
+  }
+  
+  FILE: foreach my $file (@files) {
+    print {interactive} "Processing $file..." if $verbose;
+
+    # Process HTML files only
+    carp "Skipping $file, not an HTML file"
+      and next FILE 
+        unless $file =~ $IS_HTML;
+        
+    # Files must exist
+    carp "Skipping $file, not found"
+      and next FILE
+        if ! -e $file;
+            
+    # Files must be readable
+    carp "Skipping $file, not readable"
+      and next FILE
+        if ! -r $file;
+        
+    # Target has same location & name as $file, except with a '.xml' extension
+    ( my $xml_file = $file ) =~ s{$IS_HTML}{$XML_EXT};
+    
+    # Write to the target...
+    my $write_to_target = 1;
+    
+    # ... unless it already exists & --overwrite not specified
+    if (-e $xml_file and ! $overwrite) {
+      # revert $\ to undef when prompting for input
+      local $OUTPUT_RECORD_SEPARATOR = undef;
+      my $response = prompt "File $xml_file exists. Overwrite? [y/n] ",
+                            -require=>{ 'Must be y or n: ' => qr/[yn]/ };
+                            
+      $write_to_target = ($response =~ /y/i);
+    }
+    
+    # Warn if we're not overwriting target:
+    carp "Skipping $file. Target $xml_file exists and overwrite rejected."
+      and next FILE
+        if ! $write_to_target;
+        
+    # Target must be writeable, if it exists
+    carp "Skipping $file. Can't overwrite target $xml_file"
+      and next FILE
+        if ( -e $xml_file and ! -w $xml_file );
+
+    # If not, its directory must be writeable
+    carp "Skipping $file. Can't write to target directory ". dirname($file)
+     and next FILE
+      if (! -e $xml_file and ! -w dirname($file));
+    
+    # Power-slurp the (X)HTML. Let it throw an exception on failure: we've
+    # already checked the obvious (-e, -r $file)
+    my $xhtml = slurp $file;
+        
+    # Replace the replaceables
+    foreach my $sub (@REPLACEABLES) {
+      &{$sub}($xhtml);
+    }
+    
+    # Decode in-place: replace entities with Unicode characters.
+    decode_entities($xhtml);
+
+    print {interactive} "Writing to $xml_file" if $verbose;
+
+    # Write Erudit "XML" to target file. Let Fatal.pm take care of exceptions.
+    open my $XML_FILE, ">:encoding(UTF-8)", $xml_file;
+    print {$XML_FILE} $xhtml;
+    close $XML_FILE;
+    
+    # If we're here, we've written the XML. Delete the source HTML, if asked
+    if ($delete) {
+      unlink $file;
+      print {interactive} "Deleted HTML source file $file" if $verbose;
+    }
+    
+  } # end FILE
+
+  print {interactive} "Done." if $verbose;
+  
+} # end file processing block
+
+exit 0;
+
+###############################################################################
+# Standard meta-option: usage summary
+###############################################################################
+sub show_usage {
+  my $usage = <<'END_USAGE';
+Usage: eruditify [-d] [-o] [-v] article.html [article2.html ...]
+END_USAGE
+# end heredoc
+
+  return $usage;
+}
+
+###############################################################################
+# Standard meta-option: detailed help
+###############################################################################
+sub show_help {
+  my $usage = show_usage();
+  my $help  = <<"END_HELP";
+eruditify - Convert HTML .html files to XML .xml files.  Replace HTML style
+            markup with equivalent Erudit markup.  Remove unnecessary HTML
+            markup. Resulting XML file is only a first draft & will not be valid!
+            
+${usage}
+Options:
+  -d, --delete    Delete HTML source files after processing.
+  -o, --overwrite If target XML file exists, overwrite without prompting.
+  -v, --verbose   Display details of script progress.
+  -u, --usage     Print the usage line of this summary.
+  -h, --help      Print this summary.
+
+Arguments:
+  article.html [...]  One or more HTML files.
+  
+END_HELP
+# end heredoc
+
+  return $help;
+}

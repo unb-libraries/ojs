@@ -1,0 +1,35 @@
+CRKN harvests journal content from an OAI dissemination of Erudit-encoded
+metadata.  This README describes how we used to provide CRKN with journals,
+before the OAI service was implemented.
+
+1. Journal editor identifies new journal issues to be included in the submission
+   to Erudit.
+
+2.  Journals are copied from [journals-dir] into a new directory that mirrors
+    the structure.  Only XML/ subdirectories are included. We do not submit HTML
+    or PDF galleys.  E.g., if the following issue
+
+    [journals-dir]/ACADIENSIS/2009/Vol_38/No_02/
+
+    is being submitted, the followin directory would be created:
+
+    [crkn-dir]/ACADIENSIS/2009/Vol_38/No_02/XML
+
+    with XML copied into the new directory.
+
+3.  From [crkn-dir], run Perl script called 'buildFicheFile'.  It accepts the
+    path to an XML file as an argument.  Run the script as part of a find command:
+
+    find . -name "*.xml" -exec perl /usr/local/bin/buildFicheFile {} \;
+
+4.  The Perl scripts creates a file in the XML directory for each article to be
+    sent to CRKN, with a Fiche.xml extension. E.g., for an article file named
+
+    acad38_2art01.xml
+
+    the script would create a corresponding
+
+    acad38_2art01Fiche.xml
+
+5.  Tar or zip up the [crkn-dir] directory and make it available for download by Erudit.
+

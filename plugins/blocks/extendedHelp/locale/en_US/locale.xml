@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../locale/locale.dtd">
+<!--
+  * locale.xml
+  *
+  * Localization strings for the en_US (U.S. English) locale.
+  -->
+ 
+<locale name="en_US" full_name="U.S. English">
+  <message key="plugins.block.extendedHelp.displayName">Extended Help Block</message>
+  <message key="plugins.block.extendedHelp.description">This plugin provides additional sidebar help links.</message>
+  <message key="plugins.block.extendedHelp.contextSensitive">Context-Sensitive Help</message>
+  <message key="plugins.block.extendedHelp.quickReference">Quick-Reference Guide</message>
+  <message key="plugins.block.extendedHelp.helpDocumentation">Documentation</message>
+  <message key="plugins.block.extendedHelp.supportForum">Support Forum</message>  
+</locale>

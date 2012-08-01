@@ -1,0 +1,1 @@
+javascript:(function loadBookmarklet(){var widgetId="bookmarkletWidget";var widgetElement=document.getElementById(widgetId);if(widgetElement){widgetElement.style.display="block";return;}var script=document.createElement("script");script.src="OJS_INSTALL_DIR/etcscripts/listSubmissionIds/submissionIdBlock.js";script.type="text/javascript";document.body.appendChild(script);})();

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../locale/locale.dtd">
+<!--
+  * locale.xml
+  *
+  * Localization strings for the fr_CA (Français (Canada)) locale.
+  -->
+<locale name="fr_CA" full_name="Français (Canada)">
+  <message key="plugins.block.extendedHelp.displayName">[Extended Help Block]</message>
+  <message key="plugins.block.extendedHelp.description">Ce plugiciel fournit des liens d'aide additionels dans l'encadré latéral.</message>
+  <message key="plugins.block.extendedHelp.contextSensitive">Aide sensible au contexte</message>
+  <message key="plugins.block.extendedHelp.quickReference">Guide de référence rapide</message>
+  <message key="plugins.block.extendedHelp.helpDocumentation">Documentation</message>
+  <message key="plugins.block.extendedHelp.supportForum">Forum</message>  
+</locale>

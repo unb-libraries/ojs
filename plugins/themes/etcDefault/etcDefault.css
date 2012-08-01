@@ -1,0 +1,102 @@
+/**
+ * etcDefault.css
+ *
+ * Copyright (c) 2003-2008 John Willinsky
+ * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+ *
+ * Stylesheet for default ETC theme
+ *
+ * $Id: etcDefault.css 12 2008-10-17 20:29:40Z jwhitney $
+ */
+
+/**
+ * Override defaults defined in styles/common.css
+ */
+body {
+	background-color: #fff;
+}
+
+a:link {
+	color: #5c8dad;
+}
+
+a:active {
+	color: #5c8dad;
+}
+
+a:visited {
+	/* TODO: need a 3rd colour for visited links */
+	color: #5c8dad;
+}
+
+a:hover {
+	color: #666;
+	background-color: inherit;
+}
+
+
+input.textField, select.selectMenu, textarea.textArea, input.uploadField {
+	border: 1px solid #cccccc;
+}
+
+input.button {
+	border: 1px solid #cccccc;
+}
+
+input.defaultButton {
+	background-color: #5c8dad;
+}
+
+#header {
+	background-color: #fff;
+}
+
+#footer {
+	background-color: #fff;
+}
+
+#navbar {
+	border-bottom: 1px dotted #cccccc;
+}
+
+#content {
+	border-top: 1px dotted #cccccc;
+}
+
+span.highlight {
+	border-bottom: 1px dotted #cccccc;
+}
+
+/**
+ * Override defaults defined in styles/sidebar.css
+ */
+#sidebar div.block {
+	border: 1px solid #cccccc;
+	background-color: #e6e6e6;
+	padding: .5em;
+	margin-bottom: 1em;
+}
+
+#sidebar div.block span.blockTitle {
+	color: #993300;
+	font-weight: bold;
+	padding: 0 0 0.5em 0;
+}
+
+/**
+ * Override defaults defined in styles/articleView.css
+ */
+ div.rtSeparator {
+	width: 100%;
+	padding: 0;
+	border-bottom: 1px dotted #000;
+	line-height: 0px;
+}
+
+div.rtSeparatorThin {
+	width: 100%;
+	padding: 5px 0px 5px 0px;
+	border-bottom: 1px dotted #cccccc;
+	line-height: 0px;
+}
+ 

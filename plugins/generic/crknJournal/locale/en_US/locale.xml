@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
+
+<!--
+  * locale.xml
+  *
+  * Copyright (c) 2003-2010 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+  *
+  * CRKN journal plugin localization strings for the en_US (U.S. English) locale.
+  *
+  * $Id$
+  -->
+ 
+<locale name="en_US" full_name="U.S. English">
+
+	<!-- CRKN -->
+	<message key="plugins.generic.CRKN.displayName">CRKN Identification Plugin</message>
+	<message key="plugins.generic.CRKN.description"><![CDATA[Use this plugin to identify journals in the CRKN bundle]]></message>
+
+	<!-- CRKN Settings Management -->
+	<message key="plugins.generic.CRKN.manager.settings">Settings</message>
+	<message key="plugins.generic.CRKN.manager.CRKNSettings">CRKN Plugin Settings</message>
+	<message key="plugins.generic.CRKN.manager.settings.description"><![CDATA[<p>If journal is included in the CRKN bundle, journal content will be made available for OAI harvesting. </p>]]>
+</message>
+	<message key="plugins.generic.CRKN.manager.settings.CRKNJournal">Is this part of the CRKN bundle?</message>
+</locale>

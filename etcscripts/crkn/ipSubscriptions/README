@@ -1,0 +1,11 @@
+## importSubscriperIPs.pl ##
+
+This script is required by the ipSubscriptions plugin.
+
+The ipSubscriptions plugin allows CRKN authentication bypass. The plugin looks
+at the incoming IP of the visitor, checks the crkn_ips table in the OJS
+database, and grants access if the visitor is a CRKN subscriber. 
+
+The crkn_ips table must be updated regularly. The script is currently installed
+as a nightly cron job in /etc/cron.d/ojs and logs to /var/log/ojs/crkn.log.
+
