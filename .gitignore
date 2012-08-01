@@ -1,0 +1,8 @@
+config.inc.php
+build
+temp
+files
+.htaccess
+.project
+.buildpath
+.settings
