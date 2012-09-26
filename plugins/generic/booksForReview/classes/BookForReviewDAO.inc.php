@@ -13,7 +13,7 @@
  * @brief Operations for retrieving and modifying BookForReview objects.
  */
 
-import('db.DAO');
+import('lib.pkp.classes.db.DAO');
 
 /* These constants are used for user-selectable search fields. */
 define('BFR_FIELD_PUBLISHER', 	'publisher');
@@ -335,6 +335,33 @@ class BookForReviewDAO extends DAO {
 			$book =& $books->next();
 			$this->deleteBookForReviewById($book->getId());
 		}
+	}
+
+	/**
+	 * Retrieve all books by review author for a particular journal.
+	 * @param $journalId int
+	 * @param $userId int, author to match
+	 * @param $rangeInfo object DBRangeInfo object describing range of results to return
+	 * @return object DAOResultFactory containing matching BooksForReview
+	 */
+	function &getBooksForReviewByAuthor($journalId, $userId, $rangeInfo = null) {
+		$bfrPlugin =& PluginRegistry::getPlugin('generic', $this->parentPluginName);
+		$bfrPlugin->import('classes.BookForReview');
+
+		$sql = 'SELECT DISTINCT bfr.*
+				FROM books_for_review bfr
+				WHERE bfr.journal_id = ?
+				AND bfr.user_id = ?
+				ORDER BY bfr.book_id DESC';
+
+		$paramArray = array(
+			(int) $journalId,
+			(int) $userId
+		);
+
+		$result =& $this->retrieveRange($sql, $paramArray, $rangeInfo);
+		$returner = new DAOResultFactory($result, $this, '_returnBookForReviewFromRow');
+		return $returner;
 	}
 
 	/**
