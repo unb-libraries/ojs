@@ -2,6 +2,8 @@ config.inc.php
 build
 temp
 files
+journalimages
+static_content
 .htaccess
 .project
 .buildpath
