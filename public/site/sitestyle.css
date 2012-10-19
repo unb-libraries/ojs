@@ -123,14 +123,14 @@ span.block {
     text-align:left;
 }
 
-/**
- * Font-size block has a div that wraps left-floated, block-formatted
- * anchors, but no other content. Give the div an explicit size so
- * it extends to contain the anchors.
- */
 div#sizer {
-  height: 18px;
+    height: 18px;
 }
+
+div#sidebarlogo {
+    margin: 0 0 -30px 0;
+}
+    
 
 /**
  * Override defaults defined in styles/articleView.css
@@ -234,16 +234,21 @@ div.rtSeparatorThin {
  * Tables & Figures
  */
  
-div.table-block, 
-div.figure-block {
-  margin: 1.5em 2.5em;    
-  padding-left: 10px;
-  border-left: 1px gray dotted;
+div.table-block {
+    margin:1.5em 2.5em;
+    padding-left: 10px;
+    border-left: 1px gray dotted;
 }
-
-div.table-block span.image-title,
+div.figure-block {
+    margin:1.5em 2.5em;
+    padding-left: 10px;
+    border-left: 1px gray dotted;
+}
 div.figure-block span.image-title {
-  display: block;
+    display: block;
+}
+div.table-block span.image-title {
+    display: block;
 }
 
 /**
@@ -369,8 +374,6 @@ ol.bullet-lower-roman { list-style-type: lower-roman; }
 ol.bullet-upper-roman { list-style-type: upper-roman; }
 ol.bullet-decimal { list-style-type: decimal; }
 
-/**
- * Figures
- */
+
  
-div.figure span.title { display: block; }
+ 
