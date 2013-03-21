@@ -20,7 +20,7 @@
 
 // Location of Erudit source XML
 // @todo plugin configuration setting?
-define ('ERUDIT_SOURCE_DIR', '/etcdata/journals/etc_journals');
+define ('ERUDIT_SOURCE_DIR', '/mnt/journals/etc_journals');
 
 class OAIMetadataFormat_Erudit extends OAIMetadataFormat {
 
