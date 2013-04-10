@@ -16,13 +16,13 @@
 ########################################################################
 
   # define a path to a generic style sheet if none is provided
-  XSLT_SHEET=/etcdata/etcdev_www/ojs-dev/etcscripts/render/erudit-to-html.xsl;
+  XSLT_SHEET=/var/opt/ojs-extras/etcscripts/render/erudit-to-html.xsl;
   
   # define our path to our java binary
   JAVA=/usr/bin/java;
 
   # define our path to our Saxon JAR file
-  SAXON9=/usr/local/saxon/saxon9.jar;
+  SAXON9=/usr/share/java/saxon8.jar;
 
   #define default directory for XML
   XML_DIR=.;

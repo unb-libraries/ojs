@@ -1,0 +1,74 @@
+#!/usr/bin/perl -w
+
+use strict;
+use DBI;
+
+my $dbh = DBI->connect("DBI:mysql:db","user","password");
+
+local $/ = undef;
+
+my $filename = $ARGV[0];
+my ($dir, $base) = $filename =~ m{^(.*/)([^/]+)\.xml$};
+my $htmlname = $dbh->quote($base . ".%");
+
+my $query = " select file_id, original_file_name FROM article_files where original_file_name LIKE " . $htmlname;
+my $stmt = $dbh->prepare($query);
+
+if ($stmt) {
+    my $result = $stmt->execute();
+
+    if ($result) {
+
+        if ($stmt->rows() == 0) {
+            print "Unable to find a file_id for $htmlname ... skipping! \n";
+            exit(0);
+        }
+
+        my %links = ();
+
+	while (my $ref = $stmt->fetchrow_hashref())  {
+
+            my $file_id            = $$ref{'file_id'};
+            my $original_file_name = $$ref{'original_file_name'};
+
+            if (defined($file_id) && $file_id ne "") {
+
+                $query = "SELECT path, journals.journal_id, articles.article_id, galley_id FROM article_galleys, articles, journals WHERE file_id = $file_id 
+                          AND article_galleys.article_id = articles.article_id AND journals.journal_id = articles.journal_id";
+                my $path_stmt = $dbh->prepare($query);
+
+                if ($path_stmt) {
+       
+                    my $path_result = $path_stmt->execute();
+                    if ($path_result) {
+
+                        my $path_ref = $path_stmt->fetchrow_hashref();
+                        my $article_id = $$path_ref{'article_id'};
+                        my $galley_id  = $$path_ref{'galley_id'};
+                        my $path       = $$path_ref{'path'};
+
+                        if ($original_file_name =~ /\.html$/i) {
+                            $links{'htm'} = "http://journals.hil.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
+                        } elsif ($original_file_name =~ /\.pdf$/i)  {
+                            $links{'pdf'} = "http://journals.hil.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
+                        }
+                    }
+                }
+            }
+        } # end of while loop
+
+
+        open my $f_handle, ">:utf8", $dir . $base . "Fiche.xml";
+        print $f_handle "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<article>\n";
+
+	foreach (sort (keys %links)) {
+            print $f_handle "<$_>" . $links{$_} . "</$_>\n";
+        }
+
+        print $f_handle "</article>";
+	close $f_handle;
+
+    }
+}
+
+

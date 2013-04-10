@@ -1,4 +1,4 @@
-#!/usr/local/bin/php
+#!/usr/bin/php
 <?php
 /**
  @todo: describe me
@@ -1169,7 +1169,7 @@ if (file_exists($issue_dir .'/'. OJS_IMPORT_FILE)) {
   // the only date/time function used in the script
   date_default_timezone_set('America/Halifax');
   
-  $backup_file = OJS_IMPORT_FILE .'-'. date('Y-m-d-H-i-s');
+  $backup_file = OJS_IMPORT_FILE .'-'. date('Y-m-d-H:i:s');
   copy($issue_dir .'/'. OJS_IMPORT_FILE, $issue_dir .'/'. $backup_file);
 }
 

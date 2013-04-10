@@ -7,7 +7,6 @@
     this.block.className = 'block';
     
     // the HTML we're interested in
-    //var submissionsTable = document.getElementById('submissions').getElementsByTagName('table')[0];
     var listingTables = [];
     var regexp = new RegExp('\\b' + 'listing' + '\\b');
     var allTables = document.getElementsByTagName('body')[0].getElementsByTagName('table');
@@ -19,8 +18,6 @@
 
     var submissionsTable = listingTables[0];
 
-    // check existence of table
-    
     // push article IDs onto array
     var articleIds = new Array();
     
@@ -50,7 +47,7 @@
     var widget = new Widget(widgetId);
     document.getElementById('rightSidebar').insertBefore(widget.block, document.getElementById('sidebarUser'));
   }
-
+  
   main();
 })();
 
