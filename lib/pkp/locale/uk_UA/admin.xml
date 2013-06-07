@@ -4,14 +4,13 @@
 <!--
   * locale/uk_UA/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the uk_UA (Ukrainian) locale.
   *
   * Translated by Denys Solovianenko, 2011
   * V. I. Vernadsky National Library of Ukraine
-  * $Id$
   -->
 
 <locale name="uk_UA" full_name = "Ukrainian">
@@ -41,7 +40,6 @@
 	<message key="admin.languages.reload">Перезавантажити локалізацію</message>
 	<message key="admin.languages.uninstall">Демонтувати локалізацію</message>
 	<message key="admin.phpInfo">Розширена інформація про PHP</message>
-	<message key="admin.saveSystemConfig">Записати конфігурацію</message>
 	<message key="admin.server.apacheVersion">Версія Apache</message>
 	<message key="admin.server.dbDriver">Драйвер бази даних</message>
 	<message key="admin.server.dbVersion">Версія серверу баз даних</message>
@@ -84,4 +82,7 @@
 	<message key="admin.version.updateAvailable">Доступна оновлена версія</message>
 	<message key="admin.version.upToDate">Ваша система використовує поточну версію</message>
 	<message key="admin.version">Версія</message>
+	<message key="admin.settings">Налаштування</message>
+	<message key="admin.settings.siteTheme">Тема сайту</message>
+	<message key="admin.siteSetup">Налаштування сайту</message>
 </locale>

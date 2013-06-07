@@ -3,7 +3,7 @@
 /**
  * @file classes/oai/ojs/OAIDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIDAO
@@ -13,15 +13,10 @@
  * @brief DAO operations for the OJS OAI interface.
  */
 
-// $Id$
-
-
-import('lib.pkp.classes.oai.OAI');
+import('lib.pkp.classes.oai.PKPOAIDAO');
 import('classes.issue.Issue');
 
-class OAIDAO extends DAO {
- 	/** @var $oai JournalOAI parent OAI object */
- 	var $oai;
+class OAIDAO extends PKPOAIDAO {
 
  	/** Helper DAOs */
  	var $journalDao;
@@ -35,12 +30,13 @@ class OAIDAO extends DAO {
 
  	var $journalCache;
 	var $sectionCache;
+	var $issueCache;
 
  	/**
 	 * Constructor.
 	 */
 	function OAIDAO() {
-		parent::DAO();
+		parent::PKPOAIDAO();
 		$this->journalDao =& DAORegistry::getDAO('JournalDAO');
 		$this->sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$this->publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
@@ -55,243 +51,10 @@ class OAIDAO extends DAO {
 	}
 
 	/**
-	 * Set parent OAI object.
-	 * @param JournalOAI
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::getEarliestDatestamp()
 	 */
-	function setOAI(&$oai) {
-		$this->oai = $oai;
-	}
-
-	//
-	// Records
-	//
-
-	/**
-	 * Return the *nix timestamp of the earliest published article.
-	 * @param $journalId int optional
-	 * @return int
-	 */
-	function getEarliestDatestamp($journalId = null) {
-		$result =& $this->retrieve(
-			'SELECT	MIN(a.last_modified)
-			FROM	published_articles pa,
-				articles a,
-				issues i,
-				journals j
-			WHERE	pa.issue_id = i.issue_id AND
-				i.published = 1 AND
-				a.article_id = pa.article_id AND
-				i.journal_id = j.journal_id AND
-				j.enabled = 1'
-			. (isset($journalId) ? ' AND j.journal_id = ?' : ''),
-
-			isset($journalId) ? ((int) $journalId) : false
-		);
-
-		if (isset($result->fields[0])) {
-			$timestamp = strtotime($this->datetimeFromDB($result->fields[0]));
-		}
-		if (!isset($timestamp) || $timestamp == -1) {
-			$timestamp = 0;
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $timestamp;
-	}
-
-	/**
-	 * Check if an article ID specifies a published article.
-	 * @param $articleId int
-	 * @param $journalId int optional
-	 * @return boolean
-	 */
-	function recordExists($articleId, $journalId = null) {
-		$result =& $this->retrieve(
-			'SELECT	COUNT(*)
-			FROM	published_articles pa,
-				issues i,
-				journals j
-			WHERE	pa.issue_id = i.issue_id AND
-				i.published = 1 AND
-				i.journal_id = j.journal_id AND
-				j.enabled = 1 AND
-				pa.article_id = ?'
-			. (isset($journalId) ? ' AND j.journal_id = ?' : ''),
-
-			isset($journalId) ? array((int) $articleId, (int) $journalId) : ((int) $articleId)
-		);
-
-		$returner = $result->fields[0] == 1;
-
-		$result->Close();
-		unset($result);
-
-		return $returner;
-	}
-
-	/**
-	 * Return OAI record for specified article.
-	 * @param $articleId int
-	 * @param $journalId int optional
-	 * @return OAIRecord
-	 */
-	function &getRecord($articleId, $journalId = null) {
-		$result =& $this->retrieve(
-			'SELECT	pa.*,
-				a.last_modified,
-				a.article_id,
-				i.issue_id,
-				j.journal_id,
-				s.section_id
-			FROM	published_articles pa,
-				issues i,
-				journals j,
-				articles a,
-				sections s
-			WHERE	pa.article_id = a.article_id
-				AND s.section_id = a.section_id
-				AND j.journal_id = a.journal_id
-				AND j.enabled = 1
-				AND pa.issue_id = i.issue_id
-				AND i.published = 1
-				AND pa.article_id = ?'
-			. (isset($journalId) ? ' AND a.journal_id = ?' : ''),
-			isset($journalId) ? array((int) $articleId, (int) $journalId) : ((int) $articleId)
-		);
-
-		$returner = null;
-		if ($result->RecordCount() != 0) {
-			$row =& $result->GetRowAssoc(false);
-			$returner =& $this->_returnRecordFromRow($row);
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $returner;
-	}
-
-	/**
-	 * Return set of OAI records matching specified parameters.
-	 * @param $journalId int
-	 * @param $sectionId int
-	 * @parma $from int timestamp
-	 * @parma $until int timestamp
-	 * @param $offset int
-	 * @param $limit int
-	 * @param $total int
-	 * @return array OAIRecord
-	 */
-	function &getRecords($journalId, $sectionId, $from, $until, $offset, $limit, &$total) {
-		$records = array();
-
-		$params = array();
-		if (isset($journalId)) {
-			array_push($params, (int) $journalId);
-		}
-		if (isset($sectionId)) {
-			array_push($params, (int) $sectionId);
-		}
-		$result =& $this->retrieve(
-			'SELECT	pa.*,
-				a.last_modified,
-				a.article_id,
-				j.journal_id,
-				s.section_id,
-				i.issue_id
-			FROM	published_articles pa,
-				issues i,
-				journals j,
-				articles a,
-				sections s
-			WHERE	pa.article_id = a.article_id
-				AND s.section_id = a.section_id
-				AND j.journal_id = a.journal_id
-				AND j.enabled = 1
-				AND pa.issue_id = i.issue_id
-				AND i.published = 1'
-				. (isset($journalId) ? ' AND a.journal_id = ?' : '')
-				. (isset($sectionId) ? ' AND a.section_id = ?' : '')
-				. (isset($from) ? ' AND a.last_modified >= ' . $this->datetimeToDB($from) : '')
-				. (isset($until) ? ' AND a.last_modified <= ' . $this->datetimeToDB($until) : '')
-				. ' ORDER BY journal_id',
-			$params
-		);
-
-		$total = $result->RecordCount();
-
-		$result->Move($offset);
-		for ($count = 0; $count < $limit && !$result->EOF; $count++) {
-			$row =& $result->GetRowAssoc(false);
-			$records[] =& $this->_returnRecordFromRow($row);
-			$result->moveNext();
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $records;
-	}
-
-	/**
-	 * Return set of OAI identifiers matching specified parameters.
-	 * @param $journalId int
-	 * @param $sectionId int
-	 * @parma $from int timestamp
-	 * @parma $until int timestamp
-	 * @param $offset int
-	 * @param $limit int
-	 * @param $total int
-	 * @return array OAIIdentifier
-	 */
-	function &getIdentifiers($journalId, $sectionId, $from, $until, $offset, $limit, &$total) {
-		$records = array();
-
-		$params = array();
-		if (isset($journalId)) {
-			array_push($params, (int) $journalId);
-		}
-		if (isset($sectionId)) {
-			array_push($params, (int) $sectionId);
-		}
-		$result =& $this->retrieve(
-			'SELECT	pa.article_id,
-				a.last_modified,
-				j.journal_id,
-				s.section_id
-			FROM	published_articles pa,
-				issues i,
-				journals j,
-				articles a,
-				sections s
-			WHERE	pa.article_id = a.article_id
-				AND s.section_id = a.section_id
-				AND j.journal_id = a.journal_id
-				AND j.enabled = 1
-				AND pa.issue_id = i.issue_id AND i.published = 1'
-				. (isset($journalId) ? ' AND a.journal_id = ?' : '')
-				. (isset($sectionId) ? ' AND a.section_id = ?' : '')
-				. (isset($from) ? ' AND a.last_modified >= ' . $this->datetimeToDB($from) : '')
-				. (isset($until) ? ' AND a.last_modified <= ' . $this->datetimeToDB($until) : '')
-				. ' ORDER BY journal_id',
-			$params
-		);
-
-		$total = $result->RecordCount();
-
-		$result->Move($offset);
-		for ($count = 0; $count < $limit && !$result->EOF; $count++) {
-			$row =& $result->GetRowAssoc(false);
-			$records[] =& $this->_returnIdentifierFromRow($row);
-			$result->moveNext();
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $records;
+	function getEarliestDatestamp($setIds = array()) {
+		return parent::getEarliestDatestamp('SELECT	MIN(COALESCE(dot.date_deleted, a.last_modified))', $setIds);
 	}
 
 	/**
@@ -301,7 +64,7 @@ class OAIDAO extends DAO {
 	 */
 	function &getJournal($journalId) {
 		if (!isset($this->journalCache[$journalId])) {
-			$this->journalCache[$journalId] =& $this->journalDao->getJournal($journalId);
+			$this->journalCache[$journalId] =& $this->journalDao->getById($journalId);
 		}
 		return $this->journalCache[$journalId];
 	}
@@ -331,128 +94,9 @@ class OAIDAO extends DAO {
 	}
 
 
-	/**
-	 * Return OAIRecord object from database row.
-	 * @param $row array
-	 * @return OAIRecord
-	 */
-	function &_returnRecordFromRow(&$row) {
-		$record = new OAIRecord();
-
-		$articleId = $row['article_id'];
-
-		$publishedArticle =& $this->publishedArticleDao->getPublishedArticleByArticleId($articleId);
-		$journal =& $this->getJournal($row['journal_id']);
-		$section =& $this->getSection($row['section_id']);
-		$issue =& $this->getIssue($row['issue_id']);
-		$galleys =& $this->articleGalleyDao->getGalleysByArticle($articleId);
-
-		$record->setData('article', $publishedArticle);
-		$record->setData('journal', $journal);
-		$record->setData('section', $section);
-		$record->setData('issue', $issue);
-		$record->setData('galleys', $galleys);
-
-		$record->identifier = $this->oai->articleIdToIdentifier($row['article_id']);
-		$record->datestamp = OAIUtils::UTCDate(strtotime($this->datetimeFromDB($row['last_modified'])));
-		$record->sets = array($journal->getPath() . ':' . $section->getLocalizedAbbrev());
-
-		HookRegistry::call('OAIDAO::_returnRecordFromRow', array(&$record, &$row));
-		
-		return $record;
-	}
-
-	/**
-	 * Return OAIIdentifier object from database row.
-	 * @param $row array
-	 * @return OAIIdentifier
-	 */
-	function &_returnIdentifierFromRow(&$row) {
-		$journal =& $this->getJournal($row['journal_id']);
-		$section =& $this->getSection($row['section_id']);
-
-		$record = new OAIRecord();
-
-		$record->identifier = $this->oai->articleIdToIdentifier($row['article_id']);
-		$record->datestamp = OAIUtils::UTCDate(strtotime($this->datetimeFromDB($row['last_modified'])));
-		$record->sets = array($journal->getPath() . ':' . $section->getLocalizedAbbrev());
-
-		HookRegistry::call('OAIDAO::_returnIdentifierFromRow', array(&$record, &$row));
-		
-		return $record;
-	}
-
-
-	//
-	// Resumption tokens
-	//
-
-	/**
-	 * Clear stale resumption tokens.
-	 */
-	function clearTokens() {
-		$this->update(
-			'DELETE FROM oai_resumption_tokens WHERE expire < ?', time()
-		);
-	}
-
-	/**
-	 * Retrieve a resumption token.
-	 * @return OAIResumptionToken
-	 */
-	function &getToken($tokenId) {
-		$result =& $this->retrieve(
-			'SELECT * FROM oai_resumption_tokens WHERE token = ?',
-			array($tokenId)
-		);
-
-		if ($result->RecordCount() == 0) {
-			$token = null;
-
-		} else {
-			$row =& $result->getRowAssoc(false);
-			$token = new OAIResumptionToken($row['token'], $row['record_offset'], unserialize($row['params']), $row['expire']);
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $token;
-	}
-
-	/**
-	 * Insert an OAI resumption token, generating a new ID.
-	 * @param $token OAIResumptionToken
-	 * @return OAIResumptionToken
-	 */
-	function &insertToken(&$token) {
-		do {
-			// Generate unique token ID
-			$token->id = md5(uniqid(mt_rand(), true));
-			$result =& $this->retrieve(
-				'SELECT COUNT(*) FROM oai_resumption_tokens WHERE token = ?',
-				array($token->id)
-			);
-			$val = $result->fields[0];
-
-			$result->Close();
-			unset($result);
-		} while($val != 0);
-
-		$this->update(
-			'INSERT INTO oai_resumption_tokens (token, record_offset, params, expire)
-			VALUES
-			(?, ?, ?, ?)',
-			array($token->id, $token->offset, serialize($token->params), $token->expire)
-		);
-
-		return $token;
-	}
-
 	//
 	// Sets
 	//
-
 	/**
 	 * Return hierarchy of OAI sets (journals plus journal sections).
 	 * @param $journalId int
@@ -460,9 +104,9 @@ class OAIDAO extends DAO {
 	 * @param $total int
 	 * @return array OAISet
 	 */
-	function &getJournalSets($journalId, $offset, &$total) {
+	function &getJournalSets($journalId, $offset, $limit, &$total) {
 		if (isset($journalId)) {
-			$journals = array($this->journalDao->getJournal($journalId));
+			$journals = array($this->journalDao->getById($journalId));
 		} else {
 			$journals =& $this->journalDao->getJournals();
 			$journals =& $journals->toArray();
@@ -475,15 +119,25 @@ class OAIDAO extends DAO {
 			$abbrev = $journal->getPath();
 			array_push($sets, new OAISet(urlencode($abbrev), $title, ''));
 
+			$tombstoneDao =& DAORegistry::getDAO('DataObjectTombstoneDAO');
+			$articleTombstoneSets = $tombstoneDao->getSets(ASSOC_TYPE_JOURNAL, $journal->getId());
+
 			$sections =& $this->sectionDao->getJournalSections($journal->getId());
 			foreach ($sections->toArray() as $section) {
+				if (array_key_exists(urlencode($abbrev) . ':' . urlencode($section->getLocalizedAbbrev()), $articleTombstoneSets)) {
+					unset($articleTombstoneSets[urlencode($abbrev) . ':' . urlencode($section->getLocalizedAbbrev())]);
+				}
 				array_push($sets, new OAISet(urlencode($abbrev) . ':' . urlencode($section->getLocalizedAbbrev()), $section->getLocalizedTitle(), ''));
+			}
+			foreach ($articleTombstoneSets as $articleTombstoneSetSpec => $articleTombstoneSetName) {
+				array_push($sets, new OAISet($articleTombstoneSetSpec, $articleTombstoneSetName, ''));
 			}
 		}
 
-		if ($offset != 0) {
-			$sets = array_slice($sets, $offset);
-		}
+		HookRegistry::call('OAIDAO::getJournalSets', array(&$this, $journalId, $offset, $limit, $total, &$sets));
+
+		$total = count($sets);
+		$sets = array_slice($sets, $offset, $limit);
 
 		return $sets;
 	}
@@ -516,6 +170,84 @@ class OAIDAO extends DAO {
 		}
 
 		return array($journalId, $sectionId);
+	}
+
+	//
+	// Protected methods.
+	//
+	/**
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::getRecordSelectStatement()
+	 */
+	function getRecordSelectStatement() {
+		return 'SELECT	COALESCE(dot.date_deleted, a.last_modified) AS last_modified,
+			COALESCE(a.article_id, dot.data_object_id) AS article_id,
+			COALESCE(j.journal_id, tsoj.assoc_id) AS journal_id,
+			COALESCE(tsos.assoc_id, s.section_id) AS section_id,
+			i.issue_id,
+			dot.tombstone_id,
+			dot.set_spec,
+			dot.oai_identifier';
+	}
+
+	/**
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::getRecordJoinClause()
+	 */
+	function getRecordJoinClause($articleId = null, $setIds = array(), $set = null) {
+		if (isset($setIds[1])) {
+			list($journalId, $sectionId) = $setIds;
+		} else {
+			list($journalId) = $setIds;
+		}
+		return 'LEFT JOIN published_articles pa ON (m.i=0' . (isset($articleId) ? ' AND pa.article_id = ?' : '') . ')
+			LEFT JOIN articles a ON (a.article_id = pa.article_id' . (isset($journalId) ? ' AND a.journal_id = ?' : '') . (isset($sectionId) ? ' AND a.section_id = ?' : '') .')
+			LEFT JOIN issues i ON (i.issue_id = pa.issue_id)
+			LEFT JOIN sections s ON (s.section_id = a.section_id)
+			LEFT JOIN journals j ON (j.journal_id = a.journal_id)
+			LEFT JOIN data_object_tombstones dot ON (m.i = 1' . (isset($articleId) ? ' AND dot.data_object_id = ?' : '') . (isset($set) ? ' AND dot.set_spec = ?' : '') .')
+			LEFT JOIN data_object_tombstone_oai_set_objects tsoj ON ' . (isset($journalId) ? '(tsoj.tombstone_id = dot.tombstone_id AND tsoj.assoc_type = ' . ASSOC_TYPE_JOURNAL . ' AND tsoj.assoc_id = ?)' : 'tsoj.assoc_id = null') .
+			' LEFT JOIN data_object_tombstone_oai_set_objects tsos ON ' . (isset($sectionId) ? '(tsos.tombstone_id = dot.tombstone_id AND tsos.assoc_type = ' . ASSOC_TYPE_SECTION . ' AND tsos.assoc_id = ?)' : 'tsos.assoc_id = null');
+	}
+
+	/**
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::getAccessibleRecordWhereClause()
+	 */
+	function getAccessibleRecordWhereClause() {
+		return 'WHERE ((s.section_id IS NOT NULL AND i.published = 1 AND j.enabled = 1 AND a.status <> ' . STATUS_ARCHIVED . ') OR dot.data_object_id IS NOT NULL)';
+	}
+
+	/**
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::getDateRangeWhereClause()
+	 */
+	function getDateRangeWhereClause($from, $until) {
+		return (isset($from) ? ' AND ((dot.date_deleted IS NOT NULL AND dot.date_deleted >= '. $this->datetimeToDB($from) .') OR (dot.date_deleted IS NULL AND a.last_modified >= ' . $this->datetimeToDB($from) .'))' : '')
+			. (isset($until) ? ' AND ((dot.date_deleted IS NOT NULL AND dot.date_deleted <= ' .$this->datetimeToDB($until) .') OR (dot.date_deleted IS NULL AND a.last_modified <= ' . $this->datetimeToDB($until) .'))' : '')
+			. ' ORDER BY journal_id';
+	}
+
+	/**
+	 * @see lib/pkp/classes/oai/PKPOAIDAO::setOAIData()
+	 */
+	function &setOAIData(&$record, &$row, $isRecord = true) {
+		$journal =& $this->getJournal($row['journal_id']);
+		$section =& $this->getSection($row['section_id']);
+		$articleId = $row['article_id'];
+
+		$record->identifier = $this->oai->articleIdToIdentifier($articleId);
+		$record->sets = array(urlencode($journal->getPath()) . ':' . urlencode($section->getLocalizedAbbrev()));
+
+		if ($isRecord) {
+			$publishedArticle =& $this->publishedArticleDao->getPublishedArticleByArticleId($articleId);
+			$issue =& $this->getIssue($row['issue_id']);
+			$galleys =& $this->articleGalleyDao->getGalleysByArticle($articleId);
+
+			$record->setData('article', $publishedArticle);
+			$record->setData('journal', $journal);
+			$record->setData('section', $section);
+			$record->setData('issue', $issue);
+			$record->setData('galleys', $galleys);
+		}
+
+		return $record;
 	}
 }
 

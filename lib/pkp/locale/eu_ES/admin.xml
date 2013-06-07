@@ -4,12 +4,11 @@
 <!--
   * locale/eu_ES/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Basque (Euskara)) locale.
   *
-  * $Id$
   -->
 
 <locale name="eu_ES" full_name = "Basque (Euskara)">
@@ -81,4 +80,7 @@
 	<message key="admin.version.updateAvailable">Bertsio eguneratu bat erabilgarri dago</message>
 	<message key="admin.version.upToDate">Zure sistema eguneratuta dago</message>
 	<message key="admin.version">Bertsioa</message>
+	<message key="admin.settings">Ezarpenak</message>
+	<message key="admin.settings.siteTheme">Gunearen gaia</message>
+	<message key="admin.siteSetup">Gunearen konfigurazioa</message>
 </locale>

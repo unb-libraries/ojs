@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
+
 <!--
-  * ojs2-devel/locale/fa_IR/author.xml
+  * locale/fa_IR/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
+
 <locale name="fa_IR" full_name = "Persian">
 	<message key="author.submit">ساب میشن جدید</message>
 	<message key="author.track">ساب میشن های جاری</message>
@@ -30,7 +31,7 @@
 	<message key="author.submit.cancelSubmission">میتوانید این ساب میشن را در وقتی دیگر کامل کنید. برای این کار به صفحه خانگی نویسنده رفته و ساب میشن های جاری را انتخاب کنید</message>
 	<message key="author.submit.notAccepting">این مجله در حال حاضر ساب میشن نمی پذیرد</message>
 	<message key="author.submit.requestWaiver">درخواست تخفیف</message>
-	<message key="author.submit.qualityForWaiver">لطفا درخواست تخفیف برای این مقاله را در نظر بگیرید</message>
+	<message key="author.submit.qualifyForWaiver">لطفا درخواست تخفیف برای این مقاله را در نظر بگیرید</message>
 	<message key="author.submit.addReasonsForWaiver">لطفا در قسمت زیر توضیح دهید که چرا میبایست به شما تخفیف دهیم</message>
 	<message key="author.submissions.uploadCopyeditedVersion">آپلود نسخه ویرایش شده</message>
 	<message key="author.submissions.proofreadingCorrections">اصلاحات پک نهائی</message>
@@ -56,8 +57,6 @@
 	<message key="author.submit.addAuthor">افزودن نویسنده</message>
 	<message key="author.submit.deleteAuthor">حذف نویسنده</message>
 	<message key="author.submit.submissionIndexingDescription">واژه هائی برای اندکس مقاله، فاصله لغات سمی کولون بگذارید. مانند واژه۱;واژه۲;واژه۲</message>
-	<message key="author.submit.submissionSupportingAgencies">آژانس های حمایت کننده</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">نام آژانس هائی که حمایت مادی و غیر مادی از این اثر نموده اند را در این قسمت وارد کنید.</message>
 	<message key="author.submit.coverageInstructions">منظور پوشش جغرافیائی تاریخی یا زمانی است ویا نشان دهنده نمونه مورد تحقیق است.</message>
 	<message key="author.submit.subjectClassInstructions">از لینک سیستم طبقه بنده برای انتخاب واژه های طبقه بندی ویا اعداد مترادف آنها استفاده کنید.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[English=en; French=fr; Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/langcodes.html" target="_blank">کدهای دیگر</a>.]]></message>

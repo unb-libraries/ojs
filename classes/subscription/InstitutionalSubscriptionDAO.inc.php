@@ -3,7 +3,7 @@
 /**
  * @file classes/subscription/InstitutionalSubscriptionDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InstitutionalSubscriptionDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying InstitutionalSubscription objects.
  */
-
-// $Id$
 
 import('classes.subscription.SubscriptionDAO');
 import('classes.subscription.InstitutionalSubscription');
@@ -543,6 +541,31 @@ class InstitutionalSubscriptionDAO extends SubscriptionDAO {
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnSubscriptionFromRow');
+
+		return $returner;
+	}
+
+	/**
+	 * Retrieve all institutional subscription contacts.
+	 * @return object DAOResultFactory containing Users
+	 */
+	function &getSubscribedUsers($journalId, $rangeInfo = null) {
+		$result =& $this->retrieveRange(
+			'SELECT	u.*
+			FROM	subscriptions s,
+				subscription_types st,
+				users u
+			WHERE	s.type_id = st.type_id AND
+				st.institutional = 1 AND
+				s.user_id = u.user_id AND
+				s.journal_id = ?
+			ORDER BY u.last_name ASC, s.subscription_id',
+			array((int) $journalId),
+			$rangeInfo
+		);
+
+		$userDao =& DAORegistry::getDAO('UserDAO');
+		$returner = new DAOResultFactory($result, $userDao, '_returnUserFromRow');
 
 		return $returner;
 	}

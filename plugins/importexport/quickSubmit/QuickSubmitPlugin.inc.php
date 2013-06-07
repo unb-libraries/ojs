@@ -3,7 +3,7 @@
 /**
  * @file plugins/importexport/quickSubmit/QuickSubmitPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class QuickSubmitPlugin
@@ -46,20 +46,20 @@ class QuickSubmitPlugin extends ImportExportPlugin {
 		return __('plugins.importexport.quickSubmit.description');
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_AUTHOR, LOCALE_COMPONENT_OJS_EDITOR, LOCALE_COMPONENT_PKP_SUBMISSION));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_AUTHOR, LOCALE_COMPONENT_OJS_EDITOR, LOCALE_COMPONENT_PKP_SUBMISSION);
 		$this->setBreadcrumbs();
 
 		if (array_shift($args) == 'saveSubmit') {
-			$this->saveSubmit($args);
+			$this->saveSubmit($args, $request);
 		} else {
 			$this->import('QuickSubmitForm');
 			if (checkPhpVersion('5.0.0')) { // WARNING: This form needs $this in constructor
-				$form = new QuickSubmitForm($this);
+				$form = new QuickSubmitForm($this, $request);
 			} else {
-				$form =& new QuickSubmitForm($this);
+				$form =& new QuickSubmitForm($this, $request);
 			}
 			if ($form->isLocaleResubmit()) {
 				$form->readInputData();
@@ -74,24 +74,24 @@ class QuickSubmitPlugin extends ImportExportPlugin {
 	 * Save the submitted form
 	 * @param $args array
 	 */
-	function saveSubmit($args) {
+	function saveSubmit($args, $request) {
 		$templateMgr =& TemplateManager::getManager();
 
 		$this->import('QuickSubmitForm');
 		if (checkPhpVersion('5.0.0')) { // WARNING: This form needs $this in constructor
-			$form = new QuickSubmitForm($this);
+			$form = new QuickSubmitForm($this, $request);
 		} else {
-			$form =& new QuickSubmitForm($this);
+			$form =& new QuickSubmitForm($this, $request);
 		}
 		$form->readInputData();
 		$formLocale = $form->getFormLocale();
 
-		if (Request::getUserVar('addAuthor')) {
+		if ($request->getUserVar('addAuthor')) {
 			$editData = true;
 			$authors = $form->getData('authors');
 			$authors[] = array();
 			$form->setData('authors', $authors);
-		} else if (($delAuthor = Request::getUserVar('delAuthor')) && count($delAuthor) == 1) {
+		} else if (($delAuthor = $request->getUserVar('delAuthor')) && count($delAuthor) == 1) {
 			$editData = true;
 			list($delAuthor) = array_keys($delAuthor);
 			$delAuthor = (int) $delAuthor;
@@ -107,11 +107,11 @@ class QuickSubmitPlugin extends ImportExportPlugin {
 			if ($form->getData('primaryContact') == $delAuthor) {
 				$form->setData('primaryContact', 0);
 			}
-		} else if (Request::getUserVar('moveAuthor')) {
+		} else if ($request->getUserVar('moveAuthor')) {
 			$editData = true;
-			$moveAuthorDir = Request::getUserVar('moveAuthorDir');
+			$moveAuthorDir = $request->getUserVar('moveAuthorDir');
 			$moveAuthorDir = $moveAuthorDir == 'u' ? 'u' : 'd';
-			$moveAuthorIndex = (int) Request::getUserVar('moveAuthorIndex');
+			$moveAuthorIndex = (int) $request->getUserVar('moveAuthorIndex');
 			$authors = $form->getData('authors');
 
 			if (!(($moveAuthorDir == 'u' && $moveAuthorIndex <= 0) || ($moveAuthorDir == 'd' && $moveAuthorIndex >= count($authors) - 1))) {
@@ -136,16 +136,16 @@ class QuickSubmitPlugin extends ImportExportPlugin {
 				}
 			}
 			$form->setData('authors', $authors);
-		} else if (Request::getUserVar('uploadSubmissionFile')) {
+		} else if ($request->getUserVar('uploadSubmissionFile')) {
 			$editData = true;
 			$tempFileId = $form->getData('tempFileId');
 			$tempFileId[$formLocale] = $form->uploadSubmissionFile('submissionFile');
 			$form->setData('tempFileId', $tempFileId);
 		}
 
-		if (Request::getUserVar('createAnother') && $form->validate()) {
+		if ($request->getUserVar('createAnother') && $form->validate()) {
 			$form->execute();
-			Request::redirect(null, 'manager', 'importexport', array('plugin', $this->getName()));
+			$request->redirect(null, 'manager', 'importexport', array('plugin', $this->getName()));
 		} else if (!isset($editData) && $form->validate()) {
 			$form->execute();
 			$templateMgr->display($this->getTemplatePath() . 'submitSuccess.tpl');

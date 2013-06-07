@@ -4,12 +4,11 @@
 <!--
   * locale/pt_BR/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português (Brasil)) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_BR" full_name = "Português (Brasil)">
@@ -113,7 +112,6 @@
 	<message key="common.notAvailable">Indisponível</message>
 	<message key="common.note">Nota</message>
 	<message key="common.notes">Notas</message>
-	<message key="common.notify">Notificar</message>
 	<message key="common.off">Desativado</message>
 	<message key="common.on">Ativado</message>
 	<message key="common.options">Opções</message>
@@ -257,9 +255,9 @@
 	<message key="search.matchAll">Encontrar em todas as categorias</message>
 	<message key="search.noKeywordError">Informe pelo menos um termo para pesquisa.</message>
 	<message key="search.noResults">Nenhum resultado encontrado</message>
-	<message key="search.operator.and">E</message>
-	<message key="search.operator.not">NÃO</message>
-	<message key="search.operator.or">OU</message>
+	<message key="search.operator.and">and</message>
+	<message key="search.operator.not">not</message>
+	<message key="search.operator.or">or</message>
 	<message key="search.reviseSearch">Alterar parâmetros</message>
 	<message key="search.searchAllCategories">Pesquisar termo em todas as categorias</message>
 	<message key="search.searchCategories">Pesquisar nas categorias</message>
@@ -269,15 +267,15 @@
 	<message key="search.title">Título</message>
 	<message key="search.typeMethodApproach">Tipo (método/foco)</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Licença Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
-		<br/>Este trabalho está licenciado sob uma <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Licença Creative Commons Attribution 3.0 </a>.]]></message>
+		<br/>Este trabalho está licenciado sob uma <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Licença Creative Commons Attribution 3.0 </a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Licença Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Licença Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Este trabalho está licenciado sob uma <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Licença Creative Commons Attribution 3.0</a>.
+		Este trabalho está licenciado sob uma <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Licença Creative Commons Attribution 3.0</a>.
 	</div>]]></message>
 	<message key="common.re">Re:</message>
 	<message key="common.manage">Gerenciar</message>
@@ -309,7 +307,6 @@
 	<message key="notification.reminderError">Ocorreu um erro ao enviar a senha. Verifique se o endereço de e-mail informado está correto.</message>
 	<message key="notification.reminderSent">Uma nova senha foi enviada ao endereço de e-mail informado.</message>
 	<message key="notification.unsubscribe">Cancelar assinatura de notificações</message>
-	<message key="notification.unsubscribeDescription">Informe seu endereço de e-mail e senha a seguir para cancelar o recebimento de notificações via e-mail. Caso não se lembre da senha, deixe o campo em branco para que uma nova senha senha enviada.</message>
 	<message key="notification.unsubscribeError">Ocorreu um erro ao tentar cancelar a assinatura. Verifique se o endereço de e-mail e senha estão corretos.</message>
 	<message key="notification.unsubscribeSuccess">Cancelamento de assinatura de notificações realizado com sucesso.</message>
 	<message key="common.uploadFailed">Não foi possível enviar o arquivo. Por favor, tente novamente ou entre em contato com o administrador se o problema persistir.</message>
@@ -317,7 +314,6 @@
 	<message key="common.ok">ok</message>
 	<message key="common.true">Verdadeiro</message>
 	<message key="navigation.dashboard">Painel de Controle</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Você não pertence a este grupo de usuários.</message>
 	<message key="common.disable">Desabilitar</message>
 	<message key="common.enable">Habilitar</message>
 	<message key="common.fullscreen">Tela cheia</message>
@@ -326,4 +322,48 @@
 	<message key="common.pluginDisabled">O Plugin "{$pluginName}" foi desabilitado.</message>
 	<message key="common.refresh">Atualizar</message>
 	<message key="common.loading">Carregando ...</message>
+	<message key="announcement.postedOn">Postado em {$postDate}</message>
+	<message key="common.accepted">Aceito</message>
+	<message key="common.titleSmallWords">da um o e um ou nem mas é se então senão quando na de por ligado desligado para em fora sobre ao dentro com</message>
+	<message key="common.warning">Aviso</message>
+	<message key="common.confirm">Confirmar</message>
+	<message key="common.content">Conteúdo</message>
+	<message key="common.declined">Rejeitado</message>
+	<message key="common.finish">Concluir</message>
+	<message key="common.go">Ir</message>
+	<message key="common.less">Menos</message>
+	<message key="common.billingAddress">Endereço de cobrança (caso seja diferente)</message>
+	<message key="common.more">Mais</message>
+	<message key="common.noMatches">nenhuma correspondência</message>
+	<message key="common.overdue">Atrasado</message>
+	<message key="common.reminder">Lembrete</message>
+	<message key="common.remote">Remoto</message>
+	<message key="common.remoteURL">URL remoto</message>
+	<message key="common.signoff">Autorizar</message>
+	<message key="common.element">Elemento</message>
+	<message key="common.unread">Não lido</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Este servidor permite uma envio de arquivo de no máximo {$fileSize}.  Caso necessário, entre em contato com <a href="mailto:{$supportEmail}">{$supportName}</a> para auxílio.]]></message>
+	<message key="common.invalidFileType">Nenhum arquivo enviado ou tipo de arquivo inválido!</message>
+	<message key="common.plugins">Plugins</message>
+	<message key="email.subjectRequired">Informe o assunto da mensagem.</message>
+	<message key="email.bodyRequired">Informe o texto da mensagem.</message>
+	<message key="form.confirmSubmit">Deseja realmente enviar este formulário?</message>
+	<message key="form.confirmSubmit.title">Confirmar</message>
+	<message key="form.emailRequired">Um endereço de email é obrigatório.</message>
+	<message key="form.dataHasChanged">Os dados deste formulário foram alterados. Continuar assim mesmo?</message>
+	<message key="form.invalidImage">Uma imagem inválida foi enviada. Formatos aceitos são .png, .gif, ou .jpg.</message>
+	<message key="help.toggleInlineHelpOn">Desabilitar ajuda</message>
+	<message key="help.toggleInlineHelpOff">Habilitar ajuda</message>
+	<message key="navigation.website">Website</message>
+	<message key="navigation.access"><![CDATA[Usuários &amp; Papéis]]></message>
+	<message key="navigation.admin">Administração</message>
+	<message key="navigation.browseByAuthor">por Autor</message>
+	<message key="navigation.data">Dados</message>
+	<message key="navigation.publicMenu">Menu público</message>
+	<message key="navigation.settings">Configurações</message>
+	<message key="navigation.setup">Configurar</message>
+	<message key="navigation.sitemap">Mapa do site</message>
+	<message key="navigation.submissions">Submissões</message>
+	<message key="navigation.system">Sistema</message>
+	<message key="navigation.userManagement">Gerenciamento de usuários</message>
 </locale>

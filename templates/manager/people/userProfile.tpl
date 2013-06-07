@@ -1,12 +1,11 @@
 {**
- * userProfile.tpl
+ * templates/manager/people/userProfile.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display user profile.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="manager.people"}

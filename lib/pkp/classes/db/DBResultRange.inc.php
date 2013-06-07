@@ -3,7 +3,7 @@
 /**
  * @file classes/db/DBResultRange.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DBResultRange
@@ -11,8 +11,6 @@
  *
  * @brief Container class for range information when retrieving a result set.
  */
-
-// $Id$
 
 
 class DBResultRange {

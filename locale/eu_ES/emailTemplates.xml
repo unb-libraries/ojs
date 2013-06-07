@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE email_texts SYSTEM "../../lib/pkp/dtd/emailTemplateData.dtd">
+
 <!--
-  * emailTemplateData.xml
+  * locale/eu_ES/emailTemplateData.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
   *
-  * $Id$
   -->
+
 <email_texts locale="eu_ES">
 	<email_text key="PASSWORD_RESET_CONFIRM">
 		<subject>Pasahitza berrezartzeko berrespena</subject>
@@ -146,7 +147,7 @@ Galderaren bat baduzu, jar zaitez harremanetan nirekin. Eskerrik asko zure lana 
 	<email_text key="SUBMISSION_DECISION_REVIEWERS">
 		<subject>“{$articleTitle}” artikuluari buruzko erabakia</subject>
 		<body>{$journalName} aldizkariko “{$articleTitle}” artikuluaren ebaluatzaileetako bat zarenez, egileari bidali diogun ebaluazioa eta erabakia bidaltzen dizkizut. Berriro ere eskerrak eman nahi dizkizugu prozesu honi egin diozun ekarpen garrantzitsuagatik.
- 
+
 {$editorialContactSignature}
 
 {$comments}</body>
@@ -156,7 +157,7 @@ Galderaren bat baduzu, jar zaitez harremanetan nirekin. Eskerrik asko zure lana 
 		<subject>Editore-lana esleitzea</subject>
 		<body>{$editorialContactName}:
 
-{$journalName} aldizkariko “{$articleTitle}” artikulua esleitu dizugu prozesu editorialean eraman dezazun, Ataleko editore gisa.  
+{$journalName} aldizkariko “{$articleTitle}” artikulua esleitu dizugu prozesu editorialean eraman dezazun, Ataleko editore gisa.
 
 Artikuluaren URLa: {$submissionUrl}
 Erabiltzaile-izena: {$editorUsername}
@@ -345,7 +346,7 @@ Mesedez, berrets iezaguzu aldizkariarentzat biziki garrantzitsua den lan hori bu
 1. Egin klik behean, Artikuluaren URLan.
 2. Sartu aldizkarian eta egin klik 1. urratsean agertzen den Fitxategian.
 3. Irakurri Zuzenketak egiteko webgunean jarrita dauden instrukzioak.
-4. Ireki deskargatutako fitxategia eta zuzendu, Egile-kontsultak gehituz behar izanez gero. 
+4. Ireki deskargatutako fitxategia eta zuzendu, Egile-kontsultak gehituz behar izanez gero.
 5. Gorde zuzendutako fitxategia, eta kargatu Zuzenketako 1. urratsean.
 6. Bidali BUKATU duzula adierazteko mezua editoreari.
 
@@ -363,8 +364,8 @@ Erabiltzaile-izena: {$copyeditorUsername}
 {$journalName} aldizkarirako "{$articleTitle}" artikuluaren zuzenketa eginda dago. Proposatutako aldaketak ikusteko eta Egile-kontsultei erantzuteko, jarraitu urrats hauei mesedez:
 
 1. Sartu aldizkarian beheko URLaren bidez zure erabiltzaile-izenarekin eta pasahitzarekin (ahaztu bazaizu, erabili horretarako dagoen esteka).
-2. Egin klik "1. Lehenengo zuzenketa" azpiko Fitxategian, zuzendutako bertsioa deskargatu eta irekitzeko. 
-3. Berrikusi zuzenketak, egin aldaketak Word-en "Aldaketen kontrola" (Track Changes; Control de cambios) erabiliz, eta erantzun kontsultei. 
+2. Egin klik "1. Lehenengo zuzenketa" azpiko Fitxategian, zuzendutako bertsioa deskargatu eta irekitzeko.
+3. Berrikusi zuzenketak, egin aldaketak Word-en "Aldaketen kontrola" (Track Changes; Control de cambios) erabiliz, eta erantzun kontsultei.
 4. Gorde fitxategia mahaigainean eta kargatu "2. Egilearen zuzenketa" puntuan.
 5. Egin klik BUKATUTAren azpiko mezu-ikonoan, eta bidali mezua editoreari.
 
@@ -490,7 +491,7 @@ Orain ezin badiozu lan honi heldu, edo galderaren bat egin nahi badiguzu, jar za
 		<subject>Galeradak eginda</subject>
 		<body>{$editorialContactName}:
 
-{$journalName} aldizkarirako "{$articleTitle}" eskuizkribuaren galeradak eginda daude, proba-zuzenketa hasteko prest. 
+{$journalName} aldizkarirako "{$articleTitle}" eskuizkribuaren galeradak eginda daude, proba-zuzenketa hasteko prest.
 
 Galderaren bat baduzu, jar zaitez harremanetan nirekin, mesedez.
 
@@ -621,8 +622,8 @@ Eskerrik asko {$journalName} aldizkarirako "{$articleTitle}" eskuizkribuaren pro
 	</email_text>
 	<email_text key="EMAIL_LINK">
 		<subject>Interesgarria izan litekeen artikulu bat</subject>
-		<body>Artikulu hau zuretzat interesgarria izango dela uste dut: 
-Titulua: {$articleTitle} 
+		<body>Artikulu hau zuretzat interesgarria izango dela uste dut:
+Titulua: {$articleTitle}
 Egilea: {$authorName}
 Aldizkaria: {$journalName} bol: {$volume} zk: {$number} ({$year})
 URLa: {$articleUrl}</body>
@@ -734,7 +735,7 @@ Jakinarazpen-mezu gehiago jaso nahi ez baduzu, joan {$unsubscribeLink} orrira et
 	<email_text key="NOTIFICATION_MAILLIST_WELCOME">
 		<subject>Ongi etorri {$siteTitle} posta-zerrendara!</subject>
 		<body>{$siteTitle} gunearen jakinarazpenak jasotzeko izena eman duzu.
-			
+
 Egin klik esteka honetan zure eskaera berresteko eta zure helbide elektronikoa posta-zerrendan gehitzeko: {$confirmLink}
 
 Jakinarazpen-mezu gehiago jaso nahi ez baduzu, joan {$unsubscribeLink} orrira eta sartu zure helbide elektronikoa eta pasahitza.
@@ -743,15 +744,6 @@ Hau da jakinarazpen-mezuak desgaitzeko zure pasahitza: {$password}
 
 {$principalContactSignature}</body>
 		<description>Mezu hau jakinarazpenen posta-zerrendako erabiltzaile erregistratu berriei bidaltzen zaie.</description>
-	</email_text>
-	<email_text key="NOTIFICATION_MAILLIST_PASSWORD">
-		<subject>{$siteTitle} jakinarazpenen posta-zerrendari buruzko informazioa</subject>
-		<body>Hau da jakinarazpen-mezuak desgaitzeko zure pasahitz berria: {$password}
-
-Jakinarazpen-mezu gehiago jaso nahi ez baduzu, joan {$unsubscribeLink} orrira eta sartu zure helbide elektronikoa eta pasahitza.
-
-{$principalContactSignature}</body>
-		<description>Jakinarazpenen posta-zerrendako erabiltzaile erregistratu gabeei bidaltzen zaie mezu hau, pasahitza ahaztu dutela edo sartu ezinda dabiltzala adierazten dutenean. Pasahitza berrezartzeko URL bat ematen du.</description>
 	</email_text>
 	<email_text key="EDITOR_DECISION_ACCEPT">
 		<subject>Editorearen erabakia</subject>
@@ -894,7 +886,7 @@ Harpidetza URLa: {$subscriptionUrl}</body>
 Mesedez, egiaztatu edo emango al zeniguke zure {$articleTitle} artikuluan agertzen den aipu egokia honako erreferentzia honetarako?
 
 
-{$rawCitation} 
+{$rawCitation}
 
 
 Eskerrik asko!
@@ -903,5 +895,154 @@ Eskerrik asko!
 {$userFirstName}
 Zuzentzailea, {$journalName}</body>
 		<description>Mezu elektroniko honekin zuzentzaileek erreferentziei buruzko informazio osagarria eskatzen diete egileei.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_SUBSEQUENT">
+		<subject>Artikulua berrikusteko eskakizuna</subject>
+		<body>{$reviewerName}:
+
+Hau "{$articleTitle}," eskuizkribuari dagokio, {$journalName} aldizkariak aintzat hartu duena.
+
+Eskuizkribuaren aurreko bertsioaren berrikuspenari jarraituz, egileek orain haien lanaren bertsio berrikusi bat bidali dute. Eskertuko genuke ebaluatzen lagunduko bazenu.
+
+Mesedez, sartu aldizkariaren web orrian {$weekLaterDate} datarako, adierazteko berrikuspenaz arduratuko zaren edo ez, baita bidalitakora sartzeko eta zure berrikuspena eta gomendioa grabatzeko ere. Web gunea da: {$journalUrl}
+
+Berrikuspenaren epemuga: {$reviewDueDate}.
+
+Ez baduzu erabiltzailerik eta pasahitzik aldizkariaren web orrirako, lotura hau erabil dezakezu zure pasahitza berrezartzeko (eta posta elektronikoz bidaliko zaizu ondoren, zure erabiltzailearekin batera). {$passwordResetUrl}
+
+URL aurkezpena: {$submissionReviewUrl}
+
+Mila esker eskari hau kontuan hartzeagatik.
+
+{$editorialContactSignature}
+
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Atalen Editoreak Berrikusleari bidalitako mezu honetan berrikusleari eskatzen dio bidalitakoaren bigarren edo hurrengo berrikuspen bat onartu edo baztertu dezala. Bidalitakoari buruzko informazioa ematen du, besteak beste, titulua eta aurkezpena, berrikuspena egiteko muga, eta nola sartu bidalitakora.  Mezu hau erabiltzen da Aldizkariaren Konfigurazioan, 2. urratsean Berrikuspen Estandarraren Prozesua hautatzen denean. (Bestela, ikus BERRIKUSPENA_ESKAKIZUNA_ERANTSIA_ONDORENGOA.)</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_ONECLICK_SUBSEQUENT">
+		<subject>Artikulua berrikusteko eskakizuna</subject>
+		<body>{$reviewerName}:
+
+Hau "{$articleTitle}," eskuizkribuari dagokio, {$journalName} aldizkariak aintzat hartu duena.
+
+Eskuizkribuaren aurreko bertsioaren berrikuspenari jarraituz, egileek orain haien lanaren bertsio berrikusi bat bidali dute. Eskertuko genuke ebaluatzen lagunduko bazenu.
+
+Mesedez, sartu aldizkariaren web orrian {$weekLaterDate} datarako, adierazteko berrikuspenaz arduratuko zaren edo ez, baita bidalitakora sartzeko eta zure berrikuspena eta gomendioa grabatzeko ere.
+
+Berrikuspenaren epemuga: {$reviewDueDate}.
+
+URL aurkezpena: {$submissionReviewUrl}
+
+Mila esker eskari hau kontuan hartzeagatik.
+
+{$editorialContactSignature}
+
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Atalen Editoreak Berrikusleari bidalitako mezu honetan berrikusleari eskatzen dio bidalitakoaren bigarren edo hurrengo berrikuspen bat onartu edo baztertu dezala. Bidalitakoari buruzko informazioa ematen du, besteak beste, titulua eta aurkezpena, berrikuspena egiteko muga, eta nola sartu bidalitakora.  Mezu hau erabiltzen da Aldizkariaren Konfigurazioan, 2. urratsean Berrikuspen Estandarraren Prozesua hautatzen denean, eta klik bateko berrikuslearentzako sarbidea gaituko da.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_ATTACHED_SUBSEQUENT">
+		<subject>Artikulua berrikusteko eskakizuna</subject>
+		<body>{$reviewerName}:
+
+Hau "{$articleTitle}," eskuizkribuari dagokio, {$journalName} aldizkariak aintzat hartu duena.
+
+Eskuizkribuaren aurreko bertsioaren berrikuspenari jarraituz, egileek orain haien lanaren bertsio berrikusi bat bidali dute. Eskertuko genuke ebaluatzen lagunduko bazenu.
+
+Aldizkari honetarako Berrikuspen Gidalerroak behean erantsita daude, eta mezuak bidalketa bat du erantsia. Bidalketaren berrikuspena, zure gomendioarekin batera, bidali niri posta elektronikoz {$reviewDueDate} datarako.
+
+Mesedez, adierazi mezu baten bidez {$weekLaterDate} datarako berrikuspena egiteko gai izango zaren eta egingo duzun.
+
+Mila esker eskari hau kontuan hartzeagatik.
+
+{$editorialContactSignature}
+
+
+
+Berrikusi gidalerroak
+
+{$reviewGuidelines}</body>
+		<description>Atalen Editoreak Berrikusleari bidalitako mezu honetan berrikusleari eskatzen dio bidalitakoaren bigarren edo hurrengo berrikuspen bat onartu edo baztertu dezala. Bidalitakoari buruzko informazioa ematen du, besteak beste, titulua eta aurkezpena, berrikuspena egiteko muga, eta nola sartu bidalitakora.  Mezu hau erabiltzen da Aldizkariaren Konfigurazioan, 2. urratsean, Berrikuspen Prozesuaren Mezu Erantsia hautatzen denean. (Bestela, ikus BERRIKUSPENA_ESKAKIZUNA_ONDORENGOA.)</description>
+	</email_text>
+	<email_text key="GIFT_AVAILABLE">
+		<subject>{$giftNoteTitle}</subject>
+		<body>{$recipientFirstName} agurgarria:
+
+{$buyerFullName} jaun-andreak opari bat partekatu nahi luke zurekin hemen: {$giftJournalName}:
+
+{$giftDetails}
+
+
+{$giftNote}
+
+
+Jarraipenezko mezu bat jasoko duzu erregistratzeko xehetasunekin eta zure oparia trukatzeko argibideekin.
+
+Opariaz gozatuko duzulakoan gaude!
+
+{$giftContactSignature}</body>
+		<description>Mezu honek jakinarazten dio oparia hartzaileari opari bat erosi dela eta trukerako eskuragarri dagoela.</description>
+	</email_text>
+	<email_text key="GIFT_USER_REGISTER">
+		<subject>Trukatu zure oparia: erregistratzeko xehetasunak</subject>
+		<body>{$recipientFirstName} agurgarria:
+
+{$buyerFullName} jaun-andreak opari bat partekatu nahi luke zurekin hemen: {$giftJournalName}:
+
+{$giftDetails}
+
+
+Zure oparia trukatzeko, mesedez, erregistratu webgunearen aldizkarian hemen: 
+{$giftUrl}
+
+Erabiltzailea: {$username}
+Pasahitza: {$password}
+
+Behin erregistratu ondoren, pasahitza alda dezakezu noiznahi.
+
+Opariaz gozatuko duzulakoan gaude!
+
+{$giftContactSignature}</body>
+		<description>Mezu honek jakinarazten dizkio hartzaileari kontu berri batean erregistratzeko xehetasunak</description>
+	</email_text>
+	<email_text key="GIFT_USER_LOGIN">
+		<subject>Trukatu zure oparia: erregistratzeko xehetasunak</subject>
+		<body>{$recipientFirstName} agurgarria:
+
+{$buyerFullName} jaun-andreak opari bat partekatu nahi luke zurekin hemen: {$giftJournalName}:
+
+{$giftDetails}
+
+
+{$giftNote}
+
+Zure oparia trukatzeko, mesedez, erregistratu aldizkariaren webgunean, hemen: {$giftUrl}
+
+Erabiltzailea: {$username}
+
+Opariaz gozatuko duzulakoan gaude!
+
+{$giftContactSignature}</body>
+		<description>Mezu honek jakinarazten dizkio opari hartzaileari erregistratzeko xehetasunak</description>
+	</email_text>
+	<email_text key="REVISED_VERSION_NOTIFY">
+		<subject>Bertsio errebisatua gora kargatu da</subject>
+		<body>{$editorialContactName}:
+
+"{$articleTitle}" artikuluaren bertsio berrikusia gora kargatu du {$authorName} egileak.
+
+URL aurkezpena: {$submissionUrl}
+
+{$editorialContactSignature}</body>
+		<description>Mezu hau automatikoki bidaltzen zaio dagokion editoreari, egileak artikulu baten bertsio berrikusia gora kargatzen duenean.</description>
 	</email_text>
 </email_texts>

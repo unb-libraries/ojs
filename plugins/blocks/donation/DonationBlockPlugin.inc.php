@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file DonationBlockPlugin.inc.php
+ * @file plugins/blocks/donation/DonationBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DonationBlockPlugin
@@ -66,14 +66,17 @@ class DonationBlockPlugin extends BlockPlugin {
 		return __('plugins.block.user.description');
 	}
 
-	function getContents(&$templateMgr) {
-		$journal =& Request::getJournal();
+	/**
+	 * @see BlockPlugin::getContents
+	 */
+	function getContents(&$templateMgr, $request) {
+		$journal =& $request->getJournal();
 		if (!$journal) return '';
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 		$templateMgr->assign('donationEnabled', $paymentManager->donationEnabled());
 
-		return parent::getContents($templateMgr);
+		return parent::getContents($templateMgr, $request);
 	}
 }
 

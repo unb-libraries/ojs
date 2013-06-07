@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ControlledVocabEntryDAO.inc.php
+ * @file classes/controlledVocab/ControlledVocabEntryDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ControlledVocabEntryDAO
@@ -16,6 +16,13 @@
 import('lib.pkp.classes.controlledVocab.ControlledVocabEntry');
 
 class ControlledVocabEntryDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function ControlledVocabEntryDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve a controlled vocab entry by controlled vocab entry ID.
 	 * @param $controlledVocabEntryId int
@@ -57,8 +64,12 @@ class ControlledVocabEntryDAO extends DAO {
 			 FROM controlled_vocabs cv
 			 INNER JOIN controlled_vocab_entries cve ON cv.controlled_vocab_id = cve.controlled_vocab_id
 			 INNER JOIN controlled_vocab_entry_settings cves ON cve.controlled_vocab_entry_id = cves.controlled_vocab_entry_id
-			 WHERE cves.setting_name = ? and cves.locale = ? AND cves.setting_value = ?
-			       AND cv.symbolic = ? AND cv.assoc_type = ? AND cv.assoc_id = ?',
+			 WHERE	cves.setting_name = ? AND
+				cves.locale = ? AND
+				cves.setting_value = ? AND
+				cv.symbolic = ? AND
+				cv.assoc_type = ? AND
+				cv.assoc_id = ?',
 			array($settingName, $locale, $settingValue, $symbolic, $assocType, $assocId)
 		);
 
@@ -220,7 +231,7 @@ class ControlledVocabEntryDAO extends DAO {
 			$result->MoveNext();
 		}
 
-		$result->close();
+		$result->Close();
 		unset($result);
 	}
 

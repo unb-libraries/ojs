@@ -3,7 +3,7 @@
 /**
  * @file classes/session/SessionManager.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SessionManager
@@ -11,8 +11,6 @@
  *
  * @brief Implements PHP methods for a custom session storage handler (see http://php.net/session).
  */
-
-// $Id$
 
 
 class SessionManager {
@@ -71,7 +69,7 @@ class SessionManager {
 			}
 
 			// Create new session
-			$this->userSession = new Session();
+			$this->userSession = $this->sessionDao->newDataObject();
 			$this->userSession->setId($sessionId);
 			$this->userSession->setIpAddress($ip);
 			$this->userSession->setUserAgent($userAgent);

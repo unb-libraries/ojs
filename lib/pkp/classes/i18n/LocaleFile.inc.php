@@ -3,7 +3,7 @@
 /**
  * @file classes/i18n/LocaleFile.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LocaleFile
@@ -11,8 +11,6 @@
  *
  * @brief Abstraction of a locale file
  */
-
-// $Id$
 
 
 class LocaleFile {
@@ -78,8 +76,8 @@ class LocaleFile {
 	 * Substitution works by replacing tokens like "{$foo}" with the value of
 	 * the parameter named "foo" (if supplied).
 	 * @param $key string
-	 * @params $params array named substitution parameters
-	 * @params $locale string the locale to use
+	 * @param $params array named substitution parameters
+	 * @param $locale string the locale to use
 	 * @return string
 	 */
 	function translate($key, $params = array(), $locale = null) {
@@ -156,11 +154,17 @@ class LocaleFile {
 			LOCALE_ERROR_MISSING_FILE => array()
 		);
 
-		if (!$this->isValid()) {
-			$errors[LOCALE_ERROR_MISSING_FILE][] = array(
-				'locale' => $this->locale,
-				'filename' => $this->filename
-			);
+		if ($referenceLocaleFile->isValid()) {
+			if (!$this->isValid()) {
+				$errors[LOCALE_ERROR_MISSING_FILE][] = array(
+					'locale' => $this->locale,
+					'filename' => $this->filename
+				);
+				return $errors;
+			}
+		} else {
+			// If the reference file itself does not exist or is invalid then
+			// there's nothing to be translated here.
 			return $errors;
 		}
 

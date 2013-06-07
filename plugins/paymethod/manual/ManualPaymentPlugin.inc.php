@@ -3,34 +3,49 @@
 /**
  * @file plugins/paymethod/manual/ManualPaymentPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ManualPaymentPlugin
  * @ingroup plugins_paymethod_manual
  *
  * @brief Manual payment plugin class
- *
  */
-
-//$Id$
 
 import('classes.plugins.PaymethodPlugin');
 
 class ManualPaymentPlugin extends PaymethodPlugin {
+	/**
+	 * Constructor
+	 */
+	function ManualPaymentPlugin() {
+		parent::PaymethodPlugin();
+	}
 
+	/**
+	 * @see Plugin::getName
+	 */
 	function getName() {
 		return 'ManualPayment';
 	}
 
+	/**
+	 * @see Plugin::getDisplayName
+	 */
 	function getDisplayName() {
 		return __('plugins.paymethod.manual.displayName');
 	}
 
+	/**
+	 * @see Plugin::getDescription
+	 */
 	function getDescription() {
 		return __('plugins.paymethod.manual.description');
 	}
 
+	/**
+	 * @see Plugin::register
+	 */
 	function register($category, $path) {
 		if (parent::register($category, $path)) {
 			$this->addLocaleData();
@@ -39,10 +54,16 @@ class ManualPaymentPlugin extends PaymethodPlugin {
 		return false;
 	}
 
+	/**
+	 * @see PaymentPlugin::getSettingsFormFieldNames
+	 */
 	function getSettingsFormFieldNames() {
 		return array('manualInstructions');
 	}
 
+	/**
+	 * @see PaymentPlugin::isConfigured
+	 */
 	function isConfigured() {
 		$journal =& Request::getJournal();
 		if (!$journal) return false;
@@ -56,10 +77,13 @@ class ManualPaymentPlugin extends PaymethodPlugin {
 		return true;
 	}
 
-	function displayPaymentForm($queuedPaymentId, &$queuedPayment) {
+	/**
+	 * @see PaymentPlugin::displayPaymentForm
+	 */
+	function displayPaymentForm($queuedPaymentId, &$queuedPayment, &$request) {
 		if (!$this->isConfigured()) return false;
-		$journal =& Request::getJournal();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+		$journal =& $request->getJournal();
+		AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 		$templateMgr =& TemplateManager::getManager();
 		$user =& Request::getUser();
 
@@ -73,28 +97,31 @@ class ManualPaymentPlugin extends PaymethodPlugin {
 		$templateMgr->assign('queuedPaymentId', $queuedPaymentId);
 
 		$templateMgr->display($this->getTemplatePath() . 'paymentForm.tpl');
+		return true;
 	}
 
 	/**
 	 * Handle incoming requests/notifications
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function handle($args) {
-		$journal =& Request::getJournal();
+	function handle($args, &$request) {
+		$journal =& $request->getJournal();
 		$templateMgr =& TemplateManager::getManager();
-		$user =& Request::getUser();
+		$user =& $request->getUser();
 		$op = isset($args[0])?$args[0]:null;
 		$queuedPaymentId = isset($args[1])?((int) $args[1]):0;
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$ojsPaymentManager =& OJSPaymentManager::getManager();
+		$ojsPaymentManager = new OJSPaymentManager($request);
 		$queuedPayment =& $ojsPaymentManager->getQueuedPayment($queuedPaymentId);
 		// if the queued payment doesn't exist, redirect away from payments
-		if ( !$queuedPayment ) Request::redirect(null, 'index');
+		if (!$queuedPayment) $request->redirect(null, 'index');
 
-		switch ( $op ) {
+		switch ($op) {
 			case 'notify':
 				import('classes.mail.MailTemplate');
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+				AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 				$contactName = $journal->getSetting('contactName');
 				$contactEmail = $journal->getSetting('contactEmail');
 				$mail = new MailTemplate('MANUAL_PAYMENT_NOTIFICATION');
@@ -111,7 +138,7 @@ class ManualPaymentPlugin extends PaymethodPlugin {
 				$mail->send();
 
 				$templateMgr->assign(array(
-					'currentUrl' => Request::url(null, null, 'payment', 'plugin', array('notify', $queuedPaymentId)),
+					'currentUrl' => $request->url(null, null, 'payment', 'plugin', array('notify', $queuedPaymentId)),
 					'pageTitle' => 'plugins.paymethod.manual.paymentNotification',
 					'message' => 'plugins.paymethod.manual.notificationSent',
 					'backLink' => $queuedPayment->getRequestUrl(),
@@ -119,15 +146,20 @@ class ManualPaymentPlugin extends PaymethodPlugin {
 				));
 				$templateMgr->display('common/message.tpl');
 				exit();
-				break;
 		}
-		parent::handle($args); // Don't know what to do with it
+		parent::handle($args, $request); // Don't know what to do with it
 	}
 
+	/**
+	 * @see Plugin::getInstallEmailTemplatesFile
+	 */
 	function getInstallEmailTemplatesFile() {
 		return ($this->getPluginPath() . DIRECTORY_SEPARATOR . 'emailTemplates.xml');
 	}
 
+	/**
+	 * @see Plugin::getInstallEmailTemplateDataFile
+	 */
 	function getInstallEmailTemplateDataFile() {
 		return ($this->getPluginPath() . '/locale/{$installedLocale}/emailTemplates.xml');
 	}

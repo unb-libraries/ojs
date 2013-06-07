@@ -2,7 +2,7 @@
 /**
  * @file classes/handler/HandlerValidatorPolicy.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class HandlerValidator
@@ -36,6 +36,8 @@ class HandlerValidatorPolicy extends HandlerValidator {
 	function isValid() {
 		// Delegate to the AuthorizationPolicy
 		if (!$this->_policy->applies()) return false;
+		// Pass the authorized context to the police.
+		$this->_policy->setAuthorizedContext($this->handler->getAuthorizedContext());
 		if ($this->_policy->effect() == AUTHORIZATION_DENY) {
 			return false;
 		} else {

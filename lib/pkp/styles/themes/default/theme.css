@@ -1,117 +1,273 @@
+/**
+ * @file styles/themes/default/theme.css
+ *
+ * Copyright (c) 2000-2013 John Willinsky
+ * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
+ *
+ * OMP default theme
+ */
+
 /* @group Imports */
 
-/*
-@font-face {
-  font-family: 'Museo Sans';
-  src: url(MuseoSans_500.eot);
-  src: local('Museo Sans 500'), local('Museo Sans'), 
-         url(MuseoSans_500.otf) format('opentype');
-}
-*/
-
 @import url("superfish.css");
-
-@import url("wufoo.css");
-
-@import url("pnotify.css");
+@import url("notificationIcons.css");
 
 /* @end */
 
 /* @group Structure Overrides */
 
-.head {
-	background-color: #efefef;
+.pkp_structure_head {
+	background-color: #a2c6dc;
 }
 
-.super_navigation {
-	background-color: #666;
+.pkp_structure_body {
+	border-bottom: 1px dotted #999;
+	margin-bottom: 3px;
+	min-height: 400px;
 }
 
-.masthead {
-	background-color: #ccc;
+.pkp_structure_footer {
+	background-color: #c1bbaf;
 }
 
-.navigation {
-	background-color: #999;
+.pkp_structure_masthead {
+	background-color: #fff;
 }
 
-.foot {
-	background-color: #efefef;
-	color: #999;
-}
-
-.main {
-}
-
-.toolbox {
+.pkp_structure_head_siteNav {
+	border-color: #B9D5E3;
 }
 
 /* @end */
 
 /* @group Content Overrides */
 
-h1, .h1
-{
+body {
 	color: #333;
 }
 
-h2, .h2
-{
-	color: #666;
+a {
+	color: #569bbe;
 }
 
-.installation_navigation a, .user_navigation a
-{
+a:hover {
+	color: #E17009;
+}
+
+h1, .h1, h1 a, h1 a:hover {
+	color: #333;
+}
+
+h1 a {
+	text-decoration:none;	
+}
+
+h2, .h2 {
+	color: #555;
+	font-family: Georgia;
+}
+
+h3, .h3 {
+	color: #231f20;
+	text-transform: uppercase;
+	font-family: "Courier New", Courier, mono;
+}
+
+h4, .h4 {
+	color: #555;
+	text-transform: uppercase;
+	font-family: "Courier New", Courier, mono;
+}
+
+.pkp_structure_head_siteNav a {
 	color: #fff;
-}
-
-.footer_navigation a{
-	color: #666;
 }
 
 /* @group Grid */
 
-div.grid div.wrapper {
-	border: 1px solid #b6c9d5;
-	background-color: #efefef;
+.pkp_controllers_grid a {
+	color: #569bbe;
 }
 
-div.grid table {
+div.pkp_controllers_grid table {
 	background-color: #fff;
-	border: 1px solid #b6c9d5;
-	border-collapse: collapse; /* Required for IE7 to remove table borders. */
 }
 
-div.grid tr.alternate_row, div.grid tr.alternate_row .row_file {
-	background-color: #f5f5f5;
+div.pkp_controllers_grid tr.alternate_row, div.pkp_controllers_grid tr.alternate_row .row_file {
+	background-color: #f8f8f8;
 }
 
-div.grid th {
-	color: #20538d;
-	background-color: #ced7e1;
+div.pkp_controllers_grid th {
+	color: #000000;
 }
 
-div.grid .my_role {
-	border: 2px solid #ccc;
+div.pkp_controllers_grid .my_role {
+	border: 1px solid #ACA9A6;
 }
 
-div.grid tr.category td {
-	background-color: #e3ecea;
-	color: #627b81;
+div.pkp_controllers_grid .row_actions {
+	background-color: #f9f6f3;
 }
 
-a.task:hover
-{
-	background-color: #efefef;
+div.pkp_controllers_grid .default_category_style td {
+	background-color: #f3f8fa !important;
 }
 
-.ui-widget {
-	font-size: .9em;
+div.pkp_controllers_grid .default_category_style .row_actions {
+	background-color: transparent;
+}
+
+a.task:hover {
+	background-color: #F2EEE9;
 }
 
 /* @end */
 
-/* @end */
+/* @group jQuery UI */
+
+/* General */
+
+.ui-widget-content a {
+	color: #569bbe;
+}
+
+.ui-widget-content a:hover {
+	color: #E17009;
+}
+
+.ui-tabs {
+	background: none !important;
+}
+
+.ui-tabs-nav {
+	border: 0;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.ui-widget-content {
+	font-size: 100%;
+}
+
+/* Accordian */
+
+.ui-accordion, .ui-accordion-header, .ui-accordion-content, .ui-accordion-content-active {
+	border: 0 !important;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.ui-accordion-header {
+	border-bottom: 1px dotted #999;
+	color: #569bbe;
+	background: none !important;
+	text-transform: uppercase;
+	font: 100% "Courier New", Courier, mono;
+	font-weight: normal !important;
+
+}
+
+.ui-accordion-content {
+	font-size: 100%;
+}
+
+.ui-accordion-content-active {
+	border-bottom: 1px dotted #999;
+}
+
+/* Tabs */
+.ui-tabs {
+	border: 0;
+}
+
+.ui-tabs-nav {
+	border: 0;
+	border-bottom: 1px solid #999;
+	background-image: none;
+	background-color: transparent;
+	font: 100% "Courier New", Courier, mono;
+	text-transform: uppercase;
+}
+
+.ui-tabs-nav .ui-state-default {
+	background-color: #fff;
+	background-image: none;
+	color: #569bbe;
+	border-color: transparent;
+	font-weight: normal;
+	border-radius: 0px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+}
+
+.ui-state-active a, .ui-state-active a:link, .ui-state-active a:visited {
+	color:black;
+}
+
+.ui-tabs-nav .ui-state-hover a {
+	color: #E17009;
+}
+
+.ui-tabs-nav .ui-state-active {
+	border-color: #999;
+	font-weight: normal;
+}
+
+.ui-tabs-nav .ui-state-active a {
+	margin-top: 1px;
+	margin-bottom: -1px;
+}
+
+/* Button */
+
+.buy_now {
+	color: #fff;
+	background-color: #6c9348;
+	background-image: none;
+	border: 0;
+	line-height: 90%;
+}
 
 
+/* Dialog */
 
+.ui-dialog {
+
+}
+
+.ui-dialog-titlebar {
+	display: none;
+}
+
+.ui-dialog-custom-titlebar {
+	padding:0.5em 1em 0.3em;
+	position:relative;
+}
+
+
+/* Select elements */
+
+.selectBox-dropdown {
+	background-image: none !important;
+	background-color: white !important;
+	line-height: 1em !important;
+	height: 19px;
+	box-shadow: none !important;
+	color: #333 !important;
+}
+
+.selectBox-dropdown:hover {
+	color: #333 !important
+}
+
+.selectBox-dropdown .selectBox-arrow {
+	background: url("../../../templates/images/structure/select-arrow-down.png") no-repeat scroll 50% center transparent !important;
+	border-left: none !important;
+	width: 20px !important;
+}
+
+/*
+
+@end */

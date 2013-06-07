@@ -4,12 +4,11 @@
 <!--
   * ../pkp//locale/es_AR/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
   *
-  * $Id$
   -->
 
 <locale name="es_AR" full_name = "Español (Argentina)">
@@ -157,7 +156,6 @@
 	<message key="submission.submitter">Remitente</message>
 	<message key="submission.summary">Resumen</message>
 	<message key="submission.supplementaryFiles">Archivos suplementarios</message>
-	<message key="submission.supportingAgencies">Entidades organizadoras</message>
 	<message key="submission.titleAndAbstract">Título y Resumen</message>
 	<message key="submission.underway">En marcha</message>
 	<message key="submission.uploadFileTo">Subir el archivo en</message>
@@ -166,7 +164,7 @@
 	<message key="submission.layout.galleyLanguageRequired">Un lenguaje de galera es requerido.</message>
 	<message key="submission.layout.galleyLocaleRequired">Una configuración regional para la galerada es requerida</message>
 	<message key="submission.citations">Referencias</message>
-	<message key="submission.citations.jQueryRequired"><![CDATA[La edicion de citas requiere que jQuery esté habilitado. Por favor diríjase a la <a target="_new" href="{$genericPluginsUrl}"> página de plugins genéricos </a> y habilite el plugin de jQuery allí]]></message>
+	<message key="submission.citations.jQueryRequired"><![CDATA[La edicion de citas requiere que jQuery esté habilitado. Por favor diríjase a la <a target="_blank" href="{$genericPluginsUrl}"> página de plugins genéricos </a> y habilite el plugin de jQuery allí]]></message>
 	<message key="submission.citations.editor.citationlist.title">Editar Citaciones</message>
 	<message key="submission.citations.grid.importCitations">Importar Citaciones</message>
 	<message key="submission.citations.grid.parseCitation">Parsear</message>

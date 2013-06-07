@@ -1,12 +1,11 @@
 {**
- * index.tpl
+ * templates/user/index.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User index.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="user.userHome"}
@@ -129,10 +128,14 @@
 			<tr>
 				<td>&#187; <a href="{url journal=$journalPath page="author"}">{translate key="user.role.author"}</a></td>
 				<td></td>
-				<td></td>
 				<td>{if $authorSubmissionsCount[0]}
 						<a href="{url journal=$journalPath page="author"}">{$authorSubmissionsCount[0]} {translate key="common.queue.short.active"}</a>
 					{else}<span class="disabled">0 {translate key="common.queue.short.active"}</span>{/if}
+				</td>
+				{* This is for all non-pending items*}
+				<td>{if $authorSubmissionsCount[1]}
+						<a href="{url journal=$journalPath path="completed" page="author"}">{$authorSubmissionsCount[1]} {translate key="common.queue.short.completed"}</a>
+					{else}<span class="disabled">0 {translate key="common.queue.short.completed"}</span>{/if}
 				</td>
 				<td align="right">[<a href="{url journal=$journalPath page="author" op="submit"}">{translate key="author.submit"}</a>]</td>
 			</tr>
@@ -214,6 +217,11 @@
 	{if $currentJournal}
 		{if $subscriptionsEnabled}
 			<li>&#187; <a href="{url page="user" op="subscriptions"}">{translate key="user.manageMySubscriptions"}</a></li>
+		{/if}
+	{/if}
+	{if $currentJournal}
+		{if $acceptGiftPayments}
+			<li>&#187; <a href="{url page="user" op="gifts"}">{translate key="gifts.manageMyGifts"}</a></li>
 		{/if}
 	{/if}
 	<li>&#187; <a href="{url page="user" op="profile"}">{translate key="user.editMyProfile"}</a></li>

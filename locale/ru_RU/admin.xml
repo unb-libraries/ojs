@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/ru_RU/admin.xml
+  * locale/ru_RU/admin.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
@@ -60,4 +59,16 @@
 	<message key="admin.mergeUsers.confirm">Вы уверены, что хотите слить учетную запись "{$oldUsername}" с учетной записью "{$newUsername}"? Пользователь "{$oldUsername}" будет стерт. Это действие необратимо.</message>
 	<message key="admin.mergerUsers.noneEnrolled">Нет пользователей.</message>
 	<message key="admin.mergeUsers">Слияние пользователей</message>
+	<message key="admin.settings.journalsList">Элементы журнала</message>
+	<message key="admin.settings.journalsList.showThumbnail">Миниатюра журнала</message>
+	<message key="admin.settings.journalsList.showTitle">Название журнала</message>
+	<message key="admin.settings.journalsList.showDescription">Описание журнала</message>
+	<message key="admin.categories">Категории</message>
+	<message key="admin.categories.disableCategories">Не организовывать журналы по категориям.</message>
+	<message key="admin.categories.editTitle">Редактировать категорию</message>
+	<message key="admin.categories.createTitle">Создать категорию</message>
+	<message key="admin.categories.create">Создать новую категорию</message>
+	<message key="admin.categories.confirmDelete">Вы уверены, что хотите удалить эту категорию?</message>
+	<message key="admin.categories.name">Название</message>
+	<message key="admin.categories.nameRequired">Необходимо указать название категории.</message>
 </locale>

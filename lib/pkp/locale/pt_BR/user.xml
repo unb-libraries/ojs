@@ -4,12 +4,11 @@
 <!--
   * locale/pt_BR/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português (Brasil)) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_BR" full_name = "Português (Brasil)">
@@ -40,7 +39,6 @@
 	<message key="user.login.forgotPassword">Esqueceu a senha?</message>
 	<message key="user.login.loginError">Login e/ou senha inválido(s). Tente novamente.</message>
 	<message key="user.login">Acesso</message>
-	<message key="user.logIn">Entrar</message>
 	<message key="user.login.lostPassword.confirmationSent">Um e-mail de confirmação foi enviado. Siga as instruções para criar uma nova senha.</message>
 	<message key="user.login.lostPassword.invalidHash">O link acessado expirou ou é inválido. Lamentamos o inconveniente. Tente criar uma senha novamente.</message>
 	<message key="user.login.lostPassword.invalidUser">Nenhum usuário cadastrado com o e-mail especificado.</message>
@@ -116,4 +114,14 @@
 	<message key="user.authorization.restrictedSiteAccess">Seu acesso foi negado. Acesso a esta página está atualmente bloqueado.</message>
 	<message key="user.authorization.roleBasedAccessDenied">O papel atual não possui permissão para realizar esta operação.</message>
 	<message key="user.authorization.userGroupRequired">É necessário definir um grupo de usuário válido para acessar esta operação.</message>
+	<message key="user.accountInformation">Informações de cadastro</message>
+	<message key="user.authorization.pressManagerRequired">Um usuário com papel de Gerente de Imprensa (Editor de Imprensa ou de Produção, por exemplo) deve ser designado ao estágio antes de proceder.</message>
+	<message key="user.interests.description">(Separe interesses pressionando as teclas enter ou vírgula)</message>
+	<message key="user.group">Grupo de usuários</message>
+	<message key="user.hello">Olá,</message>
+	<message key="user.profile.form.countryRequired">O país é obrigatório.</message>
+	<message key="user.profile.form.mailingAddressRequired">Um endereço postal é obrigatório.</message>
+	<message key="user.profile.form.passwordSameAsOld">Sua nova senha é a mesma que a anterior.</message>
+	<message key="user.profile.form.usergroupRequired">Um grupo de usuários é obrigatório.</message>
+	<message key="user.suffix">Sufixo</message>
 </locale>

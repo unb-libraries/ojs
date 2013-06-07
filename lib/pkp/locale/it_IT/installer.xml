@@ -4,19 +4,18 @@
 <!--
   * locale/it_IT/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
   *
-  * $Id: installer.xml,v 1.5 2009/12/08 04:19:13 jmacgreg Exp $
   -->
 
 <locale name="it_IT" full_name = "Italiano">
 	<message key="installer.additionalLocales">Localizzazioni aggiuntive</message>
 	<message key="installer.administratorAccount">Account dell'amministratore</message>
 	<message key="installer.administratorAccountInstructions">Questo account utente sarà l'amministratore del sito ed avrà accesso totale al sistema. potrai creare dopo il termine dell'installazione altri account utente.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NO</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NO</span>]]></message>
 	<message key="installer.checkYes">Si</message>
 	<message key="installer.clientCharset">Set di caratteri del client</message>
 	<message key="installer.clientCharsetInstructions">La codifica da utilizzare per l'invio e ricezione dei dati dai browser.</message>
@@ -60,16 +59,13 @@
 	<message key="installer.installParseDBFileError"><![CDATA[Errore nel parsing del file di installazione <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Localizzazione</message>
 	<message key="installer.localeSettings">Impostazioni della localizzazione</message>
-	<message key="installer.manualInstall">Installazione manuale</message>
-	<message key="installer.manualUpgrade">Aggiornamento manuale</message>
-	<message key="installer.miscSettings">Impostazioni varie</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Un identificativo univoco utilizzato per i record di metadati provenienti da questo sito indicizzati tramite l&apos;<a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting.]]></message>
 	<message key="installer.oaiRepositoryId">Identificativo del repository OAI</message>
 	<message key="installer.publicFilesDirError">La directory di file pubblici non esiste o non è scrivibile.</message>
 	<message key="installer.releaseNotes">Note di rilascio</message>
 	<message key="installer.securitySettings">Impostazioni di sicurezza</message>
-	<message key="installer.skipFilesDir">Non creare sottodirectory (utilizzare solo per installazioni manuali)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Errore nell'analisi del template email <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">I file contrassegnati  potrebbero essere incompleti.</message>
-	<message key="installer.pleaseUpgradeAfterManualInstall">Esegui lo strumento di upgrade dopo aver installato il database. Esegui  'php tools/upgrade.php upgrade' nella directory principale dell'installazione</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Errore nel parsing del file <tt>{$file}</tt>.]]></message>
+	<message key="installer.oaiSettings">Impostazioni OAI</message>
 </locale>

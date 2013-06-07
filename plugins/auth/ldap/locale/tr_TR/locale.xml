@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/auth/ldap/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * LDAP authentication plugin localization strings for the tr_TR (Türkiye Türkçesi) locale.
   *
-  * $Id$
   -->
  
 <locale name="tr_TR" full_name="Türkiye Türkçesi">
@@ -36,4 +35,6 @@
 	<message key="plugins.auth.ldap.settings.saslrealm">Realm</message>
 	<message key="plugins.auth.ldap.settings.saslauthzid">Requested authorization ID</message>
 	<message key="plugins.auth.ldap.settings.saslprop">SASL güvenlik seçenekleri</message>
+	<message key="plugins.auth.ldap.settings.uid.description">The attribute whose value uniquely identifies a user object, such as uid or cn or sAMAccountName.</message>
+	<message key="plugins.auth.ldap.settings.uid">Hesap adı bağlantısı</message>
 </locale>

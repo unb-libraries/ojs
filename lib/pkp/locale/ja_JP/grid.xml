@@ -4,12 +4,11 @@
 <!--
   * locale/en_US/grid.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
   *
-  * $Id$
   -->
 
 <locale name="en_US" full_name = "English">
@@ -47,9 +46,6 @@
 
 	<!-- Review Forms Grid -->
 	<message key="grid.reviewForm.title">査読フォーム</message>
-
-	<!-- Book File Types Grid -->
-	<message key="grid.bookFileType.form.sortable">このタイプのファイルを要素でソートする (例: 章)</message>
 
 	<!-- Artwork Files Grid -->
 	<message key="grid.artworkFile.title">芸術作品(許諾あり)</message>

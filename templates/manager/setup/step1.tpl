@@ -1,17 +1,16 @@
 {**
- * step1.tpl
+ * templates/manager/setup/step1.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 1 of journal setup.
  *
- * $Id$
  *}
 {assign var="pageTitle" value="manager.setup.gettingDownTheDetails"}
 {include file="manager/setup/setupHeader.tpl"}
 
-<form name="setupForm" method="post" action="{url op="saveSetup" path="1"}">
+<form id="setupForm" method="post" action="{url op="saveSetup" path="1"}">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}
@@ -57,56 +56,6 @@
 		</td>
 	</tr>
 	<tr valign="top">
-		<td width="20%" class="label">{fieldLabel name="doiPrefix" key="manager.setup.doiPrefix"}</td>
-		<td width="80%" class="value"><input type="text" name="doiPrefix" value="{$doiPrefix|escape}" size="8" maxlength="8" id="doiPrefix" class="textField" />
-		<br />
-		<span class="instruct">{translate key="manager.setup.doiPrefixDescription"}</span>
-		</td>
-	</tr>
-	<tr valign="top">
-		<td width="20%" class="label">{fieldLabel name="doiSuffix" key="manager.setup.doiSuffix"}</td>
-		<td width="80%" class="value">
-			<table width="100%" class="data">
-				<tr>
-				<td width="5%" class="label" align="right" valign="top">
-					<input type="radio" name="doiSuffix" id="doiSuffix" value="pattern" {if $doiSuffix eq "pattern"}checked{/if} />
-				</td>
-				<td width="95%" class="value">
-					{fieldLabel name="doiSuffix" key="manager.setup.doiSuffixPattern"}
-					<br />
-					<input type="text" name="doiSuffixPattern" value="{$doiSuffixPattern|escape}" size="15" maxlength="50" id="doiSuffixPattern" class="textField" />
-					<br />
-					<span class="instruct">{fieldLabel name="doiSuffixPattern" key="manager.setup.doiSuffixPattern.example"}</span>
-				</td>
-				</tr>
-				<tr>
-				<td width="5%" class="label" align="right" valign="top">
-					<input type="radio" name="doiSuffix" id="doiSuffixDefault" value="default" {if ($doiSuffix neq "pattern" && $doiSuffix neq "customIdentifier")}checked{/if} />
-				</td>
-				<td width="95%" class="value">
-					{fieldLabel name="doiSuffixDefault" key="manager.setup.doiSuffixDefault"}
-				</td>
-				</tr>
-				<tr>
-				<td width="5%" class="label" align="right" valign="top">
-					<input type="radio" name="doiSuffix" id="doiSuffixCustomIdentifier" value="customIdentifier" {if $doiSuffix eq "customIdentifier"}checked{/if} />
-				</td>
-				<td width="95%" class="value">
-					{fieldLabel name="doiSuffixCustomIdentifier" key="manager.setup.doiSuffixCustomIdentifier"}
-				</td>
-				</tr>
-			</table>
-			<span class="instruct">{translate key="manager.setup.doiSuffixDescription"}</span>
-		</td>
-	</tr>
-	<tr valign="top">
-		<td class="label">&nbsp;</td>
-		<td class="value">
-			<span class="instruct">{translate key="manager.setup.doiReassign.description"}</span><br/>
-			<input type="submit" name="reassignDOIs" value="{translate key="manager.setup.doiReassign"}" />
-		</td>
-	</tr>
-	<tr valign="top">
 		<td width="20%" class="label">{fieldLabel name="mailingAddress" key="common.mailingAddress"}</td>
 		<td width="80%" class="value">
 			<textarea name="mailingAddress" id="mailingAddress" rows="3" cols="40" class="textArea">{$mailingAddress|escape}</textarea>
@@ -114,6 +63,18 @@
 			<span class="instruct">{translate key="manager.setup.mailingAddressDescription"}</span>
 		</td>
 	</tr>
+	{if $categoriesEnabled}
+		<tr valign="top">
+			<td class="label">{fieldLabel name=categories key="manager.setup.categories"}</td>
+			<td class="value">
+				<select id="categories" name="categories[]" class="selectMenu" multiple="multiple">
+					{html_options options=$allCategories selected=$categories}
+				</select>
+				<br/>
+				{translate key="manager.setup.categories.description"}
+			</td>
+		</tr>
+	{/if}{* $categoriesEnabled *}
 </table>
 </div>
 

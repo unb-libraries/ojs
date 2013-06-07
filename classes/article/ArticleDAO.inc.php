@@ -3,7 +3,7 @@
 /**
  * @file classes/article/ArticleDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleDAO
@@ -52,6 +52,18 @@ class ArticleDAO extends DAO {
 			'title', 'cleanTitle', 'abstract', 'coverPageAltText', 'showCoverPage', 'hideCoverPageToc', 'hideCoverPageAbstract', 'originalFileName', 'fileName', 'width', 'height',
 			'discipline', 'subjectClass', 'subject', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'sponsor'
 		);
+	}
+
+	/**
+	 * Get a list of additional fields that do not have
+	 * dedicated accessors.
+	 * @return array
+	 */
+	function getAdditionalFieldNames() {
+		$additionalFields = parent::getAdditionalFieldNames();
+		// FIXME: Move this to a PID plug-in.
+		$additionalFields[] = 'pub-id::publisher-id';
+		return $additionalFields;
 	}
 
 	/**
@@ -120,6 +132,59 @@ class ArticleDAO extends DAO {
 		return $returner;
 	}
 
+
+	/**
+	 * Find articles by querying article settings.
+	 * @param $settingName string
+	 * @param $settingValue mixed
+	 * @param $journalId int optional
+	 * @param $rangeInfo DBResultRange optional
+	 * @return array The articles identified by setting.
+	 */
+	function &getBySetting($settingName, $settingValue, $journalId = null, $rangeInfo = null) {
+		$primaryLocale = AppLocale::getPrimaryLocale();
+		$locale = AppLocale::getLocale();
+
+		$params = array(
+			'title',
+			$primaryLocale,
+			'title',
+			$locale,
+			'abbrev',
+			$primaryLocale,
+			'abbrev',
+			$locale,
+			$settingName
+		);
+
+		$sql = 'SELECT a.*,
+				COALESCE(stl.setting_value, stpl.setting_value) AS section_title,
+				COALESCE(sal.setting_value, sapl.setting_value) AS section_abbrev
+			FROM	articles a
+				LEFT JOIN sections s ON s.section_id = a.section_id
+				LEFT JOIN section_settings stpl ON (s.section_id = stpl.section_id AND stpl.setting_name = ? AND stpl.locale = ?)
+				LEFT JOIN section_settings stl ON (s.section_id = stl.section_id AND stl.setting_name = ? AND stl.locale = ?)
+				LEFT JOIN section_settings sapl ON (s.section_id = sapl.section_id AND sapl.setting_name = ? AND sapl.locale = ?)
+				LEFT JOIN section_settings sal ON (s.section_id = sal.section_id AND sal.setting_name = ? AND sal.locale = ?) ';
+		if (is_null($settingValue)) {
+			$sql .= 'LEFT JOIN article_settings ast ON a.article_id = ast.article_id AND ast.setting_name = ?
+				WHERE	(ast.setting_value IS NULL OR ast.setting_value = "")';
+		} else {
+			$params[] = $settingValue;
+			$sql .= 'INNER JOIN article_settings ast ON a.article_id = ast.article_id
+				WHERE	ast.setting_name = ? AND ast.setting_value = ?';
+		}
+		if ($journalId) {
+			$params[] = (int) $journalId;
+			$sql .= ' AND a.journal_id = ?';
+		}
+		$sql .= ' ORDER BY a.journal_id, a.article_id';
+		$result =& $this->retrieveRange($sql, $params, $rangeInfo);
+
+		$returner = new DAOResultFactory($result, $this, '_returnArticleFromRow');
+		return $returner;
+	}
+
 	/**
 	 * Internal function to return an Article object from a row.
 	 * @param $row array
@@ -144,7 +209,6 @@ class ArticleDAO extends DAO {
 		$article->setSectionId($row['section_id']);
 		$article->setSectionTitle($row['section_title']);
 		$article->setSectionAbbrev($row['section_abbrev']);
-		$article->setStoredDOI($row['doi']);
 		$article->setLanguage($row['language']);
 		$article->setCommentsToEditor($row['comments_to_ed']);
 		$article->setCitations($row['citations']);
@@ -163,8 +227,6 @@ class ArticleDAO extends DAO {
 		$article->setHideAuthor($row['hide_author']);
 		$article->setCommentsStatus($row['comments_status']);
 
-		$article->setAuthors($this->authorDao->getAuthorsByArticle($row['article_id']));
-
 		$this->getDataObjectSettings('article_settings', 'article_id', $row['article_id'], $article);
 
 		HookRegistry::call('ArticleDAO::_returnArticleFromRow', array(&$article, &$row));
@@ -179,9 +241,9 @@ class ArticleDAO extends DAO {
 		$article->stampModified();
 		$this->update(
 			sprintf('INSERT INTO articles
-				(locale, user_id, journal_id, section_id, language, comments_to_ed, citations, date_submitted, date_status_modified, last_modified, status, submission_progress, current_round, submission_file_id, revised_file_id, review_file_id, editor_file_id, pages, fast_tracked, hide_author, comments_status, doi)
+				(locale, user_id, journal_id, section_id, language, comments_to_ed, citations, date_submitted, date_status_modified, last_modified, status, submission_progress, current_round, submission_file_id, revised_file_id, review_file_id, editor_file_id, pages, fast_tracked, hide_author, comments_status)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, %s, %s, %s, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 				$this->datetimeToDB($article->getDateSubmitted()), $this->datetimeToDB($article->getDateStatusModified()), $this->datetimeToDB($article->getLastModified())),
 			array(
 				$article->getLocale(),
@@ -201,8 +263,7 @@ class ArticleDAO extends DAO {
 				$article->getPages(),
 				(int) $article->getFastTracked(),
 				(int) $article->getHideAuthor(),
-				(int) $article->getCommentsStatus(),
-				$article->getStoredDOI()
+				(int) $article->getCommentsStatus()
 			)
 		);
 
@@ -246,8 +307,7 @@ class ArticleDAO extends DAO {
 					pages = ?,
 					fast_tracked = ?,
 					hide_author = ?,
-					comments_status = ?,
-					doi = ?
+					comments_status = ?
 				WHERE article_id = ?',
 				$this->datetimeToDB($article->getDateSubmitted()), $this->datetimeToDB($article->getDateStatusModified()), $this->datetimeToDB($article->getLastModified())),
 			array(
@@ -268,7 +328,6 @@ class ArticleDAO extends DAO {
 				(int) $article->getFastTracked(),
 				(int) $article->getHideAuthor(),
 				(int) $article->getCommentsStatus(),
-				$article->getStoredDOI(),
 				$article->getId()
 			)
 		);
@@ -283,12 +342,6 @@ class ArticleDAO extends DAO {
 			} else {
 				$this->authorDao->insertAuthor($authors[$i]);
 			}
-		}
-
-		// Remove deleted authors
-		$removedAuthors = $article->getRemovedAuthors();
-		for ($i=0, $count=count($removedAuthors); $i < $count; $i++) {
-			$this->authorDao->deleteAuthorById($removedAuthors[$i], $article->getId());
 		}
 
 		// Update author sequence numbers
@@ -326,7 +379,7 @@ class ArticleDAO extends DAO {
 		$sectionEditorSubmissionDao->deleteReviewRoundsByArticle($articleId);
 
 		$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
-		$reviewAssignmentDao->deleteReviewAssignmentsByArticle($articleId);
+		$reviewAssignmentDao->deleteBySubmissionId($articleId);
 
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
 		$editAssignmentDao->deleteEditAssignmentsByArticle($articleId);
@@ -356,13 +409,13 @@ class ArticleDAO extends DAO {
 		$articleSearchDao->deleteArticleKeywords($articleId);
 
 		$articleEventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		$articleEventLogDao->deleteArticleLogEntries($articleId);
+		$articleEventLogDao->deleteByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 
 		$articleEmailLogDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-		$articleEmailLogDao->deleteArticleLogEntries($articleId);
+		$articleEmailLogDao->deleteByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 
-		$articleEventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		$articleEventLogDao->deleteArticleLogEntries($articleId);
+		$notificationDao =& DAORegistry::getDAO('NotificationDAO');
+		$notificationDao->deleteByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 
 		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
 		$suppFileDao->deleteSuppFilesByArticle($articleId);
@@ -386,19 +439,22 @@ class ArticleDAO extends DAO {
 		$this->update('DELETE FROM article_settings WHERE article_id = ?', $articleId);
 		$this->update('DELETE FROM articles WHERE article_id = ?', $articleId);
 
+		import('classes.search.ArticleSearchIndex');
+		$articleSearchIndex = new ArticleSearchIndex();
+		$articleSearchIndex->articleDeleted($articleId);
+		$articleSearchIndex->articleChangesFinished();
+
 		$this->flushCache();
 	}
 
 	/**
 	 * Get all articles for a journal (or all articles in the system).
-	 * @param $userId int
 	 * @param $journalId int
 	 * @return DAOResultFactory containing matching Articles
 	 */
 	function &getArticlesByJournalId($journalId = null) {
 		$primaryLocale = AppLocale::getPrimaryLocale();
 		$locale = AppLocale::getLocale();
-		$articles = array();
 
 		$params = array(
 			'title',
@@ -543,36 +599,100 @@ class ArticleDAO extends DAO {
 	}
 
 	/**
-	 * Change the DOI of an article
+	 * Add/update an article setting.
 	 * @param $articleId int
-	 * @param $doi string
+	 * @param $name string
+	 * @param $value mixed
+	 * @param $type string Data type of the setting.
+	 * @param $isLocalized boolean
 	 */
-	function changeDOI($articleId, $doi) {
-		$this->update(
-			'UPDATE articles SET doi = ? WHERE article_id = ?', array($doi, (int) $articleId)
-		);
+	function updateSetting($articleId, $name, $value, $type, $isLocalized = false) {
+		// Check and prepare setting data.
+		if ($isLocalized) {
+			if (is_array($value)) {
+				$values =& $value;
+			} else {
+				// We expect localized data to come in as an array.
+				assert(false);
+				return;
+			}
+		} else {
+			// Normalize non-localized data to an array so that
+			// we can treat updates uniformly.
+			$values = array('' => $value);
+		}
+		unset($value);
 
+		// Update setting values.
+		$keyFields = array('setting_name', 'locale', 'article_id');
+		foreach ($values as $locale => $value) {
+			// Locale-specific entries will be deleted when no value exists.
+			// Non-localized settings will always be set.
+			if ($isLocalized) {
+				$this->update(
+					'DELETE FROM article_settings WHERE article_id = ? AND setting_name = ? AND locale = ?',
+					array($articleId, $name, $locale)
+				);
+				if (empty($value)) continue;
+			}
+
+			// Convert the new value to the correct type.
+			$value = $this->convertToDB($value, $type);
+
+			// Update the database.
+			$this->replace('article_settings',
+				array(
+					'article_id' => $articleId,
+					'setting_name' => $name,
+					'setting_value' => $value,
+					'setting_type' => $type,
+					'locale' => $locale
+				),
+				$keyFields
+			);
+		}
 		$this->flushCache();
 	}
 
-	function assignDOIs($forceReassign = false, $journalId = null) {
-		if ($forceReassign) {
-			$this->update(
-				'UPDATE articles SET doi = null' . ($journalId !== null?' WHERE journal_id = ?':''),
-				$journalId !== null?array((int) $journalId):false
-			);
-			$this->flushCache();
-		}
+	/**
+	 * Change the public ID of an article.
+	 * @param $articleId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
+	 */
+	function changePubId($articleId, $pubIdType, $pubId) {
+		$this->updateSetting($articleId, 'pub-id::'.$pubIdType, $pubId, 'string');
+	}
 
-		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-		$articles =& $publishedArticleDao->getPublishedArticlesByJournalId($journalId);
-		while ($article =& $articles->next()) {
-			// Cause a DOI to be fetched and stored.
-			$article->getDOI();
-			unset($article);
-		}
-
-		$this->flushCache();
+	/**
+	 * Checks if public identifier exists (other than for the specified
+	 * article ID, which is treated as an exception).
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
+	 * @param $articleId int An ID to be excluded from the search.
+	 * @param $journalId int
+	 * @return boolean
+	 */
+	function pubIdExists($pubIdType, $pubId, $articleId, $journalId) {
+		$result =& $this->retrieve(
+			'SELECT COUNT(*)
+			FROM article_settings ast
+				INNER JOIN articles a ON ast.article_id = a.article_id
+			WHERE ast.setting_name = ? and ast.setting_value = ? and ast.article_id <> ? AND a.journal_id = ?',
+			array(
+				'pub-id::'.$pubIdType,
+				$pubId,
+				(int) $articleId,
+				(int) $journalId
+			)
+		);
+		$returner = $result->fields[0] ? true : false;
+		$result->Close();
+		return $returner;
 	}
 
 	/**
@@ -584,6 +704,31 @@ class ArticleDAO extends DAO {
 			'UPDATE articles SET section_id = null WHERE section_id = ?', $sectionId
 		);
 
+		$this->flushCache();
+	}
+
+	/**
+	 * Delete the public IDs of all articles in a journal.
+	 * @param $journalId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 */
+	function deleteAllPubIds($journalId, $pubIdType) {
+		$journalId = (int) $journalId;
+		$settingName = 'pub-id::'.$pubIdType;
+
+		$articles =& $this->getArticlesByJournalId($journalId);
+		while ($article =& $articles->next()) {
+			$this->update(
+				'DELETE FROM article_settings WHERE setting_name = ? AND article_id = ?',
+				array(
+					$settingName,
+					(int)$article->getId()
+				)
+			);
+			unset($article);
+		}
 		$this->flushCache();
 	}
 

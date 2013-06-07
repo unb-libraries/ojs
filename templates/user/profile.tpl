@@ -1,12 +1,11 @@
 {**
- * profile.tpl
+ * templates/user/profile.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User profile form.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="user.profile.editProfile"}
@@ -14,7 +13,7 @@
 {include file="common/header.tpl"}
 {/strip}
 
-<form name="profile" method="post" action="{url op="saveProfile"}" enctype="multipart/form-data">
+<form id="profile" method="post" action="{url op="saveProfile"}" enctype="multipart/form-data">
 
 {include file="common/formErrors.tpl"}
 
@@ -78,7 +77,7 @@
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="userUrl" key="user.url"}</td>
-	<td class="value"><input type="text" name="userUrl" id="userUrl" value="{$userUrl|escape}" size="30" maxlength="90" class="textField" /></td>
+	<td class="value"><input type="text" name="userUrl" id="userUrl" value="{$userUrl|escape}" size="30" maxlength="255" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="phone" key="user.phone"}</td>
@@ -118,12 +117,14 @@
 		</td>
 	</tr>
 {/if}
+{if $allowRegReviewer || $isReviewer}
 <tr valign="top">
 	<td class="label">{fieldLabel name="interests" key="user.interests"}</td>
 	<td class="value">
 		{include file="form/interestsInput.tpl" FBV_interestsKeywords=$interestsKeywords FBV_interestsTextOnly=$interestsTextOnly}
 	</td>
 </tr>
+{/if}
 <tr valign="top">
 	<td class="label">{fieldLabel name="biography" key="user.biography"}<br />{translate key="user.biography.description"}</td>
 	<td class="value"><textarea name="biography[{$formLocale|escape}]" id="biography" rows="5" cols="40" class="textArea">{$biography[$formLocale]|escape}</textarea></td>

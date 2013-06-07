@@ -3,7 +3,7 @@
 /**
  * @file classes/article/AuthorDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorDAO
@@ -12,9 +12,6 @@
  *
  * @brief Operations for retrieving and modifying Author objects.
  */
-
-// $Id$
-
 
 import('classes.article.Author');
 import('classes.article.Article');
@@ -26,30 +23,6 @@ class AuthorDAO extends PKPAuthorDAO {
 	 */
 	function AuthorDAO() {
 		parent::PKPAuthorDAO();
-	}
-
-	/**
-	 * Retrieve all authors for a submission.
-	 * @param $submissionId int
-	 * @return array Authors ordered by sequence
-	 */
-	function &getAuthorsByArticle($submissionId) {
-		$authors = array();
-
-		$result =& $this->retrieve(
-			'SELECT * FROM authors WHERE submission_id = ? ORDER BY seq',
-			(int) $submissionId
-		);
-
-		while (!$result->EOF) {
-			$authors[] =& $this->_returnAuthorFromRow($result->GetRowAssoc(false));
-			$result->moveNext();
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $authors;
 	}
 
 	/**
@@ -142,22 +115,16 @@ class AuthorDAO extends PKPAuthorDAO {
 				aa.first_name,
 				aa.middle_name,
 				aa.last_name,
-				asl.setting_value AS affiliation_l,
-				asl.locale,
-				aspl.setting_value AS affiliation_pl,
-				aspl.locale AS primary_locale,
-				aa.country
+				CASE WHEN asl.setting_value = \'\' THEN NULL ELSE SUBSTRING(asl.setting_value FROM 1 FOR 255) END AS affiliation_l,
+				CASE WHEN aspl.setting_value = \'\' THEN NULL ELSE SUBSTRING(aspl.setting_value FROM 1 FOR 255) END AS affiliation_pl,
+				CASE WHEN aa.country = \'\' THEN NULL ELSE aa.country END
 			FROM	authors aa
 				LEFT JOIN author_settings aspl ON (aa.author_id = aspl.author_id AND aspl.setting_name = ? AND aspl.locale = ?)
 				LEFT JOIN author_settings asl ON (aa.author_id = asl.author_id AND asl.setting_name = ? AND asl.locale = ?)
-				LEFT JOIN articles a ON (a.article_id = aa.submission_id)
-				LEFT JOIN published_articles pa ON (pa.article_id = a.article_id)
-				LEFT JOIN issues i ON (pa.issue_id = i.issue_id)
-			WHERE	i.published = 1 AND
-				aa.submission_id = a.article_id AND ' .
-				(isset($journalId)?'a.journal_id = ? AND ':'') . '
-				pa.article_id = a.article_id AND
-				a.status = ' . STATUS_PUBLISHED . ' AND
+				JOIN articles a ON (a.article_id = aa.submission_id AND a.status = ' . STATUS_PUBLISHED . ')
+				JOIN published_articles pa ON (pa.article_id = a.article_id)
+				JOIN issues i ON (pa.issue_id = i.issue_id AND i.published = 1)
+			WHERE ' . (isset($journalId)?'a.journal_id = ? AND ':'') . '
 				(aa.last_name IS NOT NULL AND aa.last_name <> \'\')' .
 				$initialSql . '
 			ORDER BY aa.last_name, aa.first_name',
@@ -243,7 +210,7 @@ class AuthorDAO extends PKPAuthorDAO {
 	 * @param $submissionId int
 	 */
 	function deleteAuthorsByArticle($submissionId) {
-		$authors =& $this->getAuthorsByArticle($submissionId);
+		$authors =& $this->getAuthorsBySubmissionId($submissionId);
 		foreach ($authors as $author) {
 			$this->deleteAuthor($author);
 		}

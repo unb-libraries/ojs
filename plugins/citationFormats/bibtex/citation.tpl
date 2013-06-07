@@ -1,12 +1,11 @@
 {**
- * citation.tpl
+ * plugins/citationFormats/bibtex/citation.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article reading tools -- Capture Citation BibTeX format
  *
- * $Id$
  *}
 <div class="separator"></div>
 <div id="citation">

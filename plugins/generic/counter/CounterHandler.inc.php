@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file CounterHandler.inc.php
+ * @file plugins/generic/counter/CounterHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CounterHandler
@@ -79,7 +79,7 @@ class CounterHandler extends Handler {
 		$i=0;
 
 		foreach ($journalIds as $journalId) {
-			$journal =& $journalDao->getJournal($journalId);
+			$journal =& $journalDao->getById($journalId);
 			if (!$journal) continue;
 			$entries = $counterReportDao->getMonthlyLogRange($journalId, $begin, $end);
 
@@ -296,7 +296,7 @@ class CounterHandler extends Handler {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 		$journalIds = $counterReportDao->getJournalIds();
 		foreach ($journalIds as $journalId) {
-			$journal =& $journalDao->getJournal($journalId);
+			$journal =& $journalDao->getById($journalId);
 			if (!$journal) continue;
 			$entries = $counterReportDao->getMonthlyLogRange($journalId, $begin, $end);
 			$cols = array(

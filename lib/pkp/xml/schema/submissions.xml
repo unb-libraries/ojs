@@ -4,12 +4,10 @@
 <!--
   * submissions.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Submission-related schema (e.g. authors) in XML.
-  *
-  * $Id$
   -->
 
 <schema version="0.2">
@@ -41,6 +39,7 @@
 		<field name="last_name" type="C2" size="90">
 			<NOTNULL/>
 		</field>
+		<field name="suffix" type="C2" size="40"/>
 		<field name="country" type="C2" size="90"/>
 		<field name="email" type="C2" size="90">
 			<NOTNULL/>
@@ -84,5 +83,5 @@
 			<col>setting_name</col>
 			<UNIQUE/>
 		</index>
-	</table>
+	</table>	
 </schema>

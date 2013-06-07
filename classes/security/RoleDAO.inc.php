@@ -3,7 +3,7 @@
 /**
  * @file classes/security/RoleDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RoleDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying Role objects.
  */
-
-// $Id$
 
 
 import('classes.security.Role');
@@ -134,6 +132,24 @@ class RoleDAO extends DAO {
 	}
 
 	/**
+	* Return an array of objects corresponding to the roles a given user has,
+	* grouped by context id.
+	* @param $userId int
+	* @return array
+	*/
+	function &getByUserIdGroupedByContext($userId) {
+		$roles = $this->getRolesByUserId($userId);
+
+		$groupedRoles = array();
+		foreach ($roles as $role) {
+			$groupedRoles[$role->getJournalId()][$role->getRoleId()] =& $role;
+			unset($role);
+		}
+
+		return $groupedRoles;
+	}
+
+	/**
 	 * Retrieve a list of users in a specified role.
 	 * @param $roleId int optional (can leave as null to get all users in journal)
 	 * @param $journalId int optional, include users only in this journal
@@ -146,8 +162,7 @@ class RoleDAO extends DAO {
 	function &getUsersByRoleId($roleId = null, $journalId = null, $searchType = null, $search = null, $searchMatch = null, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
 		$users = array();
 
-		$joinInterests = $searchType == USER_FIELD_INTERESTS ? true: false;
-		$paramArray = array();
+		$paramArray = array(ASSOC_TYPE_USER, 'interest');
 		if (isset($roleId)) $paramArray[] = (int) $roleId;
 		if (isset($journalId)) $paramArray[] = (int) $journalId;
 
@@ -195,10 +210,10 @@ class RoleDAO extends DAO {
 		$searchSql .= ($sortBy?(' ORDER BY ' . $this->getSortMapping($sortBy) . ' ' . $this->getDirectionMapping($sortDirection)) : '');
 
 		$result =& $this->retrieveRange(
-			'SELECT DISTINCT u.* FROM users AS u' .
-				($joinInterests ? ' LEFT JOIN user_interests ui ON (ui.user_id = u.user_id)
-				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = ui.controlled_vocab_entry_id) ':'') . ', roles AS r
-				WHERE u.user_id = r.user_id ' . (isset($roleId)?'AND r.role_id = ?':'') . (isset($journalId) ? ' AND r.journal_id = ?' : '') . ' ' . $searchSql,
+			'SELECT DISTINCT u.* FROM users AS u LEFT JOIN controlled_vocabs cv ON (cv.assoc_type = ? AND cv.assoc_id = u.user_id AND cv.symbolic = ?)
+				LEFT JOIN controlled_vocab_entries cve ON (cve.controlled_vocab_id = cv.controlled_vocab_id)
+				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = cve.controlled_vocab_entry_id),
+				roles AS r WHERE u.user_id = r.user_id ' . (isset($roleId)?'AND r.role_id = ?':'') . (isset($journalId) ? ' AND r.journal_id = ?' : '') . ' ' . $searchSql,
 			$paramArray,
 			$dbResultRange
 		);
@@ -219,8 +234,7 @@ class RoleDAO extends DAO {
 	function &getUsersByJournalId($journalId, $searchType = null, $search = null, $searchMatch = null, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
 		$users = array();
 
-		$joinInterests = $searchType == USER_FIELD_INTERESTS ? true: false;
-		$paramArray = array((int) $journalId);
+		$paramArray = array(ASSOC_TYPE_USER, 'interest', (int) $journalId);
 		$searchSql = '';
 
 		$searchTypeMap = array(
@@ -261,10 +275,11 @@ class RoleDAO extends DAO {
 		$searchSql .= ($sortBy?(' ORDER BY ' . $this->getSortMapping($sortBy) . ' ' . $this->getDirectionMapping($sortDirection)) : '');
 
 		$result =& $this->retrieveRange(
-			'SELECT DISTINCT u.* FROM users AS u' .
-				($joinInterests ? ' LEFT JOIN user_interests ui ON (ui.user_id = u.user_id)
-				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = ui.controlled_vocab_entry_id) ':'') . ', roles AS r
-				WHERE u.user_id = r.user_id AND r.journal_id = ? ' . $searchSql,
+
+			'SELECT DISTINCT u.* FROM users AS u LEFT JOIN controlled_vocabs cv ON (cv.assoc_type = ? AND cv.assoc_id = u.user_id AND cv.symbolic = ?)
+				LEFT JOIN controlled_vocab_entries cve ON (cve.controlled_vocab_id = cv.controlled_vocab_id)
+				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = cve.controlled_vocab_entry_id),
+				roles AS r WHERE u.user_id = r.user_id AND r.journal_id = ? ' . $searchSql,
 			$paramArray,
 			$dbResultRange
 		);
@@ -373,6 +388,9 @@ class RoleDAO extends DAO {
 	}
 
 	/**
+	 * Validation check to see if a user belongs to any group that has a given role
+	 * DEPRECATE: keeping around because HandlerValidatorRoles in pkp-lib uses
+	 * until we port user groups to OxS
 	 * Check if a role exists.
 	 * @param $journalId int
 	 * @param $userId int
@@ -380,6 +398,18 @@ class RoleDAO extends DAO {
 	 * @return boolean
 	 */
 	function roleExists($journalId, $userId, $roleId) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->userHasRole($journalId, $userId, $roleId);
+	}
+
+	/**
+	 * Validation check to see if a user belongs to any group that has a given role
+	 * @param $journalId int
+	 * @param $userId int
+	 * @param $roleId int
+	 * @return boolean
+	 */
+	function userHasRole($journalId, $userId, $roleId) {
 		$result =& $this->retrieve(
 			'SELECT COUNT(*) FROM roles WHERE journal_id = ? AND user_id = ? AND role_id = ?', array((int) $journalId, (int) $userId, (int) $roleId)
 		);

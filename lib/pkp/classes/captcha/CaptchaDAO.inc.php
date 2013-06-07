@@ -3,7 +3,7 @@
 /**
  * @file classes/captcha/CaptchaDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CaptchaDAO
@@ -13,12 +13,17 @@
  * @brief Operations for retrieving and modifying Captcha keys.
  */
 
-// $Id$
-
 
 import('lib.pkp.classes.captcha.Captcha');
 
 class CaptchaDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function CaptchaDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve captchas by session id
 	 * @param $userId int
@@ -34,7 +39,7 @@ class CaptchaDAO extends DAO {
 
 		while (!$result->EOF) {
 			$captchas[] =& $this->_returnCaptchaFromRow($result->GetRowAssoc(false));
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -62,7 +67,7 @@ class CaptchaDAO extends DAO {
 
 		while (!$result->EOF) {
 			$captchas[] =& $this->_returnCaptchaFromRow($result->GetRowAssoc(false));
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -94,12 +99,20 @@ class CaptchaDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate and return a new data object.
+ 	 * @return Captcha
+	 */
+	function newDataObject() {
+		return new Captcha();
+	}
+
+	/**
 	 * Creates and returns a captcha object from a row
 	 * @param $row array
 	 * @return Captcha object
 	 */
 	function &_returnCaptchaFromRow($row) {
-		$captcha = new Captcha();
+		$captcha = $this->newDataObject();
 		$captcha->setId($row['captcha_id']);
 		$captcha->setSessionId($row['session_id']);
 		$captcha->setValue($row['value']);

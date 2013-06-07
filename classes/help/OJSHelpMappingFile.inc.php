@@ -3,7 +3,7 @@
 /**
  * @file classes/help/OJSHelpMappingFile.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSHelpMappingFile
@@ -11,9 +11,6 @@
  *
  * @brief Abstracts the built-in help mapping XML file.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.help.HelpMappingFile');
 

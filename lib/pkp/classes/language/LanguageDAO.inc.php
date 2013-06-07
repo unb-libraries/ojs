@@ -3,7 +3,7 @@
 /**
  * @file classes/language/LanguageDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LanguageDAO
@@ -25,9 +25,15 @@ class LanguageDAO extends DAO {
 		parent::DAO();
 	}
 
-	function &_getCache() {
-		$locale = AppLocale::getLocale();
-		$cache =& Registry::get('languageCache', true, null);
+	/**
+	 * Return the language cache.
+	 * @param $locale string
+	 */
+	function &_getCache($locale = null) {
+		if (is_null($locale)) {
+			$locale = AppLocale::getLocale();
+		}
+		$cache =& Registry::get('languageCache-'.$locale, true, null);
 		if ($cache === null) {
 			$cacheManager = CacheManager::getManager();
 			$cache =& $cacheManager->getFileCache(
@@ -44,11 +50,15 @@ class LanguageDAO extends DAO {
 	}
 
 	function _cacheMiss(&$cache, $id) {
-		$allLanguages =& Registry::get('allLanguages', true, null);
+		$allLanguages =& Registry::get('allLanguages-'.$cache->cacheId, true, null);
 		if ($allLanguages === null) {
 			// Add a locale load to the debug notes.
 			$notes =& Registry::get('system.debug.notes');
-			$filename = $this->getLanguageFilename(AppLocale::getLocale());
+			$locale = $cache->cacheId;
+			if ($locale == null) {
+				$locale = AppLocale::getLocale();
+			}
+			$filename = $this->getLanguageFilename($locale);
 			$notes[] = array('debug.notes.languageListLoad', array('filename' => $filename));
 
 			// Reload locale registry file
@@ -63,10 +73,16 @@ class LanguageDAO extends DAO {
 					);
 				}
 			}
-			asort($allLanguages);
+			if (is_array($allLanguages)) {
+				asort($allLanguages);
+			}
 			$cache->setEntireCache($allLanguages);
 		}
-		return null;
+		if (isset($allLanguages[$id])) {
+			return $allLanguages[$id];
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -80,21 +96,23 @@ class LanguageDAO extends DAO {
 
 	/**
 	 * Retrieve a language by code.
-	 * @param $languageId int
+	 * @param $code string ISO 639-1
+	 * @param $locale string
 	 * @return Language
 	 */
-	function &getLanguageByCode($code) {
-		$cache =& $this->_getCache();
+	function &getLanguageByCode($code, $locale = null) {
+		$cache =& $this->_getCache($locale);
 		$returner =& $this->_returnLanguageFromRow($code, $cache->get($code));
 		return $returner;
 	}
 
 	/**
 	 * Retrieve an array of all languages.
+	 * @param $locale string an optional locale to use
 	 * @return array of Languages
 	 */
-	function &getLanguages() {
-		$cache =& $this->_getCache();
+	function &getLanguages($locale = null) {
+		$cache =& $this->_getCache($locale);
 		$returner = array();
 		foreach ($cache->getContents() as $code => $entry) {
 			$returner[] =& $this->_returnLanguageFromRow($code, $entry);
@@ -103,12 +121,37 @@ class LanguageDAO extends DAO {
 	}
 
 	/**
+	 * Retrieve an array of all languages names.
+	 * @param $locale an optional locale to use
+	 * @return array of Languages names
+	 */
+	function &getLanguageNames($locale = null) {
+		$cache =& $this->_getCache($locale);
+		$returner = array();
+		$cacheContents =& $cache->getContents();
+		if (is_array($cacheContents)) {
+			foreach ($cache->getContents() as $code => $entry) {
+				$returner[] =& $entry[0];
+			}
+		}
+		return $returner;
+	}
+
+	/**
+	 * Instantiate a new data object.
+	 * @return Language
+	 */
+	function newDataObject() {
+		return new Language();
+	}
+
+	/**
 	 * Internal function to return a Language object from a row.
 	 * @param $row array
 	 * @return Language
 	 */
 	function &_returnLanguageFromRow($code, &$entry) {
-		$language = new Language();
+		$language = $this->newDataObject();
 		$language->setCode($code);
 		$language->setName($entry[0]);
 

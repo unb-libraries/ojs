@@ -7,7 +7,7 @@
 /**
  * @file classes/user/PKPUser.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPUser
@@ -17,9 +17,10 @@
  * @brief Basic class describing users existing in the system.
  */
 
-
 class PKPUser extends DataObject {
-
+	/**
+	 * Constructor
+	 */
 	function PKPUser() {
 		parent::DataObject();
 	}
@@ -190,6 +191,22 @@ class PKPUser extends DataObject {
 	}
 
 	/**
+	 * Get name suffix.
+	 * @return string
+	 */
+	function getSuffix() {
+		return $this->getData('suffix');
+	}
+
+	/**
+	 * Set suffix.
+	 * @param $suffix string
+	 */
+	function setSuffix($suffix) {
+		return $this->setData('suffix', $suffix);
+	}
+
+	/**
 	 * Get user salutation.
 	 * @return string
 	 */
@@ -324,6 +341,22 @@ class PKPUser extends DataObject {
 	 */
 	function setMailingAddress($mailingAddress) {
 		return $this->setData('mailingAddress', $mailingAddress);
+	}
+
+	/**
+	 * Get billing address.
+	 * @return string
+	 */
+	function getBillingAddress() {
+		return $this->getData('billingAddress');
+	}
+
+	/**
+	 * Set billing address.
+	 * @param $billingAddress string
+	 */
+	function setBillingAddress($billingAddress) {
+		return $this->setData('billingAddress', $billingAddress);
 	}
 
 	/**
@@ -564,8 +597,25 @@ class PKPUser extends DataObject {
 	}
 
 	/**
+	 * Get the inline help display status for this user.
+	 * @return int
+	 */
+	function getInlineHelp() {
+		return $this->getData('inlineHelp');
+	}
+
+	/**
+	 * Set the inline help display status for this user.
+	 * @param $inlineHelp int
+	 */
+	function setInlineHelp($inlineHelp) {
+		return $this->setData('inlineHelp', $inlineHelp);
+	}
+
+	/**
 	 * Get the user's complete name.
 	 * Includes first name, middle name (if applicable), and last name.
+	 * The suffix is only included when the name is not reversed with $lastFirst
 	 * @param $lastFirst boolean return in "LastName, FirstName" format
 	 * @return string
 	 */
@@ -574,15 +624,17 @@ class PKPUser extends DataObject {
 		$firstName = $this->getData('firstName');
 		$middleName = $this->getData('middleName');
 		$lastName = $this->getData('lastName');
+		$suffix = $this->getData('suffix');
 		if ($lastFirst) {
 			return "$lastName, " . ($salutation != ''?"$salutation ":'') . "$firstName" . ($middleName != ''?" $middleName":'');
 		} else {
-			return ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName;
+			return ($salutation != ''?"$salutation ":'') . "$firstName " . ($middleName != ''?"$middleName ":'') . $lastName . ($suffix != ''?", $suffix":'');
 		}
 	}
 
 	function getContactSignature() {
 		$signature = $this->getFullName();
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_USER);
 		if ($a = $this->getLocalizedAffiliation()) $signature .= "\n" . $a;
 		if ($p = $this->getPhone()) $signature .= "\n" . __('user.phone') . ' ' . $p;
 		if ($f = $this->getFax()) $signature .= "\n" . __('user.fax') . ' ' . $f;

@@ -4,7 +4,7 @@
 <!--
   * 000000.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Tabla de contenidos para el proceso editorial. 
@@ -14,14 +14,14 @@
   * $Id$
   -->
 
-<toc id="editorial/toc/000000" locale="es_ES" title="Proceso Editorial" parent_topic="editorial/topic/000000">
-	<topic id="editorial/topic/000001" title="Rol del Editor" />
-	<topic id="editorial/topic/000004" title="Rol del Editor de la Sección" />
-	<topic id="editorial/topic/000008" title="Rol del Revisor" />
-	<topic id="editorial/topic/000009" title="Rol del Autor" />
-	<topic id="editorial/topic/000012" title="Rol del Editor de correción de Textos " />
-	<topic id="editorial/topic/000013" title="Rol del Editor de Diagramación" />
-	<topic id="editorial/topic/000014" title="Rol del Corrector de Pruebas" />
+<toc id="editorial/toc/000000" locale="es_ES" title="Proceso editorial" parent_topic="editorial/topic/000000">
+	<topic id="editorial/topic/000001" title="Rol del editor/a" />
+	<topic id="editorial/topic/000004" title="Rol del editor/a de sección" />
+	<topic id="editorial/topic/000008" title="Rol del revisor/a" />
+	<topic id="editorial/topic/000009" title="Rol del autor/a" />
+	<topic id="editorial/topic/000012" title="Rol del corrector/a de originales " />
+	<topic id="editorial/topic/000013" title="Rol del maquetista" />
+	<topic id="editorial/topic/000014" title="Rol del corrector/a de pruebas" />
 
-	<breadcrumb url="editorial/topic/000000" title="Editorial Process" />
+	<breadcrumb url="editorial/topic/000000" title="Proceso editorial" />
 </toc>

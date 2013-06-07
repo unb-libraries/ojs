@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file plugins/oaiMetadata/dc/OAIMetadataFormatPlugin_NLM.inc.php
+ * @file plugins/oaiMetadataFormats/nlm/OAIMetadataFormatPlugin_NLM.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin_NLM
@@ -13,7 +13,7 @@
  * @brief NLM Journal Article metadata format plugin for OAI.
  */
 
-import('classes.plugins.OAIMetadataFormatPlugin');
+import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 
 class OAIMetadataFormatPlugin_NLM extends OAIMetadataFormatPlugin {
 	/**

@@ -3,7 +3,7 @@
 /**
  * @file classes/site/SiteDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SiteDAO
@@ -13,12 +13,17 @@
  * @brief Operations for retrieving and modifying the Site object.
  */
 
-// $Id$
-
 
 import('lib.pkp.classes.site.Site');
 
 class SiteDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function SiteDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve site information.
 	 * @return Site
@@ -40,13 +45,21 @@ class SiteDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate and return a new DataObject.
+	 * @return Site
+	 */
+	function newDataObject() {
+		return new Site();
+	}
+
+	/**
 	 * Internal function to return a Site object from a row.
 	 * @param $row array
 	 * @param $callHook boolean
 	 * @return Site
 	 */
 	function &_returnSiteFromRow(&$row, $callHook = true) {
-		$site = new Site();
+		$site = $this->newDataObject();
 		$site->setRedirect($row['redirect']);
 		$site->setMinPasswordLength($row['min_password_length']);
 		$site->setPrimaryLocale($row['primary_locale']);

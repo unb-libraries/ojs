@@ -1,66 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Administración del Sitio - Funciones de la Administración 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Site Administration - Administration Functions 
   *
   * $Id$
   -->
 
-<topic id="site/topic/000003" locale="es_ES" title="Funciones Administrativas" toc="site/toc/000000" key="site.administrativeFunctions">
+<topic id="site/topic/000003" locale="es_ES" title="Funciones administrativas" toc="site/toc/000000" key="site.administrativeFunctions">
 	<section>
-		<![CDATA[<p>Existen varias funciones administrativas disponibles en el área de administración del sitio. Estas funciones deben ser utilizadas con cuidado, ya que su uso indebido puede llevar a resultados inesperados.</p>]]>
+		<![CDATA[<p>En la zona de administración del sitio web hay disponibles diversas funciones administrativas. Se recomienda usar estas funciones con precaución, pues un uso indebido puede provocar resultados inesperados.</p>]]>
 	</section>
 
-	<section title="Información del Sistema">
-		<![CDATA[<p>Información general sobre el servidor y la historia de esta versión de OJS (incluyendo actualizaciones previas). También se proporciona una interfaz basada en Web para modificar la configuración de OJS.</p>]]>
+	<section title="Información sobre el sistema">
+		<![CDATA[<p>Información general sobre el entorno de servidor y el historial de versiones de OJS (actualizaciones anteriores incluidas). También se ofrece una interfaz basada en web para modificar el archivo de configuración de OJS.</p>]]>
 	</section>
 
-	<section title="Sesiones de Usuarios expiradas">
-		<![CDATA[<p>Limpia todas las sesiones de usuarios activos en el sistema, solicitándole a cada usuario que está actualmente en el sistema que inicie sesión nuevamente.</p>]]>
+	<section title="Borrar las sesiones de los usuarios/as">
+		<![CDATA[<p>Borrar todas las sesiones de usuarios/as activas en el sistema, y solicitar a cualquier usuario/a que esté conectado que vuelva a iniciar sesión.</p>]]>
 	</section>
 
-	<section title="Limpiar Datos Guardados">
-		<![CDATA[<p>Limpia todos los datos guardados, incluyendo la información local, el alijo de la ayuda, y el alijo de la búsqueda.</p>]]>
+	<section title="Borrar datos de la caché">
+		<![CDATA[<p>Borrar todos los datos de la caché, incluidas la información local, la ayuda y las búsquedas.</p>]]>
 	</section>
 
-	<section title="Limpiar Plantillas Guardadas">
-		<![CDATA[<p>Limpia todas las versiones guardadas de las plantillas de HTML. Esta función puede ser útil para forzar a las plantillas a recargarse luego de personalizarlas.</p>]]>
+	<section title="Borrar las plantillas de la caché">
+		<![CDATA[<p>Borrar todas las versiones de plantillas HTML de la caché. Esta función puede ser útil para forzar que las plantillas vuelvan a cargarse tras haber sido personalizadas.</p>]]>
 	</section>
 
-	<section title="Fusión de Usuarios">
-		<![CDATA[<p>La funcionalidad de Unir Usuarios le permite al Administrador del Sitio unir dos usuarios en una sola cuenta, transfiriendo las asignaciones de edición, los envíos, y otros numerosos registros desde una cuenta a otra, eliminando efectivamente la primera cuenta.</p>
-		<p>Esta funcionalidad de Unir Usuarios se diferencia de la opción de Unir Usuarios disponible para el Administrador de la Revista. La segunda se limita a unir cuentas de usuarios dentro de una revista en particular, mientras que la primera le permite al Administrador del Sitio unir cuentas de usuarios, incluso entre varias revistas.</p>
-		<p>Se transfieren los siguientes elementos:
-			<ul>
-				<li>Autoría del Artículo</li>
-				<li>Comentarios Públicos sobre los Artículos</li>
-				<li>Notas del Artículo</li>
-				<li>Asignaciones y decisiones del Editor</li>
-				<li>Revisión de Asignaciones</li>
-				<li>Asignaciones del editor de Diagramación</li>
-				<li>Asignaciones del corrector de Pruebas</li>
-				<li>Correo Electrónico del artículo y entradas de inicio de sesión del evento</li>
-				<li>Claves de acceso del Revisor</li>
-				<li>Roles</li>
-			</ul>
-		Los siguientes elementos <strong>no</strong> son transferidos:
-			<ul>
-				<li>Sesiones</li>
-				<li>Suscripciones</li>
-				<li>Estado de Notificación (ej. si el usuario se ha registrado para recibir notificaciones sobre noticias de la revista)</li>
-				<li>Membresías del Equipo Editorial</li>
-				<li>Estado del editor de la Sección en las secciones</li>
-				<li>Información del Perfil de Usuario (ej. Nombre, Apellido, etc.)</li>
-			</ul>
-		</p>
-		<p>Esta funcionalidad debe ser utilizada con cuidado, ya que no es reversible e incvolucra la transferencia de registros de un usuario a otro.</p>]]>
+	<section title="Fusionar usuarios/as">
+		<![CDATA[<p>La función Fusión de usuarios/as permite al administrador/a del sitio fusionar dos cuentas de usuario/a en una sola cuenta. Así se transfieren asignaciones de edición, publicaciones, y otros numerosos registros de una cuenta a otra, y al mismo tiempo se elimina la primera cuenta.</p> <p>Mientras que la función de Fusión de usuarios/as disponible para el gestor/a de la revista se limita a la fusión de cuentas de usuarios/as de una revista en particular, la función de Fusión de usuarios/as disponible para la administración del sitio permite al administrador fusionar cualquier par de cuentas de usuario/a, incluso entre diferentes revistas.</p> <p>Se transfieren los siguientes elementos:</p> <ul> <li>Autoría del artículo</li> <li>Comentarios públicos en artículos</li> <li>Notas de artículos</li> <li>Tareas y decisiones del editor/a</li> <li>Tareas de revisión</li> <li>Tareas de edición de diseño</li> <li>Tareas del corrector/a de pruebas</li> <li>Correo electrónico y entradas de registro de eventos de un artículo</li> <li>Claves de acceso de revisor/a</li> <li>Roles</li> <li>Suscripciones (consulte a continuación)</li> </ul> <p> Los siguientes elementos <strong>no</strong> se transfieren: </p> <ul> <li>Sesiones</li> <li>Notificaciones de estado (si el usuario/a se hubiera registrado para recibir notificaciones de nuevas revistas)</li> <li>Membresía del equipo editorial</li> <li>Estado del editor/a de las secciones</li> <li>Información de perfil del usuario/a (p. ej.: nombre, apellidos, etc.)</li> </ul> <p>Esta opción debe usarse con precaución, ya que no es reversible e implica la transferencia de registros de un usuario/a a otro.</p> <p>Para las suscripciones, la función de fusión realiza las siguientes acciones: Para suscripciones individuales, la suscripción del segundo usuario/a se transfiere al primero si es válida y si el primer usuario/a no tiene todavía una suscripción válida a una revista determinada. Para las suscripciones institucionales, todas las suscripciones para las que se identifique el segundo usuario/a como persona de contacto, se transfieren al primer usuario/a, que se convierte en la nueva persona de contacto para las suscripciones.</p>]]>
 	</section>
 </topic>

@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000000.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Índice del Proceso Editorial  
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Índice del proceso editorial
   *
   * $Id$
   -->
 
-<topic id="editorial/topic/000000" locale="es_ES" title="Proceso Editorial" toc="index/toc/000000" subtoc="editorial/toc/000000" key="editorial.index">
+<topic id="editorial/topic/000000" locale="es_ES" title="Proceso editorial" toc="index/toc/000000" subtoc="editorial/toc/000000" key="editorial.index">
 	<section>
-		<![CDATA[<p>El proceso Editorial para un envío a la revista consiste en una revisión ciega, hecha normalmente por expertos, seguida por la decisiñon del editor de la sección, que puede decidir aceptar o declinar al envío. Si el envío es aceptado en la etapa de revisión del proceso editorial, este pasará por la etapa de edición que consiste en la correción del texto, en la correción de pruebas y en la diagramación de los textos. Posteriormente, se programa el envío para su publicación en un número de la revista. el proceso editorial depende de como fue organizada la revista, este puede ser elaborado por solo un editor o por un equipo de Editores, editores de la sección correctores de textos, correctores de pruebas, y Editores de diagramación.</p>]]>	
+		<![CDATA[<p>El proceso editorial para la publicación en la revista consiste en una revisión, normalmente una evaluación anónima por pares, seguida de la decisión del editor/a de sección, quien acepta o rechaza la publicación. Si se acepta el envío en la fase de revisión del proceso editorial, pasa a una fase de edición que consiste en su corrección, maquetación y corrección de pruebas. Posteriormente, se planifica la publicación del envío en un número de la revista. Dependiendo de cómo se haya organizado la revista, el proceso editorial puede llevarse a cabo por un sólo editor/a o por un equipo de editores/as, editores/as de sección, correctores/as de originales, maquetistas y correctores/as de pruebas.</p>]]>	
 	</section>
 </topic>

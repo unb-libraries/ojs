@@ -4,12 +4,11 @@
 <!--
   * locale/fa_IR/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
 
 <locale name="fa_IR" full_name = "Persian">
@@ -40,7 +39,6 @@
 	<message key="user.login.forgotPassword">رمز عبور خود را فراموش کرده اید؟</message>
 	<message key="user.login.loginError">نام کاربری یا رمز عبور غلط است. لطفا از نو وارد کنید.</message>
 	<message key="user.login">ورود</message>
-	<message key="user.logIn">ورود</message>
 	<message key="user.login.lostPassword.confirmationSent">یک نامه تاییدیه به آدرس ایمیل شما ارسال شد.  لطفا دستورات مندرج در آن را بدقت اجرا کنید تا رمز عبورتان بازنشانی شود.</message>
 	<message key="user.login.lostPassword.invalidHash">متاسفانه لینکی که شما بر روی آن کلیک کرده اید تاریخ آن منقضی شده است یا دیگر وحود ندارد. برای بازنشانی رمز عبور از نو اقدام کنید.</message>
 	<message key="user.login.lostPassword.invalidUser">هیچ کاربری با این ایمیل وجود ندارد.</message>
@@ -55,6 +53,7 @@
 	<message key="user.myAccount">حساب کاربری من</message>
 	<message key="user.name">نام</message>
 	<message key="user.password">اسم رمز</message>
+	<message key="user.repeatPassword">تکرار رمز عبور</message>
 	<message key="user.phone">تلفن</message>
 	<message key="user.profile.changePasswordInstructions">برای تغییر رمز عبور، رمز عبور فعلی و جدید  را در قسمت های زیر وارد کنید</message>
 	<message key="user.profile.editProfile">ویرایش پرونده</message>

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file CustomLocaleHandler.inc.php
+ * @file plugins/generic/customLocale/CustomLocaleHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CustomLocaleHandler
@@ -11,9 +11,6 @@
  *
  * @brief This handles requests for the customLocale plugin.
  */
-
-// $Id$
-
 
 require_once('CustomLocalePlugin.inc.php');
 require_once('CustomLocaleAction.inc.php');
@@ -28,9 +25,6 @@ class CustomLocaleHandler extends Handler {
 	 **/
 	function CustomLocaleHandler($parentPluginName) {
 		parent::Handler();
-
-		$this->addCheck(new HandlerValidatorJournal($this));
-		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_SITE_ADMIN, ROLE_ID_JOURNAL_MANAGER)));
 
 		$plugin =& PluginRegistry::getPlugin('generic', $parentPluginName);
 		$this->plugin =& $plugin;		
@@ -99,13 +93,15 @@ class CustomLocaleHandler extends Handler {
 		$templateMgr =& TemplateManager::getManager();
 
 		import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
+
 		import('lib.pkp.classes.file.EditableLocaleFile');
 		$journal = Request::getJournal();
 		$journalId = $journal->getId();
 		$publicFilesDir = Config::getVar('files', 'public_files_dir');
 		$customLocaleDir = $publicFilesDir . DIRECTORY_SEPARATOR . 'journals' . DIRECTORY_SEPARATOR . $journalId . DIRECTORY_SEPARATOR . CUSTOM_LOCALE_DIR;
 		$customLocalePath = $customLocaleDir . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $filename;
-		if (FileManager::fileExists($customLocalePath)) {
+		if ($fileManager->fileExists($customLocalePath)) {
 			$localeContents = EditableLocaleFile::load($customLocalePath);
 		} else {
 			$localeContents = null;
@@ -167,8 +163,10 @@ class CustomLocaleHandler extends Handler {
 
 		// Create empty custom locale file if it doesn't exist
 		import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
+
 		import('lib.pkp.classes.file.EditableLocaleFile');
-		if (!FileManager::fileExists($customFilePath)) {
+		if (!$fileManager->fileExists($customFilePath)) {
 			$numParentDirs = substr_count($customFilePath, DIRECTORY_SEPARATOR); 
 			$parentDirs = '';
 			for ($i=0; $i<$numParentDirs; $i++) {
@@ -179,7 +177,7 @@ class CustomLocaleHandler extends Handler {
 			$newFileContents .= '<!DOCTYPE locale SYSTEM "' . $parentDirs . 'lib' . DIRECTORY_SEPARATOR . 'pkp' . DIRECTORY_SEPARATOR . 'dtd' . DIRECTORY_SEPARATOR . 'locale.dtd' . '">' . "\n";
 			$newFileContents .= '<locale name="' . $locale . '">' . "\n";
 			$newFileContents .= '</locale>';
-			FileManager::writeFile($customFilePath, $newFileContents);
+			$fileManager->writeFile($customFilePath, $newFileContents);
 		}
 
 		$file = new EditableLocaleFile($locale, $customFilePath);
@@ -205,7 +203,6 @@ class CustomLocaleHandler extends Handler {
 	}
 
 	function setupTemplate(&$plugin, $subclass = true) {
-		parent::setupTemplate();
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->register_function('plugin_url', array($plugin, 'smartyPluginUrl'));
 		$pageHierarchy = array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'manager'), 'user.role.manager'));

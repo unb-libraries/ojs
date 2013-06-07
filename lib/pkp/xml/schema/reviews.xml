@@ -4,12 +4,10 @@
 <!--
   * reviews.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Review assignment schema in XML.
-  *
-  * $Id$
   -->
 
 <schema version="0.2">
@@ -60,7 +58,10 @@
 		<field name="date_rated" type="T"/>
 		<field name="date_reminded" type="T"/>
 		<field name="quality" type="I1"/>
-		<field name="review_type" type="I1">
+		<field name="review_round_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="stage_id" type="I1">
 			<NOTNULL/>
 			<DEFAULT VALUE="1"/>
 		</field>
@@ -77,6 +78,7 @@
 			<DEFAULT VALUE="1"/>
 		</field>
 		<field name="review_form_id" type="I8"/>
+		<field name="unconsidered" type="I1"/>
 		<descr>Reviewing assignments.</descr>
 		<index name="review_assignments_submission_id">
 			<col>submission_id</col>
@@ -95,23 +97,27 @@
 	  *
 	  -->
 	<table name="review_rounds">
+		<field name="review_round_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
 		<field name="submission_id" type="I8">
 			<NOTNULL />
 		</field>
+		<field name="stage_id" type="I8" />
 		<field name="round" type="I1">
 			<NOTNULL />
 		</field>
 		<field name="review_revision" type="I8" />
-		<field name="review_type" type="I8" />
 		<field name="status" type="I8" />
 		<descr>Review rounds.</descr>
 		<index name="review_rounds_submission_id">
 			<col>submission_id</col>
 		</index>
-		<index name="review_rounds_pkey">
+		<index name="review_rounds_submission_id_stage_id_round_pkey">
 			<col>submission_id</col>
+			<col>stage_id</col>
 			<col>round</col>
-			<col>review_type</col>
 			<UNIQUE/>
 		</index>
 	</table>

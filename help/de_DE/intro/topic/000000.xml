@@ -4,14 +4,13 @@
 <!--
   * locale.xml
   *
-  * C* Copyright (c) 2003-2012 John Willinsky
+  * C* Copyright (c) 2003-2013 John Willinsky
   * Weiterverbreitung nach GNU GPL v2. Die vollständigen Bedingungen für die Weiterverbreitung dieser Datei finden Sie unter docs/COPYING.
   
   * Version, erstellt durch die Freie Universität Berlin, Redaktionen Querelles-Net und Forum Qualitative Sozialforschung (FQS).
  
   * Frequently Asked Questions 
   *
-  * $Id$
   -->
 
 <topic id="intro/topic/000000" locale="de_DE" title="Einführung in OJS" toc="index/toc/000000" subtoc="intro/toc/000000" key="intro.index">

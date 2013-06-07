@@ -1,7 +1,7 @@
 {**
- * reviewFormElements.tpl
+ * templates/manager/reviewForms/reviewFormElements.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display list of review form elements.
@@ -25,7 +25,7 @@ $(document).ready(function() { setupTableDND("#reviewFormElementsTable",
 {literal}
 <!--
 function toggleChecked() {
-	var elements = document.reviewFormElements.elements;
+	var elements = document.getElementById('reviewFormElements').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'copy[]') {
 			elements[i].checked = !elements[i].checked;
@@ -45,7 +45,7 @@ function toggleChecked() {
 <br/>
 
 <div id="reviewFormElements">
-<form name="reviewFormElements" action="{url op="copyReviewFormElement"}" method="post">
+<form id="reviewFormElements" action="{url op="copyReviewFormElement"}" method="post">
 <table width="100%" class="listing" id="reviewFormElementsTable">
 	<tr>
 		<td class="headseparator" colspan="3">&nbsp;</td>

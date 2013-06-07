@@ -1,14 +1,13 @@
 {**
- * siteMap.tpl
+ * templates/about/siteMap.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * About the Journal / Site Map.
  *
  * TODO: Show the site map.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="about.siteMap"}
@@ -67,7 +66,7 @@
 					</li>
 				{/if}{* $currentJournal->getSetting('publishingMode') != $smarty.const.PUBLISHING_MODE_NONE *}
 				{foreach from=$navMenuItems item=navItem}
-					{if $navItem.url != '' && $navItem.name != ''}<li><a href="{if $navItem.isAbsolute}{$navItem.url|escape}{else}{url page=""}{$navItem.url|escape}{/if}">{if $navItem.isLiteral}{$navItem.name|escape}{else}{translate key=$navItem.name|escape}{/if}</a></li>{/if}
+					{if $navItem.url != '' && $navItem.name != ''}<li><a href="{if $navItem.isAbsolute}{$navItem.url|escape}{else}{$baseUrl}{$navItem.url|escape}{/if}">{if $navItem.isLiteral}{$navItem.name|escape}{else}{translate key=$navItem.name|escape}{/if}</a></li>{/if}
 				{/foreach}
 			</ul>
 		</li>	

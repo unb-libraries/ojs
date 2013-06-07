@@ -1,14 +1,13 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 <!--
-  * locale.xml
+  * plugins/importexport/native/locale/fa_IR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
 <locale full_name="Farsi" name="fa_IR" >
 	<message key="plugins.importexport.native.displayName" >پلاگین XML مقالات و شماره ها</message>
@@ -63,7 +62,7 @@
 	<message key="plugins.importexport.native.import.error.illegalUrl" >آدرس ذکر شده &quot;{$url}&quot; برای شماره مجله &quot;{$issueTitle}&quot; مجاز نیست. فقط http - ftp و https و یا ftps مجاز است.</message>
 	<message key="plugins.importexport.native.import.error.unknownSuppFileType" >نوع نامشخصی از فایل الحاقی &quot;{$suppFileType}&quot;</message>
 	<message key="plugins.importexport.native.import.error.couldNotCopy" >از آدرس ذکر شده &quot;{$url}&quot; نمیتوان به فایل لوکال کپی کرد.</message>
-	<message key="plugins.importexport.native.import.error.duplicatePublicId" >شماره ID ذکر شده برای مجله ورودی &quot;{$issueTitle}&quot; در حال حاضر توسط شماره مجله دیگری &quot;{$otherIssueTitle}&quot; استفاده میشود.</message>
+	<message key="plugins.importexport.native.import.error.duplicatePublicIssueId" >شماره ID ذکر شده برای مجله ورودی &quot;{$issueTitle}&quot; در حال حاضر توسط شماره مجله دیگری &quot;{$otherIssueTitle}&quot; استفاده میشود.</message>
 	<message key="plugins.importexport.native.import.error.sectionTitleMissing" >عنوان نوع مقاله برای شماره مجله &quot;{$issueTitle}&quot; ذکر نشده است. لطفا اطمینان حاصل کنید که سند XML استاندارد است.</message>
 	<message key="plugins.importexport.native.import.error.sectionMismatch" >نوع مقاله &quot;{$sectionTitle}&quot; برای شماره مجله &quot;{$issueTitle}&quot; صحیح است ولی علامت اختصاری ذکر شده (&quot;{$sectionAbbrev}&quot;) مربوط به نوع مقاله دیگری است.</message>
 	<message key="plugins.importexport.native.import.error.articleTitleMissing" >عنوان یک مقاله برای شماره مجله &quot;{$issueTitle}&quot; از نوع مقاله &quot;{$sectionTitle}&quot; ذکر نشده است. لطفا مطمئن شوید سند XML استاندارد است و مقاله مذکور دارای یک عنوان به زبان مجله میباشد.</message>

@@ -7,7 +7,7 @@
 /**
  * @file classes/group/Group.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Group
@@ -17,13 +17,18 @@
  * @brief Describes user groups.
  */
 
-// $Id$
-
 
 define('GROUP_CONTEXT_EDITORIAL_TEAM',	0x000001);
 define('GROUP_CONTEXT_PEOPLE',		0x000002);
 
 class Group extends DataObject {
+	/**
+	 * Constructor
+	 */
+	function Group() {
+		parent::DataObject();
+	}
+
 	/**
 	 * Get localized title of group.
 	 */
@@ -36,10 +41,10 @@ class Group extends DataObject {
 		return $this->getLocalizedTitle();
 	}
 
+
 	//
 	// Get/set methods
 	//
-
 	/**
 	 * Get title of group (primary locale)
 	 * @param $locale string

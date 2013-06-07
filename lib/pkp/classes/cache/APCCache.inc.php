@@ -3,7 +3,7 @@
 /**
  * @file classes/cache/APCCache.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class APCCache
@@ -12,8 +12,6 @@
  *
  * @brief Provides caching based on APC's variable store.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.cache.GenericCache');

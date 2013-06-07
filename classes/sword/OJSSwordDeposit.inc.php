@@ -3,7 +3,7 @@
 /**
  * @file classes/sword/OJSSwordDeposit.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSSwordDeposit
@@ -11,9 +11,6 @@
  *
  * @brief Class providing a SWORD deposit wrapper for OJS articles
  */
-
-// $Id: CaptchaManager.inc.php,v 1.7 2010/01/22 20:42:41 asmecher Exp $
-
 
 require_once('./lib/pkp/lib/swordapp/swordappclient.php');
 require_once('./lib/pkp/lib/swordapp/swordappentry.php');
@@ -55,7 +52,7 @@ class OJSSwordDeposit {
 		);
 
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$this->journal =& $journalDao->getJournal($article->getJournalId());
+		$this->journal =& $journalDao->getById($article->getJournalId());
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$this->section =& $sectionDao->getSection($article->getSectionId());
@@ -74,7 +71,7 @@ class OJSSwordDeposit {
 
 		// The article can be published or not. Support either.
 		if (is_a($this->article, 'PublishedArticle')) {
-			$doi = $this->article->getDOI();
+			$doi = $this->article->getPubId('doi');
 			if ($doi !== null) $this->package->setIdentifier($doi);
 		}
 

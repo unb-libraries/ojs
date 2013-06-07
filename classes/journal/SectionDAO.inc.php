@@ -3,7 +3,7 @@
 /**
  * @file classes/journal/SectionDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SectionDAO
@@ -12,9 +12,6 @@
  *
  * @brief Operations for retrieving and modifying Section objects.
  */
-
-// $Id$
-
 
 import ('classes.journal.Section');
 
@@ -208,8 +205,8 @@ class SectionDAO extends DAO {
 				VALUES
 				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
 			array(
-				$section->getJournalId(),
-				$section->getReviewFormId(),
+				(int)$section->getJournalId(),
+				(int)$section->getReviewFormId(),
 				$section->getSequence() == null ? 0 : $section->getSequence(),
 				$section->getMetaIndexed() ? 1 : 0,
 				$section->getMetaReviewed() ? 1 : 0,
@@ -249,18 +246,18 @@ class SectionDAO extends DAO {
 					abstract_word_count = ?
 				WHERE section_id = ?',
 			array(
-				$section->getReviewFormId(),
-				$section->getSequence(),
-				$section->getMetaIndexed(),
-				$section->getMetaReviewed(),
-				$section->getAbstractsNotRequired(),
-				$section->getEditorRestricted(),
-				$section->getHideTitle(),
-				$section->getHideAuthor(),
-				$section->getHideAbout(),
-				$section->getDisableComments(),
+				(int)$section->getReviewFormId(),
+				$this->nullOrInt($section->getSequence()),
+				(int)$section->getMetaIndexed(),
+				(int)$section->getMetaReviewed(),
+				(int)$section->getAbstractsNotRequired(),
+				(int)$section->getEditorRestricted(),
+				(int)$section->getHideTitle(),
+				(int)$section->getHideAuthor(),
+				(int)$section->getHideAbout(),
+				(int)$section->getDisableComments(),
 				$this->nullOrInt($section->getAbstractWordCount()),
-				$section->getId()
+				(int)$section->getId()
 			)
 		);
 		$this->updateLocaleFields($section);
@@ -378,6 +375,43 @@ class SectionDAO extends DAO {
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnSectionFromRow');
+		return $returner;
+	}
+
+	/**
+	 * Retrieve all sections.
+	 * @return DAOResultFactory containing Sections ordered by journal ID and sequence
+	 */
+	function &getSections($rangeInfo = null) {
+		$result =& $this->retrieveRange(
+			'SELECT * FROM sections ORDER BY journal_id, seq',
+			false, $rangeInfo
+		);
+
+		$returner = new DAOResultFactory($result, $this, '_returnSectionFromRow');
+		return $returner;
+	}
+
+	/**
+	 * Retrieve all empty (without articles) section ids for a journal.
+	 * @return array
+	 */
+	function getJournalEmptySectionIds($journalId) {
+		$returner = array();
+
+		$result =& $this->retrieve(
+			'SELECT s.section_id FROM sections s LEFT JOIN articles a ON (a.section_id = s.section_id) WHERE a.section_id IS NULL AND s.journal_id = ?',
+			(int) $journalId
+		);
+
+		while (!$result->EOF) {
+			$returner[] = $result->fields[0];
+			$result->moveNext();
+		}
+
+		$result->Close();
+		unset($result);
+
 		return $returner;
 	}
 

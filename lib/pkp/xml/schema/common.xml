@@ -4,12 +4,10 @@
 <!--
   * common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Common elements of the PKP database schema in XML.
-  *
-  * $Id$
   -->
 
 <schema version="0.2">
@@ -55,6 +53,7 @@
 		</field>
 		<descr>Installation and upgrade version history.</descr>
 		<index name="versions_pkey">
+			<col>product_type</col>
 			<col>product</col>
 			<col>major</col>
 			<col>minor</col>
@@ -169,6 +168,7 @@
 		<field name="last_name" type="C2" size="90">
 			<NOTNULL/>
 		</field>
+		<field name="suffix" type="C2" size="40"/>
 		<field name="gender" type="C" size="1"/>
 		<field name="initials" type="C2" size="5"/>
 		<field name="email" type="C2" size="90">
@@ -178,6 +178,7 @@
 		<field name="phone" type="C2" size="24"/>
 		<field name="fax" type="C2" size="24"/>
 		<field name="mailing_address" type="C2" size="255"/>
+		<field name="billing_address" type="C2" size="255"/>
 		<field name="country" type="C2" size="90"/>
 		<field name="locales" type="C2" size="255"/>
 		<field name="date_last_email" type="T"/>
@@ -196,6 +197,7 @@
 			<DEFAULT VALUE="0"/>
 		</field>
 		<field name="disabled_reason" type="X"/>
+		<field name="inline_help" type="I1" />
 		<descr>User authentication credentials and profile data.</descr>
 		<index name="users_username">
 			<col>username</col>
@@ -279,10 +281,6 @@
 			<NOTNULL/>
 			<DEFAULT VALUE=""/>
 		</field>
-		<field name="acting_as" type="I8">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
-		</field>
 		<descr>Browser/user sessions and session data.</descr>
 		<index name="sessions_user_id">
 			<col>user_id</col>
@@ -345,6 +343,9 @@
 		</index>
 	</table>
 
+
+	<!-- Notification tables -->
+
 	<!--
 	  *
 	  * TABLE notifications
@@ -355,37 +356,36 @@
 			<KEY />
 			<AUTOINCREMENT />
 		</field>
-		<field name="user_id" type="I8">
+		<field name="context_id" type="I8">
 			<NOTNULL/>
 		</field>
-		<field name="level" type="I8" />
+		<field name="user_id" type="I8">
+		</field>
+		<field name="level" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="type" type="I8">
+			<NOTNULL/>
+		</field>
 		<field name="date_created" type="T">
 			<NOTNULL/>
 		</field>
 		<field name="date_read" type="T" />
-		<field name="title" type="C2" size="255" />
-		<field name="contents" type="X" >
-			<NOTNULL/>
-		</field>
-		<field name="param" type="C2" size="255" />
-		<field name="location" type="C2" size="255" />
-		<field name="is_localized" type="I1" >
-			<NOTNULL/>
-			<DEFAULT VALUE="1"/>
-		</field>
-		<field name="product" type="C2" size="20" />
-		<field name="context" type="I8">
-			<NOTNULL/>
-		</field>
-		<field name="assoc_type" type="I8">
-			<NOTNULL/>
-		</field>
+		<field name="assoc_type" type="I8" />
+		<field name="assoc_id" type="I8" />
 		<descr>Stores notifications for users as created by the system after certain operations.</descr>
-		<index name="notifications_by_user">
-			<col>product</col>
+		<index name="notifications_context_id_user_id">
+			<col>context_id</col>
 			<col>user_id</col>
 			<col>level</col>
-			<col>context</col>
+		</index>
+		<index name="notifications_context_id">
+			<col>context_id</col>
+			<col>level</col>
+		</index>
+		<index name="notifications_assoc">
+			<col>assoc_type</col>
+			<col>assoc_id</col>
 		</index>
 	</table>
 
@@ -395,6 +395,35 @@
 	  *
 	  -->
 	<table name="notification_settings">
+		<field name="notification_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="locale" type="C2" size="5" />
+		<field name="setting_name" type="C2" size="64">
+			<NOTNULL/>
+		</field>
+		<field name="setting_value" type="X">
+			<NOTNULL/>
+		</field>
+		<field name="setting_type" type="C2" size="6">
+			<NOTNULL />
+			<descr>(bool|int|float|string|object)</descr>
+		</field>
+		<descr>Stores metadata for specific notifications</descr>
+		<index name="notification_settings_pkey">
+			<col>notification_id</col>
+			<col>locale</col>
+			<col>setting_name</col>
+			<UNIQUE />
+		</index>
+	</table>
+
+	<!--
+	  *
+	  * TABLE notification_subscription_settings
+	  *
+	  -->
+	<table name="notification_subscription_settings">
 		<field name="setting_id" type="I8">
 			<KEY />
 			<AUTOINCREMENT />
@@ -408,12 +437,47 @@
 		<field name="user_id" type="I8">
 			<NOTNULL/>
 		</field>
-		<field name="product" type="C2" size="20" />
 		<field name="context" type="I8">
 			<NOTNULL/>
 		</field>
-		<descr>Lists all notifications types for each user that they do NOT want to be informed of, and also contains a list of RSS feed tokens for each user.</descr>
+		<field name="setting_type" type="C2" size="6">
+			<NOTNULL />
+			<descr>(bool|int|float|string|object)</descr>
+		</field>
+		<descr>Stores user preferences on what notifications should be blocked and/or emailed to them</descr>
 	</table>
+
+	<!--
+	  *
+	  * TABLE notification_mail_list
+	  *
+	  -->
+	<table name="notification_mail_list">
+		<field name="notification_mail_list_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+			<field name="email" type="C2" size="90">
+			<NOTNULL/>
+		</field>
+		<field name="confirmed" type="I1">
+			<NOTNULL/>
+			<DEFAULT VALUE="0"/>
+		</field>
+		<field name="token" type="C2" size="40">
+			<NOTNULL/>
+		</field>
+		<field name="context" type="I8">
+			<NOTNULL/>
+		</field>
+		<descr>Stores subscriptions to the notification mailing list</descr>
+		<index name="notification_mail_list_email_context">
+			<col>email</col>
+			<col>context</col>
+			<UNIQUE />
+		</index>
+	</table>
+
 
 	<!-- Email tables -->
 
@@ -427,7 +491,7 @@
 			<KEY />
 			<AUTOINCREMENT/>
 		</field>
-		<field name="email_key" type="C2" size="30">
+		<field name="email_key" type="C2" size="64">
 			<NOTNULL/>
 			<descr>Unique identifier for this email.</descr>
 		</field>
@@ -453,7 +517,7 @@
 	  *
 	  -->
 	<table name="email_templates_default_data">
-		<field name="email_key" type="C2" size="30">
+		<field name="email_key" type="C2" size="64">
 			<NOTNULL />
 			<descr>Unique identifier for this email.</descr>
 		</field>
@@ -484,7 +548,7 @@
 			<KEY />
 			<AUTOINCREMENT/>
 		</field>
-		<field name="email_key" type="C2" size="30">
+		<field name="email_key" type="C2" size="64">
 			<NOTNULL/>
 			<descr>Unique identifier for this email.</descr>
 		</field>
@@ -519,7 +583,7 @@
 	  *
 	  -->
 	<table name="email_templates_data">
-		<field name="email_key" type="C2" size="30">
+		<field name="email_key" type="C2" size="64">
 			<NOTNULL />
 			<descr>Unique identifier for this email.</descr>
 		</field>

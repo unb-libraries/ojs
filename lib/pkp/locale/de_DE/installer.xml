@@ -4,19 +4,18 @@
 <!--
   * locale/de_DE/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   *
-  * $Id$
   -->
 
 <locale name="de_DE" full_name = "Deutsch (Deutschland)">
 	<message key="installer.additionalLocales">Weitere Regionaleinstellungen</message>
 	<message key="installer.administratorAccount">Administrator/innen-Konto</message>
 	<message key="installer.administratorAccountInstructions">Dieses Benutzer/innen-Konto erhält die Administrationsrechte für die gesamte Website und wird kompletten Zugriff auf das System haben. Zusätzliche Benutzer/innen-Konten können nach der Installation erstellt werden.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NEIN</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NEIN</span>]]></message>
 	<message key="installer.checkYes">Ja</message>
 	<message key="installer.clientCharset">Client-Zeichensatz</message>
 	<message key="installer.clientCharsetInstructions">Codierung für Daten, die vom oder zum Browser geschickt werden.</message>
@@ -63,11 +62,10 @@
 	<message key="installer.locale">Regionaleinstellungen</message>
 	<message key="installer.locale.maybeIncomplete">Die markierten Regionaleinstellungen sind möglicherweise unvollständig.</message>
 	<message key="installer.localeSettings">Regionaleinstellungen</message>
-	<message key="installer.miscSettings">Verschiedene Einstellungen</message>
+	<message key="installer.oaiSettings">OAI-Einstellungen</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Eine eindeutige Kennung zur Identifikation von Metadaten-Einträgen, die von dieser Website mittels des <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a>-Protokolls für Metadaten-Harvesting abgerufen werden.]]></message>
-	<message key="installer.oaiRepositoryId">Kennung für das OAI-Repository</message>
+	<message key="installer.oaiRepositoryId">Kennung für das Repository</message>
 	<message key="installer.publicFilesDirError">Das öffentliche Verzeichnis existiert nicht oder erlaubt keine Schreibzugriffe.</message>
 	<message key="installer.releaseNotes">Versionsinformationen</message>
 	<message key="installer.securitySettings">Sicherheitseinstellungen</message>
-	<message key="installer.skipFilesDir">Überspringe das Anlegen der benötigten Unterverzeichnisse (nur in einer manuellen Installation sinnvoll).</message>
 </locale>

@@ -1,12 +1,11 @@
 {**
- * externalFeeds.tpl
+ * plugins/generic/externalFeed/externalFeeds.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display list of external feeds in plugin management.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.generic.externalFeed.manager.feeds"}

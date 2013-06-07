@@ -4,7 +4,7 @@
 <!--
   * 000000.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Journal Management Main 
@@ -16,7 +16,6 @@
   * Kiriazis Vasilis (vaskir@lis.upatras.gr),
   * Papaxristopoulos Leonidas (leonidasp@lis.upatras.gr)
   *
-  * $Id$
   -->
 
 <topic id="journal/topic/000000" locale="el_GR" title="Διαχείριση Περιοδικού" toc="index/toc/000000" subtoc="journal/toc/000000" key="journal.index">

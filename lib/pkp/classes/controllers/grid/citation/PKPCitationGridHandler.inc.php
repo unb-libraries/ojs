@@ -3,7 +3,7 @@
 /**
  * @file controllers/grid/citation/PKPCitationGridHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPCitationGridHandler
@@ -33,8 +33,9 @@ class PKPCitationGridHandler extends GridHandler {
 		parent::GridHandler();
 	}
 
+
 	//
-	// Getters/Setters
+	// Getters and Setters
 	//
 	/**
 	 * Set the object that citations are associated to
@@ -91,6 +92,7 @@ class PKPCitationGridHandler extends GridHandler {
 		return $assocObject->getId();
 	}
 
+
 	//
 	// Overridden methods from PKPHandler
 	//
@@ -102,7 +104,7 @@ class PKPCitationGridHandler extends GridHandler {
 		parent::initialize($request, $args);
 
 		// Load submission-specific translations
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_SUBMISSION));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION);
 
 		// Basic grid configuration
 		$this->setTitle('submission.citations.editor.citationlist.title');
@@ -111,7 +113,7 @@ class PKPCitationGridHandler extends GridHandler {
 		// Only citations that have already been parsed will be displayed.
 		$citationDao =& DAORegistry::getDAO('CitationDAO');
 		$data =& $citationDao->getObjectsByAssocId($this->getAssocType(), $this->getAssocId(), CITATION_PARSED);
-		$this->setData($data);
+		$this->setGridDataElements($data);
 
 		// If the refresh flag is set in the request then trigger
 		// citation parsing. This is necessary to make sure that
@@ -128,12 +130,14 @@ class PKPCitationGridHandler extends GridHandler {
 		// Grid actions
 		$router =& $request->getRouter();
 		$this->addAction(
-			new LinkAction(
+			new LegacyLinkAction(
 				'addCitation',
 				LINK_ACTION_MODE_AJAX,
 				LINK_ACTION_TYPE_GET,
-				$router->url($request, null, null, 'addCitation', null,
-						array('assocId' => $this->getAssocId())),
+				$router->url(
+					$request, null, null, 'addCitation', null,
+					array('assocId' => $this->getAssocId())
+				),
 				'submission.citations.editor.citationlist.newCitation', null, 'add', null,
 				'citationEditorDetailCanvas'
 			),
@@ -176,7 +180,7 @@ class PKPCitationGridHandler extends GridHandler {
 
 
 	//
-	// Public Citation Grid Actions
+	// Public grid actions
 	//
 	/**
 	 * Export a list of formatted citations
@@ -191,21 +195,19 @@ class PKPCitationGridHandler extends GridHandler {
 		$templateMgr = TemplateManager::getManager($request);
 
 		$errorMessage = null;
-		$citations =& $this->getData();
-		if ($citations->eof()) {
+		$citations =& $this->getGridDataElements($request);
+		if (empty($citations)) {
 			$errorMessage = $noCitationsFoundMessage;
 		} else {
 			// Check whether we have any unapproved citations.
-			while (!$citations->eof()) {
+			foreach($citations as $citation) {
 				// Retrieve NLM citation meta-data
-				$citation =& $citations->next();
 				if ($citation->getCitationState() < CITATION_APPROVED) {
 					// Oops, found an unapproved citation, won't be able to
 					// export then.
 					$errorMessage = __('submission.citations.editor.export.foundUnapprovedCitationsMessage');
 					break;
 				}
-				unset($citation);
 			}
 
 			// Only go on when we've no error so far
@@ -214,47 +216,46 @@ class PKPCitationGridHandler extends GridHandler {
 				$templateMgr->assign_by_ref('assocId', $this->getAssocId());
 
 				// Identify export filters.
-				$filterDao =& DAORegistry::getDAO('FilterDAO');
-				$inputSample = $this->getAssocObject();
+				$filterDao =& DAORegistry::getDAO('FilterDAO'); /* @var $filterDao FilterDAO */
 				$allowedFilterIds = array();
 
-				// Identify filters that are capable to convert the citation
-				// editor's associated object into XML.
-				$outputSample = new DOMDocument();
-				$xmlExportFilterObjects =& $filterDao->getCompatibleObjects($inputSample, $outputSample, $context->getId());
-				$xmlExportFilters = array();
-				foreach($xmlExportFilterObjects as $xmlExportFilterObject) {
-					$xmlExportFilters[$xmlExportFilterObject->getId()] = '&nbsp;'.$xmlExportFilterObject->getDisplayName();
-					$allowedFilterIds[$xmlExportFilterObject->getId()] = 'xml';
-				}
-				$templateMgr->assign_by_ref('xmlExportFilters', $xmlExportFilters);
+				// Retrieve export filters.
+				$exportFilter = null;
+				$exportFilters = array();
+				$exportFilterConfiguration = $this->_getExportFilterConfiguration();
+				foreach($exportFilterConfiguration as $selectListHeading => $outputType) {
+					// All filters that take a submission and one of the supported
+					// output types will be displayed.
+					$exportFilterObjects =& $filterDao->getObjectsByTypeDescription('class::lib.pkp.classes.submission.Submission', $outputType);
 
-				// Identify filters that are capable to convert the citation
-				// editor's associated object into a plain text reference list.
-				import('lib.pkp.classes.citation.output.PlainTextReferencesList');
-				$outputSample = new PlainTextReferencesList(null, null);
-				$textExportFilterObjects =& $filterDao->getCompatibleObjects($inputSample, $outputSample, $context->getId());
-				$textExportFilters = array();
-				foreach($textExportFilterObjects as $textExportFilterObject) {
-					$textExportFilters[$textExportFilterObject->getId()] = '&nbsp;'.$textExportFilterObject->getDisplayName();
-					$allowedFilterIds[$textExportFilterObject->getId()] = 'plain';
+					// Build the array for the template.
+					$exportFilters[$selectListHeading] = array();
+					foreach($exportFilterObjects as $exportFilterObject) { /* @var $exportFilterObject PersistableFilter */
+						$filterId = $exportFilterObject->getId();
+
+						// Use the first filter as default export filter.
+						if (is_null($exportFilter)) {
+							$exportFilter =& $exportFilterObject;
+							$exportFilterId = $filterId;
+						}
+
+						// FIXME: Move &nbsp; to the template.
+						$exportFilters[$selectListHeading][$filterId] = '&nbsp;'.$exportFilterObject->getDisplayName();
+						$allowedFilterIds[$filterId] = $outputType;
+
+						unset($exportFilterObject);
+					}
+
+					unset($exportFilterObjects);
 				}
-				$templateMgr->assign_by_ref('textExportFilters', $textExportFilters);
+				$templateMgr->assign_by_ref('exportFilters', $exportFilters);
 
 				// Did the user choose a custom filter?
-				$exportFilter = null;
 				if (isset($args['filterId'])) {
 					$exportFilterId = (int)$args['filterId'];
 					if (isset($allowedFilterIds[$exportFilterId])) {
 						$exportFilter =& $filterDao->getObjectById($exportFilterId);
 					}
-				}
-
-				// Use the first available XML filter by default if no
-				// valid custom filter has been chosen.
-				if (!is_a($exportFilter, 'Filter') && !empty($xmlExportFilterObjects)) {
-					$exportFilter = array_pop($xmlExportFilterObjects);
-					$exportFilterId = $exportFilter->getId();
 				}
 
 				// Prepare the export output if a filter has been identified.
@@ -276,8 +277,8 @@ class PKPCitationGridHandler extends GridHandler {
 					}
 
 					if (is_null($errorMessage)) {
-						switch ($exportType) {
-							case 'xml':
+						switch (substr($exportType, 0, 5)) {
+							case 'xml::':
 								// Pretty-format XML output.
 								$xmlDom = new DOMDocument();
 								$xmlDom->preserveWhiteSpace = false;
@@ -286,10 +287,9 @@ class PKPCitationGridHandler extends GridHandler {
 								$exportOutputString = $xmlDom->saveXml($xmlDom->documentElement);
 								break;
 
-							case 'plain':
+							default:
 								assert(is_a($exportOutput, 'PlainTextReferencesList'));
 								$exportOutputString = $exportOutput->getListContent();
-								break;
 						}
 					}
 				}
@@ -299,8 +299,7 @@ class PKPCitationGridHandler extends GridHandler {
 
 		// Render the citation list
 		$templateMgr->assign('errorMessage', $errorMessage);
-		$json = new JSON('true', $templateMgr->fetch('controllers/grid/citation/citationExport.tpl'));
-		return $json->getString();
+		return $templateMgr->fetchJson('controllers/grid/citation/citationExport.tpl');
 	}
 
 	/**
@@ -323,7 +322,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 */
 	function editCitation(&$args, &$request) {
 		// Identify the citation to be edited
-		$citation =& $this->getCitationFromArgs($args, true);
+		$citation =& $this->getCitationFromArgs($request, $args, true);
 
 		// Form handling
 		import('lib.pkp.classes.controllers.grid.citation.form.CitationForm');
@@ -333,7 +332,7 @@ class PKPCitationGridHandler extends GridHandler {
 		} else {
 			$citationForm->initData();
 		}
-		$json = new JSON('true', $citationForm->fetch($request));
+		$json = new JSONMessage(true, $citationForm->fetch($request));
 		return $json->getString();
 	}
 
@@ -345,7 +344,7 @@ class PKPCitationGridHandler extends GridHandler {
 	 */
 	function updateRawCitation(&$args, &$request) {
 		// Retrieve the citation to be changed from the database.
-		$citation =& $this->getCitationFromArgs($args, true);
+		$citation =& $this->getCitationFromArgs($request, $args, true);
 
 		// Now retrieve the raw citation from the request.
 		$citation->setRawCitation(strip_tags($request->getUserVar('rawCitation')));
@@ -374,7 +373,7 @@ class PKPCitationGridHandler extends GridHandler {
 				// Re-display the form without processing so that the
 				// user can fix the errors that kept us from persisting
 				// the citation.
-				$json = new JSON('false', $citationForm->fetch($request));
+				$json = new JSONMessage(false, $citationForm->fetch($request));
 				return $json->getString();
 			}
 
@@ -383,7 +382,7 @@ class PKPCitationGridHandler extends GridHandler {
 			unset($citationForm);
 		} else {
 			// We retrieve the citation to be checked from the database.
-			$originalCitation =& $this->getCitationFromArgs($args, true);
+			$originalCitation =& $this->getCitationFromArgs($request, $args, true);
 		}
 
 		return $this->_recheckCitation($request, $originalCitation, false);
@@ -401,7 +400,7 @@ class PKPCitationGridHandler extends GridHandler {
 		if (!$citationForm->isValid()) {
 			// Re-display the citation form with error messages
 			// so that the user can fix it.
-			$json = new JSON('false', $citationForm->fetch($request));
+			$json = new JSONMessage(false, $citationForm->fetch($request));
 		} else {
 			// Get the persisted citation from the form.
 			$savedCitation =& $citationForm->getCitation();
@@ -427,7 +426,7 @@ class PKPCitationGridHandler extends GridHandler {
 			$row->initialize($request);
 
 			// Render the row into a JSON response
-			$json = new JSON('true', $this->_renderRowInternally($request, $row));
+			$json = new JSONMessage(true, $this->renderRowInternally($request, $row));
 		}
 
 		// Return the serialized JSON response
@@ -442,15 +441,15 @@ class PKPCitationGridHandler extends GridHandler {
 	 */
 	function deleteCitation(&$args, &$request) {
 		// Identify the citation to be deleted
-		$citation =& $this->getCitationFromArgs($args);
+		$citation =& $this->getCitationFromArgs($request, $args);
 
 		$citationDao = DAORegistry::getDAO('CitationDAO');
 		$result = $citationDao->deleteObject($citation);
 
 		if ($result) {
-			$json = new JSON('true');
+			$json = new JSONMessage(true);
 		} else {
-			$json = new JSON('false', __('submission.citations.editor.citationlist.errorDeletingCitation'));
+			$json = new JSONMessage(false, __('submission.citations.editor.citationlist.errorDeletingCitation'));
 		}
 		return $json->getString();
 	}
@@ -472,7 +471,7 @@ class PKPCitationGridHandler extends GridHandler {
 		$output = $citationForm->fetch($request, CITATION_FORM_COMPARISON_TEMPLATE);
 
 		// Render the row into a JSON response
-		$json = new JSON('true', $output);
+		$json = new JSONMessage(true, $output);
 		return $json->getString();
 	}
 
@@ -504,15 +503,16 @@ class PKPCitationGridHandler extends GridHandler {
 
 		// In principle we should use a template here but this seems exaggerated
 		// for such a small message.
-		$json = new JSON('true',
-			'<div id="authorQueryResult"><span class="formError">'
+		$json = new JSONMessage(true,
+			'<div id="authorQueryResult"><span class="pkp_form_error">'
 			.__('submission.citations.editor.details.sendAuthorQuerySuccess')
 			.'</span></div>');
 		return $json->getString();
 	}
 
+
 	//
-	// Protected helper functions
+	// Protected helper methods
 	//
 	/**
 	 * This will retrieve a citation object from the
@@ -525,11 +525,11 @@ class PKPCitationGridHandler extends GridHandler {
 	 *  citation id is in the request.
 	 * @return Citation
 	 */
-	function &getCitationFromArgs(&$args, $createIfMissing = false) {
+	function &getCitationFromArgs($request, &$args, $createIfMissing = false) {
 		// Identify the citation id and retrieve the
 		// corresponding element from the grid's data source.
 		if (isset($args['citationId'])) {
-			$citation =& $this->getRowDataElement($args['citationId']);
+			$citation =& $this->getRowDataElement($request, $args['citationId']);
 			if (is_null($citation)) fatalError('Invalid citation id!');
 		} else {
 			if ($createIfMissing) {
@@ -546,8 +546,27 @@ class PKPCitationGridHandler extends GridHandler {
 	}
 
 	//
-	// Private helper functions
+	// Private helper methods
 	//
+	/**
+	 * This method returns the texts and filter groups that should be
+	 * presented for citation reference list export.
+	 *
+	 * FIXME: We either have to move that somewhere to the configuration
+	 * or create more generic filter groups if we want to support several
+	 * meta-data schemas.
+	 *
+	 * @return array keys are translation keys that point to the heading
+	 *  to be displayed in the select list, the values are the type description
+	 *  wildcards to be used for filter selection in this group.
+	 */
+	function _getExportFilterConfiguration() {
+		return array(
+			'submission.citations.editor.export.pleaseSelectXmlFilter' => 'xml::%',
+			'submission.citations.editor.export.pleaseSelectPlaintextFilter' => 'class::lib.pkp.classes.citation.PlainTextReferencesList'
+		);
+	}
+
 	/**
 	 * Create and validate a citation form with POST
 	 * request data and (optionally) persist the citation.
@@ -560,7 +579,7 @@ class PKPCitationGridHandler extends GridHandler {
 		if(!$request->isPost()) fatalError('Cannot update citation via GET request!');
 
 		// Identify the citation to be updated
-		$citation =& $this->getCitationFromArgs($args, true);
+		$citation =& $this->getCitationFromArgs($request, $args, true);
 
 		// Form initialization
 		import('lib.pkp.classes.controllers.grid.citation.form.CitationForm');
@@ -626,8 +645,10 @@ class PKPCitationGridHandler extends GridHandler {
 
 			// Return the rendered form.
 			$citationForm->initData();
-			$json = new JSON('true', $citationForm->fetch($request));
+			$json = new JSONMessage(true, $citationForm->fetch($request));
 			return $json->getString();
 		}
 	}
 }
+
+?>

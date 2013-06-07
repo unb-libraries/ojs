@@ -7,7 +7,7 @@
 /**
  * @file classes/submission/Submission.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Submission
@@ -16,21 +16,12 @@
  * @brief Submission class.
  */
 
-
 class Submission extends DataObject {
-	/** @var array Authors of this submission */
-	var $authors;
-
-	/** @var array IDs of Authors removed from this submission */
-	var $removedAuthors;
-
 	/**
 	 * Constructor.
 	 */
 	function Submission() {
 		parent::DataObject();
-		$this->authors = array();
-		$this->removedAuthors = array();
 	}
 
 	/**
@@ -46,11 +37,14 @@ class Submission extends DataObject {
 	 * Get a piece of data for this object, localized to the current
 	 * locale if possible.
 	 * @param $key string
+	 * @param $preferredLocale string
 	 * @return mixed
 	 */
-	function &getLocalizedData($key) {
-		$localePrecedence = array(AppLocale::getLocale(), $this->getLocale());
+	function &getLocalizedData($key, $preferredLocale = null) {
+		if (is_null($preferredLocale)) $preferredLocale = AppLocale::getLocale();
+		$localePrecedence = array($preferredLocale, $this->getLocale());
 		foreach ($localePrecedence as $locale) {
+			if (empty($locale)) continue;
 			$value =& $this->getData($key, $locale);
 			if (!empty($value)) return $value;
 			unset($value);
@@ -71,38 +65,18 @@ class Submission extends DataObject {
 	//
 
 	/**
-	 * Add an author.
-	 * @param $author Author
+	 * Return first author
+	 * @param $lastOnly boolean return lastname only (default false)
+	 * @return string
 	 */
-	function addAuthor($author) {
-		if ($author->getSequence() == null) {
-			$author->setSequence(count($this->authors) + 1);
+	function getFirstAuthor($lastOnly = false) {
+		$authors = $this->getAuthors();
+		if (is_array($authors) && !empty($authors)) {
+			$author = $authors[0];
+			return $lastOnly ? $author->getLastName() : $author->getFullName();
+		} else {
+			return null;
 		}
-		array_push($this->authors, $author);
-	}
-
-	/**
-	 * Remove an author.
-	 * @param $authorId ID of the author to remove
-	 * @return boolean author was removed
-	 */
-	function removeAuthor($authorId) {
-		$found = false;
-
-		if ($authorId != 0) {
-			// FIXME maintain a hash of ID to author for quicker get/remove
-			$authors = array();
-			for ($i=0, $count=count($this->authors); $i < $count; $i++) {
-				if ($this->authors[$i]->getId() == $authorId) {
-					array_push($this->removedAuthors, $authorId);
-					$found = true;
-				} else {
-					array_push($authors, $this->authors[$i]);
-				}
-			}
-			$this->authors = $authors;
-		}
-		return $found;
 	}
 
 	/**
@@ -112,12 +86,14 @@ class Submission extends DataObject {
 	 * @return string
 	 */
 	function getAuthorString($lastOnly = false, $separator = ', ') {
+		$authors = $this->getAuthors();
+
 		$str = '';
-		foreach ($this->authors as $a) {
+		foreach($authors as $author) {
 			if (!empty($str)) {
 				$str .= $separator;
 			}
-			$str .= $lastOnly ? $a->getLastName() : $a->getFullName();
+			$str .= $lastOnly ? $author->getLastName() : $author->getFullName();
 		}
 		return $str;
 	}
@@ -127,70 +103,32 @@ class Submission extends DataObject {
 	 * @return array
 	 */
 	function getAuthorEmails() {
+		$authors = $this->getAuthors();
+
 		import('lib.pkp.classes.mail.Mail');
 		$returner = array();
-		foreach ($this->authors as $a) {
-			$returner[] = Mail::encodeDisplayName($a->getFullName()) . ' <' . $a->getEmail() . '>';
+		foreach($authors as $author) {
+			$returner[] = Mail::encodeDisplayName($author->getFullName()) . ' <' . $author->getEmail() . '>';
 		}
 		return $returner;
 	}
-
-	/**
-	 * Return first author
-	 * @param $lastOnly boolean return lastname only (default false)
-	 * @return string
-	 */
-	function getFirstAuthor($lastOnly = false) {
-		$author = $this->authors[0];
-		if (!$author) return null;
-		return $lastOnly ? $author->getLastName() : $author->getFullName();
-	}
-
-
-	//
-	// Get/set methods
-	//
 
 	/**
 	 * Get all authors of this submission.
 	 * @return array Authors
 	 */
 	function &getAuthors() {
-		return $this->authors;
+		$authorDao =& DAORegistry::getDAO('AuthorDAO');
+		return $authorDao->getAuthorsBySubmissionId($this->getId());
 	}
 
 	/**
-	 * Get a specific author of this submission.
-	 * @param $authorId int
-	 * @return array Authors
+	 * Get the primary author of this submission.
+	 * @return Author
 	 */
-	function &getAuthor($authorId) {
-		$author = null;
-
-		if ($authorId != 0) {
-			for ($i=0, $count=count($this->authors); $i < $count && $author == null; $i++) {
-				if ($this->authors[$i]->getId() == $authorId) {
-					$author =& $this->authors[$i];
-				}
-			}
-		}
-		return $author;
-	}
-
-	/**
-	 * Get the IDs of all authors removed from this submission.
-	 * @return array int
-	 */
-	function &getRemovedAuthors() {
-		return $this->removedAuthors;
-	}
-
-	/**
-	 * Set authors of this submission.
-	 * @param $authors array Authors
-	 */
-	function setAuthors($authors) {
-		return $this->authors = $authors;
+	function &getPrimaryAuthor() {
+		$authorDao =& DAORegistry::getDAO('AuthorDAO');
+		return $authorDao->getPrimaryContact($this->getId());
 	}
 
 	/**
@@ -215,7 +153,7 @@ class Submission extends DataObject {
 	 */
 	function getUser() {
 		$userDao =& DAORegistry::getDAO('UserDAO');
-		return $userDao->getUser($this->getUserId(), true);
+		return $userDao->getById($this->getUserId(), true);
 	}
 
 	/**
@@ -236,10 +174,11 @@ class Submission extends DataObject {
 
 	/**
 	 * Get "localized" submission title (if applicable).
+	 * @param $preferredLocale string
 	 * @return string
 	 */
-	function getLocalizedTitle() {
-		return $this->getLocalizedData('title');
+	function getLocalizedTitle($preferredLocale = null) {
+		return $this->getLocalizedData('title', $preferredLocale);
 	}
 
 	/**
@@ -270,6 +209,32 @@ class Submission extends DataObject {
 		$punctuation = array ("\"", "\'", ",", ".", "!", "?", "-", "$", "(", ")");
 		$cleanTitle = str_replace($punctuation, "", $cleanTitle);
 		return $this->setData('cleanTitle', $cleanTitle, $locale);
+	}
+
+	/**
+	 * Get "localized" submission prefix (if applicable).
+	 * @return string
+	 */
+	function getLocalizedPrefix() {
+		return $this->getLocalizedData('prefix');
+	}
+
+	/**
+	 * Get prefix.
+	 * @param $locale
+	 * @return string
+	 */
+	function getPrefix($locale) {
+		return $this->getData('prefix', $locale);
+	}
+
+	/**
+	 * Set prefix.
+	 * @param $prefix string
+	 * @param $locale
+	 */
+	function setPrefix($prefix, $locale) {
+		return $this->setData('prefix', $prefix, $locale);
 	}
 
 	/**
@@ -478,6 +443,42 @@ class Submission extends DataObject {
 	 */
 	function setType($type, $locale) {
 		return $this->setData('type', $type, $locale);
+	}
+
+	/**
+	 * Get rights.
+	 * @param $locale
+	 * @return string
+	 */
+	function getRights($locale) {
+		return $this->getData('rights', $locale);
+	}
+
+	/**
+	 * Set rights.
+	 * @param $rights string
+	 * @param $locale
+	 */
+	function setRights($rights, $locale) {
+		return $this->setData('rights', $rights, $locale);
+	}
+
+	/**
+	 * Get source.
+	 * @param $locale
+	 * @return string
+	 */
+	function getSource($locale) {
+		return $this->getData('source', $locale);
+	}
+
+	/**
+	 * Set source.
+	 * @param $source string
+	 * @param $locale
+	 */
+	function setSource($source, $locale) {
+		return $this->setData('source', $source, $locale);
 	}
 
 	/**

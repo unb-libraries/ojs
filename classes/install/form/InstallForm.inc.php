@@ -7,7 +7,7 @@
 /**
  * @file classes/install/form/InstallForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InstallForm
@@ -16,9 +16,6 @@
  *
  * @brief Form for system installation.
  */
-
-// $Id$
-
 
 import('classes.install.Install');
 import('lib.pkp.classes.site.VersionCheck');
@@ -120,6 +117,8 @@ class InstallForm extends Form {
 		$templateMgr->assign('connectionCharsetOptions', $this->supportedConnectionCharsets);
 		$templateMgr->assign('databaseCharsetOptions', $this->supportedDatabaseCharsets);
 		$templateMgr->assign('encryptionOptions', $this->supportedEncryptionAlgorithms);
+		$templateMgr->assign('allowFileUploads', get_cfg_var('file_uploads') ? __('common.yes') : __('common.no'));
+		$templateMgr->assign('maxFileUploadSize', get_cfg_var('upload_max_filesize'));
 		$templateMgr->assign('databaseDriverOptions', $this->checkDBDrivers());
 		$templateMgr->assign('supportsMBString', String::hasMBString() ? __('common.yes') : __('common.no'));
 		$templateMgr->assign('phpIsSupportedVersion', version_compare(PHP_REQUIRED_VERSION, PHP_VERSION) != 1);
@@ -134,11 +133,14 @@ class InstallForm extends Form {
 	 * Initialize form data.
 	 */
 	function initData() {
-		$cwd = getcwd();
+		$docRoot = dirname($_SERVER['DOCUMENT_ROOT']);
 		if (Core::isWindows()) {
 			// Replace backslashes with slashes for the default files directory.
-			$cwd = str_replace('\\', '/', $cwd);
+			$docRoot = str_replace('\\', '/', $docRoot);
 		}
+
+		// Add a trailing slash for paths that aren't filesystem root
+		if ($docRoot !== '/') $docRoot .= '/';
 
 		$this->_data = array(
 			'locale' => AppLocale::getLocale(),
@@ -147,8 +149,7 @@ class InstallForm extends Form {
 			'connectionCharset' => '',
 			'databaseCharset' => '',
 			'encryption' => 'md5',
-			'filesDir' =>  $cwd . '/files',
-			'skipFilesDir' =>  0,
+			'filesDir' =>  $docRoot . 'files',
 			'databaseDriver' => 'mysql',
 			'databaseHost' => 'localhost',
 			'databaseUsername' => 'ojs',
@@ -170,7 +171,6 @@ class InstallForm extends Form {
 			'connectionCharset',
 			'databaseCharset',
 			'filesDir',
-			'skipFilesDir',
 			'encryption',
 			'adminUsername',
 			'adminPassword',

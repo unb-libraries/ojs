@@ -3,7 +3,7 @@
 /**
  * @file classes/issue/IssueAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueAction
@@ -12,9 +12,6 @@
  *
  * @brief IssueAction class.
  */
-
-// $Id$
-
 
 class IssueAction {
 
@@ -48,24 +45,29 @@ class IssueAction {
 
 	/**
 	 * Checks if subscription is required for viewing the issue
-	 * @param $issue
+	 * @param $issue Issue
+	 * @param $journal Journal
 	 * @return bool
 	 */
-	function subscriptionRequired(&$issue) {
-		$currentJournal =& Request::getJournal();
+	function subscriptionRequired(&$issue, $journal = null) {
+		// Check the issue.
 		if (!$issue) return false;
-		if (!$currentJournal || $currentJournal->getId() !== $issue->getJournalId()) {
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($issue->getJournalId());
-		} else {
-			$journal =& $currentJournal;
-		}
 
+		// Get the journal.
+		if (is_null($journal)) {
+			$journal =& Request::getJournal();
+		}
+		if (!$journal || $journal->getId() !== $issue->getJournalId()) {
+			$journalDao =& DAORegistry::getDAO('JournalDAO');
+			$journal =& $journalDao->getById($issue->getJournalId());
+		}
+		if (!$journal) return false;
+
+		// Check subscription state.
 		$result = $journal->getSetting('publishingMode') == PUBLISHING_MODE_SUBSCRIPTION &&
 			$issue->getAccessStatus() != ISSUE_ACCESS_OPEN &&
 			(is_null($issue->getOpenAccessDate()) ||
 			strtotime($issue->getOpenAccessDate()) > time());
-
 		HookRegistry::call('IssueAction::subscriptionRequired', array(&$journal, &$issue, &$result));
 		return $result;
 	}
@@ -78,25 +80,12 @@ class IssueAction {
 	 * @return bool
 	 */
 	function allowedPrePublicationAccess(&$journal, &$article) {
-		$roleDao =& DAORegistry::getDAO('RoleDAO');
+		if (IssueAction::_roleAllowedPrePublicationAccess($journal)) return true;
+
 		$user =& Request::getUser();
 		if ($user && $journal) {
 			$journalId = $journal->getId();
 			$userId = $user->getId();
-			$subscriptionAssumedRoles = array(
-				ROLE_ID_JOURNAL_MANAGER,
-				ROLE_ID_EDITOR,
-				ROLE_ID_SECTION_EDITOR,
-				ROLE_ID_LAYOUT_EDITOR,
-				ROLE_ID_COPYEDITOR,
-				ROLE_ID_PROOFREADER,
-				ROLE_ID_SUBSCRIPTION_MANAGER
-			);
-
-			$roles =& $roleDao->getRolesByUserId($userId, $journalId);
-			foreach ($roles as $role) {
-				if (in_array($role->getRoleId(), $subscriptionAssumedRoles)) return true;
-			}
 
 			if (Validation::isAuthor($journalId)) {
 				if ($article && $article->getUserId() == $userId) return true;
@@ -105,8 +94,18 @@ class IssueAction {
 				if (isset($publishedArticle) && $publishedArticle && $publishedArticle->getUserId() == $userId) return true;
 			}
 		}
-
 		return false;
+	}
+
+	/**
+	 * Checks if this user is granted access to pre-publication issue galleys
+	 * based on their roles in the journal (i.e. Manager, Editor, etc).
+	 * @param $journal object
+	 * @param $issue object
+	 * @return bool
+	 */
+	function allowedIssuePrePublicationAccess($journal) {
+		return IssueAction::_roleAllowedPrePublicationAccess($journal);
 	}
 
 	/**
@@ -214,6 +213,37 @@ class IssueAction {
 		}
 
 		return $issueOptions;
+	}
+
+	/**
+	 * Checks if this user is granted access to pre-publication galleys based on role
+	 * based on their roles in the journal (i.e. Manager, Editor, etc).
+	 * @param $journal object
+	 * @param $issue object
+	 * @return bool
+	 */
+	function _roleAllowedPrePublicationAccess($journal) {
+		$roleDao =& DAORegistry::getDAO('RoleDAO');
+		$user =& Request::getUser();
+		if ($user && $journal) {
+			$journalId = $journal->getId();
+			$userId = $user->getId();
+			$subscriptionAssumedRoles = array(
+				ROLE_ID_JOURNAL_MANAGER,
+				ROLE_ID_EDITOR,
+				ROLE_ID_SECTION_EDITOR,
+				ROLE_ID_LAYOUT_EDITOR,
+				ROLE_ID_COPYEDITOR,
+				ROLE_ID_PROOFREADER,
+				ROLE_ID_SUBSCRIPTION_MANAGER
+			);
+
+			$roles =& $roleDao->getRolesByUserId($userId, $journalId);
+			foreach ($roles as $role) {
+				if (in_array($role->getRoleId(), $subscriptionAssumedRoles)) return true;
+			}
+		}
+		return false;
 	}
 
 }

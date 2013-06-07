@@ -3,7 +3,7 @@
 /**
  * @file classes/security/AuthSourceDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthSourceDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying AuthSource objects.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.security.AuthSource');
@@ -105,12 +103,20 @@ class AuthSourceDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate and return a new data object.
+	 * @return AuthSource
+	 */
+	function newDataObject() {
+		return new AuthSource();
+	}
+
+	/**
 	 * Internal function to return an AuthSource object from a row.
 	 * @param $row array
 	 * @return AuthSource
 	 */
 	function &_returnAuthSourceFromRow(&$row) {
-		$auth = new AuthSource();
+		$auth = $this->newDataObject();
 		$auth->setAuthId($row['auth_id']);
 		$auth->setTitle($row['title']);
 		$auth->setPlugin($row['plugin']);

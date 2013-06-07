@@ -1,45 +1,48 @@
 <?php
 
 /**
- * @file ReviewerHandler.inc.php
+ * @file pages/reviewer/ReviewerHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewerHandler
  * @ingroup pages_reviewer
  *
- * @brief Handle requests for reviewer functions. 
+ * @brief Handle requests for reviewer functions.
  */
-
-// $Id$
-
 
 import('classes.submission.reviewer.ReviewerAction');
 import('classes.handler.Handler');
 
 class ReviewerHandler extends Handler {
+	/** user associated with the request **/
+	var $user;
+
+	/** submission associated with the request **/
+	var $submission;
+
 	/**
 	 * Constructor
-	 **/
+	 */
 	function ReviewerHandler() {
 		parent::Handler();
 
 		$this->addCheck(new HandlerValidatorJournal($this));
-		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_REVIEWER)));		
+		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_REVIEWER)));
 	}
 
 	/**
 	 * Display reviewer index page.
 	 */
-	function index($args) {
-		$this->validate();
+	function index($args, $request) {
+		$this->validate($request);
 		$this->setupTemplate();
 
-		$journal =& Request::getJournal();
-		$user =& Request::getUser();
+		$journal =& $request->getJournal();
+		$user =& $request->getUser();
 		$reviewerSubmissionDao =& DAORegistry::getDAO('ReviewerSubmissionDAO');
-		$rangeInfo = Handler::getRangeInfo('submissions');
+		$rangeInfo = $this->getRangeInfo('submissions');
 
 		$page = isset($args[0]) ? $args[0] : '';
 		switch($page) {
@@ -51,13 +54,13 @@ class ReviewerHandler extends Handler {
 				$active = true;
 		}
 
-		$sort = Request::getUserVar('sort');
+		$sort = $request->getUserVar('sort');
 		$sort = isset($sort) ? $sort : 'title';
-		$sortDirection = Request::getUserVar('sortDirection');
+		$sortDirection = $request->getUserVar('sortDirection');
 
-		if ($sort == 'decision') {			
+		if ($sort == 'decision') {
 			$submissions = $reviewerSubmissionDao->getReviewerSubmissionsByReviewerId($user->getId(), $journal->getId(), $active, $rangeInfo);
-		
+
 			// Sort all submissions by status, which is too complex to do in the DB
 			$submissionsArray = $submissions->toArray();
 			$compare = create_function('$s1, $s2', 'return strcmp($s1->getMostRecentDecision(), $s2->getMostRecentDecision());');
@@ -96,8 +99,8 @@ class ReviewerHandler extends Handler {
 	 * @param $newKey string The new key name, if one was supplied; otherwise, the existing one (if it exists) is used
 	 * @return object Valid user object if the key was valid; otherwise NULL.
 	 */
-	function &validateAccessKey($userId, $reviewId, $newKey = null) {
-		$journal =& Request::getJournal();
+	function &validateAccessKey($request, $userId, $reviewId, $newKey = null) {
+		$journal =& $request->getJournal();
 		if (!$journal || !$journal->getSetting('reviewerAccessKeysEnabled')) {
 			$accessKey = false;
 			return $accessKey;
@@ -108,7 +111,7 @@ class ReviewerHandler extends Handler {
 		import('lib.pkp.classes.security.AccessKeyManager');
 		$accessKeyManager = new AccessKeyManager();
 
-		$session =& Request::getSession();
+		$session =& $request->getSession();
 		// Check to see if a new access key is being used.
 		if (!empty($newKey)) {
 			if (Validation::isLoggedIn()) {
@@ -144,7 +147,7 @@ class ReviewerHandler extends Handler {
 	 */
 	function setupTemplate($subclass = false, $articleId = 0, $reviewId = 0) {
 		parent::setupTemplate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_SUBMISSION, LOCALE_COMPONENT_OJS_EDITOR));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION, LOCALE_COMPONENT_OJS_EDITOR);
 		$templateMgr =& TemplateManager::getManager();
 		$pageHierarchy = $subclass ? array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'reviewer'), 'user.role.reviewer'))
 				: array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'reviewer'), 'user.role.reviewer'));
@@ -153,6 +156,50 @@ class ReviewerHandler extends Handler {
 			$pageHierarchy[] = array(Request::url(null, 'reviewer', 'submission', $reviewId), "#$articleId", true);
 		}
 		$templateMgr->assign('pageHierarchy', $pageHierarchy);
+	}
+
+	//
+	// Validation
+	//
+
+	/**
+	 * Validate that the user is an assigned reviewer for
+	 * the article.
+	 * Redirects to reviewer index page if validation fails.
+	 * @param $request PKPRequest
+	 * @param $reviewId int optional
+	 */
+	function validate($request, $reviewId = null) {
+		if ($reviewId !== null) {
+			$reviewerSubmissionDao =& DAORegistry::getDAO('ReviewerSubmissionDAO');
+			$journal =& $request->getJournal();
+			$user =& $request->getUser();
+
+			$isValid = true;
+			$newKey = $request->getUserVar('key');
+
+			$reviewerSubmission =& $reviewerSubmissionDao->getReviewerSubmission($reviewId);
+
+			if (!$reviewerSubmission || $reviewerSubmission->getJournalId() != $journal->getId()) {
+				$isValid = false;
+			} elseif ($user && empty($newKey)) {
+				if ($reviewerSubmission->getReviewerId() != $user->getId()) {
+					$isValid = false;
+				}
+			} else {
+				$user =& SubmissionReviewHandler::validateAccessKey($request, $reviewerSubmission->getReviewerId(), $reviewId, $newKey);
+				if (!$user) $isValid = false;
+			}
+
+			if (!$isValid) {
+				$request->redirect(null, $request->getRequestedPage());
+			}
+
+			$this->submission =& $reviewerSubmission;
+			$this->user =& $user;
+		}
+
+		parent::validate();
 	}
 }
 

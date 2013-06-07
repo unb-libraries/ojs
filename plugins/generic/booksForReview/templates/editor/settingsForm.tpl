@@ -1,7 +1,7 @@
 {**
  * @file plugins/generic/booksForReview/templates/editor/settingsForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Books for Review plugin settings
@@ -24,7 +24,7 @@
 
 <br />
 
-<form method="post" name="booksForReviewSettingsForm" action="{url op="booksForReviewSettings"}">
+<form method="post" id="booksForReviewSettingsForm" action="{url op="booksForReviewSettings"}">
 {include file="common/formErrors.tpl"}
 
 <script type="text/javascript">
@@ -109,7 +109,7 @@
 
 <div class="separator"></div>
 
-<div id="booksForReviewadditionalInformation"> 
+<div id="booksForReviewadditionalInformation">
 <h4>{translate key="plugins.generic.booksForReview.settings.additionalInformation"}</h4>
 <p>{translate key="plugins.generic.booksForReview.settings.additionalInformationDescription"}</p>
 <table width="100%" class="data">

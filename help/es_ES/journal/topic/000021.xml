@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000021.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Roles - Revisor 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Roles - Reviewer 
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000021" locale="es_ES" title="Revisor" toc="journal/toc/000003" key="journal.roles.reviewer">
+<topic id="journal/topic/000021" locale="en_US" title="Reviewer" toc="journal/toc/000003" key="journal.roles.reviewer">
 	<section>
-		<![CDATA[<p>El recisor es seleccionado por el editor de la sección para revisar una entrega. A los revisores se les pide entregar revisiones a la página Web de la revista (sin embargo, algunas revistas optan por una política de revisión por correo electrónico) y están habilitados para cargar archivos adjuntos para que sean utilizados por el editor y el autor. Los revisores pueden estar clasificados, esto depende nuevamente de las políticas de la revista.</p><p>Puede encontar más información en {help_topic key="editorial.reviewersRole" text="here"}.</p>]]>	
+		<![CDATA[<p>El editor/a de sección es el encargado de seleccionar al revisor/a para revisar el envío. A los revisores se les solicita que envíen sus revisiones al sitio web de la revista (a pesar de que algunas revistas optan por una política de revisión de correo electrónico) y pueden cargar archivos adjuntos para que los utilicen el editor/a y el autor/a. Los editores/as de sección serán los que evaluarán el trabajo de los revisores/as, dependiendo una vez más de las políticas de la revista.</p><p>Haga clic {help_topic key="editorial.reviewersRole" text="aquí"} para saber más.</p>]]>	
 	</section>
 </topic>

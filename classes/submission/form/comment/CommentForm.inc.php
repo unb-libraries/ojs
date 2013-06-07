@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/CommentForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CommentForm
@@ -12,9 +12,6 @@
  *
  * @brief Comment form.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -125,7 +122,7 @@ class CommentForm extends Form {
 	 * Email the comment.
 	 * @param $recipients array of recipients (email address => name)
 	 */
-	function email($recipients) {
+	function email($recipients, $request) {
 		$article = $this->article;
 		$articleCommentDao =& DAORegistry::getDAO('ArticleCommentDAO');
 		$journal =& Request::getJournal();
@@ -146,7 +143,7 @@ class CommentForm extends Form {
 				'comments' => String::html2text($commentText)
 			);
 
-			$email->sendWithParams($paramArray);
+			$email->sendWithParams($paramArray, $request);
 			$email->clearRecipients();
 		}
 	}

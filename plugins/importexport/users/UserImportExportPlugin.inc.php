@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file UserImportExportPlugin.inc.php
+ * @file plugins/importexport/users/UserImportExportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserImportExportPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Users import/export plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.ImportExportPlugin');
 
@@ -49,9 +46,9 @@ class UserImportExportPlugin extends ImportExportPlugin {
 		return __('plugins.importexport.users.description');
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
-		parent::display($args);
+		parent::display($args, $request);
 
 		$templateMgr->assign('roleOptions', array(
 			'' => 'manager.people.doNotEnroll',
@@ -70,6 +67,7 @@ class UserImportExportPlugin extends ImportExportPlugin {
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 
 		$journal =& Request::getJournal();
+		set_time_limit(0);
 		switch (array_shift($args)) {
 			case 'confirm':
 				$this->import('UserXMLParser');
@@ -79,7 +77,8 @@ class UserImportExportPlugin extends ImportExportPlugin {
 				$continueOnError = (bool) Request::getUserVar('continueOnError');
 
 				import('lib.pkp.classes.file.FileManager');
-				if (($userFile = FileManager::getUploadedFilePath('userFile')) !== false) {
+				$fileManager = new FileManager();
+				if (($userFile = $fileManager->getUploadedFilePath('userFile')) !== false) {
 					// Import the uploaded file
 					$parser = new UserXMLParser($journal->getId());
 					$users =& $parser->parseData($userFile);
@@ -171,7 +170,8 @@ class UserImportExportPlugin extends ImportExportPlugin {
 				$this->import('UserExportDom');
 				$users =& $roleDao->getUsersByJournalId($journal->getId());
 				$users =& $users->toArray();
-				$doc =& UserExportDom::exportUsers($journal, $users);
+				$userExportDom = new UserExportDom();
+				$doc =& $userExportDom->exportUsers($journal, $users);
 				header("Content-Type: application/xml");
 				header("Cache-Control: private");
 				header("Content-Disposition: attachment; filename=\"users.xml\"");
@@ -190,7 +190,8 @@ class UserImportExportPlugin extends ImportExportPlugin {
 					$rolePaths[] = $rolePath;
 				}
 				$users = array_values($users);
-				$doc =& UserExportDom::exportUsers($journal, $users, $rolePaths);
+				$userExportDom = new UserExportDom();
+				$doc =& $userExportDom->exportUsers($journal, $users, $rolePaths);
 				header("Content-Type: application/xml");
 				header("Cache-Control: private");
 				header("Content-Disposition: attachment; filename=\"users.xml\"");
@@ -205,7 +206,7 @@ class UserImportExportPlugin extends ImportExportPlugin {
 	/**
 	 * Execute import/export tasks using the command-line interface.
 	 * @param $args Parameters to the plugin
-	 */ 
+	 */
 	function executeCLI($scriptName, &$args) {
 		$command = array_shift($args);
 		$xmlFile = array_shift($args);
@@ -275,7 +276,8 @@ class UserImportExportPlugin extends ImportExportPlugin {
 					}
 					$users = array_values($users);
 				}
-				$doc =& UserExportDom::exportUsers($journal, $users, $rolePaths);
+				$userExportDom = new UserExportDom();
+				$doc =& $userExportDom->exportUsers($journal, $users, $rolePaths);
 				if (($h = fopen($xmlFile, 'wb'))===false) {
 					echo __('plugins.importexport.users.export.errorsOccurred') . ":\n";
 					echo __('plugins.importexport.users.export.couldNotWriteFile', array('fileName' => $xmlFile)) . "\n";

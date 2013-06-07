@@ -3,7 +3,7 @@
 /**
  * @file classes/file/PKPPublicFileManager.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPPublicFileManager
@@ -11,8 +11,6 @@
  *
  * @brief Wrapper class for uploading files to a site/journal's public directory.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.file.FileManager');
@@ -40,18 +38,18 @@ class PKPPublicFileManager extends FileManager {
 	 * @param $destFileName string the destination file name
 	 * @return boolean
 	 */
- 	function uploadSiteFile($fileName, $destFileName) {
- 		return $this->uploadFile($fileName, $this->getSiteFilesPath() . '/' . $destFileName);
- 	}
+	function uploadSiteFile($fileName, $destFileName) {
+		return $this->uploadFile($fileName, $this->getSiteFilesPath() . '/' . $destFileName);
+	}
 
- 	/**
+	/**
 	 * Delete a file from the site's public directory.
- 	 * @param $fileName string the target file name
+	 * @param $fileName string the target file name
 	 * @return boolean
- 	 */
- 	function removeSiteFile($fileName) {
- 		return $this->deleteFile($this->getSiteFilesPath() . '/' . $fileName);
- 	}
+	 */
+	function removeSiteFile($fileName) {
+		return $this->deleteFile($this->getSiteFilesPath() . '/' . $fileName);
+	}
 }
 
 ?>

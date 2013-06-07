@@ -1,12 +1,11 @@
 {**
- * index.tpl
+ * plugins/generic/sword/articles.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of operations this plugin can perform
  *
- * $Id: index.tpl,v 1.13 2010/01/21 18:52:12 asmecher Exp $
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.sword.displayName"}
@@ -33,20 +32,20 @@ function changeDepositPoint() {
 			depositPoints[{$key|escape}][2] = '{if $depositPoint.password!=''}1{else}0{/if}';
 		{/foreach}
 	{literal}
-	var key = document.articles.depositPoint.options[document.articles.depositPoint.selectedIndex].value;
-	document.articles.swordUrl.value = depositPoints[key][0];
+	var key = document.getElementById('articles').depositPoint.options[document.getElementById('articles').depositPoint.selectedIndex].value;
+	document.getElementById('articles').swordUrl.value = depositPoints[key][0];
 	if (depositPoints[key][1] != '') {
-		document.articles.swordUsername.value = depositPoints[key][1];
-		document.articles.swordUsername.disabled = true;
+		document.getElementById('articles').swordUsername.value = depositPoints[key][1];
+		document.getElementById('articles').swordUsername.disabled = true;
 	} else {
-		document.articles.swordUsername.value = '';
-		document.articles.swordUsername.disabled = false;
+		document.getElementById('articles').swordUsername.value = '';
+		document.getElementById('articles').swordUsername.disabled = false;
 	}
 	if (depositPoints[key][2] == 1) {
-		document.articles.swordPassword.value = '********';
-		document.articles.swordPassword.disabled = true;
+		document.getElementById('articles').swordPassword.value = '********';
+		document.getElementById('articles').swordPassword.disabled = true;
 	} else {
-		document.articles.swordPassword.disabled = false;
+		document.getElementById('articles').swordPassword.disabled = false;
 	}
 
 }
@@ -56,7 +55,7 @@ function changeDepositPoint() {
 </script>
 
 <br/>
-<form action="{plugin_url path="deposit"}" method="post" name="articles">
+<form action="{plugin_url path="deposit"}" method="post" id="articles">
 
 <div id="settings">
 <table width="100%" class="data">
@@ -83,7 +82,7 @@ function changeDepositPoint() {
 		<td class="label"><label for="swordDepositPoint">{translate key="plugins.importexport.sword.depositPoint"}</label></td>
 		<td class="value">
 			{html_options name="swordDepositPoint" options=$swordDepositPoints selected=$swordDepositPoint}
-			<input type="button" onclick="document.articles.action='{plugin_url}'; document.articles.submit()" value="{translate key="common.refresh"}" />
+			<input type="button" onclick="document.getElementById('articles').action='{plugin_url}'; document.getElementById('articles').submit()" value="{translate key="common.refresh"}" />
 		</td>
 	</tr>
 	<tr valign="top">
@@ -118,7 +117,7 @@ function changeDepositPoint() {
 	<tr>
 		<td colspan="4" class="headseparator">&nbsp;</td>
 	</tr>
-	
+
 	{iterate from=articles item=articleData}
 	{assign var=article value=$articleData.article}
 	{assign var=issue value=$articleData.issue}

@@ -1,7 +1,7 @@
 {**
- * email.tpl
+ * templates/email/email.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Generic email template form
@@ -17,14 +17,15 @@
 {literal}
 <!--
 function deleteAttachment(fileId) {
-	document.emailForm.deleteAttachment.value = fileId;
-	document.emailForm.submit();
+	var emailForm = document.getElementById('emailForm');
+	emailForm.deleteAttachment.value = fileId;
+	emailForm.submit();
 }
 // -->
 {/literal}
 </script>
 
-<form method="post" id="emailForm" name="emailForm" action="{$formActionUrl}"{if $attachmentsEnabled} enctype="multipart/form-data"{/if}>
+<form method="post" id="emailForm" action="{$formActionUrl}"{if $attachmentsEnabled} enctype="multipart/form-data"{/if}>
 <input type="hidden" name="continued" value="1"/>
 {if $hiddenFormParams}
 	{foreach from=$hiddenFormParams item=hiddenFormParam key=key}
@@ -35,7 +36,7 @@ function deleteAttachment(fileId) {
 {if $attachmentsEnabled}
 	<input type="hidden" name="deleteAttachment" value="" />
 	{foreach from=$persistAttachments item=temporaryFile}
-		{if is_object($temporaryFile)}<input type="hidden" name="persistAttachments[]" value="{$temporaryFile->getFileId()}" />{/if}
+		{if is_object($temporaryFile)}<input type="hidden" name="persistAttachments[]" value="{$temporaryFile->getId()}" />{/if}
 	{/foreach}
 {/if}
 
@@ -128,7 +129,7 @@ function deleteAttachment(fileId) {
 			{if is_object($temporaryFile)}
 				{$attachmentNum|escape}.&nbsp;{$temporaryFile->getOriginalFileName()|escape}&nbsp;
 				({$temporaryFile->getNiceFileSize()})&nbsp;
-				<a href="javascript:deleteAttachment({$temporaryFile->getFileId()})" class="action">{translate key="common.delete"}</a>
+				<a href="javascript:deleteAttachment({$temporaryFile->getId()})" class="action">{translate key="common.delete"}</a>
 				<br/>
 				{assign var=attachmentNum value=$attachmentNum+1}
 			{/if}
@@ -136,7 +137,7 @@ function deleteAttachment(fileId) {
 
 		{if $attachmentNum != 1}<br/>{/if}
 
-		<input type="file" name="newAttachment" class="uploadField" /> <input name="addAttachment" type="submit" class="button" value="{translate key="common.upload"}" />
+		<input type="file" name="newAttachment" class="pkp_form_uploadField" /> <input name="addAttachment" type="submit" class="button" value="{translate key="common.upload"}" />
 	</td>
 </tr>
 {/if}
@@ -161,4 +162,3 @@ function deleteAttachment(fileId) {
 </form>
 
 {include file="common/footer.tpl"}
-

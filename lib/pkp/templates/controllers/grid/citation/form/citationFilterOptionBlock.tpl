@@ -1,7 +1,7 @@
 {**
  * citationFilterOptionBlock.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Shows a list of citation filters to be selected from.
@@ -21,11 +21,11 @@
 				{assign var=citationFilterDefault value=true}
 			{/if}
 			<div class="option-block-option">
-				{fbvCheckbox id=$citationFilter->getDisplayName() name=$citationFilterFieldName
+				{fbvElement type="checkbox" id=$citationFilter->getDisplayName() name=$citationFilterFieldName
 						checked=$citationFilterDefault}
-				{fieldLabel name=$citationFilterFieldName label=$citationFilter->getDisplayName() required=false}
+				{fieldLabel name=$citationFilterFieldName label=$citationFilter->getDisplayName()}
 			</div>
 		{/foreach}
 	</div>
-	<div class="clear"></div>
+	<div class="pkp_helpers_clear"></div>
 </div>

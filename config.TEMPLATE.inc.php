@@ -7,11 +7,12 @@
 ;
 ; config.TEMPLATE.inc.php
 ;
-; Copyright (c) 2003-2012 John Willinsky
+; Copyright (c) 2003-2013 John Willinsky
 ; Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 ;
 ; OJS Configuration settings.
 ; Rename config.TEMPLATE.inc.php to config.inc.php to use.
+;
 ;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -92,6 +93,9 @@ enable_cdn = On
 ; and 10. The more your connection bandwidth allows the better.
 citation_checking_max_processes = 3
 
+; Display a message on the site admin and journal manager user home pages if there is an upgrade available
+show_upgrade_warning = On
+
 ;;;;;;;;;;;;;;;;;;;;;
 ; Database Settings ;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -137,7 +141,10 @@ memcache_port = 11211
 ; 2) This caching WILL NOT RESPECT DOMAIN-BASED SUBSCRIPTIONS.
 ; However, for situations like hosting high-volume open access journals, it's
 ; an easy way of decreasing server load.
-
+;
+; When using web_cache, configure a tool to periodically clear out cache files
+; such as CRON. For example, configure it to run the following command:
+; find .../ojs/cache -maxdepth 1 -name wc-\*.html -mtime +1 -exec rm "{}" ";"
 web_cache = Off
 web_cache_hours = 1
 
@@ -226,7 +233,7 @@ encryption = md5
 ; e.g. <img src|alt> to allow "src" and "alt" attributes. Unspecified
 ; attributes will be stripped. For PHP below 5.0.5 attributes may not be
 ; specified in this way.
-allowed_html = "<a> <em> <strong> <cite> <code> <ul> <ol> <li> <dl> <dt> <dd> <b> <i> <u> <img src|alt> <sup> <sub> <br> <p>"
+allowed_html = "<a href|target> <em> <strong> <cite> <code> <ul> <ol> <li> <dl> <dt> <dd> <b> <i> <u> <img src|alt> <sup> <sub> <br> <p>"
 
 ; Prevent VIM from attempting to highlight the rest of the config file
 ; with unclosed tags:
@@ -239,16 +246,16 @@ allowed_html = "<a> <em> <strong> <cite> <code> <ul> <ol> <li> <dl> <dt> <dd> <b
 
 ;Implicit Auth Header Variables
 
-;implicit_auth_header_first_name = HTTP_TDL_GIVENNAME
-;implicit_auth_header_last_name = HTTP_TDL_SN
-;implicit_auth_header_email = HTTP_TDL_MAIL
-;implicit_auth_header_phone = HTTP_TDL_TELEPHONENUMBER
-;implicit_auth_header_initials = HTTP_TDL_METADATA_INITIALS
-;implicit_auth_header_mailing_address = HTTP_TDL_METADATA_TDLHOMEPOSTALADDRESS
-;implicit_auth_header_uin = HTTP_TDL_TDLUID
+;implicit_auth_header_first_name = HTTP_GIVENNAME
+;implicit_auth_header_last_name = HTTP_SN
+;implicit_auth_header_email = HTTP_MAIL
+;implicit_auth_header_phone = HTTP_TELEPHONENUMBER
+;implicit_auth_header_initials = HTTP_METADATA_INITIALS
+;implicit_auth_header_mailing_address = HTTP_METADATA_HOMEPOSTALADDRESS
+;implicit_auth_header_uin = HTTP_UID
 
 ; A space delimited list of uins to make admin
-;implicit_auth_admin_list = "100000040@tdl.org 85B7FA892DAA90F7@utexas.edu 100000012@tdl.org"
+;implicit_auth_admin_list = "jdoe@email.ca jshmo@email.ca"
 
 ; URL of the implicit auth 'Way Finder' page. See pages/login/LoginHandler.inc.php for usage.
 
@@ -387,6 +394,16 @@ captcha_on_mailinglist = on
 
 ; Font location for font to use in Captcha images
 font_location = /usr/share/fonts/truetype/freefont/FreeSerif.ttf
+
+; Whether to use reCaptcha instead of default Captcha
+recaptcha = off
+
+; Public key for reCaptcha (see http://www.google.com/recaptcha)
+; recaptcha_public_key = your_public_key
+
+; Private key for reCaptcha (see http://www.google.com/recaptcha)
+; recaptcha_private_key = your_private_key
+
 
 ;;;;;;;;;;;;;;;;;;;;;
 ; External Commands ;

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file NativeImportDom.inc.php
+ * @file plugins/importexport/native/NativeImportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeImportDom
@@ -11,9 +11,6 @@
  *
  * @brief Native import/export plugin DOM functions for import
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -93,8 +90,11 @@ class NativeImportDom {
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
 		$journalPrimaryLocale = $journal->getPrimaryLocale();
 
+		/* --- Set IDs --- */
+		if (!NativeImportDom::handlePubIds($issueNode, $issue, $journal, $issue, $article, $errors)) $hasErrors = true;
+
 		/* --- Set title, description, volume, number, and year --- */
-		
+
 		$titleExists = false;
 		for ($index=0; ($node = $issueNode->getChildByName('title', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
@@ -102,31 +102,31 @@ class NativeImportDom {
 				$locale = $journalPrimaryLocale;
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.issueTitleLocaleUnsupported', array('issueTitle' => $node->getValue(), 'locale' => $locale));
-				$hasErrors = true;	
+				$hasErrors = true;
 				continue;
 			}
 			$issue->setTitle($node->getValue(), $locale);
 			$titleExists = true;
 		}
-		
+
 		for ($index=0; ($node = $issueNode->getChildByName('description', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
 				$locale = $journalPrimaryLocale;
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.issueDescriptionLocaleUnsupported', array('issueTitle' => $issue->getLocalizedTitle(), 'locale' => $locale));
-				$hasErrors = true;	
+				$hasErrors = true;
 				continue;
 			}
 			$issue->setDescription($node->getValue(), $locale);
-		}		
+		}
 
 		if (($node = $issueNode->getChildByName('volume'))) $issue->setVolume($node->getValue());
 		if (($node = $issueNode->getChildByName('number'))) $issue->setNumber($node->getValue());
 		if (($node = $issueNode->getChildByName('year'))) $issue->setYear($node->getValue());
 
 		/* --- Set date published --- */
-		
+
 		if (($node = $issueNode->getChildByName('date_published'))) {
 			$publishedDate = strtotime($node->getValue());
 			if ($publishedDate === -1) {
@@ -141,7 +141,7 @@ class NativeImportDom {
 		}
 
 		/* --- Set attributes: Identification type, published, current, public ID --- */
-		
+
 		switch(($value = $issueNode->getAttribute('identification'))) {
 			case 'num_vol_year':
 				$issue->setShowVolume(1);
@@ -180,7 +180,7 @@ class NativeImportDom {
 				$hasErrors = true;
 				break;
 		}
-		
+
 		if (($issueNode->getAttribute('identification') == 'title' || $issueNode->getAttribute('identification') == '') && (!$titleExists)) {
 			$errors[] = array('plugins.importexport.native.import.error.titleMissing', array());
 			// Set a placeholder title so that further errors are
@@ -221,17 +221,17 @@ class NativeImportDom {
 		}
 
 		if (($value = $issueNode->getAttribute('public_id')) != '') {
-			$anotherIssue = $issueDao->getIssueByPublicIssueId($value, $journal->getId());
+			$anotherIssue = $issueDao->getIssueByPubId('publisher-id', $value, $journal->getId());
 			if ($anotherIssue) {
-				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicId', array('issueTitle' => $issue->getIssueIdentification(), 'otherIssueTitle' => $anotherIssue->getIssueIdentification()));
+				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicIssueId', array('issueTitle' => $issue->getIssueIdentification(), 'otherIssueTitle' => $anotherIssue->getIssueIdentification()));
 				$hasErrors = true;
 			} else {
-				$issue->setPublicIssueId($value);
+				$issue->setStoredPubId('publisher-id', $value);
 			}
 		}
 
 		/* --- Access Status --- */
-		
+
 		$node = $issueNode->getChildByName('open_access');
 		$issue->setAccessStatus($node?ISSUE_ACCESS_OPEN:ISSUE_ACCESS_SUBSCRIPTION);
 
@@ -260,7 +260,7 @@ class NativeImportDom {
 			if ($issue->getCurrent()) {
 				$issueDao->updateCurrentIssue($journal->getId());
 			}
-			$issue->setIssueId($issueDao->insertIssue($issue));
+			$issue->setId($issueDao->insertIssue($issue));
 			$dependentItems[] = array('issue', $issue);
 		}
 
@@ -309,9 +309,9 @@ class NativeImportDom {
 			$locale = $journalPrimaryLocale;
 		} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.coverLocaleUnsupported', array('issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 		}
-		
+
 		$issue->setShowCoverPage(1, $locale);
 
 		if (($node = $coverNode->getChildByName('caption'))) $issue->setCoverPageDescription($node->getValue(), $locale);
@@ -357,8 +357,8 @@ class NativeImportDom {
 			// Store the image dimensions.
 			list($width, $height) = getimagesize($publicFileManager->getJournalFilesPath($journal->getId()) . '/' . $newName);
 			$issue->setWidth($width, $locale);
-			$issue->setHeight($height, $locale);	
-			
+			$issue->setHeight($height, $locale);
+
 		}
 
 		if ($hasErrors) {
@@ -366,22 +366,21 @@ class NativeImportDom {
 		}
 		return true;
 	}
-	
+
 	function handleArticleCoverNode(&$journal, &$coverNode, &$article, &$errors, $isCommandLine) {
 		$errors = array();
 		$hasErrors = false;
 
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
-		$journalPrimaryLocale = $journal->getPrimaryLocale();
 
 		$locale = $coverNode->getAttribute('locale');
 		if ($locale == '') {
-			$locale = $journalPrimaryLocale;
+			$locale = $article->getLocale();
 		} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.coverLocaleUnsupported', array('issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 		}
-		
+
 		$article->setShowCoverPage(1, $locale);
 
 		if (($node = $coverNode->getChildByName('altText'))) $article->setCoverPageAltText($node->getValue(), $locale);
@@ -427,8 +426,8 @@ class NativeImportDom {
 			// Store the image dimensions.
 			list($width, $height) = getimagesize($publicFileManager->getJournalFilesPath($journal->getId()) . '/' . $newName);
 			$article->setWidth($width, $locale);
-			$article->setHeight($height, $locale);	
-			
+			$article->setHeight($height, $locale);
+
 		}
 
 		if ($hasErrors) {
@@ -483,7 +482,7 @@ class NativeImportDom {
 		if (empty($titles)) {
 			$errors[] = array('plugins.importexport.native.import.error.sectionTitleMissing', array('issueTitle' => $issue->getIssueIdentification()));
 			return false;
-		}	
+		}
 
 		$abbrevs = array();
 		for ($index=0; ($node = $sectionNode->getChildByName('abbrev', $index)); $index++) {
@@ -504,11 +503,11 @@ class NativeImportDom {
 				$locale = $journalPrimaryLocale;
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.sectionIdentifyTypeLocaleUnsupported', array('sectionIdentifyType' => $node->getValue(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false; // or ignore this error?	
+				return false; // or ignore this error?
 			}
 			$identifyTypes[$locale] = $node->getValue();
 		}
-		
+
 		$policies = array();
 		for ($index=0; ($node = $sectionNode->getChildByName('policy', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
@@ -520,7 +519,7 @@ class NativeImportDom {
 			}
 			$policies[$locale] = $node->getValue();
 		}
-		
+
 		// $title and, optionally, $abbrev contain information that can
 		// be used to locate an existing section. Otherwise, we'll
 		// create a new one. If $title and $abbrev each match an
@@ -532,24 +531,24 @@ class NativeImportDom {
 			$section = $sectionDao->getSectionByTitle($title, $journal->getId());
 			if ($section) {
 				$sectionId = $section->getId();
-				if ($foundSectionId) { 
+				if ($foundSectionId) {
 					if ($foundSectionId != $sectionId) {
 						// Mismatching sections found. Throw an error.
 						$errors[] = array('plugins.importexport.native.import.error.sectionTitleMismatch', array('section1Title' => $title, 'section2Title' => $foundSectionTitle, 'issueTitle' => $issue->getIssueIdentification()));
 						return false;
 					}
-				} else if ($index > 0) { 
+				} else if ($index > 0) {
 						// the current title matches, but the prev titles didn't => error
 						$errors[] = array('plugins.importexport.native.import.error.sectionTitleMatch', array('sectionTitle' => $title, 'issueTitle' => $issue->getIssueIdentification()));
 						return false;
 				}
 				$foundSectionId = $sectionId;
 				$foundSectionTitle = $title;
-			} else { 
+			} else {
 				if ($foundSectionId) {
 					// a prev title matched, but the current doesn't => error
 					$errors[] = array('plugins.importexport.native.import.error.sectionTitleMatch', array('sectionTitle' => $foundSectionTitle, 'issueTitle' => $issue->getIssueIdentification()));
-					return false;				
+					return false;
 				}
 			}
 			$index++;
@@ -562,7 +561,7 @@ class NativeImportDom {
 		foreach($abbrevs as $locale => $abbrev) {
 			$abbrevSection = $sectionDao->getSectionByAbbrev($abbrev, $journal->getId());
 			if ($abbrevSection) {
-				$sectionId = $abbrevSection->getSectionId();
+				$sectionId = $abbrevSection->getId();
 				if ($foundSectionId) {
 					if ($foundSectionId != $sectionId) {
 						// Mismatching sections found. Throw an error.
@@ -572,7 +571,7 @@ class NativeImportDom {
 				} else if ($index > 0) {
 					// the current abbrev matches, but the prev abbrevs didn't => error
 					$errors[] = array('plugins.importexport.native.import.error.sectionAbbrevMatch', array('sectionAbbrev' => $sectionAbbrev, 'issueTitle' => $issue->getIssueIdentification()));
-					return false;	
+					return false;
 				}
 				$foundSectionId = $sectionId;
 				$foundSectionAbbrev = $abbrev;
@@ -580,11 +579,11 @@ class NativeImportDom {
 				if ($foundSectionId) {
 					// a prev abbrev matched, but the current doesn't => error
 					$errors[] = array('plugins.importexport.native.import.error.sectionAbbrevMatch', array('sectionAbbrev' => $foundSectionAbbrev, 'issueTitle' => $issue->getIssueIdentification()));
-					return false;				
+					return false;
 				}
 			}
 			$index++;
-		}		
+		}
 
 		if (!$section && !$abbrevSection) {
 			// The section was not matched. Create one.
@@ -602,7 +601,7 @@ class NativeImportDom {
 			$section->setSequence(REALLY_BIG_NUMBER);
 			$section->setMetaIndexed(1);
 			$section->setEditorRestricted(1);
-			$section->setSectionId($sectionDao->insertSection($section));
+			$section->setId($sectionDao->insertSection($section));
 			$sectionDao->resequenceSections($journal->getId());
 		}
 
@@ -635,13 +634,25 @@ class NativeImportDom {
 		$errors = array();
 
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
-		$journalPrimaryLocale = $journal->getPrimaryLocale();
-
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 
 		$article = new Article();
-		$article->setLocale($journalPrimaryLocale); // FIXME in bug #5543
+		if ($locale = $articleNode->getAttribute('locale')) {
+			$article->setLocale($locale);
+		} else {
+			$article->setLocale($journal->getPrimaryLocale());
+		}
+		if (($value = $articleNode->getAttribute('public_id')) != '') {
+			$anotherArticle = $publishedArticleDao->getPublishedArticleByPubId('publisher-id', $value, $journal->getId());
+			if ($anotherArticle) {
+				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicArticleId', array('articleTitle' => $article->getLocalizedTitle(), 'otherArticleTitle' => $anotherArticle->getLocalizedTitle()));
+				$hasErrors = true;
+			} else {
+				$issue->setStoredPubId('publisher-id', $value);
+			}
+		}
+
 		$article->setJournalId($journal->getId());
 		$article->setUserId($user->getId());
 		$article->setSectionId($section->getId());
@@ -654,7 +665,7 @@ class NativeImportDom {
 		for ($index=0; ($node = $articleNode->getChildByName('title', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleTitleLocaleUnsupported', array('articleTitle' => $node->getValue(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
@@ -662,15 +673,15 @@ class NativeImportDom {
 			$article->setTitle($node->getValue(), $locale);
 			$titleExists = true;
 		}
-		if (!$titleExists || $article->getTitle($journalPrimaryLocale) == "") {
+		if (!$titleExists || $article->getTitle($article->getLocale()) == '') {
 			$errors[] = array('plugins.importexport.native.import.error.articleTitleMissing', array('issueTitle' => $issue->getIssueIdentification(), 'sectionTitle' => $section->getLocalizedTitle()));
 			return false;
-		}	
+		}
 
 		for ($index=0; ($node = $articleNode->getChildByName('abstract', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleAbstractLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
@@ -678,11 +689,11 @@ class NativeImportDom {
 			$article->setAbstract($node->getValue(), $locale);
 		}
 
-		if (($indexingNode = $articleNode->getChildByName('indexing'))) {			
+		if (($indexingNode = $articleNode->getChildByName('indexing'))) {
 			for ($index=0; ($node = $indexingNode->getChildByName('discipline', $index)); $index++) {
 				$locale = $node->getAttribute('locale');
 				if ($locale == '') {
-					$locale = $journalPrimaryLocale;
+					$locale = $article->getLocale();
 				} elseif (!in_array($locale, $journalSupportedLocales)) {
 					$errors[] = array('plugins.importexport.native.import.error.articleDisciplineLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 					return false;
@@ -692,7 +703,7 @@ class NativeImportDom {
 			for ($index=0; ($node = $indexingNode->getChildByName('type', $index)); $index++) {
 				$locale = $node->getAttribute('locale');
 				if ($locale == '') {
-					$locale = $journalPrimaryLocale;
+					$locale = $article->getLocale();
 				} elseif (!in_array($locale, $journalSupportedLocales)) {
 					$errors[] = array('plugins.importexport.native.import.error.articleTypeLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 					return false;
@@ -702,7 +713,7 @@ class NativeImportDom {
 			for ($index=0; ($node = $indexingNode->getChildByName('subject', $index)); $index++) {
 				$locale = $node->getAttribute('locale');
 				if ($locale == '') {
-					$locale = $journalPrimaryLocale;
+					$locale = $article->getLocale();
 				} elseif (!in_array($locale, $journalSupportedLocales)) {
 					$errors[] = array('plugins.importexport.native.import.error.articleSubjectLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 					return false;
@@ -712,19 +723,19 @@ class NativeImportDom {
 			for ($index=0; ($node = $indexingNode->getChildByName('subject_class', $index)); $index++) {
 				$locale = $node->getAttribute('locale');
 				if ($locale == '') {
-					$locale = $journalPrimaryLocale;
+					$locale = $article->getLocale();
 				} elseif (!in_array($locale, $journalSupportedLocales)) {
 					$errors[] = array('plugins.importexport.native.import.error.articleSubjectClassLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 					return false;
 				}
 				$article->setSubjectClass($node->getValue(), $locale);
 			}
-			
+
 			if (($coverageNode = $indexingNode->getChildByName('coverage'))) {
 				for ($index=0; ($node = $coverageNode->getChildByName('geographical', $index)); $index++) {
 					$locale = $node->getAttribute('locale');
 					if ($locale == '') {
-						$locale = $journalPrimaryLocale;
+						$locale = $article->getLocale();
 					} elseif (!in_array($locale, $journalSupportedLocales)) {
 						$errors[] = array('plugins.importexport.native.import.error.articleCoverageGeoLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 						return false;
@@ -734,7 +745,7 @@ class NativeImportDom {
 				for ($index=0; ($node = $coverageNode->getChildByName('chronological', $index)); $index++) {
 					$locale = $node->getAttribute('locale');
 					if ($locale == '') {
-						$locale = $journalPrimaryLocale;
+						$locale = $article->getLocale();
 					} elseif (!in_array($locale, $journalSupportedLocales)) {
 						$errors[] = array('plugins.importexport.native.import.error.articleCoverageChronLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 						return false;
@@ -744,7 +755,7 @@ class NativeImportDom {
 				for ($index=0; ($node = $coverageNode->getChildByName('sample', $index)); $index++) {
 					$locale = $node->getAttribute('locale');
 					if ($locale == '') {
-						$locale = $journalPrimaryLocale;
+						$locale = $article->getLocale();
 					} elseif (!in_array($locale, $journalSupportedLocales)) {
 						$errors[] = array('plugins.importexport.native.import.error.articleCoverageSampleLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 						return false;
@@ -757,28 +768,19 @@ class NativeImportDom {
 		for ($index=0; ($node = $articleNode->getChildByName('sponsor', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSponsorLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
 			}
 			$article->setSponsor($node->getValue(), $locale);
 		}
-		
-		if (($node = $articleNode->getChildByName('pages'))) $article->setPages($node->getValue());
-		if (($language = $articleNode->getAttribute('language'))) $article->setLanguage($language); 
 
-		/* --- Handle authors --- */
-		$hasErrors = false;
-		for ($index = 0; ($node = $articleNode->getChildByName('author', $index)); $index++) {
-			if (!NativeImportDom::handleAuthorNode($journal, $node, $issue, $section, $article, $authorErrors)) {
-				$errors = array_merge($errors, $authorErrors);
-				$hasErrors = true;
-			}
-		}
-		if ($hasErrors) return false;
-		
+		if (($node = $articleNode->getChildByName('pages'))) $article->setPages($node->getValue());
+		if (($language = $articleNode->getAttribute('language'))) $article->setLanguage($language);
+
 		/* --- Handle covers --- */
+		$hasErrors = false;
 		for ($index = 0; ($node = $articleNode->getChildByName('cover', $index)); $index++) {
 			if (!NativeImportDom::handleArticleCoverNode($journal, $node, $article, $coverErrors, $isCommandLine)) {
 				$errors = array_merge($errors, $coverErrors);
@@ -786,16 +788,20 @@ class NativeImportDom {
 			}
 		}
 
-		for ($index=0; ($node = $articleNode->getChildByName('id', $index)); $index++) {
-			switch ($node->getAttribute('type')) {
-				case 'doi':
-					$article->setStoredDOI($node->getValue());
-					break;
-			}
-		}
+		/* --- Set IDs --- */
+		if (!NativeImportDom::handlePubIds($articleNode, $article, $journal, $issue, $article, $errors)) $hasErrors = true;
 
 		$articleDao->insertArticle($article);
 		$dependentItems[] = array('article', $article);
+
+		/* --- Handle authors --- */
+		for ($index = 0; ($node = $articleNode->getChildByName('author', $index)); $index++) {
+			if (!NativeImportDom::handleAuthorNode($journal, $node, $issue, $section, $article, $authorErrors, $index)) {
+				$errors = array_merge($errors, $authorErrors);
+				$hasErrors = true;
+			}
+		}
+		if ($hasErrors) return false;
 
 		// Create submission mangement records
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
@@ -803,11 +809,11 @@ class NativeImportDom {
 		$initialCopyeditSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $article->getId());
 		$initialCopyeditSignoff->setUserId(0);
 		$signoffDao->updateObject($initialCopyeditSignoff);
-		
+
 		$authorCopyeditSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_AUTHOR', ASSOC_TYPE_ARTICLE, $article->getId());
 		$authorCopyeditSignoff->setUserId(0);
 		$signoffDao->updateObject($authorCopyeditSignoff);
-		
+
 		$finalCopyeditSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_FINAL', ASSOC_TYPE_ARTICLE, $article->getId());
 		$finalCopyeditSignoff->setUserId(0);
 		$signoffDao->updateObject($finalCopyeditSignoff);
@@ -819,30 +825,27 @@ class NativeImportDom {
 		$authorProofSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_AUTHOR', ASSOC_TYPE_ARTICLE, $article->getId());
 		$authorProofSignoff->setUserId(0);
 		$signoffDao->updateObject($authorProofSignoff);
-		
+
 		$proofreaderProofSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $article->getId());
 		$proofreaderProofSignoff->setUserId(0);
 		$signoffDao->updateObject($proofreaderProofSignoff);
-		
+
 		$layoutProofSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $article->getId());
 		$layoutProofSignoff->setUserId(0);
 		$signoffDao->updateObject($layoutProofSignoff);
 
 		// Log the import in the article event log.
 		import('classes.article.log.ArticleLog');
-		import('classes.article.log.ArticleEventLogEntry');
-		ArticleLog::logEvent(
-			$article->getId(),
+		ArticleLog::logEventHeadless(
+			$journal, $user->getId(), $article,
 			ARTICLE_LOG_ARTICLE_IMPORT,
-			ARTICLE_LOG_TYPE_DEFAULT,
-			0,
 			'log.imported',
 			array('userName' => $user->getFullName(), 'articleId' => $article->getId())
 		);
 
 		// Insert published article entry.
 		$publishedArticle = new PublishedArticle();
-		$publishedArticle->setArticleId($article->getId());
+		$publishedArticle->setId($article->getId());
 		$publishedArticle->setIssueId($issue->getId());
 
 		if (($node = $articleNode->getChildByName('date_published'))) {
@@ -858,9 +861,8 @@ class NativeImportDom {
 		$publishedArticle->setAccessStatus($node?ARTICLE_ACCESS_OPEN:ARTICLE_ACCESS_ISSUE_DEFAULT);
 		$publishedArticle->setSeq(REALLY_BIG_NUMBER);
 		$publishedArticle->setViews(0);
-		$publishedArticle->setPublicArticleId($articleNode->getAttribute('public_id'));
 
-		$publishedArticle->setPubId($publishedArticleDao->insertPublishedArticle($publishedArticle));
+		$publishedArticle->setPublishedArticleId($publishedArticleDao->insertPublishedArticle($publishedArticle));
 
 		$publishedArticleDao->resequencePublishedArticles($section->getId(), $issue->getId());
 
@@ -877,13 +879,12 @@ class NativeImportDom {
 			if ($node->getName() == 'htmlgalley') $isHtml = true;
 			elseif ($node->getName() == 'galley') $isHtml = false;
 			else continue;
-			
+
 			if (!NativeImportDom::handleGalleyNode($journal, $node, $issue, $section, $article, $galleyErrors, $isCommandLine, $isHtml, $galleyCount, $articleFileManager)) {
 				$errors = array_merge($errors, $galleyErrors);
 				$hasErrors = true;
 			}
 			$galleyCount++;
-			unset($node);
 		}
 		if ($hasErrors) return false;
 
@@ -899,58 +900,71 @@ class NativeImportDom {
 
 		// Index the inserted article.
 		import('classes.search.ArticleSearchIndex');
-		ArticleSearchIndex::indexArticleMetadata($article);
-		ArticleSearchIndex::indexArticleFiles($article);
+		$articleSearchIndex = new ArticleSearchIndex();
+		$articleSearchIndex->articleMetadataChanged($article);
+		$articleSearchIndex->articleFilesChanged($article);
+		$articleSearchIndex->articleChangesFinished();
 
 		return true;
 	}
 
-	function handleAuthorNode(&$journal, &$authorNode, &$issue, &$section, &$article, &$errors) {
+	/**
+	 * Handle an author node (i.e. convert an author from DOM to DAO).
+	 * @param $journal Journal
+	 * @param $authorNode DOMElement
+	 * @param $issue Issue
+	 * @param $section Section
+	 * @param $article Article
+	 * @param $errors array
+	 * @param $authorIndex int 0 for first author, 1 for second, ...
+	 */
+	function handleAuthorNode(&$journal, &$authorNode, &$issue, &$section, &$article, &$errors, $authorIndex) {
 		$errors = array();
 
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
-		$journalPrimaryLocale = $journal->getPrimaryLocale();
-		
 		$author = new Author();
-		if (($node = $authorNode->getChildByName('firstname'))) $author->setFirstName($node->getValue());
+		if (($node = $authorNode->getChildByName('firstname'))) $author->setFirstName((string)$node->getValue());
 		if (($node = $authorNode->getChildByName('middlename'))) $author->setMiddleName($node->getValue());
-		if (($node = $authorNode->getChildByName('lastname'))) $author->setLastName($node->getValue());
+		if (($node = $authorNode->getChildByName('lastname'))) $author->setLastName((string)$node->getValue());
+		$author->setSequence($authorIndex+1); // 1-based
 		for ($index=0; ($node = $authorNode->getChildByName('affiliation', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleAuthorAffiliationLocaleUnsupported', array('authorFullName' => $author->getFullName(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
-			} 
+			}
 			$author->setAffiliation($node->getValue(), $locale);
 		}
 		if (($node = $authorNode->getChildByName('country'))) $author->setCountry($node->getValue());
-		if (($node = $authorNode->getChildByName('email'))) $author->setEmail($node->getValue());
+		if (($node = $authorNode->getChildByName('email'))) $author->setEmail((string)$node->getValue());
 		if (($node = $authorNode->getChildByName('url'))) $author->setUrl($node->getValue());
 		for ($index=0; ($node = $authorNode->getChildByName('competing_interests', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleAuthorCompetingInterestsLocaleUnsupported', array('authorFullName' => $author->getFullName(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
-			} 
+			}
 			$author->setCompetingInterests($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $authorNode->getChildByName('biography', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleAuthorBiographyLocaleUnsupported', array('authorFullName' => $author->getFullName(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 				return false;
-			} 
+			}
 			$author->setBiography($node->getValue(), $locale);
 		}
-		
+
+		$author->setSubmissionId($article->getId());
 		$author->setPrimaryContact($authorNode->getAttribute('primary_contact')==='true'?1:0);
-		$article->addAuthor($author);		// instead of $author->setSequence($index+1);
+		$authorDao =& DAORegistry::getDAO('AuthorDAO'); /* @var $authorDao AuthorDAO */
+		$authorDao->insertAuthor($author);
 
 		return true;
 
@@ -960,26 +974,37 @@ class NativeImportDom {
 		$errors = array();
 
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
-		$journalPrimaryLocale = $journal->getPrimaryLocale();
-
 		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
 
 		if ($isHtml) $galley = new ArticleHtmlGalley();
 		else $galley = new ArticleGalley();
 
+		if (($value = $galleyNode->getAttribute('public_id')) != '') {
+			$anotherGalley = $galleyDao->getGalleyByPubId('publisher-id', $value, $article->getId());
+			if ($anotherGalley) {
+				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicGalleyId', array('publicId' => $value, 'articleTitle' => $article->getLocalizedTitle()));
+				$hasErrors = true;
+			} else {
+				$galley->setStoredPubId('publisher-id', $value);
+			}
+		}
+
 		$galley->setArticleId($article->getId());
 		$galley->setSequence($galleyCount);
+
+		/* --- Set IDs --- */
+		if (!NativeImportDom::handlePubIds($galleyNode, $galley, $journal, $issue, $article, $errors)) return false;
 
 		// just journal supported locales?
 		$locale = $galleyNode->getAttribute('locale');
 		if ($locale == '') {
-			$locale = $journalPrimaryLocale;
+			$locale = $article->getLocale();
 		} elseif (!in_array($locale, $journalSupportedLocales)) {
 			$errors[] = array('plugins.importexport.native.import.error.galleyLocaleUnsupported', array('articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
 			return false;
-		} 
-		$galley->setLocale($locale); 
-		
+		}
+		$galley->setLocale($locale);
+
 		/* --- Galley Label --- */
 		if (!($node = $galleyNode->getChildByName('label'))) {
 			$errors[] = array('plugins.importexport.native.import.error.galleyLabelMissing', array('articleTitle' => $article->getLocalizedTitle(), 'sectionTitle' => $section->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification()));
@@ -1031,7 +1056,7 @@ class NativeImportDom {
 		}
 
 		return true;
-		
+
 	}
 
 	/**
@@ -1085,94 +1110,143 @@ class NativeImportDom {
 		return true;
 	}
 
+	/**
+	 * Import a public ID from the XML node to the given publication object.
+	 * @param $node DOMNode
+	 * @param $pubObject object
+	 * @param $journal Journal
+	 * @param $issue Issue
+	 * @param $article Article
+	 * @param $errors array
+	 */
+	function handlePubIds(&$node, &$pubObject, &$journal, &$issue, &$article, &$errors) {
+		for ($index=0; ($idNode = $node->getChildByName('id', $index)); $index++) {
+			$pubIdType = $idNode->getAttribute('type');
+
+			// Ignore legacy-type id nodes - this was used to export
+			// issue IDs but was never really imported.
+			if (is_null($pubIdType)) continue;
+
+			$errorParams = array(
+				'pubIdType' => $pubIdType
+			);
+
+			$pubIdPlugins =& PluginRegistry::loadCategory('pubIds', true, $journal->getId());
+			$pubIdPluginFound = false;
+			if (is_array($pubIdPlugins)) foreach ($pubIdPlugins as $pubIdPlugin) {
+				if ($pubIdPlugin->getPubIdType() == $pubIdType) {
+					$pubId = $idNode->getValue();
+					$errorParams['pubId'] = $pubId;
+					if (!$pubIdPlugin->validatePubId($pubId)) {
+						$errors[] = array('plugins.importexport.native.import.error.invalidPubId', $errorParams);
+						return false;
+					}
+					if (!$pubIdPlugin->checkDuplicate($pubId, $pubObject, $journal->getId())) {
+						$errors[] = array('plugins.importexport.native.import.error.duplicatePubId', $errorParams);
+						return false;
+					}
+					$pubObject->setStoredPubId($pubIdType, $pubId);
+					$pubIdPluginFound = true;
+					break;
+				}
+			}
+			if (!$pubIdPluginFound) {
+				$errors[] = array('plugins.importexport.native.import.error.unknownPubId', $errorParams);
+				return false;
+			}
+		}
+		return true;
+	}
+
 	function handleSuppFileNode(&$journal, &$suppNode, &$issue, &$section, &$article, &$errors, $isCommandLine, &$articleFileManager) {
 		$errors = array();
 
 		$journalSupportedLocales = array_keys($journal->getSupportedLocaleNames()); // => journal locales must be set up before
-		$journalPrimaryLocale = $journal->getPrimaryLocale();
-
 		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
-			
+
 		$suppFile = new SuppFile();
 		$suppFile->setArticleId($article->getId());
+
+		/* --- Set IDs --- */
+		if (!NativeImportDom::handlePubIds($suppNode, $suppFile, $journal, $issue, $article, $errors)) return false;
 
 		for ($index=0; ($node = $suppNode->getChildByName('title', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileTitleLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setTitle($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('creator', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileCreatorLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setCreator($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('subject', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileSubjectLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setSubject($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('type_other', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileTypeOtherLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setTypeOther($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('description', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileDescriptionLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setDescription($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('publisher', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFilePublisherLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setPublisher($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('sponsor', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileSponsorLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setSponsor($node->getValue(), $locale);
 		}
 		for ($index=0; ($node = $suppNode->getChildByName('source', $index)); $index++) {
 			$locale = $node->getAttribute('locale');
 			if ($locale == '') {
-				$locale = $journalPrimaryLocale;
+				$locale = $article->getLocale();
 			} elseif (!in_array($locale, $journalSupportedLocales)) {
 				$errors[] = array('plugins.importexport.native.import.error.articleSuppFileSourceLocaleUnsupported', array('suppFileTitle' => $node->getValue(), 'articleTitle' => $article->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification(), 'locale' => $locale));
-				return false;			
+				return false;
 			}
 			$suppFile->setSource($node->getValue(), $locale);
 		}
@@ -1194,9 +1268,19 @@ class NativeImportDom {
 				$errors[] = array('plugins.importexport.native.import.error.unknownSuppFileType', array('suppFileType' => $suppType));
 				return false;
 		}
-		
+
+		$suppFile->setShowReviewers($suppNode->getAttribute('show_reviewers')=='true');
 		$suppFile->setLanguage($suppNode->getAttribute('language'));
-		$suppFile->setPublicSuppFileId($suppNode->getAttribute('public_id'));
+
+		if (($value = $suppNode->getAttribute('public_id')) != '') {
+			$anotherSuppFile = $suppFileDao->getSuppFileByPubId('publisher-id', $value, $article->getId());
+			if ($anotherSuppFile) {
+				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicSuppFileId', array('suppFileTitle' => $suppFile->getLocalizedTitle(), 'otherSuppFileTitle' => $anotherSuppFile->getLocalizedTitle()));
+				$hasErrors = true;
+			} else {
+				$suppFile->setStoredPubId('publisher-id', $value);
+			}
+		}
 
 		if (!($fileNode = $suppNode->getChildByName('file'))) {
 			$errors[] = array('plugins.importexport.native.import.error.suppFileMissing', array('articleTitle' => $article->getLocalizedTitle(), 'sectionTitle' => $section->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification()));
@@ -1236,11 +1320,11 @@ class NativeImportDom {
 
 		$suppFile->setFileId($fileId);
 		$suppFileDao->insertSuppFile($suppFile);
-			
+
 		return true;
-		
+
 	}
-	
+
 	function cleanupFailure (&$dependentItems) {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');

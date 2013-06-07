@@ -4,12 +4,11 @@
 <!--
   * ../pkp//locale/es_AR/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
   *
-  * $Id$
   -->
 
 <locale name="es_AR" full_name = "Español (Argentina)">
@@ -257,16 +256,16 @@
 	<message key="announcement.posted">Enviado</message>
 	<message key="common.add">Agregar</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		Este trabajo está licenciado badjo una<a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Licencia de Atribución Creative Commons 3.0</a>.]]></message>
+		Este trabajo está licenciado badjo una<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Licencia de Atribución Creative Commons 3.0</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Este trabajo está licenciado bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Licencia de Atribución Creative Commons 3.0</a>.
+		Este trabajo está licenciado bajo una <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Licencia de Atribución Creative Commons 3.0</a>.
 	</div>]]></message>
 	<message key="common.discipline">Disciplina</message>
 	<message key="common.re">Re:</message>
@@ -308,7 +307,6 @@
 	<message key="notification.reminderError">Hubo un error al enviar su contraseña. Por favor asegúrese que ha ingresado su dirección de correo correctamente</message>
 	<message key="notification.reminderSent">Su nueva clave ha sido enviada a la dirección de correo provista</message>
 	<message key="notification.unsubscribe">Dessuscribirse</message>
-	<message key="notification.unsubscribeDescription">Ingrese su dirección de email y contraseña debajo para dessuscribirse de las notificaciones por email. Si usted no recuerda su contraseña, deje el campo Contraseña en blanco y una nueva contraseña se le enviará a la dirección de email.</message>
 	<message key="notification.unsubscribeError">Hubo un error al desssuscribirlo. Por favor asegúrese que su dirección de email y contraseña son correctas</message>
 	<message key="notification.unsubscribeSuccess">Usted su dessuscripto satisfactoriamente</message>
 	<message key="common.copy">Copiar</message>

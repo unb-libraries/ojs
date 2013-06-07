@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/refWorks/locale/sv_SE/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in en_US.
   *
-  * $Id: locale.xml,v 1.2.2.1 2009/04/08 19:43:14 asmecher Exp $
   -->
  
 <locale name="en_US" full_name="U.S. English">

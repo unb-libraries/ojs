@@ -3,7 +3,7 @@
 /**
  * @file classes/user/form/LoginChangePasswordForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LoginChangePasswordForm
@@ -11,9 +11,6 @@
  *
  * @brief Form to change a user's password in order to login.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 

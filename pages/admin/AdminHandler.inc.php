@@ -3,7 +3,7 @@
 /**
  * @file pages/admin/AdminHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AdminHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle requests for site administration functions. 
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -36,6 +33,20 @@ class AdminHandler extends Handler {
 		$this->setupTemplate();
 
 		$templateMgr =& TemplateManager::getManager();
+
+		// Display a warning message if there is a new version of OJS available
+		$newVersionAvailable = false;
+		if (Config::getVar('general', 'show_upgrade_warning')) {
+			import('lib.pkp.classes.site.VersionCheck');
+			if($latestVersion = VersionCheck::checkIfNewVersionExists()) {
+				$newVersionAvailable = true;
+				$templateMgr->assign('latestVersion', $latestVersion);
+				$currentVersion =& VersionCheck::getCurrentDBVersion();
+				$templateMgr->assign('currentVersion', $currentVersion->getVersionString());
+			}
+		}
+
+		$templateMgr->assign('newVersionAvailable', $newVersionAvailable);
 		$templateMgr->assign('helpTopicId', 'site.index');
 		$templateMgr->display('admin/index.tpl');
 	}
@@ -46,7 +57,7 @@ class AdminHandler extends Handler {
 	 */
 	function setupTemplate($subclass = false) {
 		parent::setupTemplate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_ADMIN, LOCALE_COMPONENT_OJS_ADMIN, LOCALE_COMPONENT_OJS_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_ADMIN, LOCALE_COMPONENT_OJS_ADMIN, LOCALE_COMPONENT_OJS_MANAGER);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('pageHierarchy',
 			$subclass ? array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'admin'), 'admin.siteAdmin'))

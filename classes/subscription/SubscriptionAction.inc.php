@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SubscriptionAction.inc.php
+ * @file classes/subscription/SubscriptionAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionAction
@@ -11,8 +11,6 @@
  *
  * Common actions for subscription management functions. 
  */
-
-// $Id$
 
 class SubscriptionAction {
 	/**
@@ -531,8 +529,10 @@ class SubscriptionAction {
 
 	/**
 	 * Display subscription policies for the current journal.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function subscriptionPolicies() {
+	function subscriptionPolicies($args, &$request) {
 		import('classes.subscription.form.SubscriptionPolicyForm');
 
 		$templateMgr =& TemplateManager::getManager();
@@ -543,7 +543,7 @@ class SubscriptionAction {
 		}
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 		$templateMgr->assign('acceptSubscriptionPayments', $paymentManager->acceptSubscriptionPayments());				
 
 		$subscriptionPolicyForm = new SubscriptionPolicyForm();
@@ -557,8 +557,10 @@ class SubscriptionAction {
 
 	/**
 	 * Save subscription policies for the current journal.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function saveSubscriptionPolicies($args = array()) {
+	function saveSubscriptionPolicies($args, &$request) {
 		import('classes.subscription.form.SubscriptionPolicyForm');
 
 		$subscriptionPolicyForm = new SubscriptionPolicyForm();
@@ -572,7 +574,7 @@ class SubscriptionAction {
 		}
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 		$templateMgr->assign('acceptSubscriptionPayments', $paymentManager->acceptSubscriptionPayments());				
 
 		if ($subscriptionPolicyForm->validate()) {

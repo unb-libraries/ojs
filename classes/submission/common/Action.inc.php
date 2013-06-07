@@ -7,7 +7,7 @@
 /**
  * @file classes/submission/common/Action.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Action
@@ -31,6 +31,7 @@ define('SUBMISSION_FIELD_REVIEWER', 4);
 define('SUBMISSION_FIELD_COPYEDITOR', 5);
 define('SUBMISSION_FIELD_LAYOUTEDITOR', 6);
 define('SUBMISSION_FIELD_PROOFREADER', 7);
+define('SUBMISSION_FIELD_ID', 8);
 
 define('SUBMISSION_FIELD_DATE_SUBMITTED', 4);
 define('SUBMISSION_FIELD_DATE_COPYEDIT_COMPLETE', 5);
@@ -149,21 +150,20 @@ class Action extends PKPAction {
 				$metadataForm->execute($request);
 
 				// Send a notification to associated users
-				import('lib.pkp.classes.notification.NotificationManager');
+				import('classes.notification.NotificationManager');
 				$notificationManager = new NotificationManager();
 				$notificationUsers = $article->getAssociatedUserIds();
 				foreach ($notificationUsers as $userRole) {
-					$url = $router->url($request, null, $userRole['role'], 'submission', $article->getId(), null, 'metadata');
-					$notificationManager->createNotification($userRole['id'], 'notification.type.metadataModified',
-						$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_METADATA_MODIFIED
+					$notificationManager->createNotification(
+						$request, $userRole['id'], NOTIFICATION_TYPE_METADATA_MODIFIED,
+						$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 					);
 				}
 
 				// Add log entry
 				$user =& $request->getUser();
 				import('classes.article.log.ArticleLog');
-				import('classes.article.log.ArticleEventLogEntry');
-				ArticleLog::logEvent($article->getId(), ARTICLE_LOG_METADATA_UPDATE, ARTICLE_LOG_TYPE_DEFAULT, 0, 'log.editor.metadataModified', Array('editorName' => $user->getFullName()));
+				ArticleLog::logEvent($request, $article, ARTICLE_LOG_METADATA_UPDATE, 'log.editor.metadataModified', array('editorName' => $user->getFullName()));
 
 				return true;
 			}
@@ -191,7 +191,7 @@ class Action extends PKPAction {
 	function viewFile($articleId, $fileId, $revision = null) {
 		import('classes.file.ArticleFileManager');
 		$articleFileManager = new ArticleFileManager($articleId);
-		return $articleFileManager->viewFile($fileId, $revision);
+		return $articleFileManager->downloadFile($fileId, $revision, true);
 	}
 
 	/**
@@ -207,6 +207,7 @@ class Action extends PKPAction {
 				return false;
 			}
 
+			AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 			switch ($type) {
 				case 'copy':
 					$title = 'submission.copyedit.instructions';
@@ -255,7 +256,7 @@ class Action extends PKPAction {
 	 * Save comment.
 	 * @param $commentId int
 	 */
-	function saveComment($article, &$comment, $emailComment) {
+	function saveComment($article, &$comment, $emailComment, $request) {
 		if (!HookRegistry::call('Action::saveComment', array(&$article, &$comment, &$emailComment))) {
 			import('classes.submission.form.comment.EditCommentForm');
 
@@ -266,19 +267,18 @@ class Action extends PKPAction {
 				$commentForm->execute();
 
 				// Send a notification to associated users
-				import('lib.pkp.classes.notification.NotificationManager');
+				import('classes.notification.NotificationManager');
 				$notificationManager = new NotificationManager();
 				$notificationUsers = $article->getAssociatedUserIds(true, false);
 				foreach ($notificationUsers as $userRole) {
-					$url = Request::url(null, $userRole['role'], 'submissionReview', $article->getId(), null, 'editorDecision');
 					$notificationManager->createNotification(
-						$userRole['id'], 'notification.type.submissionComment',
-						$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_SUBMISSION_COMMENT
+						$request, $userRole['id'], NOTIFICATION_TYPE_SUBMISSION_COMMENT,
+						$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 					);
 				}
 
 				if ($emailComment) {
-					$commentForm->email($commentForm->emailHelper());
+					$commentForm->email($commentForm->emailHelper(), $request);
 				}
 
 			} else {

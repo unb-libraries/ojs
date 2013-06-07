@@ -3,7 +3,7 @@
 /**
  * @file classes/xslt/XSLTransformer.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XSLTransformer
@@ -12,7 +12,6 @@
  * @brief Wrapper class for running XSL transformations using PHP 4.x or 5.x
  */
 
-// $Id$
 
 // The default character encoding
 define('XSLT_PROCESSOR_ENCODING', Config::getVar('i18n', 'client_charset'));
@@ -28,6 +27,9 @@ class XSLTransformer {
 
 	/** @var $externalCommand string containing external XSLT shell command */
 	var $externalCommand;
+
+	/** @var $externalParameterSnippet string containing external XSLT shell arguments for parameters */
+	var $externalParameterSnippet;
 
 	/** @var $parameters array of parameters to pass to XSL (built-in libraries only) */
 	var $parameters;
@@ -45,6 +47,7 @@ class XSLTransformer {
 	 */
 	function XSLTransformer() {
 		$this->externalCommand = Config::getVar('cli', 'xslt_command');
+		$this->externalParameterSnippet = Config::getVar('cli', 'xslt_parameter_option');
 
 		// Determine the appropriate XSLT processor for the system
 		if ($this->externalCommand) {
@@ -80,6 +83,21 @@ class XSLTransformer {
 		return $this->processor;
 	}
 
+	/**
+	 * Set the parameter list for internal processors.
+	 * @param array $parameters
+	 */
+	function setParameters($parameters) {
+		$this->parameters =& $parameters;
+	}
+
+	/**
+	 * Set the registerPHPFunctions setting on or off.
+	 * @param boolean $flag
+	 */
+	function setRegisterPHPFunctions($flag) {
+		$this->registerPHPFunctions = $flag;
+	}
 	//
 	// Public methods
 	//
@@ -116,12 +134,14 @@ class XSLTransformer {
 	 *  transformation fails for some reason.
 	 */
 	function &transform(&$xml, $xmlType, &$xsl, $xslType, $resultType) {
+		$falseVar = false;
 		// If either XML or XSL file don't exist, then fail without trying to process XSLT
+		$fileManager = new FileManager();
 		if ($xmlType == XSL_TRANSFORMER_DOCTYPE_FILE) {
-			if (!FileManager::fileExists($xml)) return false;
+			if (!$fileManager->fileExists($xml)) return $falseVar;
 		}
 		if ($xslType == XSL_TRANSFORMER_DOCTYPE_FILE) {
-			if (!FileManager::fileExists($xsl)) return false;
+			if (!$fileManager->fileExists($xsl)) return $falseVar;
 		}
 
 		// The result type can only be string or DOM
@@ -139,7 +159,6 @@ class XSLTransformer {
 
 			default:
 				// No XSLT processor available
-				$falseVar = false;
 				return $falseVar;
 		}
 	}
@@ -167,8 +186,14 @@ class XSLTransformer {
 		if ( strpos($this->externalCommand, '%xsl') === false ) return $falseVar;
 		if ( strpos($this->externalCommand, '%xml') === false ) return $falseVar;
 
+		// Assemble the parameters to be supplied to the stylesheet
+		$parameterString = '';
+		foreach ($this->parameters as $name => $value) {
+			$parameterString .= str_replace(array('%n', '%v'), array($name, $value), $this->externalParameterSnippet);
+		}
+
 		// perform %xsl and %xml replacements for fully-qualified shell command
-		$xsltCommand = str_replace(array('%xsl', '%xml'), array($xslFile, $xmlFile), $this->externalCommand);
+		$xsltCommand = str_replace(array('%xsl', '%xml', '%params'), array($xsl, $xml, $parameterString), $this->externalCommand);
 
 		// check for safe mode and escape the shell command
 		if( !ini_get('safe_mode') ) $xsltCommand = escapeshellcmd($xsltCommand);
@@ -327,7 +352,7 @@ class XSLTransformer {
 		// Register PHP functions if requested.
 		// NB: This can open potential security issues; see FAQ/README
 		if ($this->registerPHPFunctions) {
-			$processor->registerPHPFunctions($this->registerPHPFunctions);
+			$processor->registerPHPFunctions();
 		}
 
 		// Set XSL parameters (if any)

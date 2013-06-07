@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * /locale/nl_NL/author.xml
+  * locale/nl_NL/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
   *
-  * $Id$
   -->
 
 <locale name="nl_NL" full_name = "Nederlands">
@@ -27,10 +26,10 @@
 	<message key="author.submit.start">1. Start</message>
 	<message key="author.submit.supplementaryFiles">4. Aanvullende bestanden laden</message>
 	<message key="author.submit.confirmation">5. Bevestiging</message>
-	<message key="author.submit.cancelSubmission">U kunt deze inzending op een later tijdstip voltooien door Actieve inzendingen te kiezen op de home-pagina voor auteurs.</message>
+	<message key="author.submit.cancelSubmission">U kunt deze inzending op een later tijdstip voltooien door Actieve inzendingen te kiezen op de homepage voor auteurs.</message>
 	<message key="author.submit.notAccepting">Dit tijdschrift accepteert momenteel geen inzendingen.</message>
 	<message key="author.submit.requestWaiver">Kwijtschelding vragen</message>
-	<message key="author.submit.qualityForWaiver">Overweeg kwijtschelding van de inzendingskosten voor dit artikel</message>
+	<message key="author.submit.qualifyForWaiver">Overweeg kwijtschelding van de inzendingskosten voor dit artikel</message>
 	<message key="author.submit.addReasonsForWaiver">Gebruik het commentaarveld hieronder om aan te geven waarom de kosten kwijtgescholden zouden moeten worden.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Tekstredactie versie laden</message>
 	<message key="author.submissions.proofreadingCorrections">Correcties proeflezen</message>
@@ -56,8 +55,6 @@
 	<message key="author.submit.addAuthor">Auteur toevoegen</message>
 	<message key="author.submit.deleteAuthor">Auteur verwijderen</message>
 	<message key="author.submit.submissionIndexingDescription">Geef termen voor het indexeren van de inzendingen. Scheid de termen met een puntkomma (term1; term2; term3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Ondersteunende organisaties</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Benoem de organisaties die geld of ondersteuning geleverd hebben voor het werk dat in deze inzending gepresenteerd wordt.</message>
 	<message key="author.submit.coverageInstructions">Refereert aan geo-spatiale locatie, chronologische of historische dekking en/of karakteristieken van het onderzoeksvoorbeeld.</message>
 	<message key="author.submit.subjectClassInstructions">Gebruik het classificatiesysteem met hyperlinks voor het selecteren van classificatietermen en, indien van toepassing, -nummers.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Engels=en; Frans=fr; Spaans=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Additionele codes</a>.]]></message>
@@ -127,4 +124,6 @@
 	<message key="author.submit.submissionLocale">Taal van de inzending</message>
 	<message key="author.submit.form.localeRequired">Selecteer een taal voor de inzending.</message>
 	<message key="author.submit.submissionLocaleDescription">Dit tijdschrift accepteert inzendingen in verschillende  talen. Kies de taal van de inzending uit het menu hieronder.</message>
+	<message key="author.submit.submissionSupportingAgencies">Bijdragen en ondersteunende instanties</message>
+	<message key="author.submit.submissionSupportingAgenciesDescription">Noem de instanties (personen, organisaties of diensten) die bijdragen leveren aan de inhoud of de financiering van het werk dat u presenteert in de inzending. Scheid ze met een puntkomma (bijvoorbeeld John Doe, Metro University; Master University, Department of Computer Science).</message>
 </locale>

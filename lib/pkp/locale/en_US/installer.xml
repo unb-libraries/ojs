@@ -4,19 +4,18 @@
 <!--
   * locale/en_US/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
   *
-  * $Id$
   -->
 
 <locale name="en_US" full_name = "English">
 	<message key="installer.additionalLocales">Additional locales</message>
 	<message key="installer.administratorAccount">Administrator Account</message>
 	<message key="installer.administratorAccountInstructions">This user account will become the site administrator and have complete access to the system. Additional user accounts can be created after installation.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NO</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NO</span>]]></message>
 	<message key="installer.checkYes">Yes</message>
 	<message key="installer.clientCharset">Client character set</message>
 	<message key="installer.clientCharsetInstructions">The encoding to use for data sent to and received from browsers.</message>
@@ -59,14 +58,14 @@
 	<message key="installer.installFilesDirError">The directory specified for uploaded files does not exist or is not writable.</message>
 	<message key="installer.installParseDBFileError"><![CDATA[Error parsing the database installation file <tt>{$file}</tt>.]]></message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Error parsing the email template file <tt>{$file}</tt>.]]></message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Error parsing the filter configuration file <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Locale</message>
 	<message key="installer.locale.maybeIncomplete">Marked locales may be incomplete.</message>
 	<message key="installer.localeSettings">Locale Settings</message>
-	<message key="installer.miscSettings">Miscellaneous Settings</message>
+	<message key="installer.oaiSettings">OAI Settings</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[A unique identifier used to identify metadata records indexed from this site using the <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting.]]></message>
-	<message key="installer.oaiRepositoryId">OAI repository identifier</message>
+	<message key="installer.oaiRepositoryId">Repository Identifier</message>
 	<message key="installer.publicFilesDirError">The public files directory does not exist or is not writable.</message>
 	<message key="installer.releaseNotes">Release Notes</message>
 	<message key="installer.securitySettings">Security Settings</message>
-	<message key="installer.skipFilesDir">Do not create required subdirectories (only useful for a manual installation)</message>
 </locale>

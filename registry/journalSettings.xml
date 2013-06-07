@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-  * journalSettings.xml
+  * registry/journalSettings.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Default journal settings.
-  *
-  * $Id$
   -->
 
 <!DOCTYPE journal_settings [
@@ -165,10 +163,6 @@
 	</setting>
 	<setting type="bool" locale="0">
 		<name>rtPrinterFriendly</name>
-		<value>true</value>
-	</setting>
-	<setting type="bool" locale="0">
-		<name>rtAuthorBio</name>
 		<value>true</value>
 	</setting>
 	<setting type="bool" locale="0">

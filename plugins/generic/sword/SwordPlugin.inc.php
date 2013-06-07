@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/sword/SwordPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SwordPlugin
@@ -12,13 +12,15 @@
  * @brief SWORD deposit plugin class
  */
 
-// $Id$
-
-
 define('SWORD_DEPOSIT_TYPE_AUTOMATIC',		1);
 define('SWORD_DEPOSIT_TYPE_OPTIONAL_SELECTION',	2);
 define('SWORD_DEPOSIT_TYPE_OPTIONAL_FIXED',	3);
 define('SWORD_DEPOSIT_TYPE_MANAGER',		4);
+
+define('NOTIFICATION_TYPE_SWORD_ENABLED',		NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000001);
+// NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000002 was previously ..._DISABLED (#7825)
+define('NOTIFICATION_TYPE_SWORD_DEPOSIT_COMPLETE',	NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000003);
+define('NOTIFICATION_TYPE_SWORD_AUTO_DEPOSIT_COMPLETE',	NOTIFICATION_TYPE_PLUGIN_BASE + 0x0000004);
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -32,11 +34,20 @@ class SwordPlugin extends GenericPlugin {
 	}
 
 	/**
+	 * Determine whether or not this plugin is supported.
+	 * @return boolean
+	 */
+	function getSupported() {
+		return class_exists('ZipArchive');
+	}
+
+	/**
 	 * Get the description of this plugin
 	 * @return string
 	 */
 	function getDescription() {
-		return __('plugins.generic.sword.description');
+		if ($this->getSupported()) return __('plugins.generic.sword.description');
+		return __('plugins.generic.sword.descriptionUnsupported');
 	}
 
 	function register($category, $path) {
@@ -45,8 +56,8 @@ class SwordPlugin extends GenericPlugin {
 			if ($this->getEnabled()) {
 				HookRegistry::register('LoadHandler', array(&$this, 'callbackLoadHandler'));
 				HookRegistry::register('SectionEditorAction::emailEditorDecisionComment', array(&$this, 'callbackAuthorDeposits'));
+				HookRegistry::register('NotificationManager::getNotificationContents', array($this, 'callbackNotificationContents'));
 			}
-			$this->addLocaleData();
 			return true;
 		}
 		return false;
@@ -107,6 +118,7 @@ class SwordPlugin extends GenericPlugin {
 	 */
 	function callbackAuthorDeposits($hookName, $args) {
 		$sectionEditorSubmission =& $args[0];
+		$request =& $args[2];
 
 		// Determine if the most recent decision was an "Accept"
 		$decisions = $sectionEditorSubmission->getDecisions();
@@ -120,7 +132,7 @@ class SwordPlugin extends GenericPlugin {
 		$depositPoints = $this->getSetting($journal->getId(), 'depositPoints');
 		import('classes.sword.OJSSwordDeposit');
 
-		import('lib.pkp.classes.notification.NotificationManager');
+		import('classes.notification.NotificationManager');
 		$notificationManager = new NotificationManager();
 
 		$sendDepositNotification = $this->getSetting($journal->getId(), 'allowAuthorSpecify') ? true : false;
@@ -144,7 +156,9 @@ class SwordPlugin extends GenericPlugin {
 			$deposit->cleanup();
 			unset($deposit);
 
-			$notificationManager->createTrivialNotification(__('notification.notification'), __('plugins.generic.sword.automaticDepositComplete', array('itemTitle' => $sectionEditorSubmission->getLocalizedTitle(), 'repositoryName' => $depositPoint['name'])), NOTIFICATION_TYPE_SUCCESS, null, false);
+			$user =& $request->getUser();
+			$params = array('itemTitle' => $sectionEditorSubmission->getLocalizedTitle(), 'repositoryName' => $depositPoint['name']);
+			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SWORD_AUTO_DEPOSIT_COMPLETE, $params);
 		}
 
 		if ($sendDepositNotification) {
@@ -165,10 +179,42 @@ class SwordPlugin extends GenericPlugin {
 				)
 			));
 
-			$mail->send();
+			$mail->send($request);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Hook registry function to provide notification messages for SWORD notifications
+	 * @param $hookName string
+	 * @param $args array
+	 */
+	function callbackNotificationContents($hookName, $args) {
+		$notification =& $args[0];
+		$message =& $args[1];
+
+		$type = $notification->getType();
+		assert(isset($type));
+
+		import('classes.notification.NotificationManager');
+		$notificationManager = new NotificationManager();
+
+		switch ($type) {
+			case NOTIFICATION_TYPE_SWORD_DEPOSIT_COMPLETE:
+				$notificationSettingsDao =& DAORegistry::getDAO('NotificationSettingsDAO');
+				$params = $notificationSettingsDao->getNotificationSettings($notification->getId());
+				$message = __('plugins.generic.sword.depositComplete', $notificationManager->getParamsForCurrentLocale($params));
+				break;
+			case NOTIFICATION_TYPE_SWORD_AUTO_DEPOSIT_COMPLETE:
+				$notificationSettingsDao =& DAORegistry::getDAO('NotificationSettingsDAO');
+				$params = $notificationSettingsDao->getNotificationSettings($notification->getId());
+				$message = __('plugins.generic.sword.automaticDepositComplete', $notificationManager->getParamsForCurrentLocale($params));
+				break;
+			case NOTIFICATION_TYPE_SWORD_ENABLED:
+				$message = __('plugins.generic.sword.enabled');
+				break;
+		}
 	}
 
 	/**
@@ -185,7 +231,7 @@ class SwordPlugin extends GenericPlugin {
 				'settings',
 				__('plugins.generic.sword.settings')
 			);
-		} else {
+		} elseif ($this->getSupported()) {
 			$verbs[] = array(
 				'enable',
 				__('manager.plugins.enable')
@@ -198,17 +244,18 @@ class SwordPlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
- 	 * @return boolean
- 	 */
-	function manage($verb, $args, &$message) {
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for status message
+	 * @return boolean
+	 */
+	function manage($verb, $args, &$message, &$messageParams) {
 		$returner = true;
 		$journal =& Request::getJournal();
 		$this->addLocaleData();
 
 		switch ($verb) {
 			case 'settings':
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER));
+				AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER);
 				$templateMgr =& TemplateManager::getManager();
 				$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 
@@ -230,12 +277,13 @@ class SwordPlugin extends GenericPlugin {
 				break;
 			case 'enable':
 				$this->updateSetting($journal->getId(), 'enabled', true);
-				$message = __('plugins.generic.sword.enabled');
+				$message = NOTIFICATION_TYPE_SWORD_ENABLED;
 				$returner = false;
 				break;
 			case 'disable':
 				$this->updateSetting($journal->getId(), 'enabled', false);
-				$message = __('plugins.generic.sword.disabled');
+				$message = NOTIFICATION_TYPE_PLUGIN_DISABLED;
+				$messageParams = array('pluginName' => $this->getDisplayName());
 				$returner = false;
 				break;
 			case 'createDepositPoint':

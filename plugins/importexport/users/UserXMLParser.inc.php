@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file UserXMLParser.inc.php
+ * @file plugins/importexport/users/UserXMLParser.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserXMLParser
@@ -12,9 +12,6 @@
  * @brief Class to import and export user data from an XML format.
  * See dbscripts/xml/dtd/users.dtd for the XML schema used.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLParser');
 
@@ -57,7 +54,7 @@ class UserXMLParser {
 		$tree = $this->parser->parse($file);
 
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal =& $journalDao->getJournal($this->journalId);
+		$journal =& $journalDao->getById($this->journalId);
 		$journalPrimaryLocale = AppLocale::getPrimaryLocale();
 
 		$site =& Request::getSite();
@@ -73,7 +70,7 @@ class UserXMLParser {
 						switch ($attrib->getName()) {
 							case 'username':
 								// Usernames must be lowercase
-								$newUser->setUsername(strtolower($attrib->getValue()));
+								$newUser->setUsername(strtolower_codesafe($attrib->getValue()));
 								break;
 							case 'password':
 								$newUser->setMustChangePassword($attrib->getAttribute('change') == 'true'?1:0);
@@ -194,7 +191,7 @@ class UserXMLParser {
 			$mail = new MailTemplate('USER_REGISTER');
 
 			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($this->journalId);
+			$journal =& $journalDao->getById($this->journalId);
 			$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		}
 
@@ -251,19 +248,20 @@ class UserXMLParser {
 			}
 
 			// Add reviewing interests to interests table
+			$interestDao =& DAORegistry::getDAO('InterestDAO');
 			$interests = $user->getTemporaryInterests();
 			$interests = explode(',', $interests);
 			$interests = array_map('trim', $interests); // Trim leading whitespace
-			import('lib.pkp.classes.user.InterestManager');
-			$interestManager = new InterestManager();
-			$interestManager->setInterestsForUser($user, $interests);
+			if(is_array($interests) && !empty($interests)) {
+				$interestDao->setUserInterests($interests, $user->getId());
+			}
 
 			// Enroll user in specified roles
 			// If the user is already enrolled in a role, that role is skipped
 			foreach ($user->getRoles() as $role) {
 				$role->setUserId($user->getId());
 				$role->setJournalId($this->journalId);
-				if (!$roleDao->roleExists($role->getJournalId(), $role->getUserId(), $role->getRoleId())) {
+				if (!$roleDao->userHasRole($role->getJournalId(), $role->getUserId(), $role->getRoleId())) {
 					if (!$roleDao->insertRole($role)) {
 						// Failed to add role!
 						$this->errors[] = sprintf('%s: %s - %s (%s)',

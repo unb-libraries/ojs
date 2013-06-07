@@ -3,7 +3,7 @@
 /**
  * @file StaticPagesSettingsForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.staticPages
@@ -52,9 +52,9 @@ class StaticPagesEditForm extends Form {
 	 * @param $staticPageId int
 	 */
 	function checkForDuplicatePath($pagePath, $journalId, $staticPageId) {
-		$staticPageDAO =& DAORegistry::getDAO('StaticPagesDAO');
+		$staticPageDao =& DAORegistry::getDAO('StaticPagesDAO');
 
-		return !$staticPageDAO->duplicatePathExists($pagePath, $journalId, $staticPageId);
+		return !$staticPageDao->duplicatePathExists($pagePath, $journalId, $staticPageId);
 	}
 
 	/**
@@ -68,8 +68,8 @@ class StaticPagesEditForm extends Form {
 		$this->addTinyMCE();
 
 		if (isset($this->staticPageId)) {
-			$staticPageDAO =& DAORegistry::getDAO('StaticPagesDAO');
-			$staticPage =& $staticPageDAO->getStaticPage($this->staticPageId);
+			$staticPageDao =& DAORegistry::getDAO('StaticPagesDAO');
+			$staticPage =& $staticPageDao->getStaticPage($this->staticPageId);
 
 			if ($staticPage != null) {
 				$this->_data = array(
@@ -99,13 +99,14 @@ class StaticPagesEditForm extends Form {
 		<script language="javascript" type="text/javascript">
 			tinyMCE.init({
 			mode : "textareas",
-			plugins : "safari,spellchecker,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,pagebreak,",
+			plugins : "safari,spellchecker,style,layer,table,save,advhr,jbimages,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,pagebreak,jbimages",
 			theme_advanced_buttons1_add : "fontsizeselect",
 			theme_advanced_buttons2_add : "separator,preview,separator,forecolor,backcolor",
 			theme_advanced_buttons2_add_before: "search,replace,separator",
 			theme_advanced_buttons3_add_before : "tablecontrols,separator",
 			theme_advanced_buttons3_add : "media,separator",
 			theme_advanced_buttons4 : "cut,copy,paste,pastetext,pasteword,separator,styleprops,|,spellchecker,cite,abbr,acronym,del,ins,attribs,|,visualchars,nonbreaking,template,blockquote,pagebreak,print,separator",
+			theme_advanced_disable: "styleselect",
 			theme_advanced_toolbar_location : "top",
 			theme_advanced_toolbar_align : "left",
 			theme_advanced_statusbar_location : "bottom",
@@ -145,9 +146,9 @@ class StaticPagesEditForm extends Form {
 		$journalId = $this->journalId;
 
 		$plugin->import('StaticPage');
-		$staticPagesDAO =& DAORegistry::getDAO('StaticPagesDAO');
+		$staticPagesDao =& DAORegistry::getDAO('StaticPagesDAO');
 		if (isset($this->staticPageId)) {
-			$staticPage =& $staticPagesDAO->getStaticPage($this->staticPageId);
+			$staticPage =& $staticPagesDao->getStaticPage($this->staticPageId);
 		}
 
 		if (!isset($staticPage)) {
@@ -161,9 +162,9 @@ class StaticPagesEditForm extends Form {
 		$staticPage->setContent($this->getData('content'), null); 	// Localized
 
 		if (isset($this->staticPageId)) {
-			$staticPagesDAO->updateStaticPage($staticPage);
+			$staticPagesDao->updateStaticPage($staticPage);
 		} else {
-			$staticPagesDAO->insertStaticPage($staticPage);
+			$staticPagesDao->insertStaticPage($staticPage);
 		}
 	}
 

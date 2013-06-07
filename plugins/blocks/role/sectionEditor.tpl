@@ -1,12 +1,11 @@
 {**
- * sectionEditor.tpl
+ * plugins/blocks/role/sectionEditor.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Section Editor navigation sidebar.
  *
- * $Id$
  *}
 <div class="block" id="sidebarSectionEditor">
 	<span class="blockTitle">{translate key="user.role.sectionEditor"}</span>

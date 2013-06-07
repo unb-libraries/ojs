@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/el_GR/author.xml
+  * locale/el_GR/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the el_GR (Greek) locale.
   *
-  * $Id$
   -->
 
 <locale name="el_GR" full_name = "Greek">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">Μπορείτε να ολοκληρώσετε την υποβολή αργότερα επιλέγοντας "Ενεργές Υποβολές" από την αρχική σελίδα του συγγραφέα.</message>
 	<message key="author.submit.notAccepting">Το συγκεκριμένο περιοδικό δεν αποδέχεται υποβολές τη συγκεκριμένη χρονική στιγμή.</message>
 	<message key="author.submit.requestWaiver">Αίτηση Παράβλεψης Εισφοράς Συγγραφέα</message>
-	<message key="author.submit.qualityForWaiver">Παρακαλούμε εξετάστε την περίπτωση παράβλεψης της Εισφοράς του Συγγραφέα για την υποβολή αυτού του άρθρου</message>
+	<message key="author.submit.qualifyForWaiver">Παρακαλούμε εξετάστε την περίπτωση παράβλεψης της Εισφοράς του Συγγραφέα για την υποβολή αυτού του άρθρου</message>
 	<message key="author.submit.addReasonsForWaiver">Σας παρακαλούμε χρησιμοποιήστε το κουτί σχολίων παρακάτω για να προσδιορίσετε τους λόγους για τους οποίους αιτήστε την παράβλεση καταβολής της εισφοράς συγγραφέα για την συγκεκριμένη υποβολή.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Φόρτωση έκδοσης με Επιμελημένο Κείμενο</message>
 	<message key="author.submissions.proofreadingCorrections">Διορθώσεις επιμελητή τυπογραφικών δοκιμίων</message>
@@ -60,8 +59,6 @@
 	<message key="author.submit.addAuthor">Προσθήκη συγγραφέα</message>
 	<message key="author.submit.deleteAuthor">Διαγραφή συγγραφέα</message>
 	<message key="author.submit.submissionIndexingDescription">Επιλέξτε τους όρους που περιγράφουν καλύτερα το περιεχόμενο της υποβολής με βάση τις κατηγορίες που χρησιμοποιούνται από το περιοδικό αυτό, και τα παραδείγματα που παρέχονται από τον επιμελητή. Διαχωρίστε τους όρους με το σύμβολο του ερωτηματικού  (όρος1; όρος2; όρος3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Φορείς υποστήριξης/χρηματοδότησης</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Καθορίστε τους φορείς που παρείχαν χρηματοδότηση ή υποστήριξη για την υλοποίησης του έργου που παρουσιάζεται στην υποβολή αυτή.</message>
 	<message key="author.submit.coverageInstructions"> Αναφέρεται στη γεω-χωρική τοποθεσία, την χρονολογική ή ιστορική κάλυψη, ή/και τα χαρακτηριστικά του δείγματος της έρευνας.</message>
 	<message key="author.submit.subjectClassInstructions">Χρησιμοποιήστε το σύστημα ταξινόμησης με σύνδεση υπερκειμένου για να επιλέξετε τους όρους ταξινόμησης και, εάν είναι κατάλληλοι, τους αριθμούς.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[English=en; French=fr;  Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/langcodes.html"  target="_blank">Additional codes</a>.]]></message>

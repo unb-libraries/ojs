@@ -4,12 +4,11 @@
 <!--
   * locale/hr_HR/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
   *
-  * $Id$
   -->
 
 <locale name="hr_HR" full_name = "Hrvatski">
@@ -39,7 +38,6 @@
 	<message key="user.login.changePasswordInstructions"><![CDATA[Morate odabrati novu lozinku prije nego što se prijavite na ovu stranicu.<br /><br />Molimo unesite ispod vaše korisničko ime i vašu sadašnju i novu lozinku kako biste promijenili lozinku za vaš korisnički račun.]]></message>
 	<message key="user.login.forgotPassword">Zaboravili ste lozinku?</message>
 	<message key="user.login">Prijava</message>
-	<message key="user.logIn">Prijava</message>
 	<message key="user.login.lostPassword.confirmationSent">Potvrda je poslana na vašu adresu e-pošte. Molimo slijedite upute u  e-pošti zbog ponovnog uspostavljanja vaše lozinke.</message>
 	<message key="user.login.lostPassword.invalidHash">Oprostite, poveznica na koju ste kliknuli nije važeća ili nije valjana. Molimo pokušajte ponovno zatražiti izmjenu vaše lozinke.</message>
 	<message key="user.login.lostPassword.invalidUser">Ne postoji korisnik s navedenom adresom e-pošte.</message>
@@ -54,6 +52,7 @@
 	<message key="user.myAccount">Moji podaci</message>
 	<message key="user.name">Ime</message>
 	<message key="user.password">Lozinka</message>
+	<message key="user.repeatPassword">Ponovite lozinku</message>
 	<message key="user.phone">Telefon</message>
 	<message key="user.profile.form.emailRequired">Važeća adresa e-pošte je obavezna.</message>
 	<message key="user.profile.form.firstNameRequired">Ime je obavezno.</message>

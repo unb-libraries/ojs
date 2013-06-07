@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file AnnouncementTypeForm.inc.php
+ * @file classes/manager/form/AnnouncementTypeForm.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementTypeForm
@@ -13,7 +13,6 @@
  * @brief Form for manager to create/edit announcement types.
  */
 
-//$Id$
 
 import('lib.pkp.classes.form.Form');
 
@@ -61,7 +60,7 @@ class PKPAnnouncementTypeForm extends Form {
 	function initData() {
 		if (isset($this->typeId)) {
 			$announcementTypeDao =& DAORegistry::getDAO('AnnouncementTypeDAO');
-			$announcementType =& $announcementTypeDao->getAnnouncementType($this->typeId);
+			$announcementType =& $announcementTypeDao->getById($this->typeId);
 
 			if ($announcementType != null) {
 				$this->_data = array(
@@ -89,11 +88,11 @@ class PKPAnnouncementTypeForm extends Form {
 		$announcementTypeDao =& DAORegistry::getDAO('AnnouncementTypeDAO');
 
 		if (isset($this->typeId)) {
-			$announcementType =& $announcementTypeDao->getAnnouncementType($this->typeId);
+			$announcementType =& $announcementTypeDao->getById($this->typeId);
 		}
 
 		if (!isset($announcementType)) {
-			$announcementType = new AnnouncementType();
+			$announcementType = $announcementTypeDao->newDataObject();
 		}
 
 		$this->_setAnnouncementTypeAssocId($announcementType);

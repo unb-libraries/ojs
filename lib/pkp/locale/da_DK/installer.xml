@@ -4,19 +4,18 @@
 <!--
   * locale/da_DK/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the da_DK (Danish) locale.
   *
-  * $Id$
   -->
 
 <locale name="da_DK" full_name = "Danish">
 	<message key="installer.additionalLocales">Yderligere landestandarder</message>
 	<message key="installer.administratorAccount">Administratorkonto</message>
 	<message key="installer.administratorAccountInstructions">Denne brugerkonto bliver webstedsadministrator og vil få fuld adgang til systemet. Efter installationen kan der oprettes flere brugerkonti.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NEJ</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NEJ</span>]]></message>
 	<message key="installer.checkYes">Ja</message>
 	<message key="installer.clientCharset">Klienttegnsæt</message>
 	<message key="installer.clientCharsetInstructions">Den kode, som skal bruge til data, der sendes til og modtages fra browsere.</message>
@@ -60,16 +59,13 @@
 	<message key="installer.installParseDBFileError"><![CDATA[Der opstod en fejl under parsing af databaseinstallationsfilen <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Landestandard</message>
 	<message key="installer.localeSettings">Landestandardindstillinger</message>
-	<message key="installer.manualInstall">Manuel installation</message>
-	<message key="installer.manualUpgrade">Manuel opgradering</message>
-	<message key="installer.miscSettings">Diverse indstillinger</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Et entydigt id, som bruges til at identificere metadataposter, der er indekseret fra dette websted ved hjælp af <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting.]]></message>
 	<message key="installer.oaiRepositoryId">Id til OAI-lager</message>
 	<message key="installer.publicFilesDirError">Den offentlige filmappe findes ikke eller er ikke skrivbar.</message>
 	<message key="installer.releaseNotes">Produktbemærkninger</message>
 	<message key="installer.securitySettings">Sikkerhedsindstillinger</message>
-	<message key="installer.skipFilesDir">Opret ikke påkrævede undermapper (kun nyttig ved en manuel installation)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Fejl ved parsing af e-mail-skabelonfil <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">De markerede landestandarder kan være ufuldstændige.</message>
-	<message key="installer.pleaseUpgradeAfterManualInstall">Kør opgraderingsværktøjet, når du har installeret din database. Udfør 'php tools/upgrade.php upgrade' inde fra hovedinstallationsmappen.</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Error parsing the filter configuration file <tt>{$file}</tt>.]]></message>
+	<message key="installer.oaiSettings">OAI indstilling</message>
 </locale>

@@ -3,7 +3,7 @@
 /**
  * @file classes/file/TemporaryFile.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TemporaryFile
@@ -13,16 +13,15 @@
  * @brief Temporary file class.
  */
 
-// $Id$
+import('lib.pkp.classes.file.PKPFile');
 
-
-class TemporaryFile extends DataObject {
+class TemporaryFile extends PKPFile {
 
 	/**
 	 * Constructor.
 	 */
 	function TemporaryFile() {
-		parent::DataObject();
+		parent::PKPFile();
 	}
 
 	/**
@@ -30,29 +29,14 @@ class TemporaryFile extends DataObject {
 	 * @return string
 	 */
 	function getFilePath() {
-		return Config::getVar('files', 'files_dir') . '/temp/' . $this->getFileName();
+		import('lib.pkp.classes.file.PKPTemporaryFileManager');
+		$temporaryFileManager = new PKPTemporaryFileManager();
+		return $temporaryFileManager->getBasePath() . $this->getFileName();
 	}
 
 	//
 	// Get/set methods
 	//
-	/**
-	 * Get ID of file.
-	 * @return int
-	 */
-	function getFileId() {
-		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
-		return $this->getId();
-	}
-
-	/**
-	 * Set ID of file.
-	 * @param $fileId int
-	 */
-	function setFileId($fileId) {
-		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
-		return $this->setId($fileId);
-	}
 
 	/**
 	 * Get ID of associated user.
@@ -68,101 +52,6 @@ class TemporaryFile extends DataObject {
 	 */
 	function setUserId($userId) {
 		return $this->setData('userId', $userId);
-	}
-
-	/**
-	 * Get file name of the file.
-	 * @param return string
-	 */
-	function getFileName() {
-		return $this->getData('fileName');
-	}
-
-	/**
-	 * Set file name of the file.
-	 * @param $fileName string
-	 */
-	function setFileName($fileName) {
-		return $this->setData('fileName', $fileName);
-	}
-
-	/**
-	 * Get original uploaded file name of the file.
-	 * @param return string
-	 */
-	function getOriginalFileName() {
-		return $this->getData('originalFileName');
-	}
-
-	/**
-	 * Set original uploaded file name of the file.
-	 * @param $originalFileName string
-	 */
-	function setOriginalFileName($originalFileName) {
-		return $this->setData('originalFileName', $originalFileName);
-	}
-
-	/**
-	 * Get type of the file.
-	 * @ return string
-	 */
-	function getFileType() {
-		return $this->getData('filetype');
-	}
-
-	/**
-	 * Set type of the file.
-	 * @param $type string
-	 */
-	function setFileType($fileType) {
-		return $this->setData('filetype', $fileType);
-	}
-
-	/**
-	 * Get uploaded date of file.
-	 * @return date
-	 */
-
-	function getDateUploaded() {
-		return $this->getData('dateUploaded');
-	}
-
-
-	/**
-	 * Set uploaded date of file.
-	 * @param $dateUploaded date
-	 */
-
-	function setDateUploaded($dateUploaded) {
-		return $this->SetData('dateUploaded', $dateUploaded);
-	}
-
-	/**
-	 * Get file size of file.
-	 * @return int
-	 */
-
-	function getFileSize() {
-		return $this->getData('fileSize');
-	}
-
-
-	/**
-	 * Set file size of file.
-	 * @param $fileSize int
-	 */
-
-	function setFileSize($fileSize) {
-		return $this->SetData('fileSize', $fileSize);
-	}
-
-	/**
-	 * Get nice file size of file.
-	 * @return string
-	 */
-
-	function getNiceFileSize() {
-		return round($this->getData('fileSize') / 1000).'k';
 	}
 }
 

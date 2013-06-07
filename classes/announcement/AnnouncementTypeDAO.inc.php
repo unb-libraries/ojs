@@ -3,7 +3,7 @@
 /**
  * @file classes/announcement/AnnouncementTypeDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementTypeDAO
@@ -13,13 +13,23 @@
  * @brief Operations for retrieving and modifying AnnouncementType objects.
  */
 
-// $Id$
-
 import('classes.announcement.AnnouncementType');
 import('lib.pkp.classes.announcement.PKPAnnouncementTypeDAO');
 
 class AnnouncementTypeDAO extends PKPAnnouncementTypeDAO {
+	/**
+	 * Constructor
+	 */
+	function AnnouncementTypeDAO() {
+		parent::PKPAnnouncementTypeDAO();
+	}
 
+	/**
+	 * @see PKPAnnouncementTypeDAO::newDataObject
+	 */
+	function newDataObject() {
+		return new AnnouncementType();
+	}
 }
 
 ?>

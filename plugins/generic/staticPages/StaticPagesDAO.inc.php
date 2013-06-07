@@ -1,8 +1,8 @@
 <?php
 /**
- * @file StaticPagesDAO.inc.php
+ * @file plugins/generic/staticPages/StaticPagesDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.staticPages

@@ -2,21 +2,20 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ../ojs2-devel//locale/it_IT/editor.xml
+  * locale/it_IT/editor.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
-  *
-  * $Id: editor.xml,v 1.6 2009/12/08 04:16:20 jmacgreg Exp $
+  * Contributed by Andrea Marchitelli - CINECA.
   -->
 
 <locale name="it_IT" full_name = "Italiano">
 	<message key="editor.article.reviewForms">Moduli di revisione</message>
 	<message key="editor.article.selectReviewForm">Seleziona il modulo di revisione</message>
 	<message key="editor.article.clearReviewForm">Cancella il modulo di revisione</message>
-	<message key="editor.article.confirmChangeReviewForm">Modifcare il modulo di revisione rimuoverà tutte le risposte che i revisori abbiano dato sinora. Vuoi continuare?</message>
+	<message key="editor.article.confirmChangeReviewForm">Modificare il modulo di revisione rimuoverà tutte le risposte che i revisori abbiano dato sinora. Vuoi continuare?</message>
 	<message key="editor.home">Cruscotto dell'editor</message>
 	<message key="editor.submissionsAndPublishing">Proposte e pubblicazioni</message>
 	<message key="editor.submissionQueue">Coda delle proposte</message>
@@ -60,7 +59,6 @@
 	<message key="editor.issues.accessStatus">Tipo di accesso</message>
 	<message key="editor.issues.accessDate">Data di fine embargo</message>
 	<message key="editor.issues.invalidAccessDate">Data di accesso non valida.</message>
-	<message key="editor.issues.issuePublicIdentificationExists">Identificativo pubblico del fascicolo già esistente.</message>
 	<message key="editor.issues.coverPage">Immagine di copertina</message>
 	<message key="editor.issues.coverPageInstructions">(formati validi: .gif, .jpg, o .png )</message>
 	<message key="editor.issues.uploaded">File</message>
@@ -209,4 +207,16 @@
 	<message key="editor.notifyUsers.allAuthors">Tutti gli autori ({$count} utenti)</message>
 	<message key="editor.notifyUsers.allIndividualSubscribers">Tutti gli abbonati persona ({$count} utenti)</message>
 	<message key="editor.notifyUsers.allInstitutionalSubscribers">Tutti gli abbonati enti ({$count} utenti)</message>
+	<message key="editor.reassign">Riassegna</message>
+	<message key="editor.publicIdentificationExists">L'identificatore pubblico  '{$publicIdentifier}' già esiste per un altro oggetto (fascicoli, articolo o file). Definisci identificatori unici nella rivista.</message>
+	<message key="editor.issues.galleys">Gabbie del fascicolo</message>
+	<message key="editor.issues.galley">Gabbia del fascicolo</message>
+	<message key="editor.issues.viewingGalley">Vedi la bozza del fascicolo</message>
+	<message key="editor.issues.issueGalleysDescription">Pubblica una gabbia contenente l'intero fascicolo</message>
+	<message key="editor.issues.noneIssueGalleys">Non sono state pubblicate gabbie per questo fascicolo.</message>
+	<message key="editor.issues.galleyLabelRequired">Inserire un'etichetta per la gabbia del fascicolo</message>
+	<message key="editor.issues.galleyLocaleRequired">Inserire la lingua della gabbia del fascicolo</message>
+	<message key="editor.issues.galleyPublicIdentificationExists">Esiste già un identificatore della gabbia del fascicolo</message>
+	<message key="editor.issues.backToIssueGalleys">Torna alle gabbie del fascicolo</message>
+	<message key="editor.issues.confirmDeleteGalley">Sei sicuro di cancellare questa gabbia del fascicolo?</message>
 </locale>

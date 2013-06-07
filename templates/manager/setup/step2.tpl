@@ -1,17 +1,16 @@
 {**
- * step2.tpl
+ * templates/manager/setup/step2.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 2 of journal setup.
  *
- * $Id$
  *}
 {assign var="pageTitle" value="manager.setup.journalPolicies"}
 {include file="manager/setup/setupHeader.tpl"}
 
-<form name="setupForm" method="post" action="{url op="saveSetup" path="2"}">
+<form id="setupForm" method="post" action="{url op="saveSetup" path="2"}">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}

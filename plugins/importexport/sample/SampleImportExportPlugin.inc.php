@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SampleImportExportPlugin.inc.php
+ * @file plugins/importexport/sample/SampleImportExportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SampleImportExportPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Sample import/export plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.ImportExportPlugin');
 
@@ -56,7 +53,7 @@ class SampleImportExportPlugin extends ImportExportPlugin {
 		return __('plugins.importexport.sample.description');
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		parent::display($args);
 		switch (array_shift($args)) {
 			case 'exportIssue':

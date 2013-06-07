@@ -3,7 +3,7 @@
 /**
  * @file classes/help/HelpToc.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class HelpToc
@@ -13,9 +13,6 @@
  * @brief Help table of contents class.
  * A HelpToc object is associated with zero or more HelpTopic objects.
  */
-
-// $Id$
-
 
 class HelpToc extends DataObject {
 

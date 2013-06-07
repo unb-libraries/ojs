@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RTSetupHandler.inc.php
+ * @file pages/rtadmin/RTSetupHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTSetupHandler
@@ -12,10 +12,6 @@
  * @brief Handle Reading Tools administration requests -- setup section.
  */
 
-// $Id$
-
-
-import('classes.rt.ojs.JournalRTAdmin');
 import('pages.rtadmin.RTAdminHandler');
 
 class RTSetupHandler extends RTAdminHandler {
@@ -52,11 +48,11 @@ class RTSetupHandler extends RTAdminHandler {
 			$templateMgr->assign('viewMetadata', $rt->getViewMetadata());
 			$templateMgr->assign('supplementaryFiles', $rt->getSupplementaryFiles());
 			$templateMgr->assign('printerFriendly', $rt->getPrinterFriendly());
-			$templateMgr->assign('authorBio', $rt->getAuthorBio());
 			$templateMgr->assign('defineTerms', $rt->getDefineTerms());
 			$templateMgr->assign('emailAuthor', $rt->getEmailAuthor());
 			$templateMgr->assign('emailOthers', $rt->getEmailOthers());
 			$templateMgr->assign('findingReferences', $rt->getFindingReferences());
+			$templateMgr->assign('viewReviewPolicy', $rt->getviewReviewPolicy());
 
 			// Bring in the comments constants.
 			$commentDao =& DAORegistry::getDao('CommentDAO');
@@ -96,11 +92,11 @@ class RTSetupHandler extends RTAdminHandler {
 			$rt->setViewMetadata(Request::getUserVar('viewMetadata')==true);
 			$rt->setSupplementaryFiles(Request::getUserVar('supplementaryFiles')==true);
 			$rt->setPrinterFriendly(Request::getUserVar('printerFriendly')==true);
-			$rt->setAuthorBio(Request::getUserVar('authorBio')==true);
 			$rt->setDefineTerms(Request::getUserVar('defineTerms')==true);
 			$rt->setEmailAuthor(Request::getUserVar('emailAuthor')==true);
 			$rt->setEmailOthers(Request::getUserVar('emailOthers')==true);
 			$rt->setFindingReferences(Request::getUserVar('findingReferences')==true);
+			$rt->setViewReviewPolicy(Request::getUserVar('viewReviewPolicy')==true);
 
 			$journal->updateSetting('enableComments', Request::getUserVar('enableComments')?Request::getUserVar('enableCommentsMode'):COMMENTS_DISABLED);
 

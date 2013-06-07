@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/citation/PKPCitationGridRow.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPCitationGridRow
@@ -86,7 +86,7 @@ class PKPCitationGridRow extends GridRow {
 			// Only add row actions if this is an existing row
 			$router =& $request->getRouter();
 			$this->addAction(
-				new LinkAction(
+				new LegacyLinkAction(
 					'deleteCitation',
 					LINK_ACTION_MODE_CONFIRM,
 					LINK_ACTION_TYPE_REMOVE,
@@ -97,9 +97,6 @@ class PKPCitationGridRow extends GridRow {
 				),
 				GRID_ACTION_POSITION_ROW_LEFT
 			);
-
-			// Set a non-default template that supports row actions
-			$this->setTemplate('controllers/grid/gridRowWithActions.tpl');
 		}
 	}
 
@@ -117,12 +114,12 @@ class PKPCitationGridRow extends GridRow {
 
 				// We should never present citations to the user that have
 				// not been checked already.
-				assert($citation->getCitationState() >= CITATION_PARSED);
+				if ($citation->getCitationState() < CITATION_PARSED) fatalError('Invalid citation!');
 
 				// Instantiate the cell action.
 				$router =& $request->getRouter();
 				$cellActions = array(
-					new LinkAction(
+					new LegacyLinkAction(
 						'editCitation',
 						LINK_ACTION_MODE_AJAX,
 						LINK_ACTION_TYPE_GET,
@@ -138,3 +135,5 @@ class PKPCitationGridRow extends GridRow {
 		return $cellActions;
 	}
 }
+
+?>

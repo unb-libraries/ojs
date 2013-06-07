@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/AnnouncementTypeForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementTypeForm
@@ -12,8 +12,6 @@
  *
  * @brief Form for journal managers to create/edit announcement types.
  */
-
-// $Id$
 
 import('lib.pkp.classes.manager.form.PKPAnnouncementTypeForm');
 

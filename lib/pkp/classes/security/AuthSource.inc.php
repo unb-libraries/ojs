@@ -3,7 +3,7 @@
 /**
  * @file classes/security/AuthSource.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthSource
@@ -13,13 +13,10 @@
  * @brief Describes an authentication source.
  */
 
-// $Id$
-
 
 import('classes.plugins.AuthPlugin');
 
 class AuthSource extends DataObject {
-
 	/**
 	 * Constructor.
 	 */

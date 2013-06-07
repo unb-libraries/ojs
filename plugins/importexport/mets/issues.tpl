@@ -1,12 +1,11 @@
 {**
- * issues.tpl
+ * plugins/importexport/mets/issues.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of issues to potentially export
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.METSExport.export.selectIssue"}
@@ -20,9 +19,9 @@
 
 
 function selectAll() {
-        document.issues.selButton.value = "Unselect All";
-        document.issues.selButton.attributes["onclick"].value = "javascript:unSelectAll();";
-	var elements = document.issues.elements;
+        document.getElementById('issues').selButton.value = "Unselect All";
+        document.getElementById('issues').selButton.attributes["onclick"].value = "javascript:unSelectAll();";
+	var elements = document.getElementById('issues').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'issueId[]') {
 			elements[i].checked = true;
@@ -30,9 +29,9 @@ function selectAll() {
 	}
 }
 function unSelectAll() {
-        document.issues.selButton.value = "Select All";
-        document.issues.selButton.attributes["onclick"].value  = "javascript:selectAll();";
-	var elements = document.issues.elements;
+        document.getElementById('issues').selButton.value = "Select All";
+        document.getElementById('issues').selButton.attributes["onclick"].value  = "javascript:selectAll();";
+	var elements = document.getElementById('issues').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'issueId[]') {
 			elements[i].checked = false;
@@ -40,11 +39,11 @@ function unSelectAll() {
 	}
 }
 function SubmitIfAnyIsChecked() {
-	var elements = document.issues.elements;
+	var elements = document.getElementById('issues').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'issueId[]') {
-			if(elements[i].checked){ 
-                            document.issues.submit();
+			if(elements[i].checked){
+                            document.getElementById('issues').submit();
                             return true;
                          }
 		}
@@ -56,7 +55,7 @@ function SubmitIfAnyIsChecked() {
 {/literal}
 </script>
 
-<form action="{plugin_url path="exportIssues"}" method="post" name="issues">
+<form action="{plugin_url path="exportIssues"}" method="post" id="issues">
 
 <h3>{translate key="plugins.importexport.METSExport.settings"}</h3>
 

@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/GridColumn.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GridColumn
@@ -15,63 +15,38 @@
  *  specific configuration (e.g. column title).
  */
 
-// $Id$
+define('COLUMN_ALIGNMENT_LEFT', 'left');
+define('COLUMN_ALIGNMENT_CENTER', 'center');
+define('COLUMN_ALIGNMENT_RIGHT', 'right');
 
-class GridColumn {
-	/** @var string the column id */
-	var $_id;
+import('lib.pkp.classes.controllers.grid.GridBodyElement');
 
+class GridColumn extends GridBodyElement {
 	/** @var string the column title i18n key */
 	var $_title;
 
 	/** @var string the column title (translated) */
 	var $_titleTranslated;
 
-	/**
-	 * @var array flags that can be set by the handler to trigger layout
-	 *  options in the template.
-	 */
-	var $_flags;
-
 	/** @var string the controller template for the cells in this column */
 	var $_template;
-
-	/** @var GridCellProvider a cell provider for cells in this column */
-	var $_cellProvider;
 
 	/**
 	 * Constructor
 	 */
 	function GridColumn($id = '', $title = null, $titleTranslated = null,
-		$template = 'controllers/grid/gridCell.tpl', $cellProvider = null, $flags = array()) {
-		$this->_id = $id;
+			$template = 'controllers/grid/gridCell.tpl', $cellProvider = null, $flags = array()) {
+
+		parent::GridBodyElement($id, $cellProvider, $flags);
+
 		$this->_title = $title;
 		$this->_titleTranslated = $titleTranslated;
 		$this->_template = $template;
-		$this->_cellProvider =& $cellProvider;
-		$this->_flags = $flags;
 	}
 
 	//
 	// Setters/Getters
 	//
-	/**
-	 * Get the column id
-	 * @return string
-	 */
-	function getId() {
-		return $this->_id;
-	}
-
-	/**
-	 * Set the column id
-	 * @param $id string
-	 */
-	function setId($id) {
-		$this->_id = $id;
-	}
-
-
 	/**
 	 * Get the column title
 	 * @return string
@@ -102,44 +77,7 @@ class GridColumn {
 	 */
 	function getLocalizedTitle() {
 		if ( $this->_titleTranslated ) return $this->_titleTranslated;
-		return __($this->_title);;
-	}
-
-	/**
-	 * Get all layout flags
-	 * @return array
-	 */
-	function getFlags() {
-		return $this->_flags;
-	}
-
-	/**
-	 * Get a single layout flags
-	 * @param $flag string
-	 * @return mixed
-	 */
-	function getFlag($flag) {
-		assert(isset($this->flags[$flag]));
-		return $this->_flags[$flag];
-	}
-
-	/**
-	 * Check whether a flag is set to true
-	 * @param $flag string
-	 * @return boolean
-	 */
-	function hasFlag($flag) {
-		if (!isset($this->_flags[$flag])) return false;
-		return (boolean)$this->_flags[$flag];
-	}
-
-	/**
-	 * Add a flag
-	 * @param $flag string
-	 * @param $value mixed
-	 */
-	function addFlag($flag, $value) {
-		$this->_flags[$flag] = $value;
+		return __($this->_title);
 	}
 
 	/**
@@ -159,24 +97,35 @@ class GridColumn {
 	}
 
 	/**
-	 * Get the cell provider
-	 * @return GridCellProvider
+	 * @see GridBodyElement::getCellProvider()
 	 */
-	function &getCellProvider() {
-		if (is_null($this->_cellProvider)) {
+	function getCellProvider() {
+		if (is_null(parent::getCellProvider())) {
 			// provide a sensible default cell provider
 			import('lib.pkp.classes.controllers.grid.ArrayGridCellProvider');
-			$cellProvider =& new ArrayGridCellProvider();
+			$cellProvider = new ArrayGridCellProvider();
 			$this->setCellProvider($cellProvider);
 		}
-		return $this->_cellProvider;
+
+		return parent::getCellProvider();
 	}
 
 	/**
-	 * Set the cell provider
-	 * @param $cellProvider GridCellProvider
+	 * Get cell actions for this column.
+	 *
+	 * NB: Subclasses have to override this method to
+	 * actually provide cell-specific actions. The default
+	 * implementation returns an empty array.
+	 *
+	 * @param $row GridRow The row for which actions are
+	 *  being requested.
+	 * @return array An array of LinkActions for the cell.
 	 */
-	function setCellProvider(&$cellProvider) {
-		$this->_cellProvider =& $cellProvider;
+	function getCellActions(&$request, &$row, $position = GRID_ACTION_POSITION_DEFAULT) {
+		// The default implementation returns an empty array
+		$actions = array();
+		return $actions;
 	}
 }
+
+?>

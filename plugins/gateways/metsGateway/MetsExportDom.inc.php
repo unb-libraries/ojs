@@ -5,9 +5,9 @@
  */
 
 /**
- * @file MetsExportDom.inc.php
+ * @file plugins/gateways/metsGateway/MetsExportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetsExportDom
@@ -15,9 +15,6 @@
  *
  * @brief MetsExportDom export plugin DOM functions for export
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -475,12 +472,13 @@ class MetsExportDom {
 	function generateArticleHtmlGalleyImageFileDom(&$doc, &$root, $article, $galley, $imageFile, $useAttribute) {
 		import('classes.file.PublicFileManager');
 		import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
 		$contentWrapper = $this->getSetting($this->journalId, 'contentWrapper');
 		$mfile =& XMLCustomWriter::createElement($doc, 'METS:file');
 		$filePath = MetsExportDom::getPublicFilePath($imageFile , '/public/');
 
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal =& $journalDao->getJournal($article->getJournalId());
+		$journal =& $journalDao->getById($article->getJournalId());
 
 		$chkmd5return = md5_file($filePath);
 		XMLCustomWriter::setAttribute($mfile, 'ID', 'F'.$imageFile->getFileId().'-A'.$article->getId());
@@ -491,7 +489,7 @@ class MetsExportDom {
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUM', $chkmd5return);
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUMTYPE', 'MD5');
 		if($contentWrapper == 'FContent') {
-			$fileContent =& FileManager::readFile($filePath);
+			$fileContent =& $fileManager->readFile($filePath);
 			$fContent =& XMLCustomWriter::createElement($doc, 'METS:FContent');
 			$fNameNode =&XMLCustomWriter::createChildWithText($doc, $fContent, 'METS:binData',base64_encode($fileContent));
 			XMLCustomWriter::appendChild($mfile, $fContent);
@@ -512,6 +510,7 @@ class MetsExportDom {
 	function generateArticleFileDom(&$doc, &$root, $article, &$galleyFile, $useAttribute) {
 		import('classes.file.PublicFileManager');
 		import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
 		$contentWrapper = $this->getSetting($this->journalId, 'contentWrapper');
 		$mfile =& XMLCustomWriter::createElement($doc, 'METS:file');
 		$filePath = MetsExportDom::getPublicFilePath($galleyFile , '/public/');
@@ -524,7 +523,7 @@ class MetsExportDom {
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUM', $chkmd5return);
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUMTYPE', 'MD5');
 		if($contentWrapper == 'FContent') {
-			$fileContent =& FileManager::readFile($filePath);
+			$fileContent =& $fileManager->readFile($filePath);
 			$fContent =& XMLCustomWriter::createElement($doc, 'METS:FContent');
 			$fNameNode =&XMLCustomWriter::createChildWithText($doc, $fContent, 'METS:binData',base64_encode($fileContent));
 			XMLCustomWriter::appendChild($mfile, $fContent);
@@ -545,6 +544,7 @@ class MetsExportDom {
 	function generateArticleSuppFileDom(&$doc, &$root, $article, &$suppFile) {
 		import('classes.file.PublicFileManager');
 		import('lib.pkp.classes.file.FileManager');
+		$fileManager = new FileManager();
 		$contentWrapper = $this->getSetting($this->journalId, 'contentWrapper');
 		$mfile =& XMLCustomWriter::createElement($doc, 'METS:file');
 		$filePath = MetsExportDom::getPublicFilePath($suppFile , '/supp/');;
@@ -556,7 +556,7 @@ class MetsExportDom {
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUM', $chkmd5return);
 		XMLCustomWriter::setAttribute($mfile, 'CHECKSUMTYPE', 'MD5');
 		if($contentWrapper == 'FContent') {
-			$fileContent =& FileManager::readFile($filePath);
+			$fileContent =& $fileManager->readFile($filePath);
 			$fContent =& XMLCustomWriter::createElement($doc, 'METS:FContent');
 			$fNameNode =&XMLCustomWriter::createChildWithText($doc, $fContent, 'METS:binData',base64_encode($fileContent));
 			XMLCustomWriter::appendChild($mfile, $fContent);
@@ -674,7 +674,7 @@ class MetsExportDom {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$article =& $articleDao->getArticle($file->getArticleId());
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal = $journalDao->getJournal($article->getJournalId());
+		$journal = $journalDao->getById($article->getJournalId());
 		$base_url =& Config::getVar('general','base_url');
 		$url = $base_url.'/index.php/'.$journal->getPath().'/article/download/'.$file->getArticleId().'/'.$file->getBestGalleyId($journal);
 		return $url;
@@ -689,7 +689,7 @@ class MetsExportDom {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$article =& $articleDao->getArticle($file->getArticleId());
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal = $journalDao->getJournal($article->getJournalId());
+		$journal = $journalDao->getById($article->getJournalId());
 		$base_url =& Config::getVar('general','base_url');
 		$url = $base_url.'/index.php/'.$journal->getPath().'/article/downloadSuppFile/'.$file->getArticleId().'/'.$file->getSuppFileId();
 		return $url;

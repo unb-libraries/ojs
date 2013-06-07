@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ClassicNavyThemePlugin.inc.php
+ * @file plugins/themes/classicNavy/ClassicNavyThemePlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ClassicNavyThemePlugin
@@ -11,9 +11,6 @@
  *
  * @brief "ClassicNavy" theme plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.ThemePlugin');
 

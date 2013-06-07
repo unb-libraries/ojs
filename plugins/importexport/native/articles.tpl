@@ -1,12 +1,11 @@
 {**
- * articles.tpl
+ * plugins/importexport/native/articles.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of articles to potentially export
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.native.selectArticle"}
@@ -30,7 +29,7 @@ function toggleChecked() {
 <br/>
 
 <div id="articles">
-<form action="{plugin_url path="exportArticles"}" method="post" name="articles">
+<form action="{plugin_url path="exportArticles"}" method="post" id="articles">
 <table width="100%" class="listing">
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
@@ -45,7 +44,7 @@ function toggleChecked() {
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
 	</tr>
-	
+
 	{iterate from=articles item=articleData}
 	{assign var=article value=$articleData.article}
 	{assign var=issue value=$articleData.issue}

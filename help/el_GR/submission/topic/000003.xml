@@ -4,7 +4,7 @@
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Author Submission Process - Indexing and Metadata 
@@ -16,7 +16,6 @@
   * Kiriazis Vasilis (vaskir@lis.upatras.gr),
   * Papaxristopoulos Leonidas (leonidasp@lis.upatras.gr)
   *
-  * $Id$
   -->
 
 <topic id="submission/topic/000003" locale="el_GR" title="Ευρετηρίαση και Μεταδεδομένα" toc="submission/toc/000000" key="submission.indexingAndMetadata">

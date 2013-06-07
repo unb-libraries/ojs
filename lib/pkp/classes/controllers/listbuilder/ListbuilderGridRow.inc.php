@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/listbuilder/ListbuilderGridRow.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ListbuilderGridRow
@@ -15,25 +15,29 @@
 import('lib.pkp.classes.controllers.grid.GridRow');
 
 class ListbuilderGridRow extends GridRow {
+
+	/* @var boolean */
+	var $_hasDeleteItemLink;
+
 	/**
 	 * Constructor
+	 * @param $hasDeleteItemLink boolean
 	 */
-	function ListbuilderGridRow() {
+	function ListbuilderGridRow($hasDeleteItemLink = true) {
 		parent::GridRow();
+
+		$this->setHasDeleteItemLink($hasDeleteItemLink);
 	}
 
 	/**
-	 * Get the listbuilder template
-	 * @return string
+	 * Add a delete item link action or not.
+	 * @param $hasDeleteItemLink boolean
 	 */
-	function getTemplate() {
-		if (is_null($this->_template)) {
-			$this->setTemplate('controllers/listbuilder/listbuilderGridRow.tpl');
-		}
-
-		return $this->_template;
+	function setHasDeleteItemLink($hasDeleteItemLink) {
+		$this->_hasDeleteItemLink = $hasDeleteItemLink;
 	}
-	
+
+
 	//
 	// Overridden template methods
 	//
@@ -41,10 +45,32 @@ class ListbuilderGridRow extends GridRow {
 	 * @see GridRow::initialize()
 	 * @param PKPRequest $request
 	 */
-	function initialize(&$request) {
+	function initialize(&$request, $template = 'controllers/listbuilder/listbuilderGridRow.tpl') {
 		parent::initialize($request);
 
-		// add list builder row template
-		$this->setTemplate($this->getTemplate());
+		// Set listbuilder row template
+		$this->setTemplate($template);
+
+		if ($this->_hasDeleteItemLink) {
+			// Add deletion action (handled in JS-land)
+			import('lib.pkp.classes.linkAction.request.NullAction');
+			$this->addAction(
+				new LinkAction(
+					'delete',
+					new NullAction(),
+					'',
+					'remove_item'
+				)
+			);
+		}
+	}
+
+	/**
+	 * @see GridRow::addAction()
+	 */
+	function addAction($action) {
+		return parent::addAction($action, GRID_ACTION_POSITION_ROW_LEFT);
 	}
 }
+
+?>

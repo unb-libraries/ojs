@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * locale/ja_JP/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
   *
-  * $Id$
   -->
 
 <locale name="ja_JP" full_name="日本語">
@@ -268,7 +267,7 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
   </message>
   <!-- Setup Step 3 -->
   <message key="manager.setup.subjectClassificationDescription">
-    <![CDATA[[雑誌はWeb上で利用可能な主題分類システムを使用します。<br />
+    <![CDATA[雑誌はWeb上で利用可能な主題分類システムを使用します。<br />
 分類システムの名称]]>
   </message>
   <message key="manager.setup.registerJournalForIndexingDescription">
@@ -457,7 +456,6 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
   <message key="user.login.resetPasswordInstructions"><![CDATA[セキュリティ上の理由により、本システムでは現行のパスワードをお知らせするのではなく、リセットするためのパスワードをお送りしています。<br /><br />パスワードをリセットするには、以下の記入欄にメールアドレスを入力してください。入力されたメールアドレスに確認メールを送信します。]]></message>
   <!-- Profile -->
   <!-- Registration -->
-  <message key="user.register.repeatPassword">もう一度パスワードを入力してください</message>
   <message key="user.register.selectJournal">登録する雑誌を選択してください</message>
   <message key="user.register.noJournals">登録できる雑誌はありません。</message>
   <message key="user.register.privacyStatement">個人情報の扱いについて</message>

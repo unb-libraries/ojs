@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE countries SYSTEM "../../dtd/countries.dtd">
+
 <!--
   * locale/de_DE/countries.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Regionalisierte Länderliste (vgl. http://de.wikipedia.org/wiki/ISO-3166-1-Kodierliste).
@@ -134,7 +135,7 @@
 	<country name="Libanon" code="LB"/>
 	<country name="Lesotho" code="LS"/>
 	<country name="Liberia" code="LR"/>
-	<country name="Libysch-Arabische Dschamahirija" code="LY"/>
+	<country name="Libyen" code="LY"/>
 	<country name="Liechtenstein" code="LI"/>
 	<country name="Litauen" code="LT"/>
 	<country name="Luxemburg" code="LU"/>

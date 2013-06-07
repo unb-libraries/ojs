@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/booksForReview/classes/BookForReviewDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BookForReviewDAO
@@ -309,7 +309,7 @@ class BookForReviewDAO extends DAO {
 			$this->bookForReviewAuthorDao->deleteAuthorsByBookForReview($bookId);
 
 			// Delete cover image files (for all locales) from the filesystem
-			import('file.PublicFileManager');
+			import('classes.file.PublicFileManager');
 			$publicFileManager = new PublicFileManager();
 			$locales = AppLocale::getSupportedLocales();
 			foreach ($locales as $locale) {	
@@ -615,7 +615,7 @@ class BookForReviewDAO extends DAO {
 
 		if ($book) {
 			// Delete cover image file from the filesystem and settings
-			import('file.PublicFileManager');
+			import('classes.file.PublicFileManager');
 			$publicFileManager = new PublicFileManager();
 			$publicFileManager->removeJournalFile($book->getJournalId(), $book->getFileName($locale));
 

@@ -3,7 +3,7 @@
 /**
  * @file classes/core/VirtualArrayIterator.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class VirtualArrayIterator
@@ -12,8 +12,6 @@
  * @brief Provides paging and iteration for "virtual" arrays -- arrays for which only
  * the current "page" is available, but are much bigger in entirety.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.core.ItemIterator');

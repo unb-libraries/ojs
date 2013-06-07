@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Índice de registro 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Roles Index 
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000003" locale="es_ES" title="Registros" toc="journal/toc/000000" subtoc="journal/toc/000003" key="journal.roles.index">
+<topic id="journal/topic/000003" locale="es_ES" title="Roles" toc="journal/toc/000000" subtoc="journal/toc/000003" key="journal.roles.index">
 	<section>
-		<![CDATA[<p>Este sistema de revista utiliza un número roles tradicionales de publicación de revistas, que llevan a cabo el proceso de publicación. Una persona puede estar registrada en más de una función, para que la revista pueda, por ejemplo, ser operada por una sola persona que ejecuta todos los roles excepto el de Revisor y Autor. Normalmente, el Administrador de la Revista puede operar como Editor y Editor de la Sección en general. Los Revisores están generalmente registrados como Autores.</p><p><i>Acceso limitado por el rol</i>. Cada rol tiene su propio dominio de acceso a la editorial y al proceso de publicación. Por ejemplo, Autores y Revisores van a su espacio individual dentro de la página Web de la revista, y los editores de la Sección sólo tienen acceso a las entregas que se les han asignado. Esto quiere decir que en principio, como mínimo, no existe conflicto potencial, si el Editor de la Sección entrega un artículo a la revista para su revisión y posible publicación.</p>]]>	
+		<![CDATA[Este sistema de revista emplea un número de roles tradicionales de publicación para llevar a cabo el todo el proceso. Una misma persona puede asumir más de un rol, así pues la revista podría funcionar, por ejemplo, con una única persona llevando a cabo todos los roles excepto el de revisor/a y el de autor/a. Lo más habitual es que el gestor/a de la revista sea además editor/a y editor/a de sección. Los revisores/as a menudo se registran también como autores/as.</p><p><em>El acceso se limita según el rol</em>. Cada uno de los roles tiene su propio dominio de acceso al proceso de edición y publicación. Por ejemplo, los autores/as y revisores/as acceden a su propio espacio personal dentro del sitio web de la revista; los editores/as de sección solo pueden ver los envíos que se les han asignado. Esto significa que en principio no debería suponer ningún conflicto el hecho de que un editor/a de sección enviase un artículo a la revista para su revisión y posible publicación.</p>]]>	
 	</section>
 </topic>

@@ -2,14 +2,14 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ../ojs2-devel//locale/it_IT/author.xml
+  * locale/it_IT/author.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
+  * Contributed by Andrea Marchitelli - CINECA.
   *
-  * $Id: author.xml,v 1.6 2009/12/08 04:16:20 jmacgreg Exp $
   -->
 
 <locale name="it_IT" full_name = "Italiano">
@@ -18,7 +18,7 @@
 	<message key="author.competingInterests"><![CDATA[Interessi&nbsp;concorrenziali vedi la policy sul<a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">Conflitto d'interessi</a>]]></message>
 	<message key="author.submit.submitArticle">Proponi un articolo</message>
 	<message key="author.submit.stepsToSubmit">I cinque passaggi per la proposta</message>
-	<message key="author.submit.startHereTitle">Inizia una nuova proposta</message>
+	<message key="author.submit.startHereTitle">Invia una nuova proposta</message>
 	<message key="author.submit.startHereLink"><![CDATA[<a href="{$submitUrl}" class="action">Clicca qui</a> per andare al primo passo dei cinque passi del processo di proposta.]]></message>
 	<message key="author.submit.step1">Fase 1. Inizio della proposta</message>
 	<message key="author.submit.step2">Fase 2. Caricamento del file</message>
@@ -34,7 +34,7 @@
 	<message key="author.submit.cancelSubmission">Puoi completare questa proposta in un momento successivo, selezionando la voce "Proposteattive" nell'home page della sezione Autore.</message>
 	<message key="author.submit.notAccepting">In questo momento la rivista non accetta nessuna proposta.</message>
 	<message key="author.submit.requestWaiver">Richiedi un'esenzione</message>
-	<message key="author.submit.qualityForWaiver">Chiedo di essere esonerato dal pagamento della  quota di submission per questa proposta.</message>
+	<message key="author.submit.qualifyForWaiver">Chiedo di essere esonerato dal pagamento della  quota di submission per questa proposta.</message>
 	<message key="author.submit.addReasonsForWaiver">Utilizza la casella di commento sotto per specificare i motivi della richiesta di esonero dal pagamento.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Invia la versione corretta</message>
 	<message key="author.submissions.proofreadingCorrections">Correzioni sulle bozze</message>
@@ -59,8 +59,6 @@
 	<message key="author.submit.addAuthor">Aggiungi un autore</message>
 	<message key="author.submit.deleteAuthor">Cancella autore</message>
 	<message key="author.submit.submissionIndexingDescription">Fornisci i termini per indicizzare la proposta; separa i termini con un punto e virgola (termine1; termine2; termine3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Organizzazioni di supporto</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Indica le organizzazioni che hanno finanziato o supportato il lavoro presentato.</message>
 	<message key="author.submit.coverageInstructions">Riferimenti geografici, al periodo cronologico/storico e/o alle caratteristiche del campione della ricerca.</message>
 	<message key="author.submit.subjectClassInstructions">Utilizza il link al sistema di classificazione per selezionare i termini e, se necessario, i numeri di classificazione.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Italiano=it; Inglese=en; Francese=fr; Spagnolo=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Altri codici</a>.]]></message>
@@ -95,7 +93,7 @@
 	<message key="author.submit.suppFile.sourceText">Testo della fonte</message>
 	<message key="author.submit.suppFile.briefDescription">Breve descrizione</message>
 	<message key="author.submit.suppFile.contributorOrSponsor">Organizzazione finanziatrice o sostenitrice</message>
-	<message key="author.submit.suppFile.availableToPeers">Invia il file ai revisori (senza metadati), in quanto non comprometterà la blind review.</message>
+	<message key="author.submit.suppFile.availableToPeers">Mostra il file ai revisori (senza metadati), in quanto non comprometterà la blind review.</message>
 	<message key="author.submit.suppFile.publisherDescription">Utilizza solo con materiali ufficialmente pubblicati.</message>
 	<message key="author.submit.suppFile.dateDescription">Data di creazione dello strumento o di raccolta dei dati.</message>
 	<message key="author.submit.suppFile.sourceDescription">Nome dello studio o altro punto di partenza.</message>
@@ -124,7 +122,9 @@
 	<message key="author.submit.reorder">Riordina i nomi degli autori</message>
 	<message key="author.submit.form.wordCountAlert">Hai superato il numero massimo di parole previsto per l'abstract degli articoli da pubblicare in questa sezione.</message>
 	<message key="author.submit.mustEnterWaiverReason">Se stai chiedendo un esonero, devi indicarne il motivo.</message>
-	<message key="author.submit.form.localeRequired">Seleziona laa lingua per la proposta.</message>
+	<message key="author.submit.form.localeRequired">Seleziona una lingua per la proposta.</message>
 	<message key="author.submit.submissionLocale">Lingua della proposta</message>
 	<message key="author.submit.submissionLocaleDescription"><![CDATA[Questa rivista accetta contributi in diverse lingue. Seleziona la lingua della proposta dal men&#249; a tendina.]]></message>
+	<message key="author.submit.submissionSupportingAgencies">Agenzie di supporto e finanziamento</message>
+	<message key="author.submit.submissionSupportingAgenciesDescription">Identifica agenzie (una persona, un'organizzazione o un servizio) che contribuiscono al contenuto o provvedono finanziamento o supporto al lavoro presentato in questa proposta. Inseriscili separandoli con punti e virgola (es. John Doe, Metro University; Master University, Department of Computer Science).</message>
 </locale>

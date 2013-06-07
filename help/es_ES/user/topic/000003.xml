@@ -1,37 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Interfase de Usuario - Registro y Perfil
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * User Interface - Register and Profile
   *
   * $Id$
   -->
 
-<topic id="user/topic/000003" locale="es_ES" title="Registro y Perfil" toc="user/toc/000000" key="user.registerAndProfile">
+<topic id="user/topic/000003" locale="es_ES" title="Registro y perfil" toc="user/toc/000000" key="user.registerAndProfile">
 	<section>
-		<![CDATA[<p>La revista utiliza un sistema de registro para todos los usuarios involucrados en el proceso editorial y de publicación. La Política de Privacidad de la revista se aplica a todos los usuarios registrados. Cada usuario registrado tiene un Perfil, que puede ser editado o agregado después de que el usuario inicie sesión en la revista. El enlace para el Perfil se encuentra en el margen a mano derecha bajo Usuario y en la Página Principal del Usuario.</p><p>Existe una opción de correo electrónico de actualización, para todos los usuarios, que le envía notificaciones por correo electrónico a los usuarios sobre la Tabla de Contenidos de un nuevo número de la revista. Para las revistas que operan en más de un idioma, los Revisores pueden indicar en su Perfil los idiomas en los que se sienten cómodos para hacer revisiones de envíos.</p>]]>	
+		<![CDATA[<p>La revista usa un sistema de registro para todos los usuarios/as que intervengan en el proceso editorial y de publicación. La política de privacidad de la revista se ofrece a todos los usuarios/as registrados. Cada usuario/a registrado tiene un perfil que puede editar o añadir después de iniciar sesión la revista. El enlace a la página de Mi perfil se encuentra en el margen derecho del Àrea personal, debajo de Usuario/a.</p><p>Existe una opción de actualización por correo electrónico para todos los usuarios/as que permite recibir notificaciones sobre la tabla de contenidos de cada número nuevo. En las revistas que funcionan con más de un idioma, los revisores/as pueden indicar en su perfil la lengua en la que se sienten más cómodos para revisar las publicaciones.</p>]]>	
 	</section>
 
-	<section title="¿Por qué Registrarse?">
+	<section title="¿Por qué registrarse?">
 
-<![CDATA[<p>Cuando UD. se registra, el sistema crea una página “Principal de Usuario”" para facilitarle el acceso a sus revistas. UD. debe registrarse si desea enviar un artículo a alguna revista o si va a ser parte de un equipo editorial (por ejemplo, editor, revisor, corrector de pruebas) o de alguna revista.</p><p>Algunas revistas restringen el acceso a algunas partes de su página a menos de que esté registrado.</p>]]>
+<![CDATA[<p>Cuando el usuario/a se registra, el sistema crea una página de inicio del usuario/a que le facilita el acceso a sus revistas. Debe registrarse para poder enviar un trabajo a una revista o ser miembro del equipo editorial (p. ej.: editor/a, revisor/a, corrector/a de pruebas).</p><p>Algunas revistas restringen el acceso a ciertas partes del sitio web a aquellos que no estén registrados.</p>]]>
 </section>
 
-<section title="Política de Privacidad">
-<![CDATA[<p>La Política de Privacidad de la revista se aplica a todos los usuarios registrados. UD. puede encontrar más información sobre la política de privacidad de la revista en Sobre la Revista.</p>]]>
+<section title="Política de privacidad">
+<![CDATA[<p>La política de privacidad de la revista se ofrece a todos los usuarios/as registrados. Para más información sobre la política de privacidad de la revista, consulte la sección Acerca de la revista.</p>]]>
 </section>
-<section title="¿Cómo me Registro?">
-<![CDATA[<p>UD. puede registrarse pulsando sobre "Iniciar Sesión" o "Registrarse" en la página principal del sitio o en la página principal de cualquier revista. Alternativamente, UD. puede pedirle al Administrador de la Revista que lo registre. La Información de Contacto puede encontrarse en Sobre la Revista.</p>]]>
+<section title="¿Cómo registrarse?">
+<![CDATA[<p>Para registrarse debe hacer clic en "Iniciar sesión" o en "Registrarse" en la página principal del sitio web o en la página de inicio de cualquier revista. También puede solicitar al gestor/a de la revista que realice el registro. Puede encontrar los datos de contacto en Acerca de la revista.</p>]]>
 </section>
-<section title="Perfil">
-<![CDATA[<p>UD. crea un perfil (incluyendo su nombre de usuario y una contraseña) cuando se registra.  UD. puede editar su perfil en cualquier momento, siempre y cuando haya iniciado sesión.  En la barra de navegación derecha bajo el encabezado "Usuario", aparece el enlace "Mi Perfil"; pulse sobre ese enlace para ser llevado a su perfil. Aquí UD. puede cambiar su información de contacto, sus intereses, roles y administrar los correos electrónicos de notificaciones de la revista con las que se ha registrado.</p>]]>
+<section title="Mi perfil">
+<![CDATA[<p>Al registrarse se crea un perfil que incluye el nombre de usuario/a y la contraseña. Se puede editar el perfil siempre que haya iniciado sesión. En la barra de navegación derecha, debajo del título "Usuario/a", aparece el enlace "Mi Perfil" vinculado a su perfil. Aquí puede cambiar sus datos de contacto, sus preferencias de revisión y sus roles, así como gestionar las notificaciones por correo electrónico de las revistas a las que se haya registrado.</p>]]>
 </section>
 
 </topic>

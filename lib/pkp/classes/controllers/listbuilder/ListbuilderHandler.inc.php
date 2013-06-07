@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/listbuilder/ListbuilderHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ListbuilderHandler
@@ -14,10 +14,22 @@
 
 import('lib.pkp.classes.controllers.grid.GridHandler');
 import('lib.pkp.classes.controllers.listbuilder.ListbuilderGridRow');
+import('lib.pkp.classes.controllers.listbuilder.ListbuilderGridColumn');
+import('lib.pkp.classes.controllers.listbuilder.MultilingualListbuilderGridColumn');
 
-define('LISTBUILDER_SOURCE_TYPE_TEXT', 0);
-define('LISTBUILDER_SOURCE_TYPE_SELECT', 1);
-define('LISTBUILDER_SOURCE_TYPE_BOUND', 2);
+/* Listbuilder source types: text-based, pulldown, ... */
+define_exposed('LISTBUILDER_SOURCE_TYPE_TEXT', 0);
+define_exposed('LISTBUILDER_SOURCE_TYPE_SELECT', 1);
+
+/* Listbuilder save types */
+define('LISTBUILDER_SAVE_TYPE_EXTERNAL', 0); // Outside the listbuilder handler
+define('LISTBUILDER_SAVE_TYPE_INTERNAL', 1); // Using ListbuilderHandler::save
+
+/* String to identify optgroup in the returning options data. If you want to use
+ * optgroup in listbuilder select, return the options data in a multidimensional array
+ * array[columnIndex][optgroupId][selectItemId] and also with
+ * array[columnIndex][LISTBUILDER_OPTGROUP_LABEL][optgroupId] */
+define_exposed('LISTBUILDER_OPTGROUP_LABEL', 'optGroupLabel');
 
 // FIXME: Rather than inheriting from grid handler, common base
 // functionality might better be factored into a common base handler
@@ -30,23 +42,14 @@ define('LISTBUILDER_SOURCE_TYPE_BOUND', 2);
 // the base class and the re-factored grid handler then you know
 // you're on the right track.
 class ListbuilderHandler extends GridHandler {
-	/** @var string The label associated with the primary source to be added to the list **/
-	var $_sourceTitle;
-
-	/** @var integer Definition of the type of source **/
+	/** @var integer Definition of the type of source LISTBUILDER_SOURCE_TYPE_... **/
 	var $_sourceType;
 
-	/** @var array The current collection of items in the list **/
-	var $_items;
+	/** @var integer Constant indicating the save approach for the LB LISTBUILDER_SAVE_TYPE_... **/
+	var $_saveType = LISTBUILDER_SAVE_TYPE_INTERNAL;
 
-	/** @var string The title of the item collection **/
-	var $_listTitle;
-
-	/** @var array Array of optional attributes **/
-	var $_attributeNames;
-
-	/** @var array Array of strings containing possible items that are stored in the source list */
-	var $_possibleItems;
+	/** @var $saveFieldName Field for LISTBUILDER_SAVE_TYPE_EXTERNAL naming the field used to send the saved contents of the LB */
+	var $_saveFieldName = null;
 
 	/**
 	 * Constructor.
@@ -56,7 +59,30 @@ class ListbuilderHandler extends GridHandler {
 	}
 
 	/**
-	 * Get the listbuilder template
+	 * @see GridHandler::initialize
+	 */
+	function initialize(&$request, $addItemLink = true) {
+		parent::initialize($request);
+
+		if ($addItemLink) {
+			import('lib.pkp.classes.linkAction.request.NullAction');
+			$this->addAction(
+				new LinkAction(
+					'addItem',
+					new NullAction(),
+					__('grid.action.addItem'),
+					'add_item'
+				)
+			);
+		}
+	}
+
+
+	//
+	// Getters and Setters
+	//
+	/**
+	 * Get the listbuilder template.
 	 * @return string
 	 */
 	function getTemplate() {
@@ -68,27 +94,8 @@ class ListbuilderHandler extends GridHandler {
 	}
 
 	/**
-	 * Set the title for the source (left side of the listbuilder)
-	 * FIXME: AFAIK doxygen needs the $ to correctly parse variable names
-	 *  I've corrected this throughout the code but leave this as a marker
-	 *  for you.
-	 * @param $sourceTitle string
-	 */
-	function setSourceTitle($sourceTitle) {
-		$this->_sourceTitle = $sourceTitle;
-	}
-
-	/**
-	 * Get the title for the source (left side of the listbuilder)
-	 * @return string
-	 */
-	function getSourceTitle() {
-		return $this->_sourceTitle;
-	}
-
-	/**
 	 * Set the type of source (Free text input, select from list, autocomplete)
-	 * @param $sourceType int
+	 * @param $sourceType int LISTBUILDER_SOURCE_TYPE_...
 	 */
 	function setSourceType($sourceType) {
 		$this->_sourceType = $sourceType;
@@ -96,134 +103,215 @@ class ListbuilderHandler extends GridHandler {
 
 	/**
 	 * Get the type of source (Free text input, select from list, autocomplete)
-	 * @return int
+	 * @return int LISTBUILDER_SOURCE_TYPE_...
 	 */
 	function getSourceType() {
 		return $this->_sourceType;
 	}
 
 	/**
-	 * Set the ListbuilderItem associated with this class
-	 * @param $items array
+	 * Set the save type (using this handler or another external one)
+	 * @param $sourceType int LISTBUILDER_SAVE_TYPE_...
 	 */
-	function setItems($items) {
-		$this->_items = $items;
+	function setSaveType($saveType) {
+		$this->_saveType = $saveType;
 	}
 
 	/**
-	 * Return all ListbuilderItems
-	 * @return array
+	 * Get the save type (using this handler or another external one)
+	 * @return int LISTBUILDER_SAVE_TYPE_...
 	 */
-	function getItems() {
-		return $this->_items;
+	function getSaveType() {
+		return $this->_saveType;
 	}
 
 	/**
-	 * Return a ListbuilderItem by ID
-	 * @return ListbuilderItem
+	 * Set the save field name for LISTBUILDER_SAVE_TYPE_EXTERNAL
+	 * @param $fieldName string
 	 */
-	function getItem($itemId) {
-		return $this->_items[$itemId];
+	function setSaveFieldName($fieldName) {
+		$this->_saveFieldName = $fieldName;
 	}
 
 	/**
-	 * Remove a ListbuilderItem by ID
-	 * @param $itemId mixed
-	 */
-	function removeItem($itemId) {
-		unset($this->_items[$itemId]);
-	}
-
-	/**
-	 * Set the localized label for the list (right side of the listbuilder)
-	 * @param $listTitle string
-	 */
-	function setListTitle($listTitle) {
-		$this->_listTitle = $listTitle;
-	}
-
-	/**
-	 * Get the localized label for the list (right side of the listbuilder)
+	 * Set the save field name for LISTBUILDER_SAVE_TYPE_EXTERNAL
 	 * @return string
 	 */
-	function getListTitle() {
-		return $this->_listTitle;
+	function getSaveFieldName() {
+		assert(isset($this->_saveFieldName));
+		return $this->_saveFieldName;
 	}
 
 	/**
-	 * Set the localized labels for each attribute
-	 * @param $attributeNames array
+	 * Get the new row ID from the request. For multi-column listbuilders,
+	 * this is an array representing the row. For single-column
+	 * listbuilders, this is a single piece of data (i.e. a string or int)
+	 * @param $request PKPRequest
+	 * @return mixed
 	 */
-	function setAttributeNames($attributeNames) {
-		$this->_attributeNames = $attributeNames;
+	function getNewRowId($request) {
+		return $request->getUserVar('newRowId');
 	}
 
 	/**
-	 * Get the localized labels for each attribute
+	 * Delete an entry.
+	 * @param $request Request object
+	 * @param $rowId mixed ID of row to modify
+	 * @return boolean
+	 */
+	function deleteEntry(&$request, $rowId) {
+		fatalError('ABSTRACT METHOD');
+	}
+
+	/**
+	 * Persist an update to an entry.
+	 * @param $request Request object
+	 * @param $rowId mixed ID of row to modify
+	 * @param $newRowId mixed ID of the new entry
+	 * @return boolean
+	 */
+	function updateEntry(&$request, $rowId, $newRowId) {
+		// This may well be overridden by a subclass to modify
+		// an existing entry, e.g. to maintain referential integrity.
+		// If not, we can simply delete and insert.
+		if (!$this->deleteEntry($request, $rowId)) return false;
+		return $this->insertEntry($request, $newRowId);
+	}
+
+	/**
+	 * Persist a new entry insert.
+	 * @param $request Request object
+	 * @param $newRowId mixed ID of row to modify
+	 */
+	function insertEntry(&$request, $newRowId) {
+		fatalError('ABSTRACT METHOD');
+	}
+
+	/**
+	 * Fetch the options for a LISTBUILDER_SOURCE_TYPE_SELECT LB
+	 * Should return a multidimensional array:
+	 * array(
+	 * 	array('column 1 option 1', 'column 2 option 1'),
+	 * 	array('column 1 option 2', 'column 2 option 2'
+	 * );
+	 * @param request Request
 	 * @return array
 	 */
-	function getAttributeNames() {
-		return $this->_attributeNames;
+	function getOptions(&$request) {
+		fatalError('ABSTRACT METHOD');
+	}
+
+	//
+	// Publicly (remotely) available listbuilder functions
+	//
+	/**
+	 * Fetch the listbuilder.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function fetch($args, &$request) {
+		return $this->fetchGrid($args, $request);
 	}
 
 	/**
- 	 * Build a list of <option>'s based on the input (can be array or one list item)
-	 * @param $itemName string
-	 * @param $attributeNames string
+	 * Unpack data to save using an external handler.
+	 * @param $data String (the json encoded data from the listbuilder itself)
+	 * @param $deletionCallback array callback to be used for each deleted element
+	 * @param $insertionCallback array callback to be used for each updated element
+	 * @param $updateCallback array callback to be used for each updated element
 	 */
-	function _buildListItemHTML($itemId = null, $itemName = null, $attributeNames = null) {
-		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->assign('itemId', $itemId);
-		$templateMgr->assign('itemName', $itemName);
-
-		if (isset($attributeNames)) {
-			if (is_array($attributeNames)) $attributeNames = implode(', ', $attributeNames);
-			$templateMgr->assign('attributeNames', $attributeNames);
+	function unpack(&$request, $data, $deletionCallback = null, $insertionCallback = null, $updateCallback = null) {
+		// Set some defaults
+		// N.B. if this class is called statically, then $this is not set to Listbuilder, but to your calling class.
+		if ( !$deletionCallback ) {
+			$deletionCallback = array(&$this, 'deleteEntry');
+		}
+		if ( !$insertionCallback ) {
+			$insertionCallback = array(&$this, 'insertEntry');
+		}
+		if ( !$updateCallback ) {
+			$updateCallback = array(&$this, 'updateEntry');
 		}
 
-		return $templateMgr->fetch('controllers/listbuilder/listbuilderItem.tpl');
-	}
+		import('lib.pkp.classes.core.JSONManager');
+		$jsonManager = new JSONManager();
+		$data = $jsonManager->decode($data);
 
-
-	/**
-	 * Display the Listbuilder
-	 */
-	function fetch(&$args, &$request, $additionalVars = null) {
-		// FIXME: User validation
-
-		$templateMgr =& TemplateManager::getManager();
-		$this->setupTemplate();
-		$router =& $request->getRouter();
-
-		if(isset($additionalVars)) {
-			foreach ($additionalVars as $key => $value) {
-				$templateMgr->assign($key, $value);
+		// Handle deletions
+		if (isset($data->deletions)) {
+			foreach (explode(' ', trim($data->deletions)) as $rowId) {
+				call_user_func($deletionCallback, $request, $rowId, $data->numberOfRows);
 			}
-		} else {
-			$templateMgr->assign('addUrl', $router->url($request, array(), null, 'addItem'));
-			$templateMgr->assign('deleteUrl', $router->url($request, array(), null, 'deleteItems'));
 		}
 
-		// Translate modal submit/cancel buttons
-		$okButton = __('common.ok');
-		$warning = __('common.warning');
-		$templateMgr->assign('localizedButtons', "$okButton, $warning");
+		// Handle changes and insertions
+		if (isset($data->changes)) foreach ($data->changes as $entry) {
+			// Get the row ID, if any, from submitted data
+			if (isset($entry->rowId)) {
+				$rowId = $entry->rowId;
+				unset($entry->rowId);
+			} else {
+				$rowId = null;
+			}
 
-		// initialize to create the columns
-		$columns =& $this->getColumns();
-		$templateMgr->assign_by_ref('columns', $columns);
-		$templateMgr->assign('numColumns', count($columns));
+			// $entry should now contain only submitted modified or new rows.
+			// Go through each and unpack the data in prep for application.
+			$changes = array();
+			foreach ($entry as $key => $value) {
+				// Match the column name and localization data, if any.
+				if (!preg_match('/^newRowId\[([a-zA-Z]+)\](\[([a-z][a-z]_[A-Z][A-Z])\])?$/', $key, $matches)) assert(false);
 
-		// Render the rows
-		$nullVar = null; // Kludge
-		$rows = $this->_renderRowsInternally($request, $nullVar);
-		$templateMgr->assign_by_ref('rows', $rows);
+				// Get the column name
+				$column = $matches[1];
 
-		$templateMgr->assign('listbuilder', $this);
+				// If this is a multilingual input, fetch $locale; otherwise null
+				$locale = isset($matches[3])?$matches[3]:null;
 
-		$json = new JSON('true', $templateMgr->fetch($this->getTemplate()));
+				if ($locale) $changes[$column][$locale] = $value;
+				else $changes[$column] = $value;
+			}
+
+			// $changes should now contain e.g.:
+			// array ('localizedColumnName' => array('en_US' => 'englishValue'),
+			// 'nonLocalizedColumnName' => 'someNonLocalizedValue');
+			if (is_null($rowId)) {
+				call_user_func($insertionCallback, $request, $changes);
+			} else {
+				call_user_func($updateCallback, $request, $rowId, $changes);
+			}
+		}
+	}
+
+	/**
+	 * Save the listbuilder using the internal handler.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function save($args, &$request) {
+		// The ListbuilderHandler will post a list of changed
+		// data in the "data" post var. Need to go through it
+		// and reconcile the data against this list, adding/
+		// updating/deleting as needed.
+		$data = $request->getUserVar('data');
+		$this->unpack(
+			$request, $data,
+			array(&$this, 'deleteEntry'),
+			array(&$this, 'insertEntry'),
+			array(&$this, 'updateEntry')
+		);
+	}
+
+
+	/**
+	 * Load the set of options for a select list type listbuilder.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function fetchOptions($args, &$request) {
+		$options = $this->getOptions($request);
+		$json = new JSONMessage(true, $options);
 		return $json->getString();
-    }
+	}
 
 	//
 	// Overridden methods from GridHandler
@@ -236,31 +324,6 @@ class ListbuilderHandler extends GridHandler {
 		// Return a citation row
 		$row = new ListbuilderGridRow();
 		return $row;
-	}
-
-	/**
-	 * Handle adding an item to the list
-	 * NB: sub-classes must implement this method.
-	 */
-	function addItem(&$args, &$request) {
-		assert(false);
-	}
-
-	/**
-	 * Handle deleting items from the list
-	 * NB: sub-classes must implement this method.
-	 */
-	function deleteItems(&$args, &$request) {
-		assert(false);
-	}
-
-	/**
-	 * @see PKPHandler::setupTemplate()
-	 */
-	function setupTemplate() {
-		parent::setupTemplate();
-
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON, LOCALE_COMPONENT_OMP_MANAGER, LOCALE_COMPONENT_PKP_MANAGER));
 	}
 }
 

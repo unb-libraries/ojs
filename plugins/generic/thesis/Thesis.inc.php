@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file Thesis.inc.php
+ * @file plugins/generic/thesis/Thesis.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Thesis
@@ -12,15 +12,12 @@
  * @brief Basic class describing a thesis.
  */
 
-// $Id$
-
-
 define('THESIS_STATUS_INACTIVE',			0x01);
 define('THESIS_STATUS_ACTIVE',				0x02);
 define('THESIS_DEGREE_MASTERS',				0x01);
 define('THESIS_DEGREE_DOCTORATE',			0x02);
-define('THESIS_APPROVED_YEAR_OFFSET_PAST',	'-10');
-define('THESIS_APPROVED_DATE_DEFAULT_DAY',	'1');
+define('THESIS_APPROVED_YEAR_OFFSET_PAST',		'-10');
+define('THESIS_APPROVED_DATE_DEFAULT_DAY',		'1');
 
 
 class Thesis extends DataObject {

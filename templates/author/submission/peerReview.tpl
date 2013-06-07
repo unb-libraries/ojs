@@ -1,12 +1,11 @@
 {**
- * peerReview.tpl
+ * templates/author/submission/peerReview.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the author's peer review table.
  *
- * $Id$
  *}
 <div id="peerReview">
 <h3>{translate key="submission.peerReview"}</h3>

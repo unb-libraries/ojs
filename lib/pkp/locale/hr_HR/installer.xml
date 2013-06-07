@@ -4,19 +4,18 @@
 <!--
   * locale/hr_HR/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
   *
-  * $Id$
   -->
 
 <locale name="hr_HR" full_name = "Hrvatski">
 	<message key="installer.additionalLocales">Dodatni prijevodi</message>
 	<message key="installer.administratorAccount">Administratorski račun</message>
 	<message key="installer.administratorAccountInstructions">Ovaj korisnički račun će postati administrator stranice i imati potpuni pristup sustavu. Dodatni korisnički računi mogu biti kreirani nakon instalacije.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NE</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NE</span>]]></message>
 	<message key="installer.checkYes">Da</message>
 	<message key="installer.clientCharset">Skupina znakova klijenta</message>
 	<message key="installer.clientCharsetInstructions">Enkoding koji se koristi za slanje i primanje podataka iz preglednika.</message>
@@ -66,5 +65,4 @@
 	<message key="installer.publicFilesDirError">Direktorij javnih datoteka ne postoji ili se ne može pisati po njemu.</message>
 	<message key="installer.releaseNotes">Bilješke o izdanju</message>
 	<message key="installer.securitySettings">Sigurnosne postavke</message>
-	<message key="installer.skipFilesDir">Nemoj kreirati obavezne poddirektorije (jedino korisno za ručnu instalaciju)</message>
 </locale>

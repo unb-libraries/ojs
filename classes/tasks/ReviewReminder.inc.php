@@ -3,7 +3,7 @@
 /**
  * @file classes/tasks/ReviewReminder.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewReminder
@@ -11,9 +11,6 @@
  *
  * @brief Class to perform automated reminders for reviewers.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 
@@ -42,8 +39,6 @@ class ReviewReminder extends ScheduledTask {
 		$email->setJournal($journal);
 		$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		$email->addRecipient($reviewer->getEmail(), $reviewer->getFullName());
-		$email->setAssoc(ARTICLE_EMAIL_REVIEW_REMIND, ARTICLE_EMAIL_TYPE_REVIEW, $reviewId);
-
 		$email->setSubject($email->getSubject($journal->getPrimaryLocale()));
 		$email->setBody($email->getBody($journal->getPrimaryLocale()));
 
@@ -105,7 +100,7 @@ class ReviewReminder extends ScheduledTask {
 				$article =& $articleDao->getArticle($reviewAssignment->getSubmissionId());
 				if ($journal == null || $journal->getId() != $article->getJournalId()) {
 					unset($journal);
-					$journal =& $journalDao->getJournal($article->getJournalId());
+					$journal =& $journalDao->getById($article->getJournalId());
 
 					$inviteReminderEnabled = $journal->getSetting('remindForInvite');
 					$submitReminderEnabled = $journal->getSetting('remindForSubmit');

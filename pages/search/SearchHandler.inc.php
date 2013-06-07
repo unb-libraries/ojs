@@ -1,19 +1,16 @@
 <?php
 
 /**
- * @file SearchHandler.inc.php
+ * @file pages/search/SearchHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SearchHandler
  * @ingroup pages_search
  *
- * @brief Handle site index requests. 
+ * @brief Handle site index requests.
  */
-
-// $Id$
-
 
 import('classes.search.ArticleSearch');
 import('classes.handler.Handler');
@@ -28,65 +25,156 @@ class SearchHandler extends Handler {
 	}
 
 	/**
-	 * Show the advanced form
+	 * Show the search form
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function index() {
+	function index($args, &$request) {
 		$this->validate();
-		$this->advanced();
+		$this->search($args, $request);
 	}
 
 	/**
-	 * Show the advanced form
+	 * Private function to transmit current filter values
+	 * to the template.
+	 * @param $request PKPRequest
+	 * @param $templateMgr TemplateManager
+	 * @param $searchFilters array
 	 */
-	function search() {
-		$this->validate();
-		$this->advanced();
-	}
+	function _assignSearchFilters(&$request, &$templateMgr, $searchFilters) {
+		// Get the journal id (if any).
+		$journal =& $searchFilters['searchJournal'];
+		$journalId = ($journal ? $journal->getId() : null);
+		$searchFilters['searchJournal'] = $journalId;
 
-	/**
-	 * Show advanced search form.
-	 */
-	function advanced() {
-		$this->validate();
-		$this->setupTemplate(false);
-		$templateMgr =& TemplateManager::getManager();
+		// Assign all filters except for dates which need special treatment.
+		$templateSearchFilters = array();
+		foreach($searchFilters as $filterName => $filterValue) {
+			if (in_array($filterName, array('fromDate', 'toDate'))) continue;
+			$templateSearchFilters[$filterName] = $filterValue;
+		}
+
+		// Find out whether we have active/empty filters.
+		$hasActiveFilters = false;
+		$hasEmptyFilters = false;
+		foreach($templateSearchFilters as $filterName => $filterValue) {
+			// The main query and journal selector will always be displayed
+			// apart from other filters.
+			if (in_array($filterName, array('query', 'searchJournal', 'siteSearch'))) continue;
+			if (empty($filterValue)) {
+				$hasEmptyFilters = true;
+			} else {
+				$hasActiveFilters = true;
+			}
+		}
+
+		// Assign the filters to the template.
+		$templateMgr->assign($templateSearchFilters);
+
+		// Special case: publication date filters.
+		foreach(array('From', 'To') as $fromTo) {
+			$month = $request->getUserVar("date${fromTo}Month");
+			$day = $request->getUserVar("date${fromTo}Day");
+			$year = $request->getUserVar("date${fromTo}Year");
+			if (empty($year)) {
+				$date = '--';
+				$hasEmptyFilters = true;
+			} else {
+				$defaultMonth = ($fromTo == 'From' ? 1 : 12);
+				$defaultDay = ($fromTo == 'From' ? 1 : 31);
+				$date = date(
+					'Y-m-d H:i:s',
+					mktime(
+						0, 0, 0, empty($month) ? $defaultMonth : $month,
+						empty($day) ? $defaultDay : $day, $year
+					)
+				);
+				$hasActiveFilters = true;
+			}
+			$templateMgr->assign(array(
+				"date${fromTo}Month" => $month,
+				"date${fromTo}Day" => $day,
+				"date${fromTo}Year" => $year,
+				"date${fromTo}" => $date
+			));
+		}
+
+		// Assign filter flags to the template.
+		$templateMgr->assign(compact('hasEmptyFilters', 'hasActiveFilters'));
+
+		// Assign the year range.
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-
-		if (Request::getJournal() == null) {
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journals =& $journalDao->getEnabledJournalTitles();  //Enabled added
-			$templateMgr->assign('siteSearch', true);
-			$templateMgr->assign('journalOptions', array('' => AppLocale::Translate('search.allJournals')) + $journals);
-			$journalPath = Request::getRequestedJournalPath();
-			$yearRange = $publishedArticleDao->getArticleYearRange(null);
+		$yearRange = $publishedArticleDao->getArticleYearRange($journalId);
+		$startYear = '-' . (date('Y') - substr($yearRange[1], 0, 4));
+		if (substr($yearRange[0], 0, 4) >= date('Y')) {
+			$endYear = '+' . (substr($yearRange[0], 0, 4) - date('Y'));
 		} else {
-			$journal =& Request::getJournal();
-			$yearRange = $publishedArticleDao->getArticleYearRange($journal->getId());
-		}	
+			$endYear = (substr($yearRange[0], 0, 4) - date('Y'));
+		}
+		$templateMgr->assign(compact('startYear', 'endYear'));
 
-		$this->assignAdvancedSearchParameters($templateMgr, $yearRange);
+		// Assign journal options.
+		if ($searchFilters['siteSearch']) {
+			$journalDao =& DAORegistry::getDAO('JournalDAO');
+			$journals =& $journalDao->getJournalTitles(true);
+			$templateMgr->assign('journalOptions', array('' => AppLocale::Translate('search.allJournals')) + $journals);
+		}
+	}
 
-		$templateMgr->display('search/advancedSearch.tpl');
+	/**
+	 * Show the search form
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function search($args, &$request) {
+		$this->validate();
+
+		// Get and transform active filters.
+		$searchFilters = ArticleSearch::getSearchFilters($request);
+		$keywords = ArticleSearch::getKeywordsFromSearchFilters($searchFilters);
+
+		// Get the range info.
+		$rangeInfo = $this->getRangeInfo('search');
+
+		// Retrieve results.
+		$error = '';
+		$results =& ArticleSearch::retrieveResults(
+			$searchFilters['searchJournal'], $keywords, $error,
+			$searchFilters['fromDate'], $searchFilters['toDate'],
+			$rangeInfo
+		);
+
+		// Prepare and display the search template.
+		$this->setupTemplate($request);
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->setCacheability(CACHEABILITY_NO_STORE);
+		$templateMgr->assign('jsLocaleKeys', array('search.noKeywordError'));
+		$this->_assignSearchFilters($request, $templateMgr, $searchFilters);
+		$templateMgr->assign_by_ref('results', $results);
+		$templateMgr->assign('error', $error);
+		$templateMgr->display('search/search.tpl');
 	}
 
 	/**
 	 * Show index of published articles by author.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function authors($args) {
+	function authors($args, &$request) {
 		$this->validate();
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$authorDao =& DAORegistry::getDAO('AuthorDAO');
 
 		if (isset($args[0]) && $args[0] == 'view') {
 			// View a specific author
-			$firstName = Request::getUserVar('firstName');
-			$middleName = Request::getUserVar('middleName');
-			$lastName = Request::getUserVar('lastName');
-			$affiliation = Request::getUserVar('affiliation');
-			$country = Request::getUserVar('country');
+			$firstName = $request->getUserVar('firstName');
+			$middleName = $request->getUserVar('middleName');
+			$lastName = $request->getUserVar('lastName');
+			$affiliation = $request->getUserVar('affiliation');
+			$country = $request->getUserVar('country');
 
 			$publishedArticles = $authorDao->getPublishedArticlesForAuthor($journal?$journal->getId():null, $firstName, $middleName, $lastName, $affiliation, $country);
 
@@ -113,7 +201,7 @@ class SearchHandler extends Handler {
 					$issuesUnavailable[$issueId] = IssueAction::subscriptionRequired($issue) && (!IssueAction::subscribedUser($journal, $issueId, $articleId) && !IssueAction::subscribedDomain($journal, $issueId, $articleId));
 				}
 				if (!isset($journals[$journalId])) {
-					$journals[$journalId] =& $journalDao->getJournal($journalId);
+					$journals[$journalId] =& $journalDao->getById($journalId);
 				}
 				if (!isset($sections[$sectionId])) {
 					$sections[$sectionId] =& $sectionDao->getSection($sectionId, $journalId, true);
@@ -121,7 +209,7 @@ class SearchHandler extends Handler {
 			}
 
 			if (empty($publishedArticles)) {
-				Request::redirect(null, Request::getRequestedPage());
+				$request->redirect(null, $request->getRequestedPage());
 			}
 
 			$templateMgr =& TemplateManager::getManager();
@@ -142,8 +230,8 @@ class SearchHandler extends Handler {
 			$templateMgr->display('search/authorDetails.tpl');
 		} else {
 			// Show the author index
-			$searchInitial = Request::getUserVar('searchInitial');
-			$rangeInfo = Handler::getRangeInfo('authors');
+			$searchInitial = $request->getUserVar('searchInitial');
+			$rangeInfo = $this->getRangeInfo('authors');
 
 			$authors =& $authorDao->getAuthorsAlphabetizedByJournal(
 				isset($journal)?$journal->getId():null,
@@ -152,7 +240,7 @@ class SearchHandler extends Handler {
 			);
 
 			$templateMgr =& TemplateManager::getManager();
-			$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
+			$templateMgr->assign('searchInitial', $request->getUserVar('searchInitial'));
 			$templateMgr->assign('alphaList', explode(' ', __('common.alphaList')));
 			$templateMgr->assign_by_ref('authors', $authors);
 			$templateMgr->display('search/authorIndex.tpl');
@@ -161,16 +249,18 @@ class SearchHandler extends Handler {
 
 	/**
 	 * Show index of published articles by title.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function titles($args) {
+	function titles($args, &$request) {
 		$this->validate();
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
 
-		$rangeInfo = Handler::getRangeInfo('search');
+		$rangeInfo = $this->getRangeInfo('search');
 
 		$articleIds =& $publishedArticleDao->getPublishedArticleIdsAlphabetizedByJournal(isset($journal)?$journal->getId():null);
 		$totalResults = count($articleIds);
@@ -184,137 +274,91 @@ class SearchHandler extends Handler {
 	}
 
 	/**
-	 * Show basic search results.
+	 * Display categories.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function results() {
+	function categories($args, &$request) {
 		$this->validate();
-		$this->setupTemplate(true);
+		$this->setupTemplate($request);
 
-		$rangeInfo = Handler::getRangeInfo('search');
+		$site =& $request->getSite();
+		$journal =& $request->getJournal();
 
-		$searchJournalId = Request::getUserVar('searchJournal');
-		if (!empty($searchJournalId)) {
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($searchJournalId);
-		} else {
-			$journal =& Request::getJournal();
+		$categoryDao =& DAORegistry::getDAO('CategoryDAO');
+		$cache =& $categoryDao->getCache();
+
+		if ($journal || !$site->getSetting('categoriesEnabled') || !$cache) {
+			$request->redirect('index');
 		}
 
-		$searchType = Request::getUserVar('searchField');
-		if (!is_numeric($searchType)) $searchType = null;
-
-		// Load the keywords array with submitted values
-		$keywords = array($searchType => ArticleSearch::parseQuery(Request::getUserVar('query')));
-
-		$results =& ArticleSearch::retrieveResults($journal, $keywords, null, null, $rangeInfo);
+		// Sort by category name
+		uasort($cache, create_function('$a, $b', '$catA = $a[\'category\']; $catB = $b[\'category\']; return strcasecmp($catA->getLocalizedName(), $catB->getLocalizedName());'));
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->setCacheability(CACHEABILITY_NO_STORE);
-		$templateMgr->assign_by_ref('results', $results);
-		$templateMgr->assign('basicQuery', Request::getUserVar('query'));
-		$templateMgr->assign('searchField', Request::getUserVar('searchField'));
-		$templateMgr->display('search/searchResults.tpl');
+		$templateMgr->assign('categories', $cache);
+		$templateMgr->display('search/categories.tpl');
 	}
 
 	/**
-	 * Show advanced search results.
+	 * Display category contents.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function advancedResults() {
+	function category($args, &$request) {
+		$categoryId = (int) array_shift($args);
+
 		$this->validate();
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true, 'categories');
 
-		$rangeInfo = Handler::getRangeInfo('search');
+		$site =& $request->getSite();
+		$journal =& $request->getJournal();
 
-		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-		$searchJournalId = Request::getUserVar('searchJournal');
-		if (!empty($searchJournalId)) {
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($searchJournalId);
-			$yearRange = $publishedArticleDao->getArticleYearRange($journal->getId());
-		} else {
-			$journal =& Request::getJournal();
-			$yearRange = $publishedArticleDao->getArticleYearRange(null);
+		$categoryDao =& DAORegistry::getDAO('CategoryDAO');
+		$cache =& $categoryDao->getCache();
+
+		if ($journal || !$site->getSetting('categoriesEnabled') || !$cache || !isset($cache[$categoryId])) {
+			$request->redirect('index');
 		}
 
-		// Load the keywords array with submitted values
-		$keywords = array(null => ArticleSearch::parseQuery(Request::getUserVar('query')));
-		$keywords[ARTICLE_SEARCH_AUTHOR] = ArticleSearch::parseQuery(Request::getUserVar('author'));
-		$keywords[ARTICLE_SEARCH_TITLE] = ArticleSearch::parseQuery(Request::getUserVar('title'));
-		$keywords[ARTICLE_SEARCH_DISCIPLINE] = ArticleSearch::parseQuery(Request::getUserVar('discipline'));
-		$keywords[ARTICLE_SEARCH_SUBJECT] = ArticleSearch::parseQuery(Request::getUserVar('subject'));
-		$keywords[ARTICLE_SEARCH_TYPE] = ArticleSearch::parseQuery(Request::getUserVar('type'));
-		$keywords[ARTICLE_SEARCH_COVERAGE] = ArticleSearch::parseQuery(Request::getUserVar('coverage'));
-		$keywords[ARTICLE_SEARCH_GALLEY_FILE] = ArticleSearch::parseQuery(Request::getUserVar('fullText'));
-		$keywords[ARTICLE_SEARCH_SUPPLEMENTARY_FILE] = ArticleSearch::parseQuery(Request::getUserVar('supplementaryFiles'));
+		$journals =& $cache[$categoryId]['journals'];
+		$category =& $cache[$categoryId]['category'];
 
-		$fromDate = Request::getUserDateVar('dateFrom', 1, 1);
-		if ($fromDate !== null) $fromDate = date('Y-m-d H:i:s', $fromDate);
-		$toDate = Request::getUserDateVar('dateTo', 32, 12, null, 23, 59, 59);
-		if ($toDate !== null) $toDate = date('Y-m-d H:i:s', $toDate);
-
-		$results =& ArticleSearch::retrieveResults($journal, $keywords, $fromDate, $toDate, $rangeInfo);
+		// Sort by journal name
+		uasort($journals, create_function('$a, $b', 'return strcasecmp($a->getLocalizedTitle(), $b->getLocalizedTitle());'));
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->assign_by_ref('results', $results);
-		$this->assignAdvancedSearchParameters($templateMgr, $yearRange);
-
-		$templateMgr->display('search/searchResults.tpl');
-	}	
+		$templateMgr->assign_by_ref('journals', $journals);
+		$templateMgr->assign_by_ref('category', $category);
+		$templateMgr->assign('journalFilesPath', $request->getBaseUrl() . '/' . Config::getVar('files', 'public_files_dir') . '/journals/');
+		$templateMgr->display('search/category.tpl');
+	}
 
 	/**
 	 * Setup common template variables.
+	 * @param $request PKPRequest
 	 * @param $subclass boolean set to true if caller is below this handler in the hierarchy
+	 * @param $op string Current operation (for breadcrumb construction)
 	 */
-	function setupTemplate($subclass = false) {
+	function setupTemplate($request, $subclass = false, $op = 'index') {
 		parent::setupTemplate();
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('helpTopicId', 'user.searchAndBrowse');
+
+		$opMap = array(
+			'index' => 'navigation.search',
+			'categories' => 'navigation.categories'
+		);
+
 		$templateMgr->assign('pageHierarchy',
-			$subclass ? array(array(Request::url(null, 'search'), 'navigation.search'))
+			$subclass ? array(array($request->url(null, 'search', $op), $opMap[$op]))
 				: array()
 		);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		if (!$journal || !$journal->getSetting('restrictSiteAccess')) {
 			$templateMgr->setCacheability(CACHEABILITY_PUBLIC);
 		}
-	}
-
-	function assignAdvancedSearchParameters(&$templateMgr, $yearRange) {
-		$templateMgr->assign('query', Request::getUserVar('query'));
-		$templateMgr->assign('searchJournal', Request::getUserVar('searchJournal'));
-		$templateMgr->assign('author', Request::getUserVar('author'));
-		$templateMgr->assign('title', Request::getUserVar('title'));
-		$templateMgr->assign('fullText', Request::getUserVar('fullText'));
-		$templateMgr->assign('supplementaryFiles', Request::getUserVar('supplementaryFiles'));
-		$templateMgr->assign('discipline', Request::getUserVar('discipline'));
-		$templateMgr->assign('subject', Request::getUserVar('subject'));
-		$templateMgr->assign('type', Request::getUserVar('type'));
-		$templateMgr->assign('coverage', Request::getUserVar('coverage'));
-		$fromMonth = Request::getUserVar('dateFromMonth');
-		$fromDay = Request::getUserVar('dateFromDay');
-		$fromYear = Request::getUserVar('dateFromYear');
-		$templateMgr->assign('dateFromMonth', $fromMonth);
-		$templateMgr->assign('dateFromDay', $fromDay);
-		$templateMgr->assign('dateFromYear', $fromYear);
-		if (!empty($fromYear)) $templateMgr->assign('dateFrom', date('Y-m-d H:i:s',mktime(0,0,0,$fromMonth==null?12:$fromMonth,$fromDay==null?31:$fromDay,$fromYear)));
-
-		$toMonth = Request::getUserVar('dateToMonth');
-		$toDay = Request::getUserVar('dateToDay');
-		$toYear = Request::getUserVar('dateToYear');
-		$templateMgr->assign('dateToMonth', $toMonth);
-		$templateMgr->assign('dateToDay', $toDay);
-		$templateMgr->assign('dateToYear', $toYear);
-		
-		$startYear = '-' . (date('Y') - substr($yearRange[1], 0, 4));
-		if (substr($yearRange[0], 0, 4) >= date('Y')) {
-			$endYear = '+' . (substr($yearRange[0], 0, 4) - date('Y'));
-		} else {
-			$endYear = (substr($yearRange[0], 0, 4) - date('Y'));
-		}
-		$templateMgr->assign('endYear', $endYear);
-		$templateMgr->assign('startYear', $startYear);
-		if (!empty($toYear)) $templateMgr->assign('dateTo', date('Y-m-d H:i:s',mktime(0,0,0,$toMonth==null?12:$toMonth,$toDay==null?31:$toDay,$toYear)));
 	}
 }
 

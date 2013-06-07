@@ -3,7 +3,7 @@
 /**
  * @file classes/reviewForm/ReviewFormElementDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewFormElementDAO
@@ -17,6 +17,13 @@
 import ('lib.pkp.classes.reviewForm.ReviewFormElement');
 
 class ReviewFormElementDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function ReviewFormElementDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve a review form element by ID.
 	 * @param $reviewFormElementId int
@@ -201,7 +208,7 @@ class ReviewFormElementDAO extends DAO {
 		while (!$result->EOF) {
 			$reviewFormElement =& $this->_returnReviewFormElementFromRow($result->GetRowAssoc(false));
 			$reviewFormElements[$reviewFormElement->getId()] = $reviewFormElement;
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -241,7 +248,7 @@ class ReviewFormElementDAO extends DAO {
 
 		while (!$result->EOF) {
 			$requiredReviewFormElementIds[] = $result->fields[0];
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -292,10 +299,10 @@ class ReviewFormElementDAO extends DAO {
 				)
 			);
 
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
-		$result->close();
+		$result->Close();
 		unset($result);
 	}
 

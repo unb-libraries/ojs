@@ -4,12 +4,11 @@
 <!--
   * locale/ru_RU/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
@@ -81,4 +80,7 @@
 	<message key="admin.version.updateAvailable">Имеется новый релиз системы</message>
 	<message key="admin.version.upToDate">Ваша система актуальна</message>
 	<message key="admin.version">Версия</message>
+	<message key="admin.settings">Настройки</message>
+	<message key="admin.settings.siteTheme">Тема сайта</message>
+	<message key="admin.siteSetup">Установка сайта</message>
 </locale>

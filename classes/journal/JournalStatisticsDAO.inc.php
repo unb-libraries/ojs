@@ -3,7 +3,7 @@
 /**
  * @file classes/journal/JournalStatisticsDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalStatisticsDAO
@@ -11,9 +11,6 @@
  *
  * @brief Operations for retrieving journal statistics.
  */
-
-// $Id$
-
 
 define('REPORT_TYPE_JOURNAL',	0x00001);
 define('REPORT_TYPE_EDITOR',	0x00002);
@@ -48,7 +45,7 @@ class JournalStatisticsDAO extends DAO {
 		$sql =	'SELECT	a.article_id,
 				a.date_submitted,
 				pa.date_published,
-				pa.pub_id,
+				pa.published_article_id,
 				d.decision,
 				a.status
 			FROM	articles a
@@ -68,10 +65,8 @@ class JournalStatisticsDAO extends DAO {
 			'numPublishedSubmissions' => 0,
 			'submissionsAccept' => 0,
 			'submissionsDecline' => 0,
-			'submissionsRevise' => 0,
 			'submissionsAcceptPercent' => 0,
 			'submissionsDeclinePercent' => 0,
-			'submissionsRevisePercent' => 0,
 			'daysToPublication' => 0
 		);
 
@@ -92,7 +87,7 @@ class JournalStatisticsDAO extends DAO {
 				$articleIds[] = $row['article_id'];
 				$returner['numSubmissions']++;
 
-				if (!empty($row['pub_id']) && $row['status'] == STATUS_PUBLISHED) {
+				if (!empty($row['published_article_id']) && $row['status'] == STATUS_PUBLISHED) {
 					$returner['numPublishedSubmissions']++;
 				}
 
@@ -111,10 +106,6 @@ class JournalStatisticsDAO extends DAO {
 						$returner['submissionsAccept']++;
 						$returner['numReviewedSubmissions']++;
 						break;
-					case SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS:
-					case SUBMISSION_EDITOR_DECISION_RESUBMIT:
-						$returner['submissionsRevise']++;
-						break;
 					case SUBMISSION_EDITOR_DECISION_DECLINE:
 						$returner['submissionsDecline']++;
 						$returner['numReviewedSubmissions']++;
@@ -132,7 +123,6 @@ class JournalStatisticsDAO extends DAO {
 		if ($returner['numReviewedSubmissions'] != 0) {
 			$returner['submissionsAcceptPercent'] = round($returner['submissionsAccept'] * 100 / $returner['numReviewedSubmissions']);
 			$returner['submissionsDeclinePercent'] = round($returner['submissionsDecline'] * 100 / $returner['numReviewedSubmissions']);
-			$returner['submissionsRevisePercent'] = round($returner['submissionsRevise'] * 100 / $returner['numReviewedSubmissions']);
 		}
 
 		if ($timeToPublicationCount != 0) {

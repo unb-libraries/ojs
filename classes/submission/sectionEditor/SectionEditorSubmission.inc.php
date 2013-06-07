@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/sectionEditor/SectionEditorSubmission.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SectionEditorSubmission
@@ -12,9 +12,6 @@
  *
  * @brief SectionEditorSubmission class.
  */
-
-// $Id$
-
 
 import('classes.article.Article');
 
@@ -53,7 +50,7 @@ class SectionEditorSubmission extends Article {
 	 */
 	function addReviewAssignment($reviewAssignment) {
 		if ($reviewAssignment->getSubmissionId() == null) {
-			$reviewAssignment->setSubmissionId($this->getArticleId());
+			$reviewAssignment->setSubmissionId($this->getId());
 		}
 
 		if (isset($this->reviewAssignments[$reviewAssignment->getRound()])) {
@@ -208,13 +205,14 @@ class SectionEditorSubmission extends Article {
 	 * Get editor decisions.
 	 * @return array
 	 */
-	function getDecisions($round = null) {
+	function &getDecisions($round = null) {
 		if ($round == null) {
 			return $this->editorDecisions;
 		} else {
 			if (isset($this->editorDecisions[$round])) return $this->editorDecisions[$round];
-			else return null;
 		}
+		$returner = null;
+		return $returner;
 	}
 
 	/**
@@ -482,7 +480,6 @@ class SectionEditorSubmission extends Article {
 	 */
 	function getHighlightClass() {
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
-		$highlightClass = 'highlight';
 		$overdueSeconds = 60 * 60 * 24 * 14; // Two weeks
 
 		// Submissions that are not still queued (i.e. published) are not highlighted.
@@ -490,7 +487,7 @@ class SectionEditorSubmission extends Article {
 
 		// Awaiting assignment.
 		$editAssignments = $this->getEditAssignments();
-		if (empty($editAssignments)) return $highlightClass;
+		if (empty($editAssignments)) return 'highlight';
 
 		$journal =& Request::getJournal();
 		// Sanity check
@@ -519,7 +516,7 @@ class SectionEditorSubmission extends Article {
 			// COPYEDITING
 
 			// First round of copyediting
-			$initialSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$initialSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateCopyeditorNotified = $initialSignoff->getDateNotified() ?
 				strtotime($initialSignoff->getDateNotified()) : 0;
 			$dateCopyeditorUnderway = $initialSignoff->getDateUnderway() ?
@@ -531,19 +528,19 @@ class SectionEditorSubmission extends Article {
 			$dateLastCopyeditor = max($dateCopyeditorNotified, $dateCopyeditorUnderway);
 
 			// If the Copyeditor has not been notified, highlight.
-			if (!$dateCopyeditorNotified) return $highlightClass;
+			if (!$dateCopyeditorNotified) return 'highlightCopyediting';
 
 			// Check if the copyeditor is overdue on round 1
 			if (	$dateLastCopyeditor &&
 				!$dateCopyeditorCompleted &&
 				$dateLastCopyeditor + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'highlightCopyediting';
 
 			// Check if acknowledgement is overdue for CE round 1
-			if ($dateCopyeditorCompleted && !$dateCopyeditorAcknowledged) return $highlightClass;
+			if ($dateCopyeditorCompleted && !$dateCopyeditorAcknowledged) return 'highlightCopyediting';
 
 			// Second round of copyediting
-			$authorSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_AUTHOR', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$authorSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_AUTHOR', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateCopyeditorAuthorNotified = $authorSignoff->getDateNotified() ?
 				strtotime($authorSignoff->getDateNotified()) : 0;
 			$dateCopyeditorAuthorUnderway = $authorSignoff->getDateUnderway() ?
@@ -555,19 +552,19 @@ class SectionEditorSubmission extends Article {
 			$dateLastCopyeditorAuthor = max($dateCopyeditorAuthorNotified, $dateCopyeditorAuthorUnderway);
 
 			// Check if round 2 is awaiting notification.
-			if ($dateCopyeditorAcknowledged && !$dateCopyeditorAuthorNotified) return $highlightClass;
+			if ($dateCopyeditorAcknowledged && !$dateCopyeditorAuthorNotified) return 'highlightCopyediting';
 
 			// Check if acknowledgement is overdue for CE round 2
-			if ($dateCopyeditorAuthorCompleted && !$dateCopyeditorAuthorAcknowledged) return $highlightClass;
+			if ($dateCopyeditorAuthorCompleted && !$dateCopyeditorAuthorAcknowledged) return 'highlightCopyediting';
 
 			// Check if author is overdue on CE round 2
 			if (	$dateLastCopyeditorAuthor &&
 				!$dateCopyeditorAuthorCompleted &&
 				$dateLastCopyeditorAuthor + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'highlightCopyediting';
 
 			// Third round of copyediting
-			$finalSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_FINAL', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$finalSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_FINAL', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateCopyeditorFinalNotified = $finalSignoff->getDateNotified() ?
 				strtotime($finalSignoff->getDateNotified()) : 0;
 			$dateCopyeditorFinalUnderway = $finalSignoff->getDateUnderway() ?
@@ -577,19 +574,19 @@ class SectionEditorSubmission extends Article {
 			$dateLastCopyeditorFinal = max($dateCopyeditorFinalNotified, $dateCopyeditorUnderway);
 
 			// Check if round 3 is awaiting notification.
-			if ($dateCopyeditorAuthorAcknowledged && !$dateCopyeditorFinalNotified) return $highlightClass;
+			if ($dateCopyeditorAuthorAcknowledged && !$dateCopyeditorFinalNotified) return 'highlightCopyediting';
 
 			// Check if copyeditor is overdue on round 3
 			if (	$dateLastCopyeditorFinal &&
 				!$dateCopyeditorFinalCompleted &&
 				$dateLastCopyeditorFinal + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'highlightCopyediting';
 
 			// Check if acknowledgement is overdue for CE round 3
-			if ($dateCopyeditorFinalCompleted && !$dateCopyeditorFinalAcknowledged) return $highlightClass;
+			if ($dateCopyeditorFinalCompleted && !$dateCopyeditorFinalAcknowledged) return 'highlightCopyediting';
 
 			// LAYOUT EDITING
-			$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateLayoutNotified = $layoutSignoff->getDateNotified() ?
 				strtotime($layoutSignoff->getDateNotified()) : 0;
 			$dateLayoutUnderway = $layoutSignoff->getDateUnderway() ?
@@ -601,22 +598,22 @@ class SectionEditorSubmission extends Article {
 			$dateLastLayout = max($dateLayoutNotified, $dateLayoutUnderway);
 
 			// Check if Layout Editor needs to be notified.
-			if ($dateLastCopyeditorFinal && !$dateLayoutNotified) return $highlightClass;
+			if ($dateLastCopyeditorFinal && !$dateLayoutNotified) return 'highlightLayoutEditing';
 
 			// Check if layout editor is overdue
 			if (	$dateLastLayout &&
 				!$dateLayoutCompleted &&
 				$dateLastLayout + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'highlightLayoutEditing';
 
 			// Check if acknowledgement is overdue for layout
-			if ($dateLayoutCompleted && !$dateLayoutAcknowledged) return $highlightClass;
+			if ($dateLayoutCompleted && !$dateLayoutAcknowledged) return 'highlightLayoutEditing';
 
 			// PROOFREADING
 			$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 
 			// First round of proofreading
-			$authorSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_AUTHOR', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$authorSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_AUTHOR', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateAuthorNotified = $authorSignoff->getDateNotified() ?
 				strtotime($authorSignoff->getDateNotified()) : 0;
 			$dateAuthorUnderway = $authorSignoff->getDateUnderway() ?
@@ -628,19 +625,19 @@ class SectionEditorSubmission extends Article {
 			$dateLastAuthor = max($dateNotified, $dateAuthorUnderway);
 
 			// Check if the author is awaiting proofreading notification.
-			if ($dateLayoutAcknowledged && !$dateAuthorNotified) return $highlightClass;
+			if ($dateLayoutAcknowledged && !$dateAuthorNotified) return 'higlightProofreading';
 
 			// Check if the author is overdue on round 1 of proofreading
 			if (	$dateLastAuthor &&
 				!$dateAuthorCompleted &&
 				$dateLastAuthor + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'higlightProofreading';
 
 			// Check if acknowledgement is overdue for proofreading round 1
-			if ($dateAuthorCompleted && !$dateAuthorAcknowledged) return $highlightClass;
+			if ($dateAuthorCompleted && !$dateAuthorAcknowledged) return 'higlightProofreading';
 
 			// Second round of proofreading
-			$proofreaderSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$proofreaderSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateProofreaderNotified = $proofreaderSignoff->getDateNotified() ?
 				strtotime($proofreaderSignoff->getDateNotified()) : 0;
 			$dateProofreaderUnderway = $proofreaderSignoff->getDateUnderway() ?
@@ -652,19 +649,19 @@ class SectionEditorSubmission extends Article {
 			$dateLastProofreader = max($dateProofreaderNotified, $dateProofreaderUnderway);
 
 			// Check if the proofreader is awaiting notification.
-			if ($dateAuthorAcknowledged && !$dateProofreaderNotified) return $highlightClass;
+			if ($dateAuthorAcknowledged && !$dateProofreaderNotified) return 'higlightProofreading';
 
 			// Check if acknowledgement is overdue for proofreading round 2
-			if ($dateProofreaderCompleted && !$dateProofreaderAcknowledged) return $highlightClass;
+			if ($dateProofreaderCompleted && !$dateProofreaderAcknowledged) return 'higlightProofreading';
 
 			// Check if proofreader is overdue on proofreading round 2
 			if (	$dateLastProofreader &&
 				!$dateProofreaderCompleted &&
 				$dateLastProofreader + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'higlightProofreading';
 
 			// Third round of proofreading
-			$layoutEditorSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $this->getArticleId());
+			$layoutEditorSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $this->getId());
 			$dateLayoutEditorNotified = $layoutEditorSignoff->getDateNotified() ?
 				strtotime($layoutEditorSignoff->getDateNotified()) : 0;
 			$dateLayoutEditorUnderway = $layoutEditorSignoff->getDateUnderway() ?
@@ -674,16 +671,16 @@ class SectionEditorSubmission extends Article {
 			$dateLastLayoutEditor = max($dateLayoutEditorNotified, $dateCopyeditorUnderway);
 
 			// Check if the layout editor is awaiting notification.
-			if ($dateProofreaderAcknowledged && !$dateLayoutEditorNotified) return $highlightClass;
+			if ($dateProofreaderAcknowledged && !$dateLayoutEditorNotified) return 'higlightProofreading';
 
 			// Check if proofreader is overdue on round 3 of proofreading
 			if (	$dateLastLayoutEditor &&
 				!$dateLayoutEditorCompleted &&
 				$dateLastLayoutEditor + $overdueSeconds < time()
-			) return $highlightClass;
+			) return 'higlightProofreading';
 
 			// Check if acknowledgement is overdue for proofreading round 3
-			if ($dateLayoutEditorCompleted && !$dateLayoutEditorAcknowledged) return $highlightClass;
+			if ($dateLayoutEditorCompleted && !$dateLayoutEditorAcknowledged) return 'higlightProofreading';
 		} else {
 			// ---
 			// --- Highlighting conditions for submissions in review
@@ -695,11 +692,11 @@ class SectionEditorSubmission extends Article {
 					$reviewAssignment =& $reviewAssignments[$i];
 
 					// If the reviewer has not been notified, highlight.
-					if ($reviewAssignment->getDateNotified() === null) return $highlightClass;
+					if ($reviewAssignment->getDateNotified() === null) return 'highlightReviewerNotNotified';
 
 					// Check review status.
 					if (!$reviewAssignment->getCancelled() && !$reviewAssignment->getDeclined()) {
-						if (!$reviewAssignment->getDateCompleted()) $allReviewsComplete = false;
+						if (!$reviewAssignment->getDateCompleted() && !$reviewAssignment->getCancelled()) $allReviewsComplete = false;
 
 						$dateReminded = $reviewAssignment->getDateReminded() ?
 							strtotime($reviewAssignment->getDateReminded()) : 0;
@@ -709,24 +706,23 @@ class SectionEditorSubmission extends Article {
 							strtotime($reviewAssignment->getDateConfirmed()) : 0;
 
 						// Check whether a reviewer is overdue to confirm invitation
-						if (	!$reviewAssignment->getDateCompleted() &&
+						if (!$reviewAssignment->getDateCompleted() &&
 							!$dateConfirmed &&
 							!$journal->getSetting('remindForInvite') &&
 							max($dateReminded, $dateNotified) + $overdueSeconds < time()
-						) return $highlightClass;
-
+						) return 'highlightReviewerConfirmationOverdue';
 						// Check whether a reviewer is overdue to complete review
-						if (	!$reviewAssignment->getDateCompleted() &&
+						if (!$reviewAssignment->getDateCompleted() &&
 							$dateConfirmed &&
 							!$journal->getSetting('remindForSubmit') &&
 							max($dateReminded, $dateConfirmed) + $overdueSeconds < time()
-						) return $highlightClass;
+						) return 'highlightReviewerCompletionOverdue';
 					}
 
 					unset($reviewAssignment);
 				}
 				// If all reviews are complete but no decision is recorded, highlight.
-				if ($allReviewsComplete && $decisionsEmpty) return $highlightClass;
+				if ($allReviewsComplete && $decisionsEmpty) return 'highlightNoDecision';
 
 				// If the author's last file upload hasn't been taken into account in
 				// the most recent decision or author/editor correspondence, highlight.
@@ -741,7 +737,7 @@ class SectionEditorSubmission extends Article {
 				if (	($lastDecisionDate || $commentDate) &&
 					$authorFileDate &&
 					$authorFileDate > max($lastDecisionDate, $commentDate)
-				) return $highlightClass;
+				) return 'highlightRevisedCopyUploaded';
 			}
 		}
 		return null;

@@ -1,12 +1,11 @@
 {**
- * statistics.tpl
+ * templates/manager/statistics/statistics.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the statistics table.
  *
- * $Id$
  *}
 {* WARNING: This page should be kept roughly synchronized with the
    implementation of reader statistics in the About page.          *}
@@ -59,10 +58,6 @@
 	<tr valign="top">
 		<td width="20%" class="label"><input type="checkbox" id="statCountDecline" name="statCountDecline" {if $statCountDecline}checked="checked" {/if}/>&nbsp;&nbsp;<label for="statCountDecline">{translate key="manager.statistics.statistics.count.decline"}</label></td>
 		<td width="80%" colspan="2" class="value">{translate key="manager.statistics.statistics.count.value" count=$limitedArticleStatistics.submissionsDecline percentage=$limitedArticleStatistics.submissionsDeclinePercent}</td>
-	</tr>
-	<tr valign="top">
-		<td width="20%" class="label"><input type="checkbox" id="statCountRevise" name="statCountRevise" {if $statCountRevise}checked="checked" {/if}/>&nbsp;&nbsp;<label for="statCountRevise">{translate key="manager.statistics.statistics.count.revise"}</label></td>
-		<td width="80%" colspan="2" class="value">{translate key="manager.statistics.statistics.count.value" count=$limitedArticleStatistics.submissionsRevise percentage=$limitedArticleStatistics.submissionsRevisePercent}</td>
 	</tr>
 	<tr valign="top">
 		<td width="20%" class="label"><input type="checkbox" id="statDaysPerReview" name="statDaysPerReview" {if $statDaysPerReview}checked="checked" {/if}/>&nbsp;&nbsp;<label for="statDaysPerReview">{translate key="manager.statistics.statistics.daysPerReview"}</label></td>

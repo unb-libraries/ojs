@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file UserExportDom.inc.php
+ * @file plugins/importexport/users/UserExportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserExportDom
@@ -12,15 +12,17 @@
  * @brief User plugin DOM functions for export
  */
 
-// $Id$
-
-
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
 define('USERS_DTD_URL', 'http://pkp.sfu.ca/ojs/dtds/users.dtd');
 define('USERS_DTD_ID', '-//PKP/OJS Users XML//EN');
 
 class UserExportDom {
+
+	function UserExportDom() {
+		return true;
+	}
+
 	function &exportUsers(&$journal, &$users, $allowedRoles = null) {
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 
@@ -63,9 +65,13 @@ class UserExportDom {
 					unset($signatureNode);
 				}
 			}
-			$interestsNode =& XMLCustomWriter::createChildWithText($doc, $userNode, 'interests', $user->getInterestString(), false);
-			if ($interestsNode) {
-				XMLCustomWriter::setAttribute($interestsNode);
+			import('lib.pkp.classes.user.InterestManager');
+			$interestManager = new InterestManager();
+			$interests = $interestManager->getInterestsForUser($user);
+			if (is_array($interests)) {
+				foreach ($interests as $interest) {
+					XMLCustomWriter::createChildWithText($doc, $userNode, 'interests', $interest, false);
+				}
 			}
 			if (is_array($user->getGossip(null))) {
 				foreach($user->getGossip(null) as $locale => $value) {

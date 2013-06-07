@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ControlledVocabDAO.inc.php
+ * @file classes/controlledVocab/ControlledVocabDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ControlledVocabDAO
@@ -16,6 +16,22 @@
 import('lib.pkp.classes.controlledVocab.ControlledVocab');
 
 class ControlledVocabDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function ControlledVocabDAO() {
+		parent::DAO();
+	}
+
+	/**
+	 * Return the Controlled Vocab Entry DAO for this Controlled Vocab.
+	 * Can be subclassed to provide extended DAOs.
+	 */
+	function &getEntryDAO() {
+		$entryDao =& DAORegistry::getDAO('ControlledVocabEntryDAO');
+		return $entryDao;
+	}
+
 	/**
 	 * Retrieve a controlled vocab by controlled vocab ID.
 	 * @param $controlledVocabId int

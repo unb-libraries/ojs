@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file EditorHandler.inc.php
+ * @file pages/editor/EditorHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle requests for editor functions.
  */
-
-// $Id$
-
 
 import('pages.sectionEditor.SectionEditorHandler');
 
@@ -42,22 +39,22 @@ class EditorHandler extends SectionEditorHandler {
 	 * Displays the editor role selection page.
 	 */
 
-	function index($args) {
+	function index($args, $request) {
 		$this->validate();
 		$this->setupTemplate(EDITOR_SECTION_HOME);
 
 		$templateMgr =& TemplateManager::getManager();
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
-		$user =& Request::getUser();
+		$user =& $request->getUser();
 
 		$editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 
 		$sections =& $sectionDao->getSectionTitles($journal->getId());
 		$templateMgr->assign('sectionOptions', array(0 => AppLocale::Translate('editor.allSections')) + $sections);
-		$templateMgr->assign('fieldOptions', $this->getSearchFieldOptions());
-		$templateMgr->assign('dateFieldOptions', $this->getDateFieldOptions());
+		$templateMgr->assign('fieldOptions', $this->_getSearchFieldOptions());
+		$templateMgr->assign('dateFieldOptions', $this->_getDateFieldOptions());
 
 		// Bring in the print_issue_id function (FIXME?)
 		import('classes.issue.IssueAction');
@@ -66,28 +63,28 @@ class EditorHandler extends SectionEditorHandler {
 
 		// If a search was performed, get the necessary info.
 		if (array_shift($args) == 'search') {
-			$rangeInfo = Handler::getRangeInfo('submissions');
+			$rangeInfo = $this->getRangeInfo('submissions');
 
 			// Get the user's search conditions, if any
-			$searchField = Request::getUserVar('searchField');
-			$dateSearchField = Request::getUserVar('dateSearchField');
-			$searchMatch = Request::getUserVar('searchMatch');
-			$search = Request::getUserVar('search');
+			$searchField = $request->getUserVar('searchField');
+			$dateSearchField = $request->getUserVar('dateSearchField');
+			$searchMatch = $request->getUserVar('searchMatch');
+			$search = $request->getUserVar('search');
 
-			$sort = Request::getUserVar('sort');
+			$sort = $request->getUserVar('sort');
 			$sort = isset($sort) ? $sort : 'id';
-			$sortDirection = Request::getUserVar('sortDirection');
+			$sortDirection = $request->getUserVar('sortDirection');
 			$sortDirection = (isset($sortDirection) && ($sortDirection == 'ASC' || $sortDirection == 'DESC')) ? $sortDirection : 'ASC';
 
-			$fromDate = Request::getUserDateVar('dateFrom', 1, 1);
+			$fromDate = $request->getUserDateVar('dateFrom', 1, 1);
 			if ($fromDate !== null) $fromDate = date('Y-m-d H:i:s', $fromDate);
-			$toDate = Request::getUserDateVar('dateTo', 32, 12, null, 23, 59, 59);
+			$toDate = $request->getUserDateVar('dateTo', 32, 12, null, 23, 59, 59);
 			if ($toDate !== null) $toDate = date('Y-m-d H:i:s', $toDate);
 
 			if ($sort == 'status') {
 				$rawSubmissions =& $editorSubmissionDao->_getUnfilteredEditorSubmissions(
 					$journal->getId(),
-					Request::getUserVar('section'),
+					$request->getUserVar('section'),
 					0,
 					$searchField,
 					$searchMatch,
@@ -112,10 +109,10 @@ class EditorHandler extends SectionEditorHandler {
 				// Convert submission array back to an ItemIterator class
 				import('lib.pkp.classes.core.ArrayItemIterator');
 				$submissions =& ArrayItemIterator::fromRangeInfo($submissionsArray, $rangeInfo);
-			}  else {
+			} else {
 				$rawSubmissions =& $editorSubmissionDao->_getUnfilteredEditorSubmissions(
 					$journal->getId(),
-					Request::getUserVar('section'),
+					$request->getUserVar('section'),
 					0,
 					$searchField,
 					$searchMatch,
@@ -131,12 +128,19 @@ class EditorHandler extends SectionEditorHandler {
 				$submissions = new DAOResultFactory($rawSubmissions, $editorSubmissionDao, '_returnEditorSubmissionFromRow');
 			}
 
+
+			// If only result is returned from a search, fast-forward to it
+			if ($search && $submissions && $submissions->getCount() == 1) {
+				$submission =& $submissions->next();
+				$request->redirect(null, null, 'submission', array($submission->getId()));
+			}
+
 			$templateMgr->assign_by_ref('submissions', $submissions);
-			$templateMgr->assign('section', Request::getUserVar('section'));
+			$templateMgr->assign('section', $request->getUserVar('section'));
 
 			// Set search parameters
-			foreach ($this->getSearchFormDuplicateParameters() as $param)
-				$templateMgr->assign($param, Request::getUserVar($param));
+			foreach ($this->_getSearchFormDuplicateParameters() as $param)
+				$templateMgr->assign($param, $request->getUserVar($param));
 
 			$templateMgr->assign('dateFrom', $fromDate);
 			$templateMgr->assign('dateTo', $toDate);
@@ -154,13 +158,13 @@ class EditorHandler extends SectionEditorHandler {
 	/**
 	 * Display editor submission queue pages.
 	 */
-	function submissions($args) {
+	function submissions($args, $request) {
 		$this->validate();
 		$this->setupTemplate(EDITOR_SECTION_SUBMISSIONS);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
-		$user =& Request::getUser();
+		$user =& $request->getUser();
 
 		$editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
@@ -168,9 +172,9 @@ class EditorHandler extends SectionEditorHandler {
 		$page = isset($args[0]) ? $args[0] : '';
 		$sections =& $sectionDao->getSectionTitles($journalId);
 
-		$sort = Request::getUserVar('sort');
+		$sort = $request->getUserVar('sort');
 		$sort = isset($sort) ? $sort : 'id';
-		$sortDirection = Request::getUserVar('sortDirection');
+		$sortDirection = $request->getUserVar('sortDirection');
 		$sortDirection = (isset($sortDirection) && ($sortDirection == 'ASC' || $sortDirection == 'DESC')) ? $sortDirection : 'ASC';
 
 		$filterEditorOptions = array(
@@ -183,17 +187,17 @@ class EditorHandler extends SectionEditorHandler {
 		) + $sections;
 
 		// Get the user's search conditions, if any
-		$searchField = Request::getUserVar('searchField');
-		$dateSearchField = Request::getUserVar('dateSearchField');
-		$searchMatch = Request::getUserVar('searchMatch');
-		$search = Request::getUserVar('search');
+		$searchField = $request->getUserVar('searchField');
+		$dateSearchField = $request->getUserVar('dateSearchField');
+		$searchMatch = $request->getUserVar('searchMatch');
+		$search = $request->getUserVar('search');
 
-		$fromDate = Request::getUserDateVar('dateFrom', 1, 1);
+		$fromDate = $request->getUserDateVar('dateFrom', 1, 1);
 		if ($fromDate !== null) $fromDate = date('Y-m-d H:i:s', $fromDate);
-		$toDate = Request::getUserDateVar('dateTo', 32, 12, null, 23, 59, 59);
+		$toDate = $request->getUserDateVar('dateTo', 32, 12, null, 23, 59, 59);
 		if ($toDate !== null) $toDate = date('Y-m-d H:i:s', $toDate);
 
-		$rangeInfo = Handler::getRangeInfo('submissions');
+		$rangeInfo = $this->getRangeInfo('submissions');
 
 		switch($page) {
 			case 'submissionsUnassigned':
@@ -214,7 +218,7 @@ class EditorHandler extends SectionEditorHandler {
 				$helpTopicId = 'editorial.editorsRole.submissions.inReview';
 		}
 
-		$filterEditor = Request::getUserVar('filterEditor');
+		$filterEditor = $request->getUserVar('filterEditor');
 		if ($filterEditor != '' && array_key_exists($filterEditor, $filterEditorOptions)) {
 			$user->updateSetting('filterEditor', $filterEditor, 'int', $journalId);
 		} else {
@@ -231,7 +235,7 @@ class EditorHandler extends SectionEditorHandler {
 			$editorId = FILTER_EDITOR_ALL;
 		}
 
-		$filterSection = Request::getUserVar('filterSection');
+		$filterSection = $request->getUserVar('filterSection');
 		if ($filterSection != '' && array_key_exists($filterSection, $filterSectionOptions)) {
 			$user->updateSetting('filterSection', $filterSection, 'int', $journalId);
 		} else {
@@ -269,13 +273,13 @@ class EditorHandler extends SectionEditorHandler {
 		$templateMgr->assign('filterSection', $filterSection);
 
 		// Set search parameters
-		foreach ($this->getSearchFormDuplicateParameters() as $param)
-			$templateMgr->assign($param, Request::getUserVar($param));
+		foreach ($this->_getSearchFormDuplicateParameters() as $param)
+			$templateMgr->assign($param, $request->getUserVar($param));
 
 		$templateMgr->assign('dateFrom', $fromDate);
 		$templateMgr->assign('dateTo', $toDate);
-		$templateMgr->assign('fieldOptions', $this->getSearchFieldOptions());
-		$templateMgr->assign('dateFieldOptions', $this->getDateFieldOptions());
+		$templateMgr->assign('fieldOptions', $this->_getSearchFieldOptions());
+		$templateMgr->assign('dateFieldOptions', $this->_getDateFieldOptions());
 
 		import('classes.issue.IssueAction');
 		$issueAction = new IssueAction();
@@ -293,7 +297,7 @@ class EditorHandler extends SectionEditorHandler {
 	 * based on supplied user data).
 	 * @return array
 	 */
-	function getSearchFormDuplicateParameters() {
+	function _getSearchFormDuplicateParameters() {
 		return array(
 			'searchField', 'searchMatch', 'search',
 			'dateFromMonth', 'dateFromDay', 'dateFromYear',
@@ -306,9 +310,10 @@ class EditorHandler extends SectionEditorHandler {
 	 * Get the list of fields that can be searched by contents.
 	 * @return array
 	 */
-	function getSearchFieldOptions() {
+	function _getSearchFieldOptions() {
 		return array(
 			SUBMISSION_FIELD_TITLE => 'article.title',
+			SUBMISSION_FIELD_ID => 'article.submissionId',
 			SUBMISSION_FIELD_AUTHOR => 'user.role.author',
 			SUBMISSION_FIELD_EDITOR => 'user.role.editor',
 			SUBMISSION_FIELD_REVIEWER => 'user.role.reviewer',
@@ -322,7 +327,7 @@ class EditorHandler extends SectionEditorHandler {
 	 * Get the list of date fields that can be searched.
 	 * @return array
 	 */
-	function getDateFieldOptions() {
+	function _getDateFieldOptions() {
 		return array(
 			SUBMISSION_FIELD_DATE_SUBMITTED => 'submissions.submitted',
 			SUBMISSION_FIELD_DATE_COPYEDIT_COMPLETE => 'submissions.copyeditComplete',
@@ -334,11 +339,11 @@ class EditorHandler extends SectionEditorHandler {
 	/**
 	 * Set the canEdit / canReview flags for this submission's edit assignments.
 	 */
-	function setEditorFlags($args) {
+	function setEditorFlags($args, $request) {
 		$this->validate();
 
-		$journal =& Request::getJournal();
-		$articleId = (int) Request::getUserVar('articleId');
+		$journal =& $request->getJournal();
+		$articleId = (int) $request->getUserVar('articleId');
 
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$article =& $articleDao->getArticle($articleId);
@@ -350,8 +355,8 @@ class EditorHandler extends SectionEditorHandler {
 			while($editAssignment =& $editAssignments->next()) {
 				if ($editAssignment->getIsEditor()) continue;
 
-				$canReview = Request::getUserVar('canReview-' . $editAssignment->getEditId()) ? 1 : 0;
-				$canEdit = Request::getUserVar('canEdit-' . $editAssignment->getEditId()) ? 1 : 0;
+				$canReview = $request->getUserVar('canReview-' . $editAssignment->getEditId()) ? 1 : 0;
+				$canEdit = $request->getUserVar('canEdit-' . $editAssignment->getEditId()) ? 1 : 0;
 
 				$editAssignment->setCanReview($canReview);
 				$editAssignment->setCanEdit($canEdit);
@@ -360,17 +365,17 @@ class EditorHandler extends SectionEditorHandler {
 			}
 		}
 
-		Request::redirect(null, null, 'submission', $articleId);
+		$request->redirect(null, null, 'submission', $articleId);
 	}
 
 	/**
 	 * Delete the specified edit assignment.
 	 */
-	function deleteEditAssignment($args) {
+	function deleteEditAssignment($args, $request) {
 		$this->validate();
 
-		$journal =& Request::getJournal();
-		$editId = (int) (isset($args[0])?$args[0]:0);
+		$journal =& $request->getJournal();
+		$editId = (int) array_shift($args);
 
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
 		$editAssignment =& $editAssignmentDao->getEditAssignment($editId);
@@ -381,27 +386,27 @@ class EditorHandler extends SectionEditorHandler {
 
 			if ($article && $article->getJournalId() === $journal->getId()) {
 				$editAssignmentDao->deleteEditAssignmentById($editAssignment->getEditId());
-				Request::redirect(null, null, 'submission', $article->getId());
+				$request->redirect(null, null, 'submission', $article->getId());
 			}
 		}
 
-		Request::redirect(null, null, 'submissions');
+		$request->redirect(null, null, 'submissions');
 	}
 
 	/**
 	 * Assigns the selected editor to the submission.
 	 */
-	function assignEditor($args) {
+	function assignEditor($args, $request) {
 		$this->validate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_MANAGER)); // manager.people.noneEnrolled
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER); // manager.people.noneEnrolled
 
-		$journal =& Request::getJournal();
-		$articleId = Request::getUserVar('articleId');
-		$editorId = Request::getUserVar('editorId');
+		$journal =& $request->getJournal();
+		$articleId = $request->getUserVar('articleId');
+		$editorId = $request->getUserVar('editorId');
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 
-		$isSectionEditor = $roleDao->roleExists($journal->getId(), $editorId, ROLE_ID_SECTION_EDITOR);
-		$isEditor = $roleDao->roleExists($journal->getId(), $editorId, ROLE_ID_EDITOR);
+		$isSectionEditor = $roleDao->userHasRole($journal->getId(), $editorId, ROLE_ID_SECTION_EDITOR);
+		$isEditor = $roleDao->userHasRole($journal->getId(), $editorId, ROLE_ID_EDITOR);
 
 		if (isset($editorId) && $editorId != null && ($isEditor || $isSectionEditor)) {
 			// A valid section editor has already been chosen;
@@ -412,7 +417,7 @@ class EditorHandler extends SectionEditorHandler {
 			$this->setupTemplate(EDITOR_SECTION_SUBMISSIONS, $articleId, 'summary');
 
 			// FIXME: Prompt for due date.
-			if (EditorAction::assignEditor($articleId, $editorId, $isEditor, Request::getUserVar('send'))) {
+			if (EditorAction::assignEditor($articleId, $editorId, $isEditor, $request->getUserVar('send'), $request)) {
 				Request::redirect(null, null, 'submission', $articleId);
 			}
 		} else {
@@ -421,11 +426,11 @@ class EditorHandler extends SectionEditorHandler {
 
 			$searchType = null;
 			$searchMatch = null;
-			$search = Request::getUserVar('search');
-			$searchInitial = Request::getUserVar('searchInitial');
+			$search = $request->getUserVar('search');
+			$searchInitial = $request->getUserVar('searchInitial');
 			if (!empty($search)) {
-				$searchType = Request::getUserVar('searchField');
-				$searchMatch = Request::getUserVar('searchMatch');
+				$searchType = $request->getUserVar('searchField');
+				$searchMatch = $request->getUserVar('searchMatch');
 
 			} elseif (!empty($searchInitial)) {
 				$searchInitial = String::strtoupper($searchInitial);
@@ -433,7 +438,7 @@ class EditorHandler extends SectionEditorHandler {
 				$search = $searchInitial;
 			}
 
-			$rangeInfo =& Handler::getRangeInfo('editors');
+			$rangeInfo =& $this->getRangeInfo('editors');
 			$editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
 
 			if (isset($args[0]) && $args[0] === 'editor') {
@@ -467,7 +472,7 @@ class EditorHandler extends SectionEditorHandler {
 			$templateMgr->assign('search', $search);
 			$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
 
-			$templateMgr->assign('fieldOptions', Array(
+			$templateMgr->assign('fieldOptions', array(
 				USER_FIELD_FIRSTNAME => 'user.firstName',
 				USER_FIELD_LASTNAME => 'user.lastName',
 				USER_FIELD_USERNAME => 'user.username',
@@ -482,12 +487,13 @@ class EditorHandler extends SectionEditorHandler {
 	/**
 	 * Delete a submission.
 	 */
-	function deleteSubmission($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	function deleteSubmission($args, $request) {
+		$articleId = (int) array_shift($args);
+
 		$this->validate($articleId);
 		parent::setupTemplate(true);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$article =& $articleDao->getArticle($articleId);
@@ -504,7 +510,7 @@ class EditorHandler extends SectionEditorHandler {
 			$articleDao->deleteArticleById($articleId);
 		}
 
-		Request::redirect(null, null, 'submissions', 'submissionsArchives');
+		$request->redirect(null, null, 'submissions', 'submissionsArchives');
 	}
 
 	/**

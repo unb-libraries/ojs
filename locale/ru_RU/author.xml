@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/ru_RU/author.xml
+  * locale/ru_RU/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">Вы можете закончить эту отправку позже, выбрав "Статьи в процессе Отправки" на своей домашней странице.</message>
 	<message key="author.submit.notAccepting">Этот журнал сейчас не принимает статей.</message>
 	<message key="author.submit.requestWaiver">Запросить Исключение</message>
-	<message key="author.submit.qualityForWaiver">Пожалуйста рассмотрите возможность сделать исключение и отменить Плату за Отправку для этой статьи</message>
+	<message key="author.submit.qualifyForWaiver">Пожалуйста рассмотрите возможность сделать исключение и отменить Плату за Отправку для этой статьи</message>
 	<message key="author.submit.addReasonsForWaiver">Пожалуйста используйте поле комментариев ниже для указания причин, почему плата должна быть отменена.</message>
 	<message key="author.submit.mustEnterWaiverReason">Если Вы просите отменить плату за отправку, необходимо указать причину.</message>
 	<message key="author.submissions.queuedReviewSubsequent">Рецензируется: ({$round} раунд)</message>
@@ -66,8 +65,6 @@
 	<message key="author.submit.addAuthor">Добавить автора</message>
 	<message key="author.submit.deleteAuthor">Удалить автора</message>
 	<message key="author.submit.submissionIndexingDescription">Укажите ключевые слова для индексирования этой статьи, отделяя их друг от друга точками с запятой (слово1; слово2; слово3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Спонсоры Вашего исследования</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Укажите организацию или институт, которые предоставили Вам материальную и/или финансовую поддержку.</message>
 	<message key="author.submit.coverageInstructions">Опишите географический и исторический (временной) охват Вашего исследования.</message>
 	<message key="author.submit.subjectClassInstructions">Используйте классификационную схему, указанную под линком внизу, для выбора подходящей категории (или классификационного номера) для Вашего исследования.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[English=en; French=fr; Russian=ru. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Дополнительные коды</a>.]]></message>

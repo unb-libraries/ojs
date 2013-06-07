@@ -4,12 +4,11 @@
 <!--
   * locale/en_US/reader.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
   *
-  * $Id: reader.xml,v 1.7 2009/08/18 23:44:09 asmecher Exp $
   -->
 
 <locale name="zh_CN" full_name = "China .PR">
@@ -178,4 +177,5 @@
 	<message key="rt.version">版本</message>
 	<message key="rt.viewMetadata">索引源数据</message>
 	<message key="rt.captureCite.web">互联网</message>
+	<message key="rt.admin.settings.viewReviewPolicy">审稿政策</message>
 </locale>

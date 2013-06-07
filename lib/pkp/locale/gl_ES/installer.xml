@@ -1,15 +1,14 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
   * locale/gl_ES/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the gl_ES (Galego (Galiza)) locale.
   *
-  * $Id$
   -->
 
 <locale name="gl_ES" full_name = "Galego (Galiza)">
@@ -67,7 +66,6 @@
 	<message key="installer.publicFilesDirError">O directorio de ficheiros públicos non existe ou non ten permisos de escrita.</message>
 	<message key="installer.releaseNotes">Notas de lanzamento</message>
 	<message key="installer.securitySettings">Configuración de seguridade</message>
-	<message key="installer.skipFilesDir">Non crear subdirectorios (só ten utilidade na instalación manual)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Houbo un erro analisando o ficheiro de planilla de correo <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">As traducións marcadas poden estar incompletas.</message>
 	<message key="installer.pleaseUpgradeAfterManualInstall">Por favor, exectua a ferramenta de actualización unha vez que teñas instalado a túa base de dados. Executa 'php tools/upgrade.php upgrade' dende o directorio de instalación principal con este propósito.</message>

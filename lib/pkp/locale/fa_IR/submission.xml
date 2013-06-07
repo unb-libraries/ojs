@@ -4,12 +4,11 @@
 <!--
   * locale/fa_IR/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
 
 <locale name="fa_IR" full_name = "Persian">
@@ -160,7 +159,6 @@
 	<message key="submission.submitter">سابمیت کننده</message>
 	<message key="submission.summary">خلاصه</message>
 	<message key="submission.supplementaryFiles">فایل های مکمل</message>
-	<message key="submission.supportingAgencies">سازمانهای حمایت کننده</message>
 	<message key="submission.titleAndAbstract">عنوان و چکیده</message>
 	<message key="submission.underway">شروع</message>
 	<message key="submission.uploadFileTo">آپلود کردن فایل در</message>

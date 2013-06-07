@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel//locale/eu_ES/author.xml
+  * locale/eu_ES/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Basque (Euskara)) locale.
   *
-  * $Id$
   -->
 
 <locale name="eu_ES" full_name = "Basque (Euskara)">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">Bidalketa hau geroago osa dezakezu, Egilearen hasierako orrian Bidalketa aktiboak hautatuta.</message>
 	<message key="author.submit.notAccepting">Aldizkariak ez du bidalketarik onartzen orain.</message>
 	<message key="author.submit.requestWaiver">Eskatu salbuespena</message>
-	<message key="author.submit.qualityForWaiver">Mesedez, kontsidera ezazue artikulu hau bidalketa-tarifa ordaintzetik salbuestea</message>
+	<message key="author.submit.qualifyForWaiver">Mesedez, kontsidera ezazue artikulu hau bidalketa-tarifa ordaintzetik salbuestea</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Kargatu zuzendutako bertsioa</message>
 	<message key="author.submissions.proofreadingCorrections">Proba-zuzenketako zuzenketak</message>
 	<message key="author.submissions.confirmDelete">Ziur zaude bukatu gabeko bidalketa hau ezabatu nahi duzula?</message>
@@ -59,8 +58,6 @@
 	<message key="author.submit.addAuthor">Gehitu egilea</message>
 	<message key="author.submit.deleteAuthor">Ezabatu egilea</message>
 	<message key="author.submit.submissionIndexingDescription">Sartu bidalketa indexatzeko hitzak edo terminoak, puntu eta komaz bereizita (1terminoa; 2terminoa; 3terminoa).</message>
-	<message key="author.submit.submissionSupportingAgencies">Agentzia laguntzaileak</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Identifikatu bidalketa honetan aurkezten den lanari diru-laguntza edo bestelakoa ematen dioten agentziak.</message>
 	<message key="author.submit.coverageInstructions">Kokapen geo-espaziala, garai kronologikoa edo historikoa, eta/edo ikerketaren ezaugarriak.</message>
 	<message key="author.submit.subjectClassInstructions">Erabili hiperestekatutako sailkapen-sistema bidalketa sailkatzeko terminoak eta, egoki bada, zenbakiak hautatzeko.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[euskara=eu; ingelesa=en; frantsesa=fr; gaztelania=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Kode gehiago</a>.]]></message>
@@ -127,4 +124,6 @@
 	<message key="author.submit.form.wordCountAlert">Laburpenetarako gehienezko hitz kopurua gainditu duzu atal honetan.</message>
 	<message key="author.submit.supplementaryFilesInstructions">Aukerako pauso honek aurkezpenari Fitxategi Osagarriak gehitzeko aukera ematen du. Artxiboak zeinahi formatutan egon daitezke, eta hauek izan ditzakete, besteak beste: (a)bilaketa-tresnak, (b) datu multzoak, ikerlanaren bilaketaren ebaluazio etikoa betetzen duena, (c) irakurlearentzat beste edozein modutara eskuragarri egongo ez liratekeen iturriak, (d) irudiak eta taulak ezin dira sartu testuan bertan, ezta lanari ekarpenak egiteko beste materialak ere.</message>
 	<message key="author.submit.supplementaryFiles.saveToUpload">Egin klik “Gorde” botoian fitxategia kargatzeko (horren ondoren fitxategi osagarriak kargatu daitezke).</message>
+	<message key="author.submit.submissionSupportingAgencies">Laguntzaileak eta agentzia babesleak</message>
+	<message key="author.submit.submissionSupportingAgenciesDescription">Identifikatu edukiari ekarpenak egin dizkioten agentziak (pertsona bat, erakunde bat edo zerbitzu bat) edo edizio honetan aurkeztu den lanari babesa eman diotenak. Bereizi puntu eta koma batekin (adib., John Doe, Metro University; Master University, Informatika Saila).</message>
 </locale>

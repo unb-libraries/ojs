@@ -7,7 +7,7 @@
 /**
  * @file classes/session/Session.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Session
@@ -16,9 +16,6 @@
  *
  * @brief Maintains user state information from one request to the next.
  */
-
-// $Id$
-
 
 class Session extends DataObject {
 
@@ -60,10 +57,6 @@ class Session extends DataObject {
 		if (isset($_SESSION[$key])) {
 			unset($_SESSION[$key]);
 		}
-
-		if (session_is_registered($key)) {
-			session_unregister($key);
-		}
 	}
 
 	//
@@ -89,7 +82,7 @@ class Session extends DataObject {
 
 		} else if ($userId != $this->getData('userId')) {
 			$userDao =& DAORegistry::getDAO('UserDAO');
-			$this->user =& $userDao->getUser($userId);
+			$this->user =& $userDao->getById($userId);
 			if (!isset($this->user)) {
 				$userId = null;
 			}
@@ -199,24 +192,6 @@ class Session extends DataObject {
 	 */
 	function &getUser() {
 		return $this->user;
-	}
-
-	/**
-	 * Set user group the current user is currently
-	 * acting as.
-	 * @param $userGroupId integer
-	 */
-	function setActingAsUserGroupId($userGroupId) {
-		$this->setData('actingAsUserGroupId', (int)$userGroupId);
-	}
-
-	/**
-	 * Get user group the current user is currently
-	 * acting as.
-	 * @return integer
-	 */
-	function getActingAsUserGroupId() {
-		return $this->getData('actingAsUserGroupId');
 	}
 }
 

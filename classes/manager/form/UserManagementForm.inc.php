@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/UserManagementForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserManagementForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for journal managers to edit user profiles.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -68,7 +65,7 @@ class UserManagementForm extends Form {
 		$templateMgr->assign('source', Request::getUserVar('source'));
 		$templateMgr->assign('userId', $this->userId);
 		if (isset($this->userId)) {
-			$user =& $userDao->getUser($this->userId);
+			$user =& $userDao->getById($this->userId);
 			$templateMgr->assign('username', $user->getUsername());
 			$helpTopicId = 'journal.users.index';
 		} else {
@@ -142,7 +139,7 @@ class UserManagementForm extends Form {
 	function initData(&$args, &$request) {
 		if (isset($this->userId)) {
 			$userDao =& DAORegistry::getDAO('UserDAO');
-			$user =& $userDao->getUser($this->userId);
+			$user =& $userDao->getById($this->userId);
 
 			import('lib.pkp.classes.user.InterestManager');
 			$interestManager = new InterestManager();
@@ -252,7 +249,7 @@ class UserManagementForm extends Form {
 		$journal =& Request::getJournal();
 
 		if (isset($this->userId)) {
-			$user =& $userDao->getUser($this->userId);
+			$user =& $userDao->getById($this->userId);
 		}
 
 		if (!isset($user)) {

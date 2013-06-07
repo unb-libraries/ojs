@@ -1,7 +1,7 @@
 {**
  * @file plugins/generic/booksForReview/templates/editor/authors.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Selection form for book for review authors.
@@ -10,7 +10,7 @@
 {assign var="pageTitle" value="plugins.generic.booksForReview.editor.assignAuthor"}
 {include file="common/header.tpl"}
 
-<form method="post" name="submit" action="{url op="selectBookForReviewAuthor" path=$bookId returnPage=$returnPage}">
+<form method="post" id="submit" action="{url op="selectBookForReviewAuthor" path=$bookId returnPage=$returnPage}">
 	<select name="searchField" size="1" class="selectMenu">
 		{html_options_translate options=$fieldOptions selected=$searchField}
 	</select>

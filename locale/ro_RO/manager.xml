@@ -2,15 +2,14 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * manager.xml
+  * locale/ro_RO/manager.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
   * Provided by Constantinescu Nicolaie. 
   *
-  * $Id: manager.xml,v 1.0 4:33 PM 7/24/2010 kosson Exp $
   -->
 
 <locale name="ro_RO" full_name = "Romanian">
@@ -150,7 +149,6 @@
 	<message key="manager.reviewForms.title">Titlu</message>
 	<message key="manager.sections.abstractsNotRequired">Nu necesită abstracte</message>
 	<message key="manager.sections.assigned">Redactorii acestei secţiuni</message>
-	<message key="manager.sections.confirmDelete">Eşti sigur că doreşti să ştergi permanent această secţiune? Va trebui să republici toate articolele care au stat în aceasta.</message>
 	<message key="manager.sections.create">Creează secţiune</message>
 	<message key="manager.sections.disableComments">Dezactivează comentariile cititorilor pentru această secţiune.</message>
 	<message key="manager.section.sectionEditorInstructions">Adaugă un redactor de secțiune acestei secțiuni pentru a avea automat atribuite propunerile către acesta. Alternativa este ca redactorii de secțiune să fie angajați manual la momentul când apare o propunere. Dacă un redactor de secțiune este adăugat, acesta poate fi desemnat automat pentru a supraveghea EVALUAREA (peer review) și/sau REDACTAREA (redactarea, machetarea și corectura) propunerilor către această secțiune. Redactorii de secțiune sunt creați dând clic pe redactorii de secțiune de sub roluri în secțiunea de management a revistei.</message>
@@ -243,7 +241,7 @@
 	<message key="manager.setup.doiSuffixPattern">Folosește formatul introdus mai pentru a genera sufixe DOI. Folosește %j pentru inițialele revistei, %v pentru numărul de volum, %i pentru numărul de revistă, %a pentru identificatorul de articol al articolului prezent în sistemul OJS și %p pentru numărul paginii.</message>
 	<message key="manager.setup.doiSuffixPattern.example">De exemplu: vol%viss%ipp%p poate genera un DOI astfel: 10.1234/vol3iss2pp230</message>
 	<message key="manager.setup.doiSuffixDescription">Un sufix DOI poate avea orice formă, dar trebuie să fie unic pentru fiecare articol publicat.</message>
-	<message key="manager.setup.doiSuffixCustomIdentifier">Folosește „identificator particularizat” pentru articolele publicate ca fiind un sufix DOI (acesta trebuie activat la Pasul 4).</message>
+	<message key="manager.setup.doiSuffixPublisherId">Folosește „identificator particularizat” pentru articolele publicate ca fiind un sufix DOI (acesta trebuie activat la Pasul 4).</message>
 	<message key="manager.setup.editorDecision">Decizia redactorului</message>
 	<message key="manager.setup.editorialMembers">Mergi la membrii colectivului şi mai adaugă dintre aceștia la colectivul redacţional şi/sau la cel de evaluare. Acest lucru poate fi făcut în orice moment al activităţii revistei.</message>
 	<message key="manager.setup.editorialProcess1">Unu sau mai mulţi redactori gestionează paşii de bază fără a avea roluri desemnate.</message>

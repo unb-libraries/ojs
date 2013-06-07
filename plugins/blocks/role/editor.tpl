@@ -1,17 +1,16 @@
 {**
- * editor.tpl
+ * plugins/blocks/role/editor.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Editor navigation sidebar.
  * Lists active assignments and editor functions.
  *
- * $Id$
  *}
 <div class="block" id="sidebarEditor">
 	<span class="blockTitle">{translate key="user.role.editor"}</span>
-	
+
 	<span class="blockSubtitle">{translate key="article.submissions"}</span>
 	<ul>
 		<li><a href="{url op="submissions" path="submissionsUnassigned"}">{translate key="common.queue.short.submissionsUnassigned"}</a>&nbsp;({if $submissionsCount[0]}{$submissionsCount[0]}{else}0{/if})</li>
@@ -19,7 +18,7 @@
 		<li><a href="{url op="submissions" path="submissionsInEditing"}">{translate key="common.queue.short.submissionsInEditing"}</a>&nbsp;({if $submissionsCount[2]}{$submissionsCount[2]}{else}0{/if})</li>
 		<li><a href="{url op="submissions" path="submissionsArchives"}">{translate key="common.queue.short.submissionsArchives"}</a></li>
 	</ul>
-	
+
 	<span class="blockSubtitle">{translate key="editor.navigation.issues"}</span>
 	<ul>
 		<li><a href="{url op="createIssue"}">{translate key="editor.navigation.createIssue"}</a></li>

@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * locale/fr_CA/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
   *
-  * $Id$
   -->
  
 <locale name="fr_CA" full_name="Français (Canada)">
@@ -292,8 +291,8 @@
 	<!-- General plugin information -->
 	<message key="plugins.categories.generic.description">Les plugiciels génériques sont utilisés pour étendre les possibilités d'Open Journal Systems de nombreuses façons qui ne sont pas prises en charge par les autres catégories de plugiciels.</message>
 	<message key="plugins.categories.auth.description">Les plugiciels d'autorisation permettent au Open Journal Systems de déléguer la tâche d'authentification des utilisateurs à d'autres systèmes, comme les serveurs LDAP.</message>
-
-
+	<message key="plugins.categories.pubIds">Plugiciels pour identifiant public</message>
+	<message key="plugins.categories.pubIds.description">Ces plugiciels permettent la mise en place d'un identifiant public.</message>
 
 	<!-- Files Browser -->
 
@@ -547,7 +546,6 @@ Active indique combien d'évaluations sont présentement considérées ou en cou
 	<!-- Profile -->
 	
 	<!-- Registration -->
-	<message key="user.register.repeatPassword">Répéter le mot de passe</message>
 
 	<message key="user.register.selectJournal">Sélectionner une revue pour vous y inscrire</message>
 	<message key="user.register.noJournals">Il n'y a pas de revues auxquelles vous pouvez vous inscrire à ce site.</message>
@@ -974,7 +972,7 @@ le droit de première publication, avec l’ouvrage disponible simultanément [S
 	<message key="plugins.categories.oaiMetadataFormats">Plugiciels du format de métadonnées OAI</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Ces plugiciels de format émettent les métadonnées en communications OAI.</message>
 	<message key="manager.setup.reviewProcessEmailDescription">Les rédacteurs envoient aux évaluateurs la demande d'évaluation avec la soumission jointe au courriel. Les évaluateurs envoient par courriel leur acceptation (ou refus), ainsi que l'évaluation et la recommandation. Les rédacteurs inscrivent l'acceptation (ou refus) des évaluateurs, ainsi que l'évaluation et la recommandation sur la page d'évaluation de la soumission, afin de consigner le processus d'évaluation.</message>
-	<message key="manager.setup.subjectClassificationDescription"><![CDATA[[La revue utilisera un système de classification sujet disponible sur le Web.<br />
+	<message key="manager.setup.subjectClassificationDescription"><![CDATA[La revue utilisera un système de classification sujet disponible sur le Web.<br />
 Titre du système de classification]]></message>
 	<message key="manager.setup.citations">Permet aux auteurs de fournir séparément une liste structurée de références (citations) comme partie intégrante de leur soumission.</message>
 	<message key="manager.setup.basicEditorialStepsDescription"><![CDATA[Étapes : Soumission en attente &gt; Soumission en évaluation &gt; Soumission en révision &gt; Table des matières.<br /><br />]]></message>
@@ -1062,4 +1060,60 @@ La validation peut échouer sur les URL de recherche qui nécessitent des formul
 	<message key="user.subscriptions.status.awaitingOnlinePaymentDescription">Un paiement en ligne a été initié mais annulé ou non complété</message>
 	<message key="article.pdf.download">Télécharger ce fichier PDF</message>
 	<message key="payment.authorFees">Droits d'auteur</message>
+	<message key="navigation.categories">Catégories</message>
+	<message key="navigation.categories.browse">Naviguer</message>
+	<message key="issue.fullIssue">L'ensemble du numéro</message>
+	<message key="issue.nonpdf.title">Téléchargement du numéro</message>
+	<message key="issue.viewIssue">Voir le numéro</message>
+	<message key="issue.viewIssueDescription">Voir ou télécharger l'ensemble du numéro</message>
+	<message key="plugins.categories.pubIds">Plugiciels pour identifiant public??</message>
+	<message key="plugins.categories.pubIds.description">Ces plugiciels permettent la mise en place d'un identifiant public??</message>
+	<message key="editor.submissionEditing.notes"><![CDATA[<ol>   <![CDATA[<ol>   <li>Les éléments surlignés indiquent qu'une action du rédacteur est requise, tel qu'indiqué :   <ul>]]></message>
+	<message key="site.noJournals">Il n'y a pas de revue disponible.</message>
+	<message key="gifts.buyer">De</message>
+	<message key="gifts.buyerDescription">De qui est ce cadeau?</message>
+	<message key="gifts.recipient">À</message>
+	<message key="gifts.recipientDescription">À qui est destiné ce cadeau?</message>
+	<message key="gifts.thankYou">Merci</message>
+	<message key="gifts.thankYouMessage">La procédure d'achat cadeau est complétée. Vous recevrez une copie du courriel d'accompagnement envoyé au bénéficiaire après traitement de votre règlement.</message>
+	<message key="gifts.purchaseGiftIndividualSubscription">Abonnement en cadeau</message>
+	<message key="gifts.subscriptionFormIntroduction">Veuillez remplir le formulaire ci-dessous et fournir les coordonnées demandées. Le bénéficiaire recevra votre carte-cadeau par courriel et sera avisé de l'abonnement offert.</message>
+	<message key="gifts.details">Description du cadeau</message>
+	<message key="gifts.detailsDescription">Veuillez sélectionner le cadeau ci-dessous et fournir un message personnalisé qui sera envoyé par courriel au bénéficiaire (vous recevrez une copie de ce courriel).</message>
+	<message key="gifts.gift">Cadeau</message>
+	<message key="gifts.noteTitle">Titre</message>
+	<message key="gifts.note">Carte-cadeau</message>
+	<message key="gifts.noteTitleRequired">Veuillez donner un titre à votre message personnalisé.</message>
+	<message key="gifts.noteRequired">Veuillez rédiger un message personnalisé.</message>
+	<message key="gifts.localeRequired">Veuillez sélectionner la langue de votre message personnalisé.</message>
+	<message key="gifts.myGifts">Mes cadeaux</message>
+	<message key="gifts.manageMyGifts">Gérer mes cadeaux</message>
+	<message key="gifts.redeemGift">Valider un cadeau</message>
+	<message key="gifts.status.notRedeemed">Disponible</message>
+	<message key="gifts.status.redeemed">Validé</message>
+	<message key="gifts.status.redeemGift">Cadeau validé</message>
+	<message key="gifts.subscriptions">Abonnements</message>
+	<message key="gifts.subscriptionsDescription">La validation ici d'un abonnement en cadeau rendra caduque votre abonnement actuel (si vous en avez un). L'abonnement sera valide du jour de la validation au terme de la durée stipulée selon le type d'abonnement offert.</message>
+	<message key="gifts.purchaseGiftSubscription">Offrir un abonnement en cadeau</message>
+	<message key="gifts.giftSubscriptionsAvailable">Il est aussi possible d'offrir un abonnement en cadeau, que le bénéficiaire sera libre de valider en tout temps. Voilà un excellent moyen de soutenir cette revue!</message>
+	<message key="gifts.noSubscriptions">Pas d'abonnement en cadeau</message>
+	<message key="gifts.giftRedeemed">Le cadeau a été validé avec succès.</message>
+	<message key="gifts.noGiftToRedeem">Ce cadeau ne peut être validé</message>
+	<message key="gifts.giftAlreadyRedeemed">Ce cadeau a déjà été validé.</message>
+	<message key="gifts.giftNotValid">Ce cadeau n'est pas valide et ne peut être validé.</message>
+	<message key="gifts.subscriptionTypeNotValid">La formule cadeau sélectionnée ne permet pas ce type d'abonnement. Veuillez contacter le responsable des abonnements.</message>
+	<message key="gifts.subscriptionNonExpiring">Le cadeau n'a pu être validé en raison de votre abonnement illimité à cette revue.</message>
+	<message key="payment.loginRequired.forIssue">Vous devez être abonné ou acheter le numéro correspondant pour accéder à cet article. Pour consulter les modalités de votre abonnement, votre dernier achat ou acheter un numéro, connectez-vous au site de la revue.</message>
+	<message key="payment.type.purchaseIssue">Tarif au numéro</message>
+	<message key="payment.type.gift">Cadeau</message>
+	<message key="payment.type.gift.subscription">Abonnement</message>
+	<message key="installer.maxFileUploadSize"><![CDATA[Votre serveur permet actuellement le téléchargement de fichiers : <strong>{$allowFileUploads}</strong>]]></message>
+	<message key="site.upgradeAvailable.admin"><![CDATA[Une nouvelle version d'OJS est maintenant disponible! Vous utilisez actuellement OJS {$currentVersion}. La dernière version est OJS {$latestVersion}. Allez à <a href="http://pkp.sfu.ca/ojs_download" target="_new">this page</a> pour télécharger la dernière version d'OJS et voir les instructions concernant la mise à jour.]]></message>
+	<message key="site.upgradeAvailable.manager"><![CDATA[Une nouvelle version d'OJS est maintenant disponible! Vous utilisez actuellement OJS {$currentVersion}. La dernière version est OJS {$latestVersion}. Contactez votre administrateur de site ({$siteAdminName}, </a]]></message>
+	<message key="installer.allowFileUploads"><![CDATA[Votre serveur permet actuellement le téléchargement de fichiers : <strong>{$allowFileUploads}</strong>]]></message>
+	<message key="user.authorization.copyeditorAssignmentMissing">Accès refusé! Vous n'avez pas été nommé rédacteur/éditeur de cet article.</message>
+	<message key="user.authorization.noJournal">Pas de revue en contexte!</message>
+	<message key="user.authorization.sectionAssignment">Vous tentez d'accéder à un article qui ne fait pas partie de votre section.</message>
+	<message key="user.authorization.invalidCopyditorSubmission">Dépôt du rédacteur non valide ou non requis!</message>
+	<message key="user.authorization.invalidSectionEditorSubmission">Dépôt du chef de rubrique non valide ou non requis!</message>
 </locale>

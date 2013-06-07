@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/GenericPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GenericPlugin
@@ -54,18 +54,19 @@ class GenericPlugin extends LazyLoadPlugin {
 	/**
 	 * @see PKPPlugin::manage()
 	 */
-	function manage($verb, $args, &$message) {
+	function manage($verb, $args, &$message, &$messageParams) {
 		if ($verb != 'enable' && !$this->getEnabled()) fatalError('Invalid management action on disabled plug-in!');
 
 		switch ($verb) {
 			case 'enable':
 				$this->setEnabled(true);
-				$message = __('common.pluginEnabled', array('pluginName' => $this->getDisplayName()));
+				$message = NOTIFICATION_TYPE_PLUGIN_ENABLED;
+				$messageParams = array('pluginName' => $this->getDisplayName());
 				return false;
-
 			case 'disable':
 				$this->setEnabled(false);
-				$message = __('common.pluginDisabled', array('pluginName' => $this->getDisplayName()));
+				$message = NOTIFICATION_TYPE_PLUGIN_DISABLED;
+				$messageParams = array('pluginName' => $this->getDisplayName());
 				return false;
 		}
 

@@ -7,7 +7,7 @@
 /**
  * @file classes/manager/form/AnnouncementForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementForm
@@ -16,8 +16,6 @@
  * @brief Form for journal managers to create/edit announcements.
  */
 
-// $Id$
-
 import('lib.pkp.classes.manager.form.PKPAnnouncementForm');
 
 class AnnouncementForm extends PKPAnnouncementForm {
@@ -25,12 +23,11 @@ class AnnouncementForm extends PKPAnnouncementForm {
 	 * Constructor
 	 * @param announcementId int leave as default for new announcement
 	 */
-	function AnnouncementForm($announcementId = null) {
-		parent::PKPAnnouncementForm($announcementId);
-		$journal =& Request::getJournal();
+	function AnnouncementForm($journalId, $announcementId = null) {
+		parent::PKPAnnouncementForm($journalId, $announcementId);
 
 		// If provided, announcement type is valid
-		$this->addCheck(new FormValidatorCustom($this, 'typeId', 'optional', 'manager.announcements.form.typeIdValid', create_function('$typeId, $journalId', '$announcementTypeDao =& DAORegistry::getDAO(\'AnnouncementTypeDAO\'); return $announcementTypeDao->announcementTypeExistsByTypeId($typeId, ASSOC_TYPE_JOURNAL, $journalId);'), array($journal->getId())));
+		$this->addCheck(new FormValidatorCustom($this, 'typeId', 'optional', 'manager.announcements.form.typeIdValid', create_function('$typeId, $journalId', '$announcementTypeDao =& DAORegistry::getDAO(\'AnnouncementTypeDAO\'); return $announcementTypeDao->announcementTypeExistsByTypeId($typeId, ASSOC_TYPE_JOURNAL, $journalId);'), array($journalId)));
 	}
 
 	/**
@@ -43,8 +40,8 @@ class AnnouncementForm extends PKPAnnouncementForm {
 	}
 
 	function _getAnnouncementTypesAssocId() {
-		$journal =& Request::getJournal();
-		return array(ASSOC_TYPE_JOURNAL, $journal->getId());
+		$journalId = $this->getContextId();
+		return array(ASSOC_TYPE_JOURNAL, $journalId);
 	}
 
 	/**
@@ -52,21 +49,21 @@ class AnnouncementForm extends PKPAnnouncementForm {
 	 * @param Announcement the announcement to be modified
 	 */
 	function _setAnnouncementAssocId(&$announcement) {
-		$journal =& Request::getJournal();
+		$journalId = $this->getContextId();
 		$announcement->setAssocType(ASSOC_TYPE_JOURNAL);
-		$announcement->setAssocId($journal->getId());
+		$announcement->setAssocId($journalId);
 	}
 
 	/**
 	 * Save announcement.
+	 * @param $request Request
 	 */
-	function execute() {
+	function execute(&$request) {
 		$announcement = parent::execute();
-		$journal =& Request::getJournal();
-		$journalId = $journal->getId();
+		$journalId = $this->getContextId();
 
 		// Send a notification to associated users
-		import('lib.pkp.classes.notification.NotificationManager');
+		import('classes.notification.NotificationManager');
 		$notificationManager = new NotificationManager();
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$notificationUsers = array();
@@ -76,17 +73,16 @@ class AnnouncementForm extends PKPAnnouncementForm {
 			$notificationUsers[] = array('id' => $user->getId());
 			unset($user);
 		}
-		$url = Request::url(null, 'announcement', 'view', array($announcement->getId()));
 		foreach ($notificationUsers as $userRole) {
 			$notificationManager->createNotification(
-				$userRole['id'], 'notification.type.newAnnouncement',
-				null, $url, 1, NOTIFICATION_TYPE_NEW_ANNOUNCEMENT
+				$request, $userRole['id'], NOTIFICATION_TYPE_NEW_ANNOUNCEMENT,
+				$journalId, ASSOC_TYPE_ANNOUNCEMENT, $announcement->getId()
 			);
 		}
-		$notificationManager->sendToMailingList(
+		$notificationManager->sendToMailingList($request,
 			$notificationManager->createNotification(
-				0, 'notification.type.newAnnouncement',
-				null, $url, 1, NOTIFICATION_TYPE_NEW_ANNOUNCEMENT
+				$request, UNSUBSCRIBED_USER_NOTIFICATION, NOTIFICATION_TYPE_NEW_ANNOUNCEMENT,
+				$journalId, ASSOC_TYPE_ANNOUNCEMENT, $announcement->getId()
 			)
 		);
 	}

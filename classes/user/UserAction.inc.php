@@ -3,7 +3,7 @@
 /**
  * @file classes/user/UserAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserAction
@@ -12,7 +12,6 @@
  *
  * @brief UserAction class.
  */
-
 
 class UserAction {
 
@@ -79,50 +78,14 @@ class UserAction {
 			unset($reviewAssignment);
 		}
 
+		// Transfer signoffs (e.g. copyediting, layout editing)
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
-
-		$copyeditorSubmissionDao =& DAORegistry::getDAO('CopyeditorSubmissionDAO');
-		$copyeditorSubmissions =& $copyeditorSubmissionDao->getCopyeditorSubmissionsByCopyeditorId($oldUserId);
-		while ($copyeditorSubmission =& $copyeditorSubmissions->next()) {
-			$initialCopyeditSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $copyeditorSubmission->getArticleId());
-			$finalCopyeditSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_FINAL', ASSOC_TYPE_ARTICLE, $copyeditorSubmission->getArticleId());
-			$initialCopyeditSignoff->setUserId($newUserId);
-			$finalCopyeditSignoff->setUserId($newUserId);
-			$signoffDao->updateObject($initialCopyeditSignoff);			
-			$signoffDao->updateObject($finalCopyeditSignoff);
-			unset($copyeditorSubmission);
-			unset($initialCopyeditSignoff);
-			unset($finalCopyeditSignoff);
-		}
-
-		$layoutEditorSubmissionDao =& DAORegistry::getDAO('LayoutEditorSubmissionDAO');
-		$layoutEditorSubmissions =& $layoutEditorSubmissionDao->getSubmissions($oldUserId);
-		while ($layoutEditorSubmission =& $layoutEditorSubmissions->next()) {
-			$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $layoutEditorSubmission->getArticleId());
-			$layoutProofreadSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_LAYOUT', ASSOC_TYPE_ARTICLE, $layoutEditorSubmission->getArticleId());
-			$layoutSignoff->setUserId($newUserId);
-			$layoutProofreadSignoff->setUserId($newUserId);
-			$signoffDao->updateObject($layoutSignoff);
-			$signoffDao->updateObject($layoutProofreadSignoff);
-			unset($layoutSignoff);
-			unset($layoutProofreadSignoff);
-			unset($layoutEditorSubmission);
-		}
-
-		$proofreaderSubmissionDao =& DAORegistry::getDAO('ProofreaderSubmissionDAO');
-		$proofreaderSubmissions =& $proofreaderSubmissionDao->getSubmissions($oldUserId);
-		while ($proofreaderSubmission =& $proofreaderSubmissions->next()) {
-			$proofSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $proofreaderSubmission->getArticleId());
-			$proofSignoff->setUserId($newUserId);
-			$signoffDao->updateObject($proofSignoff);
-			unset($proofSignoff);
-			unset($proofreaderSubmission);
-		}
+		$signoffDao->transferSignoffs($oldUserId, $newUserId);
 
 		$articleEmailLogDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-		$articleEmailLogDao->transferArticleLogEntries($oldUserId, $newUserId);
+		$articleEmailLogDao->changeUser($oldUserId, $newUserId);
 		$articleEventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		$articleEventLogDao->transferArticleLogEntries($oldUserId, $newUserId);
+		$articleEventLogDao->changeUser($oldUserId, $newUserId);
 
 		$articleCommentDao =& DAORegistry::getDAO('ArticleCommentDAO');
 		foreach ($articleCommentDao->getArticleCommentsByUserId($oldUserId) as $articleComment) {
@@ -172,6 +135,14 @@ class UserAction {
 			$institutionalSubscriptionDao->updateSubscription($oldUserSubscription);
 		}
 
+		// Transfer old user's gifts to new user
+		$giftDao =& DAORegistry::getDAO('GiftDAO');
+		$gifts =& $giftDao->getAllGiftsByRecipient(ASSOC_TYPE_JOURNAL, $oldUserId);
+		while ($gift =& $gifts->next()) {
+			$gift->setRecipientUserId($newUserId);
+			$giftDao->updateObject($gift);
+		}
+
 		// Delete the old user and associated info.
 		$sessionDao =& DAORegistry::getDAO('SessionDAO');
 		$sessionDao->deleteSessionsByUserId($oldUserId);
@@ -189,7 +160,7 @@ class UserAction {
 
 		$roles =& $roleDao->getRolesByUserId($oldUserId);
 		foreach ($roles as $role) {
-			if (!$roleDao->roleExists($role->getJournalId(), $newUserId, $role->getRoleId())) {
+			if (!$roleDao->userHasRole($role->getJournalId(), $newUserId, $role->getRoleId())) {
 				$role->setUserId($newUserId);
 				$roleDao->insertRole($role);
 			}

@@ -1,12 +1,11 @@
 {**
- * settingsForm.tpl
+ * plugins/gateways/metsGateway/settingsForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * METS gateway plugin settings
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.gateways.metsGateway.displayName"}
@@ -50,7 +49,7 @@
 
 <br/>
 
-<input type="submit" name="save" class="button defaultButton" value="{translate key="common.save"}"/> 
+<input type="submit" name="save" class="button defaultButton" value="{translate key="common.save"}"/>
 <input type="button" class="button" value="{translate key="common.cancel"}" onclick="document.location.href='{url|escape:"quotes" page="manager" op="plugins" escape="false"}'"/>
 </form>
 </div>

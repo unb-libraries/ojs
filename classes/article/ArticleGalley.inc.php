@@ -3,7 +3,7 @@
 /**
  * @file classes/article/ArticleGalley.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleGalley
@@ -12,9 +12,6 @@
  *
  * @brief A galley is a final presentation version of the full-text of an article.
  */
-
-// $Id$
-
 
 import('classes.article.ArticleFile');
 
@@ -160,25 +157,6 @@ class ArticleGalley extends ArticleFile {
 	}
 
 	/**
-	 * Get public galley id
-	 * @return string
-	 */
-	function getPublicGalleyId() {
-		// Ensure that blanks are treated as nulls.
-		$returner = $this->getData('publicGalleyId');
-		if ($returner === '') return null;
-		return $returner;
-	}
-
-	/**
-	 * Set public galley id
-	 * @param $publicGalleyId string
-	 */
-	function setPublicGalleyId($publicGalleyId) {
-		return $this->setData('publicGalleyId', $publicGalleyId);
-	}
-
-	/**
 	 * Return the "best" article ID -- If a public article ID is set,
 	 * use it; otherwise use the internal article Id. (Checks the journal
 	 * settings to ensure that the public ID feature is enabled.)
@@ -187,10 +165,26 @@ class ArticleGalley extends ArticleFile {
 	 */
 	function getBestGalleyId(&$journal) {
 		if ($journal->getSetting('enablePublicGalleyId')) {
-			$publicGalleyId = $this->getPublicGalleyId();
+			$publicGalleyId = $this->getPubId('publisher-id');
 			if (!empty($publicGalleyId)) return $publicGalleyId;
 		}
 		return $this->getId();
+	}
+
+	/**
+	 * Set remote URL of the galley.
+	 * @param $remoteURL string
+	 */
+	function setRemoteURL($remoteURL) {
+		return $this->setData('remoteURL', $remoteURL);
+	}
+
+	/**
+	 * Get remote URL of the galley.
+	 * @return string
+	 */
+	function getRemoteURL() {
+		return $this->getData('remoteURL');
 	}
 }
 

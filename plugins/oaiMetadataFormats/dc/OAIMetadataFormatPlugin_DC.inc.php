@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file plugins/oaiMetadata/dc/OAIMetadataFormatPlugin_DC.inc.php
+ * @file plugins/oaiMetadataFormats/dc/OAIMetadataFormatPlugin_DC.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin_DC
@@ -13,40 +13,14 @@
  * @brief dc metadata format plugin for OAI.
  */
 
-import('classes.plugins.OAIMetadataFormatPlugin');
+import('lib.pkp.plugins.oaiMetadataFormats.dc.PKPOAIMetadataFormatPlugin_DC');
 
-class OAIMetadataFormatPlugin_DC extends OAIMetadataFormatPlugin {
+class OAIMetadataFormatPlugin_DC extends PKPOAIMetadataFormatPlugin_DC {
 	/**
-	 * Get the name of this plugin. The name must be unique within
-	 * its category.
-	 * @return String name of plugin
+	 * Constructor
 	 */
-	function getName() {
-		return 'OAIMetadataFormatPlugin_DC';
-	}
-
-	function getDisplayName() {
-		return __('plugins.oaiMetadata.dc.displayName');
-	}
-
-	function getDescription() {
-		return __('plugins.oaiMetadata.dc.description');
-	}
-
-	function getFormatClass() {
-		return 'OAIMetadataFormat_DC';
-	}
-
-	function getMetadataPrefix() {
-		return 'oai_dc';
-	}
-
-	function getSchema() {
-		return 'http://www.openarchives.org/OAI/2.0/oai_dc.xsd';
-	}
-
-	function getNamespace() {
-		return 'http://www.openarchives.org/OAI/2.0/oai_dc/';
+	function OAIMetadataFormatPlugin_DC() {
+		parent::PKPOAIMetadataFormatPlugin_DC();
 	}
 }
 

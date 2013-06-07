@@ -7,7 +7,7 @@
 /**
  * @file classes/user/form/RegistrationForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RegistrationForm
@@ -29,6 +29,9 @@ class RegistrationForm extends Form {
 	/** @var boolean whether or not captcha is enabled for this form */
 	var $captchaEnabled;
 
+	/** @var boolean whether to use reCaptcha or the default captcha */
+	var $reCaptchaEnabled;
+
 	/** @var boolean whether or not implicit authentication is used */
 	var $implicitAuth;
 
@@ -48,6 +51,9 @@ class RegistrationForm extends Form {
 			import('lib.pkp.classes.captcha.CaptchaManager');
 			$captchaManager = new CaptchaManager();
 			$this->captchaEnabled = ($captchaManager->isEnabled() && Config::getVar('captcha', 'captcha_on_register'))?true:false;
+			if ($this->captchaEnabled) {
+				$this->reCaptchaEnabled = Config::getVar('captcha', 'recaptcha')?true:false;
+			}
 
 			// Validation checks for this form
 			$this->addCheck(new FormValidator($this, 'username', 'required', 'user.profile.form.usernameRequired'));
@@ -71,7 +77,11 @@ class RegistrationForm extends Form {
 				$this->addCheck(new FormValidatorCustom($this, 'email', 'required', 'user.register.form.emailsDoNotMatch', create_function('$email,$form', 'return $email == $form->getData(\'confirmEmail\');'), array(&$this)));
 				$this->addCheck(new FormValidatorCustom($this, 'email', 'required', 'user.register.form.emailExists', array(DAORegistry::getDAO('UserDAO'), 'userExistsByEmail'), array(), true));
 				if ($this->captchaEnabled) {
-					$this->addCheck(new FormValidatorCaptcha($this, 'captcha', 'captchaId', 'common.captchaField.badCaptcha'));
+					if ($this->reCaptchaEnabled) {
+						$this->addCheck(new FormValidatorReCaptcha($this, 'recaptcha_challenge_field', 'recaptcha_response_field', Request::getRemoteAddr(), 'common.captchaField.badCaptcha'));
+					} else {
+						$this->addCheck(new FormValidatorCaptcha($this, 'captcha', 'captchaId', 'common.captchaField.badCaptcha'));
+					}
 				}
 
 				$authDao =& DAORegistry::getDAO('AuthSourceDAO');
@@ -95,12 +105,22 @@ class RegistrationForm extends Form {
 		$journal =& Request::getJournal();
 
 		if ($this->captchaEnabled) {
-			import('lib.pkp.classes.captcha.CaptchaManager');
-			$captchaManager = new CaptchaManager();
-			$captcha =& $captchaManager->createCaptcha();
-			if ($captcha) {
+			$templateMgr->assign('reCaptchaEnabled', $this->reCaptchaEnabled);
+			if ($this->reCaptchaEnabled) {
+				import('lib.pkp.lib.recaptcha.recaptchalib');
+				$publicKey = Config::getVar('captcha', 'recaptcha_public_key');
+				$useSSL = Config::getVar('security', 'force_ssl')?true:false;
+				$reCaptchaHtml = recaptcha_get_html($publicKey, null, $useSSL);
+				$templateMgr->assign('reCaptchaHtml', $reCaptchaHtml);
 				$templateMgr->assign('captchaEnabled', $this->captchaEnabled);
-				$this->setData('captchaId', $captcha->getId());
+			} else {
+				import('lib.pkp.classes.captcha.CaptchaManager');
+				$captchaManager = new CaptchaManager();
+				$captcha =& $captchaManager->createCaptcha();
+				if ($captcha) {
+					$templateMgr->assign('captchaEnabled', $this->captchaEnabled);
+					$this->setData('captchaId', $captcha->getId());
+				}
 			}
 		}
 
@@ -154,8 +174,13 @@ class RegistrationForm extends Form {
 			'registerAsReviewer', 'existingUser', 'sendPassword'
 		);
 		if ($this->captchaEnabled) {
-			$userVars[] = 'captchaId';
-			$userVars[] = 'captcha';
+			if ($this->reCaptchaEnabled) {
+				$userVars[] = 'recaptcha_challenge_field';
+				$userVars[] = 'recaptcha_response_field';
+			} else {
+				$userVars[] = 'captchaId';
+				$userVars[] = 'captcha';
+			}
 		}
 
 		$this->readUserVars($userVars);
@@ -287,7 +312,7 @@ class RegistrationForm extends Form {
 
 		foreach ($allowedRoles as $k => $v) {
 			$roleId = $roleDao->getRoleIdFromPath($k);
-			if ($this->getData($v) && !$roleDao->roleExists($journal->getId(), $userId, $roleId)) {
+			if ($this->getData($v) && !$roleDao->userHasRole($journal->getId(), $userId, $roleId)) {
 				$role = new Role();
 				$role->setJournalId($journal->getId());
 				$role->setUserId($userId);

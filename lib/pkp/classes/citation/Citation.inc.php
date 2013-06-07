@@ -7,7 +7,7 @@
 /**
  * @file classes/citation/Citation.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Citation
@@ -25,8 +25,8 @@ define('CITATION_LOOKED_UP', 0x04);
 define('CITATION_APPROVED', 0x05);
 
 import('lib.pkp.classes.core.DataObject');
-import('lib.pkp.classes.metadata.nlm.NlmCitationSchema');
-import('lib.pkp.classes.metadata.nlm.NlmCitationSchemaCitationAdapter');
+import('lib.pkp.plugins.metadata.nlm30.schema.Nlm30CitationSchema');
+import('lib.pkp.plugins.metadata.nlm30.filter.Nlm30CitationSchemaCitationAdapter');
 
 class Citation extends DataObject {
 	/** @var int citation state (raw, edited, parsed, looked-up) */
@@ -34,6 +34,9 @@ class Citation extends DataObject {
 
 	/** @var array an array of MetadataDescriptions */
 	var $_sourceDescriptions = array();
+
+	/** @var integer the max sequence number that has been attributed so far */
+	var $_maxSourceDescriptionSeq = 0;
 
 	/**
 	 * @var array errors that occurred while
@@ -47,13 +50,10 @@ class Citation extends DataObject {
 	 * @param $rawCitation string an unparsed citation string
 	 */
 	function Citation($rawCitation = null) {
-		parent::DataObject();
+		// Switch on meta-data adapter support.
+		$this->setHasLoadableAdapters(true);
 
-		// Add NLM meta-data adapter.
-		// FIXME: This will later be done via plugin/user-configurable settings,
-		// see comment in DataObject::DataObject().
-		$metadataAdapter = new NlmCitationSchemaCitationAdapter();
-		$this->addSupportedMetadataAdapter($metadataAdapter);
+		parent::DataObject();
 
 		$this->setRawCitation($rawCitation); // this will set state to CITATION_RAW
 	}
@@ -76,12 +76,29 @@ class Citation extends DataObject {
 	 * citation from an external source.
 	 *
 	 * @param $sourceDescription MetadataDescription
+	 * @return integer the source description's sequence
+	 *  number.
 	 */
 	function addSourceDescription(&$sourceDescription) {
+		assert(is_a($sourceDescription, 'MetadataDescription'));
+
+		// Identify an appropriate sequence number.
+		$seq = $sourceDescription->getSeq();
+		if (is_numeric($seq) && $seq > 0) {
+			// This description has a pre-set sequence number
+			if ($seq > $this->_maxSourceDescriptionSeq) $this->_maxSourceDescriptionSeq = $seq;
+		} else {
+			// We'll create a sequence number for the description
+			$this->_maxSourceDescriptionSeq++;
+			$seq = $this->_maxSourceDescriptionSeq;
+			$sourceDescription->setSeq($seq);
+		}
+
 		// We add descriptions by display name as they are
 		// purely informational. This avoids getting duplicates
 		// when we update a description.
 		$this->_sourceDescriptions[$sourceDescription->getDisplayName()] =& $sourceDescription;
+		return $seq;
 	}
 
 	/**
@@ -201,10 +218,9 @@ class Citation extends DataObject {
 	 * @return array
 	 */
 	function &getNamespacedMetadataProperties() {
-		$metadataAdapters =& $this->getSupportedMetadataAdapters();
+		$metadataSchemas =& $this->getSupportedMetadataSchemas();
 		$metadataProperties = array();
-		foreach($metadataAdapters as $metadataAdapter) {
-			$metadataSchema =& $metadataAdapter->getMetadataSchema();
+		foreach($metadataSchemas as $metadataSchema) {
 			$metadataProperties[$metadataSchema->getNamespace()] = $metadataSchema->getProperties();
 		}
 		return $metadataProperties;

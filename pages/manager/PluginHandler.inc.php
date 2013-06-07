@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file PluginHandler.inc.php
+ * @file pages/manager/PluginHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PluginHandler
@@ -12,22 +12,23 @@
  * @brief Handle requests for plugin management functions.
  */
 
-// $Id$
 
 import('pages.manager.ManagerHandler');
 
 class PluginHandler extends ManagerHandler {
 	/**
 	 * Constructor
-	 **/
+	 */
 	function PluginHandler() {
 		parent::ManagerHandler();
 	}
 
 	/**
 	 * Display a list of plugins along with management options.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function plugins($args) {
+	function plugins($args, &$request) {
 		$category = isset($args[0])?$args[0]:null;
 		$categories = PluginRegistry::getCategories();
 
@@ -42,7 +43,7 @@ class PluginHandler extends ManagerHandler {
 
 			$this->setupTemplate(false);
 			$templateMgr->assign('pageTitle', 'plugins.categories.' . $category);
-			$templateMgr->assign('pageHierarchy', PluginHandler::setBreadcrumbs(true));
+			$templateMgr->assign('pageHierarchy', $this->setBreadcrumbs($request, true));
 		} else {
 			// No plugin specified; display all.
 			$mainPage = true;
@@ -56,7 +57,7 @@ class PluginHandler extends ManagerHandler {
 
 			$this->setupTemplate(true);
 			$templateMgr->assign('pageTitle', 'manager.plugins.pluginManagement');
-			$templateMgr->assign('pageHierarchy', PluginHandler::setBreadcrumbs(false));
+			$templateMgr->assign('pageHierarchy', $this->setBreadcrumbs($request, false));
 		}
 
 		$templateMgr->assign_by_ref('plugins', $plugins);
@@ -82,12 +83,13 @@ class PluginHandler extends ManagerHandler {
 		$this->setupTemplate(true);
 
 		$plugins =& PluginRegistry::loadCategory($category);
-		$message = null;
-		if (!isset($plugins[$plugin]) || !$plugins[$plugin]->manage($verb, $args, $message)) {
+		$message = $messageParams = null;
+		if (!isset($plugins[$plugin]) || !$plugins[$plugin]->manage($verb, $args, $message, $messageParams, $request)) {
 			if ($message) {
-				import('lib.pkp.classes.notification.NotificationManager');
+				$user =& $request->getUser();
+				import('classes.notification.NotificationManager');
 				$notificationManager = new NotificationManager();
-				$notificationManager->createTrivialNotification(__('notification.notification'), $message, NOTIFICATION_TYPE_SUCCESS, null, 0);
+				$notificationManager->createTrivialNotification($user->getId(), $message, $messageParams);
 			}
 			$request->redirect(null, null, 'plugins', array($category));
 		}
@@ -95,18 +97,19 @@ class PluginHandler extends ManagerHandler {
 
 	/**
 	 * Set the page's breadcrumbs
+	 * @param $request PKPRequest
 	 * @param $subclass boolean
 	 */
-	function setBreadcrumbs($subclass = false) {
+	function setBreadcrumbs($request, $subclass = false) {
 		$templateMgr =& TemplateManager::getManager();
 		$pageCrumbs = array(
 			array(
-				Request::url(null, 'user'),
+				$request->url(null, 'user'),
 				'navigation.user',
 				false
 			),
 			array(
-				Request::url(null, 'manager'),
+				$request->url(null, 'manager'),
 				'manager.journalManagement',
 				false
 			)
@@ -114,7 +117,7 @@ class PluginHandler extends ManagerHandler {
 
 		if ($subclass) {
 			$pageCrumbs[] = array(
-				Request::url(null, 'manager', 'plugins'),
+				$request->url(null, 'manager', 'plugins'),
 				'manager.plugins.pluginManagement',
 				false
 			);
@@ -122,7 +125,6 @@ class PluginHandler extends ManagerHandler {
 
 		return $pageCrumbs;
 	}
-
 }
 
 ?>

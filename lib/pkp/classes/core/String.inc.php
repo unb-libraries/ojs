@@ -3,7 +3,7 @@
 /**
  * @file classes/core/String.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class String
@@ -58,7 +58,7 @@ class String {
 	 * Perform initialization required for the string wrapper library.
 	 */
 	function init() {
-		$clientCharset = strtolower(Config::getVar('i18n', 'client_charset'));
+		$clientCharset = strtolower_codesafe(Config::getVar('i18n', 'client_charset'));
 
 		// Check if mbstring is installed (requires PHP >= 4.3.0)
 		if (String::hasMBString()) {
@@ -141,7 +141,7 @@ class String {
 		if (defined('ENABLE_MBSTRING')) {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 		}
 		return utf8_strlen($string);
@@ -154,7 +154,7 @@ class String {
 		if (defined('ENABLE_MBSTRING')) {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 		}
 		return utf8_strpos($haystack, $needle, $offset);
@@ -167,7 +167,7 @@ class String {
 		if (defined('ENABLE_MBSTRING')) {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 		}
 		return utf8_strrpos($haystack, $needle, $offset);
@@ -230,7 +230,7 @@ class String {
 		if (defined('ENABLE_MBSTRING')) {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 		}
 		return utf8_strtolower($string);
@@ -243,7 +243,7 @@ class String {
 		if (defined('ENABLE_MBSTRING')) {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 		}
 		return utf8_strtoupper($string);
@@ -257,7 +257,7 @@ class String {
 			require_once './lib/pkp/lib/phputf8/mbstring/core.php';
 			require_once './lib/pkp/lib/phputf8/ucfirst.php';
 		} else {
-		 	require_once './lib/pkp/lib/phputf8/utils/unicode.php';
+			require_once './lib/pkp/lib/phputf8/utils/unicode.php';
 			require_once './lib/pkp/lib/phputf8/native/core.php';
 			require_once './lib/pkp/lib/phputf8/ucfirst.php';
 		}
@@ -460,7 +460,7 @@ class String {
 		/* Get all attribute="javascript:foo()" tags. This is
 		* essentially the regex /(=|url\()("?)[^>]* script:/ but
 		* expanded to catch camouflage with spaces and entities. */
-		$preg 	= '/((&#0*61;?|&#x0*3D;?|=)|'
+		$preg	= '/((&#0*61;?|&#x0*3D;?|=)|'
 			. '((u|&#0*85;?|&#x0*55;?|&#0*117;?|&#x0*75;?)\s*'
 			. '(r|&#0*82;?|&#x0*52;?|&#0*114;?|&#x0*72;?)\s*'
 			. '(l|&#0*76;?|&#x0*4c;?|&#0*108;?|&#x0*6c;?)\s*'
@@ -662,17 +662,17 @@ class String {
 				$ret .= "&#" . ($c1 * 0x100 + $c2) . ";";	// this is the fastest string concatenation
 				$last = $i+1;
 			}
-			elseif ($c1>>4 == 14) { 								// 1110 xxxx, 110 prefix for 3 bytes unicode
+			elseif ($c1>>4 == 14) {								// 1110 xxxx, 110 prefix for 3 bytes unicode
 				$ret .= substr($str, $last, $i-$last);			// append all the regular characters we've passed
-				$c2 = ord($str{++$i}); 								// the next byte
-				$c3 = ord($str{++$i}); 								// the third byte
-				$c1 &= 15; 												// remove the 4 bit three bytes prefix
-				$c2 &= 63; 												// remove the 2 bit trailing byte prefix
-				$c3 &= 63; 												// remove the 2 bit trailing byte prefix
+				$c2 = ord($str{++$i});								// the next byte
+				$c3 = ord($str{++$i});								// the third byte
+				$c1 &= 15;												// remove the 4 bit three bytes prefix
+				$c2 &= 63;												// remove the 2 bit trailing byte prefix
+				$c3 &= 63;												// remove the 2 bit trailing byte prefix
 				$c3 |= (($c2 & 3) << 6);							// last 2 bits of c2 become first 2 of c3
-				$c2 >>=2; 													//c2 shifts 2 to the right
+				$c2 >>=2;													//c2 shifts 2 to the right
 				$c2 |= (($c1 & 15) << 4);							// last 4 bits of c1 become first 4 of c2
-				$c1 >>= 4; 												// c1 shifts 4 to the right
+				$c1 >>= 4;												// c1 shifts 4 to the right
 				$ret .= '&#' . (($c1 * 0x10000) + ($c2 * 0x100) + $c3) . ';'; // this is the fastest string concatenation
 				$last = $i+1;
 			}
@@ -852,11 +852,8 @@ class String {
 	 * @return string
 	 */
 	function titleCase($title) {
-		$smallWords = array(
-			'of', 'a', 'the', 'and', 'an', 'or', 'nor', 'but', 'is', 'if', 'then',
-			'else', 'when', 'at', 'from', 'by', 'on', 'off', 'for', 'in', 'out',
-			'over', 'to', 'into', 'with'
-		);
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON);
+		$smallWords = explode(' ', __('common.titleSmallWords'));
 
 		$words = explode(' ', $title);
 		foreach ($words as $key => $word) {
@@ -1081,6 +1078,14 @@ class String {
 
 		// Return the array representing the diff.
 		return $diffResult;
+	}
+
+	/**
+	 * Get a letter $steps places after 'A'
+	 * @param $steps int
+	 */
+	function enumerateAlphabetically($steps) {
+		return chr(ord('A') + $steps);
 	}
 }
 

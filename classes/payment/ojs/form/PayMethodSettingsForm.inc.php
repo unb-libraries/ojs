@@ -13,8 +13,6 @@
  *
  */
 
-// $Id$
-
 import('lib.pkp.classes.form.Form');
 
 class PayMethodSettingsForm extends Form {
@@ -58,14 +56,6 @@ class PayMethodSettingsForm extends Form {
 		if (empty($paymentMethodPluginName) || !in_array($paymentMethodPluginName, array_keys($this->plugins))) {
 			$paymentMethodPluginName = $journal->getSetting('paymentMethodPluginName');
 		}
-
-		if (!isset($this->plugins[$paymentMethodPluginName])) {
-			// Choose an arbitrary default if no valid plugin chosen
-			$paymentMethodPluginName = array_shift(array_keys($this->plugins));
-		}
-
-		// A valid payment method plugin should now be chosen.
-		$paymentMethodPlugin =& $this->plugins[$paymentMethodPluginName];
 
 		$this->_data = array(
 			'paymentMethodPluginName' => $paymentMethodPluginName

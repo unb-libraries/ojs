@@ -1,19 +1,18 @@
 {**
- * createReviewerForm.tpl
+ * templates/sectionEditor/createReviewerForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for editors to create reviewers.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="sectionEditor.review.createReviewer"}
 {include file="common/header.tpl"}
 {/strip}
 
-<form method="post" name="reviewerForm" action="{url op="createReviewer" path=$articleId|to_array:"create"}">
+<form method="post" id="reviewerForm" action="{url op="createReviewer" path=$articleId|to_array:"create"}">
 
 {include file="common/formErrors.tpl"}
 
@@ -24,17 +23,17 @@
 	function generateUsername() {
 		var req = makeAsyncRequest();
 
-		if (document.reviewerForm.lastName.value == "") {
+		if (document.getElementById('reviewerForm').lastName.value == "") {
 			alert("{/literal}{translate key="manager.people.mustProvideName"}{literal}");
 			return;
 		}
 
 		req.onreadystatechange = function() {
 			if (req.readyState == 4) {
-				document.reviewerForm.username.value = req.responseText;
+				document.getElementById('reviewerForm').username.value = req.responseText;
 			}
 		}
-		sendAsyncRequest(req, '{/literal}{url op="suggestUsername" firstName="REPLACE1" lastName="REPLACE2" escape=false}{literal}'.replace('REPLACE1', escape(document.reviewerForm.firstName.value)).replace('REPLACE2', escape(document.reviewerForm.lastName.value)), null, 'get');
+		sendAsyncRequest(req, '{/literal}{url op="suggestUsername" firstName="REPLACE1" lastName="REPLACE2" escape=false}{literal}'.replace('REPLACE1', escape(document.getElementById('reviewerForm').firstName.value)).replace('REPLACE2', escape(document.getElementById('reviewerForm').lastName.value)), null, 'get');
 	}
 
 

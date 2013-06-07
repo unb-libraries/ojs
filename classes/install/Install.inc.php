@@ -3,7 +3,7 @@
 /**
  * @file classes/install/Install.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Install
@@ -59,7 +59,7 @@ class Install extends PKPInstall {
 		// Add initial site data
 		$locale = $this->getParam('locale');
 		$siteDao =& DAORegistry::getDAO('SiteDAO', $this->dbconn);
-		$site = new Site();
+		$site = $siteDao->newDataObject();
 		$site->setRedirect(0);
 		$site->setMinPasswordLength(INSTALLER_DEFAULT_MIN_PASSWORD_LENGTH);
 		$site->setPrimaryLocale($locale);
@@ -71,9 +71,9 @@ class Install extends PKPInstall {
 		}
 
 		$siteSettingsDao =& DAORegistry::getDAO('SiteSettingsDAO');
-		$siteSettingsDao->updateSetting('title', array($locale => __(INSTALLER_DEFAULT_SITE_TITLE)), null, true);
-		$siteSettingsDao->updateSetting('contactName', array($locale => __(INSTALLER_DEFAULT_SITE_TITLE)), null, true);
-		$siteSettingsDao->updateSetting('contactEmail', array($locale => $this->getParam('adminEmail')), null, true);
+		$siteSettingsDao->installSettings('registry/siteSettings.xml', array(
+			'contactEmail' => $this->getParam('adminEmail')
+		));
 
 		// Add initial site administrator user
 		$userDao =& DAORegistry::getDAO('UserDAO', $this->dbconn);
@@ -104,9 +104,6 @@ class Install extends PKPInstall {
 		foreach ($this->installedLocales as $locale) {
 			$emailTemplateDao->installEmailTemplateData($emailTemplateDao->getMainEmailTemplateDataFilename($locale));
 		}
-
-		// Install filters and filter templates.
-		$this->installFilterTemplates();
 
 		return true;
 	}

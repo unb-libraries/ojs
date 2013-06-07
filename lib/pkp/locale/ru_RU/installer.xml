@@ -9,14 +9,13 @@
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
 	<message key="installer.additionalLocales">Дополнительные языки</message>
 	<message key="installer.administratorAccount">Учетная запись Администратора</message>
 	<message key="installer.administratorAccountInstructions">Этот пользователь станет администратором сайта и получт полный доступ к системе. Дополнительные учетные записи можно создать после завершения установки.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">НЕТ</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">НЕТ</span>]]></message>
 	<message key="installer.checkYes">Да</message>
 	<message key="installer.clientCharset">Кодировка браузера</message>
 	<message key="installer.clientCharsetInstructions">Кодировка, в которой производится обмен данными с пользовательским WWW-браузером.</message>
@@ -62,11 +61,10 @@
 	<message key="installer.locale">Язык</message>
 	<message key="installer.locale.maybeIncomplete">Поддержка отмеченных языков может быть неполной.</message>
 	<message key="installer.localeSettings">Настройки Языка</message>
-	<message key="installer.miscSettings">Дополнительные настройки</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Для идентификации записей метаданных (в протоколе <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting) требуется идентификатор, уникальный для данного сайта (хранилища метаданных).]]></message>
 	<message key="installer.oaiRepositoryId">идентификатор хранилища OAI</message>
 	<message key="installer.publicFilesDirError">Каталог, указанный в качестве каталога для принятых файлов, не существует либо защищен от записи.</message>
 	<message key="installer.releaseNotes">Замечания о текущей версии</message>
 	<message key="installer.securitySettings">Установки безопасности</message>
-	<message key="installer.skipFilesDir">Не создавать подкаталогов (может потребоваться при для ручной установке)</message>
+	<message key="installer.oaiSettings">Настройки OAI</message>
 </locale>

@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/importexport/native/locale/ro_RO/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Română) locale.
   * KOSSON FECIT
-  * $Id: locale.xml,v 1.20 2008/06/11 18:55:15 asmecher Exp $
   -->
 
 <locale name="ro_RO" full_name="Română">
@@ -76,7 +75,7 @@ Sunt acceptate următoarele formate:
 	<message key="plugins.importexport.native.import.error.illegalUrl">URL-ul specificat "{$url}" pentru acest număr "{$issueTitle}" este ilegal. Importurile prin web suportă doar metodele http, https, ftp, sau ftps.</message>
 	<message key="plugins.importexport.native.import.error.unknownSuppFileType">A fost specificat un fişier suplimentar de tipul "{$suppFileType}".</message>
 	<message key="plugins.importexport.native.import.error.couldNotCopy">URL-ul "{$url}" specificat nu a putut fi copiat într-un fişier local.</message>
-	<message key="plugins.importexport.native.import.error.duplicatePublicId">ID-ul public dat pentru problema importului "{$issueTitle}" este deja utilizat de un alt număr, "{$otherIssueTitle}".</message>
+	<message key="plugins.importexport.native.import.error.duplicatePublicIssueId">ID-ul public dat pentru problema importului "{$issueTitle}" este deja utilizat de un alt număr, "{$otherIssueTitle}".</message>
 	<message key="plugins.importexport.native.import.error.sectionTitleMissing">Lipseşte numele unei secţiuni pentru numărul "{$issueTitle}". Asiguraţi-vă că documentul XML este conform  DTD-ul corect.</message>
 	<message key="plugins.importexport.native.import.error.sectionMismatch">Secţiunea "{$sectionTitle}" aparţinând numărului "{$issueTitle}" se potriveşte cu o secţiune a unei reviste existente dar abrevierea specificată ("{$sectionAbbrev}") s-a potrivit cu o altă secţiune.</message>
 	<message key="plugins.importexport.native.import.error.articleTitleMissing">Lipseşte titlul articolului pentru numărul "{$issueTitle}" din secţiunea "{$sectionTitle}". Asiguraţi-vă că documentul XML este conform cu DTD-ul corect şi că a fost dat titlul pentru localizarea revistei.</message>

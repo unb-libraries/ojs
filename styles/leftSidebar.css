@@ -1,12 +1,11 @@
 /**
- * leftSidebar.css
+ * styles/leftSidebar.css
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Site-wide shared elements for pages including a left-hand sidebar.
  *
- * $Id$
  */
 
 /**
@@ -41,7 +40,7 @@
 	overflow: hidden;
 }
 
-// Set main on non-IE browsers to have a 10% margin
+/* Set main on non-IE browsers to have a 10% margin */
 *html #main {
 	margin-right: 5%;
 } 

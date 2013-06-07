@@ -4,12 +4,11 @@
 <!--
   * locale/ru_RU/manager.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
@@ -168,4 +167,17 @@
 	<message key="plugins.categories.reports">Модули Отчетов</message>
 	<message key="plugins.categories.themes.description">Модули Тем позволяют изменить внешний вид системы.</message>
 	<message key="plugins.categories.themes">Модули Тем</message>
+	<message key="manager.emails.addEmail">Добавить шаблон письма</message>
+	<message key="manager.navigation">Навигация</message>
+	<message key="manager.reviewerSearch.advancedSearch">Расширенный поиск рецензентов</message>
+	<message key="manager.reviewerSearch.advancedSearch.short">Расширенный поиск</message>
+	<message key="manager.reviewerSearch.searchByName">Поиск рецензента по имени</message>
+	<message key="manager.reviewerSearch.searchByName.short">Поиск по имени</message>
+	<message key="manager.setup.citationAssistant">Помощник разметки цитат</message>
+	<message key="manager.setup.citationFilterParser">Экстракция цитат</message>
+	<message key="manager.setup.errorDeletingItem">Во время удаления этого объекта возникла ошибка.</message>
+	<message key="manager.setup.filter.parser.grid.title">Службы экстракции цитат</message>
+	<message key="plugins.categories.metadata">Модули метаданных</message>
+	<message key="plugins.categories.citationParser">Модули экстракции цитат</message>
+	<message key="plugins.categories.citationParser.description">Модули экстракции цитат позволяют получать из оригинальных цитат поля метаданных (например, имя автора, название и т.д.)</message>
 </locale>

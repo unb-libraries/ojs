@@ -3,7 +3,7 @@
 /**
  * @file classes/subscription/form/SubscriptionTypeForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionTypeForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for journal managers to create/edit subscription types.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 

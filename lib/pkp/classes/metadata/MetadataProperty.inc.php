@@ -3,7 +3,7 @@
 /**
  * @file classes/metadata/MetadataProperty.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataProperty
@@ -387,15 +387,15 @@ class MetadataProperty {
 							list($year, $month, $day) = $dateParts;
 							// Validate the date (only leap days will pass unnoticed ;-) )
 							// Who invented this argument order?
-							if (checkdate($month, $day, $year)) return array(METADATA_PROPERTY_TYPE_DATE => null);;
+							if (checkdate($month, $day, $year)) return array(METADATA_PROPERTY_TYPE_DATE => null);
 							break;
 
 						case METADATA_PROPERTY_TYPE_INTEGER:
-							if (is_integer($value)) return array(METADATA_PROPERTY_TYPE_INTEGER => null);;
+							if (is_integer($value)) return array(METADATA_PROPERTY_TYPE_INTEGER => null);
 							break;
 
 						case METADATA_PROPERTY_TYPE_STRING:
-							if (is_string($value)) return array(METADATA_PROPERTY_TYPE_STRING => null);;
+							if (is_string($value)) return array(METADATA_PROPERTY_TYPE_STRING => null);
 							break;
 
 						default:

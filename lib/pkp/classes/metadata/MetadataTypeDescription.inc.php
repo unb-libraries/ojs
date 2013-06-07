@@ -2,7 +2,7 @@
 /**
  * @file classes/metadata/MetadataTypeDescription.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataTypeDescription
@@ -14,7 +14,7 @@
  *   metadata::fully.qualified.MetadataSchema(ASSOC)
  *
  * e.g.:
- *   metadata::lib.pkp.classes.metadata.nlm.NlmCitationSchema(ARTICLE)
+ *   metadata::lib.pkp.plugins.metadata.nlm30.schema.Nlm30CitationSchema(ARTICLE)
  *
  * The assoc form must be the final part of a ASSOC_TYPE_* definition.
  * It can be '*' to designate any assoc type.
@@ -52,6 +52,20 @@ class MetadataTypeDescription extends ClassTypeDescription {
 	 */
 	function getNamespace() {
 		return TYPE_DESCRIPTION_NAMESPACE_METADATA;
+	}
+
+	/**
+	 * @return string the fully qualified class name of the meta-data schema.
+	 */
+	function getMetadataSchemaClass() {
+		return $this->_metadataSchemaPackageName.'.'.$this->_metadataSchemaClassName;
+	}
+
+	/**
+	 * @return integer
+	 */
+	function getAssocType() {
+		return $this->_assocType;
 	}
 
 

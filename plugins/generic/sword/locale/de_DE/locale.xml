@@ -2,21 +2,20 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/sword/locale/de_DE/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   *
-  * $Id: locale.xml,v 1.23 2010/01/21 18:52:13 asmecher Exp $
   -->
 
 <locale name="de_DE" full_name="Deutsch (Deutschland)">
 	<message key="plugins.generic.sword.displayName">SWORD-Plug-In</message>
 	<message key="plugins.generic.sword.description">Zeitschriftenverwalter/innen und (optional) Autor/innen erlauben, Artikel über das SWORD-Protokoll zu archivieren</message>
+	<message key="plugins.generic.sword.descriptionUnsupported">Zeitschriftenverwalter/innen und (optional) Autor/innen erlauben, Artikel über das SWORD-Protokoll zu archivieren. Beachten Sie bitte, dass dieses Plug-In die Zip-Erweiterung benötigt, die momentan NICHT installiert ist.</message>
 	<message key="plugins.generic.sword.enabled">Das SWORD-Plug-In wurde aktiviert.</message>
-	<message key="plugins.generic.sword.disable">Das SWORD-Plug-In wurde deaktiviert.</message>
 	<message key="plugins.generic.sword.settings">Einstellungen</message>
 	<message key="plugins.generic.sword.settings.allowAuthorSpecify">Autor/in erlauben, einen Ablageort anzugeben</message>
 	<message key="plugins.generic.sword.settings.depositPoints">Ablageorte</message>

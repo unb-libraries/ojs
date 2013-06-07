@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file Interest.inc.php
+ * @file classes/user/Interest.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Interest
@@ -13,8 +13,6 @@
  * @brief Basic class describing a reviewer interest
  */
 
-//$Id$
-
 
 import('lib.pkp.classes.controlledVocab.ControlledVocabEntry');
 
@@ -22,7 +20,7 @@ class InterestEntry extends ControlledVocabEntry {
 	//
 	// Get/set methods
 	//
-	
+
 	/**
 	 * Get the interest
 	 * @return string

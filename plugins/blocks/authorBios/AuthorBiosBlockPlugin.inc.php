@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file AuthorBiosBlockPlugin.inc.php
+ * @file plugins/blocks/authorBios/AuthorBiosBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorBiosBlockPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Class for author bios block plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.BlockPlugin');
 
@@ -47,9 +44,14 @@ class AuthorBiosBlockPlugin extends BlockPlugin {
 	 * @return $string
 	 */
 	function getContents(&$templateMgr) {
-		$journal =& Request::getJournal();
-
-		return parent::getContents($templateMgr);
+		// Only show the block for article pages.
+		switch (Request::getRequestedPage() . '/' . Request::getRequestedOp()) {
+			case 'article/view':
+				if (!$templateMgr->get_template_vars('article')) return '';
+				return parent::getContents($templateMgr);
+			default:
+				return '';
+		}
 	}
 }
 

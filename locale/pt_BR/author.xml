@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/pt_BR/author.xml
+  * locale/pt_BR/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português (Brasil)) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_BR" full_name = "Português (Brasil)">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">A submissão pode ser concluída em uma data posterior, clicando em Submissões Ativas nas opções da sua página de autor.</message>
 	<message key="author.submit.notAccepting">A revista não está aceitando submissões neste momento.</message>
 	<message key="author.submit.requestWaiver">Solicitar isenção de taxas</message>
-	<message key="author.submit.qualityForWaiver">Solicito considerar isenção de Taxa de Submissão para este artigo</message>
+	<message key="author.submit.qualifyForWaiver">Solicito considerar isenção de Taxa de Submissão para este artigo</message>
 	<message key="author.submit.addReasonsForWaiver">Informe no campo de comentários motivos para a isenção de taxa.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Transferir cópia editada</message>
 	<message key="author.submissions.proofreadingCorrections">Correções da Leitura de Prova</message>
@@ -60,8 +59,6 @@
 	<message key="author.submit.addAuthor">Incluir autor</message>
 	<message key="author.submit.deleteAuthor">Excluir autor</message>
 	<message key="author.submit.submissionIndexingDescription">Digite termos que descrevam da melhor maneira o conteúdo da submissão, segundo as categorias utilizadas pela revista e os exemplos oferecidos pelo editor. Separe os termos com ponto-e-vírgula (termo1; termo2; termo3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Agências de Fomento</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Indique as agências que fomentaram ou patrocinaram o trabalho.</message>
 	<message key="author.submit.coverageInstructions">Refere-se à localização ou cobertura geográfica, cronológica ou histórica, e/ou às características de amostragem da pesquisa.</message>
 	<message key="author.submit.subjectClassInstructions">Use o sistema de classificação definido para escolher termos específicos da área do conhecimento e numeração se apropriado.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Português=pt; English=en; French=fr; Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Códigos Adicionais</a>.]]></message>
@@ -127,4 +124,6 @@
 	<message key="author.submit.submissionLocale">Idioma da submissão</message>
 	<message key="author.submit.form.localeRequired">Escolha um idioma para a submissão.</message>
 	<message key="author.submit.submissionLocaleDescription">Este periódico aceita submissões em vários idiomas. Escolha o idioma principal da submissão a partir do menu dropdown a seguir.</message>
+	<message key="author.submit.submissionSupportingAgencies">Contribuidores e Agências de fomento</message>
+	<message key="author.submit.submissionSupportingAgenciesDescription">Identifique agências (pessoas, organizações, ou serviços) que contribuíram para o conteúdo ou ofereceram apoio financeiro ou logístico para o trabalho apresentado nesta submissão. Separe os agentes por ponto-e-vírgula (ex.: Carlos Silva, Universidade Estadual; Universidade Federal do Estado, Departamento de Ciência da Informação).</message>
 </locale>

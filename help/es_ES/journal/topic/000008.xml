@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000008.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Administración de páginas- Estadísticas & Reportes
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Management Pages - Stats & Reports
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000008" locale="es_ES" title="Estadísticas y Reportes" toc="journal/toc/000001" key="journal.managementPages.statsAndReports">
+<topic id="journal/topic/000008" locale="es_ES" title="Estadísticas &amp; Informes" toc="journal/toc/000001" key="journal.managementPages.statsAndReports">
 	<section>
-		<![CDATA[<p>Las estadísticas &amp; y los reportes proporcionan al administrador de la revista la habilidad de extraer información sobre la historia del uso de la revista de dos maneras. Primero, en Estadísticas, están disponibles las estadísticas de año por año para un resúmen rápido de los datos de las entregas, practicas editoriales, y usuarios. Segundoo, el administrador de la revista puede generar  uno de los varios reportes sobre un rango específico de fechas.</p><p>Existen cuatro tipos de reportes disponbles:<ul>
-			<li><strong>Reporte de la revista</strong>: Reportes sobre todas las entregas de la revista en un periodo determinado.</li>
-			<li><strong>Reporte del editor</strong>: Reportes sobre entregas, agrupados por el editor.</li>
-			<li><strong>Reporte de revisión</strong>: Reportes sobre entregas, agrupados por revisores.</li>
-			<li><strong>Reporte de la sección</strong>: Reportes sobre entregas, agrupados por la sección.</li>
-		</ul>Estos reportes son generados en el formatod e valores separados por comas (CSV)y pueden ser abiertos usando una aplicación de hoja de cálculo.]]>
+		<![CDATA[<p>El gestor de la revista dispone de estadísticas e informes para extraer datos sobre el historial de uso de la revista de dos modos distintos. El primero hace referencia a las estadísticas, pues se pueden consultar al instante datos anuales sobre envíos, prácticas editoriales y usuarios/as. Mediante el segundo, el gestor/a de la revista puede generar múltiples tipos de informes para un período de fechas determinadas.</p><p>Hay cuatro tipos de informes disponibles:</p> <ul> <li><strong>Informe de la revista</strong>: Informes que se generan a partir de envíos a la revista durante un periodo determinado.</li> <li><strong>Informe del editor</strong>: Informes sobre envíos, agrupados por editor/a.</li><li><strong>Informe de revisión</strong>: Informes sobre envíos, agrupados por revisor/a.</li><li><strong>Informe de sección</strong>: Informes sobre envíos, agrupados por sección.</li> </ul> <p>Los informes se generan en formato CSV (Comma-Separated Values) y deben ser de código abierto y creados en una hoja de cálculo.</p>]]>
 	</section>
 </topic>

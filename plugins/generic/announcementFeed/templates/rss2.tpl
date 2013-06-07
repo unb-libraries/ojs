@@ -1,25 +1,24 @@
 {**
- * rss2.tpl
+ * plugins/generic/announcementFeed/templates/rss2.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS 2 feed template
  *
- * $Id$
  *}
 <?xml version="1.0" encoding="{$defaultCharset|escape}"?>
 <rss version="2.0">
 	<channel>
 		{* required elements *}
-		<title>{$journal->getLocalizedTitle()|escape:"html"|strip}: {translate key="announcement.announcements"}</title>
+		<title>{$journal->getLocalizedTitle()|strip|escape:"html"}: {translate key="announcement.announcements"}</title>
 		<link>{$journal->getUrl()|escape}</link>
 		{if $journal->getLocalizedDescription()}
 			{assign var="description" value=$journal->getLocalizedDescription()}
 		{elseif $journal->getLocalizedSetting('searchDescription')}
 			{assign var="description" value=$journal->getLocalizedSetting('searchDescription')}
 		{/if}
-		<description>{$description|escape:"html"|strip}</description>
+		<description>{$description|strip|escape:"html"}</description>
 
 		{* optional elements *}
 	    {if $journal->getPrimaryLocale()}

@@ -7,7 +7,7 @@
 /**
  * @file classes/manager/form/setup/JournalSetupForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSetupForm
@@ -15,9 +15,6 @@
  *
  * @brief Base class for journal setup forms.
  */
-
-// $Id$
-
 
 import('classes.manager.form.setup.JournalSetupForm');
 import('lib.pkp.classes.form.Form');

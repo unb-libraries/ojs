@@ -7,7 +7,7 @@
 /**
  * @file classes/reviewForm/ReviewForm.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewForm
@@ -19,7 +19,6 @@
  */
 
 class ReviewForm extends DataObject {
-
 	/**
 	 * Constructor.
 	 */
@@ -46,38 +45,6 @@ class ReviewForm extends DataObject {
 	//
 	// Get/set methods
 	//
-
-	/**
-	 * Get the number of completed reviews for this review form.
-	 * @return int
-	 */
-	function getCompleteCount() {
-		return $this->getData('completeCount');
-	}
-
-	/**
-	 * Set the number of complete reviews for this review form.
-	 * @param $completeCount int
-	 */
-	function setCompleteCount($completeCount) {
-		return $this->setData('completeCount', $completeCount);
-	}
-
-	/**
-	 * Get the number of incomplete reviews for this review form.
-	 * @return int
-	 */
-	function getIncompleteCount() {
-		return $this->getData('incompleteCount');
-	}
-
-	/**
-	 * Set the number of incomplete reviews for this review form.
-	 * @param $incompleteCount int
-	 */
-	function setIncompleteCount($incompleteCount) {
-		return $this->setData('incompleteCount', $incompleteCount);
-	}
 
 	/**
 	 * Get the associated type.

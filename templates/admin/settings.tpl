@@ -1,19 +1,18 @@
 {**
- * settings.tpl
+ * templates/admin/settings.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Site settings form.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="admin.siteSettings"}
 {include file="common/header.tpl"}
 {/strip}
 
-<form name="settings" method="post" action="{url op="saveSettings"}" enctype="multipart/form-data">
+<form id="settings" method="post" action="{url op="saveSettings"}" enctype="multipart/form-data">
 {include file="common/formErrors.tpl"}
 
 <table class="data" width="100%">
@@ -95,13 +94,48 @@
 		<td colspan="2" class="value"><input type="text" id="minPasswordLength" name="minPasswordLength" value="{$minPasswordLength|escape}" size="4" maxlength="2" class="textField" /> {translate key="admin.settings.passwordCharacters"}</td>
 	</tr>
 	<tr>
-		<td width="20%" valign="top" class="label">{translate key="admin.settings.siteStyleSheet"}</td>
-		<td colspan="2" width="80%" valign="top" class="value">
+		<td class="label"><label for="journalTheme">{translate key="admin.settings.siteTheme"}</label></td>
+		<td colspan="2" class="value">
+			<select name="siteTheme" class="selectMenu" id="theme"{if empty($themes)} disabled="disabled"{/if}>
+				<option value="">{translate key="common.none"}</option>
+				{foreach from=$themes key=path item=themePlugin}
+					<option value="{$path|escape}"{if $path == $siteTheme} selected="selected"{/if}>{$themePlugin->getDisplayName()|escape}</option>
+				{/foreach}
+			</select>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{translate key="admin.settings.siteStyleSheet"}</td>
+		<td colspan="2" width="80%" class="value">
 			<input type="file" name="siteStyleSheet" class="uploadField" /> <input type="submit" name="uploadSiteStyleSheet" value="{translate key="common.upload"}" class="button" />
 			{if $siteStyleFileExists}
 				<br />
 				{translate key="common.fileName"}: <a href="{$publicFilesDir}/{$styleFilename}" class="file">{$originalStyleFilename|escape}</a> {$dateStyleFileUploaded|date_format:$datetimeFormatShort} <input type="submit" name="deleteSiteStyleSheet" value="{translate key="common.delete"}" class="button" />
 			{/if}
+		</td>
+	</tr>
+	<tr valign="top">
+		<td rowspan="2" class="label">{translate key="admin.settings.options"}</td>
+		<td class="value" colspan="2">
+			<input type="checkbox" id="useAlphalist" name="useAlphalist" {if $useAlphalist}checked="checked" {/if}/>
+			{fieldLabel name="useAlphalist" key="admin.settings.useAlphalist"}
+	</tr>
+	<tr valign="top">
+		<td class="value" colspan="2">
+			<input type="checkbox" id="usePaging" name="usePaging" {if $usePaging}checked="checked" {/if}/>
+			{fieldLabel name="usePaging" key="admin.settings.usePaging"}
+		</td>
+	</tr>
+    <tr valign="top">
+    	<td class="label">{translate key="admin.settings.journalsList"}</td>
+		<td colspan="2" class="value">
+			{translate key="admin.settings.journalsList.description"}<br />
+			<input type="checkbox" name="showThumbnail" id="showThumbnail" value="1"{if $showThumbnail} checked="checked"{/if} />
+			{fieldLabel name="showThumbnail" key="admin.settings.journalsList.showThumbnail"}<br />
+			<input type="checkbox" name="showTitle" id="showTitle" value="1"{if $showTitle} checked="checked"{/if} />
+			{fieldLabel name="showTitle" key="admin.settings.journalsList.showTitle"}<br />
+			<input type="checkbox" name="showDescription" id="showDescription" value="1"{if $showDescription} checked="checked"{/if} />
+			{fieldLabel name="showDescription" key="admin.settings.journalsList.showDescription"}<br />
 		</td>
 	</tr>
 </table>

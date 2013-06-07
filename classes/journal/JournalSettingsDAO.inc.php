@@ -3,7 +3,7 @@
 /**
  * @file classes/journal/JournalSettingsDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSettingsDAO
@@ -11,9 +11,6 @@
  *
  * @brief Operations for retrieving and modifying journal settings.
  */
-
-// $Id$
-
 
 class JournalSettingsDAO extends DAO {
 	function &_getCache($journalId) {
@@ -76,8 +73,14 @@ class JournalSettingsDAO extends DAO {
 		while (!$result->EOF) {
 			$row =& $result->getRowAssoc(false);
 			$value = $this->convertFromDB($row['setting_value'], $row['setting_type']);
-			if ($row['locale'] == '') $journalSettings[$row['setting_name']] = $value;
-			else $journalSettings[$row['setting_name']][$row['locale']] = $value;
+			if ($row['locale'] == '') {
+				$journalSettings[$row['setting_name']] = $value;
+			} else {
+				if (!isset($journalSettings[$row['setting_name']])) {
+					$journalSettings[$row['setting_name']] = array();
+				}
+				$journalSettings[$row['setting_name']][$row['locale']] = $value;
+			}
 			$result->MoveNext();
 		}
 		$result->Close();
@@ -257,7 +260,7 @@ class JournalSettingsDAO extends DAO {
 	function _performLocalizedReplacement($rawInput, $paramArray = array(), $locale = null) {
 		preg_match('{{translate key="([^"]+)"}}', $rawInput, $matches);
 		if ( isset($matches[1]) ) {
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_DEFAULT, LOCALE_COMPONENT_OJS_MANAGER), $locale);
+			AppLocale::requireComponents(LOCALE_COMPONENT_OJS_DEFAULT, LOCALE_COMPONENT_OJS_MANAGER, $locale);
 			return __($matches[1], $paramArray, $locale);
 		}
 

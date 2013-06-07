@@ -4,13 +4,12 @@
 <!--
   * 000001.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Management Pages Index 
   * Thanks to AePIC Team CILEA.
   *
-  * $Id: 000001.xml,v 1.8 2009/04/08 19:54:28 asmecher Exp $
   -->
 
 <topic id="journal/topic/000001" locale="it_IT" title="Pagine di gestione" toc="journal/toc/000000" subtoc="journal/toc/000001" key="journal.managementPages.index">

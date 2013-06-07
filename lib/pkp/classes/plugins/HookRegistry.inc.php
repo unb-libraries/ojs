@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/HookRegistry.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class HookRegistry
@@ -11,8 +11,6 @@
  *
  * @brief Class for linking core functionality with plugins
  */
-
-// $Id$
 
 
 class HookRegistry {
@@ -70,6 +68,12 @@ class HookRegistry {
 	 * @return mixed
 	 */
 	function call($hookName, $args = null) {
+		// Remember the called hooks for testing.
+		$calledHooks =& HookRegistry::getCalledHooks();
+		$calledHooks[] = array(
+			$hookName, $args
+		);
+
 		$hooks =& HookRegistry::getHooks();
 		if (!isset($hooks[$hookName])) {
 			return false;
@@ -82,6 +86,20 @@ class HookRegistry {
 		}
 
 		return $result;
+	}
+
+
+	//
+	// Methods required for testing only.
+	//
+	function resetCalledHooks() {
+		$calledHooks =& HookRegistry::getCalledHooks();
+		$calledHooks = array();
+	}
+
+	function &getCalledHooks() {
+		static $calledHooks;
+		return $calledHooks;
 	}
 }
 

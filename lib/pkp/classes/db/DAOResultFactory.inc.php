@@ -3,7 +3,7 @@
 /**
  * @file classes/db/DAOResultFactory.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DAOResultFactory
@@ -77,6 +77,19 @@ class DAOResultFactory extends ItemIterator {
 	}
 
 	/**
+	 * Advances the internal cursor to a specific row.
+	 * @param int $to
+	 * @return boolean
+	 */
+	function move($to) {
+		if ($this->records == null) return false;
+		if ($this->records->Move($to))
+			return true;
+		else
+			return false;
+	}
+
+	/**
 	 * Return the object representing the next row.
 	 * @return object
 	 */
@@ -100,9 +113,12 @@ class DAOResultFactory extends ItemIterator {
 	 * Return the next row, with key.
 	 * @return array ($key, $value)
 	 */
-	function &nextWithKey() {
+	function &nextWithKey($idField = null) {
 		$result =& $this->next();
-		if (empty($this->idFields)) {
+		if($idField) {
+			assert(is_a($result, 'DataObject'));
+			$key = $result->getData($idField);
+		} elseif (empty($this->idFields)) {
 			$key = null;
 		} else {
 			assert(is_a($result, 'DataObject') && is_array($this->idFields));
@@ -204,7 +220,7 @@ class DAOResultFactory extends ItemIterator {
 	 * Convert this iterator to an associative array by database ID.
 	 * @return array
 	 */
-	function &toAssociativeArray($idField) {
+	function &toAssociativeArray($idField = 'id') {
 		$returner = array();
 		while (!$this->eof()) {
 			$result =& $this->next();

@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/EditCommentForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditCommentForm
@@ -11,9 +11,6 @@
  *
  * @brief Edit comment form.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -65,7 +62,7 @@ class EditCommentForm extends Form {
 	 */
 	function display($additionalHiddenParams = null) {
 		$hiddenFormParams = array(
-			'articleId' => $this->article->getArticleId(),
+			'articleId' => $this->article->getId(),
 			'commentId' => $this->comment->getCommentId()
 		);
 		if (isset($additionalHiddenParams)) {
@@ -125,7 +122,7 @@ class EditCommentForm extends Form {
 
 		// Get editors for article
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
-		$editAssignments =& $editAssignmentDao->getEditAssignmentsByArticleId($this->article->getArticleId());
+		$editAssignments =& $editAssignmentDao->getEditAssignmentsByArticleId($this->article->getId());
 		$editAssignments =& $editAssignments->toArray();
 		$editorAddresses = array();
 		foreach ($editAssignments as $editAssignment) {
@@ -143,7 +140,7 @@ class EditCommentForm extends Form {
 		}
 
 		// Get proofreader
-		$proofSignoff = $signoffDao->getBySymbolic('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->article->getArticleId());
+		$proofSignoff = $signoffDao->getBySymbolic('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->article->getId());
 		if ($proofSignoff != null && $proofSignoff->getUserId() > 0) {
 			$proofreader =& $userDao->getUser($proofSignoff->getUserId());
 		} else {
@@ -151,7 +148,7 @@ class EditCommentForm extends Form {
 		}
 
 		// Get layout editor
-		$layoutSignoff = $signoffDao->getBySymbolic('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->article->getArticleId());
+		$layoutSignoff = $signoffDao->getBySymbolic('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->article->getId());
 		if ($layoutSignoff != null && $layoutSignoff->getUserId() > 0) {
 			$layoutEditor =& $userDao->getUser($layoutSignoff->getUserId());
 		} else {
@@ -159,7 +156,7 @@ class EditCommentForm extends Form {
 		}
 
 		// Get copyeditor
-		$copySignoff = $signoffDao->getBySymbolic('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $this->article->getArticleId());
+		$copySignoff = $signoffDao->getBySymbolic('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $this->article->getId());
 		if ($copySignoff != null && $copySignoff->getUserId() > 0) {
 			$copyeditor =& $userDao->getUser($copySignoff->getUserId());
 		} else {
@@ -289,11 +286,12 @@ class EditCommentForm extends Form {
 	/**
 	 * Email the comment.
 	 * @param $recipients array of recipients (email address => name)
+	 * @param $request object
 	 */
-	function email($recipients) {
+	function email($recipients, $request) {
 		import('classes.mail.ArticleMailTemplate');
 		$email = new ArticleMailTemplate($this->article, 'SUBMISSION_COMMENT');
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		if ($journal) $email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 
 		foreach ($recipients as $emailAddress => $name) {
@@ -307,7 +305,7 @@ class EditCommentForm extends Form {
 			);
 			$email->assignParams($paramArray);
 
-			$email->send();
+			$email->send($request);
 			$email->clearRecipients();
 		}
 	}

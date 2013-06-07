@@ -3,7 +3,7 @@
 /**
  * @file classes/metadata/MetadataDescription.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataDescription
@@ -102,6 +102,8 @@ import('lib.pkp.classes.core.DataObject');
 define('METADATA_DESCRIPTION_REPLACE_ALL', 0x01);
 define('METADATA_DESCRIPTION_REPLACE_PROPERTIES', 0x02);
 define('METADATA_DESCRIPTION_REPLACE_NOTHING', 0x03);
+
+define('METADATA_DESCRIPTION_UNKNOWN_LOCALE', 'unknown');
 
 class MetadataDescription extends DataObject {
 	/** @var string fully qualified class name of the meta-data schema this description complies to */
@@ -406,7 +408,9 @@ class MetadataDescription extends DataObject {
 				$replaceProperty = false;
 			}
 
+			$valueIndex = 0;
 			foreach($values as $value) {
+				$firstValue = ($valueIndex == 0) ? true : false;
 				// Is this a translated property?
 				if (is_array($value)) {
 					foreach($value as $locale => $translation) {
@@ -416,33 +420,29 @@ class MetadataDescription extends DataObject {
 						} else {
 							$translationValues =& $translation;
 						}
+						$translationIndex = 0;
 						foreach($translationValues as $translationValue) {
+							$firstTranslation = ($translationIndex == 0) ? true : false;
 							// Add a statement (replace existing statement if any)
-							if (!($this->addStatement($propertyName, $translationValue, $locale, $replaceProperty))) {
+							if (!($this->addStatement($propertyName, $translationValue, $locale, $firstTranslation && $replaceProperty))) {
 								$this->setAllData($statementsBackup);
 								return false;
 							}
-							// Reset the $replaceProperty flag to avoid that subsequent
-							// value entries will overwrite previous value entries.
-							$replaceProperty = false;
-
 							unset($translationValue);
+							$translationIndex++;
 						}
 						unset($translationValues);
 					}
 					unset($translation);
 				} else {
 					// Add a statement (replace existing statement if any)
-					if (!($this->addStatement($propertyName, $value, null, $replaceProperty))) {
+					if (!($this->addStatement($propertyName, $value, null, $firstValue && $replaceProperty))) {
 						$this->setAllData($statementsBackup);
 						return false;
 					}
-
-					// Reset the $replaceProperty flag to avoid that subsequent
-					// value entries will overwrite previous value entries.
-					$replaceProperty = false;
 				}
 				unset($value);
+				$valueIndex++;
 			}
 			unset($values);
 		}
@@ -543,6 +543,7 @@ class MetadataDescription extends DataObject {
 		assert(is_a($property, 'MetadataProperty'));
 		return $property->getTranslated();
 	}
+
 
 	//
 	// Private helper methods

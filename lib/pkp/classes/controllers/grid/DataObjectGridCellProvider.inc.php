@@ -3,13 +3,17 @@
 /**
  * @file classes/controllers/grid/DataObjectGridCellProvider.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataObjectGridCellProvider
  * @ingroup controllers_grid
  *
- * @brief Base class for a cell provider that can retrieve labels from DataObjects
+ * @brief Base class for a cell provider that can retrieve simple labels
+ *  from DataObjects. If you need more complex cell content then you may
+ *  be better off using a ColumnBasedGridCellProvider.
+ *
+ * @see ColumnBasedGridCellProvider
  */
 
 import('lib.pkp.classes.controllers.grid.GridCellProvider');
@@ -64,3 +68,5 @@ class DataObjectGridCellProvider extends GridCellProvider {
 		return array('label' => $element->getData($columnId, $this->getLocale()));
 	}
 }
+
+?>

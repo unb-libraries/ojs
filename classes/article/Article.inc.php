@@ -7,7 +7,7 @@
 /**
  * @file classes/article/Article.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Article
@@ -48,6 +48,9 @@ class Article extends Submission {
 	 * Constructor.
 	 */
 	function Article() {
+		// Switch on meta-data adapter support.
+		$this->setHasLoadableAdapters(true);
+
 		parent::Submission();
 	}
 
@@ -56,17 +59,6 @@ class Article extends Submission {
 	 */
 	function getAssocType() {
 		return ASSOC_TYPE_ARTICLE;
-	}
-
-	/**
-	 * Add an author.
-	 * @param $author Author
-	 */
-	function addAuthor($author) {
-		if ($author->getSubmissionId() == null) {
-			$author->setSubmissionId($this->getId());
-		}
-		parent::addAuthor($author);
 	}
 
 	/**
@@ -112,6 +104,57 @@ class Article extends Submission {
 	}
 
 	/**
+	 * Return the "best" article ID -- If a public article ID is set,
+	 * use it; otherwise use the internal article Id. (Checks the journal
+	 * settings to ensure that the public ID feature is enabled.)
+	 * @param $journal Object the journal this article is in
+	 * @return string
+	 */
+	function getBestArticleId($journal = null) {
+		// Retrieve the journal, if necessary.
+		if (!isset($journal)) {
+			$journalDao =& DAORegistry::getDAO('JournalDAO');
+			$journal = $journalDao->getById($this->getJournalId());
+		}
+
+		if ($journal->getSetting('enablePublicArticleId')) {
+			$publicArticleId = $this->getPubId('publisher-id');
+			if (!empty($publicArticleId)) return $publicArticleId;
+		}
+		return $this->getId();
+	}
+
+	/**
+	 * Get a public ID for this article.
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @var $preview boolean If true, generate a non-persisted preview only.
+	 */
+	function getPubId($pubIdType, $preview = false) {
+		// FIXME: Move publisher-id to PID plug-in.
+		if ($pubIdType === 'publisher-id') {
+			$pubId = $this->getStoredPubId($pubIdType);
+			return ($pubId ? $pubId : null);
+		}
+
+		$pubIdPlugins =& PluginRegistry::loadCategory('pubIds', true, $this->getJournalId());
+
+		if (is_array($pubIdPlugins)) {
+			foreach ($pubIdPlugins as $pubIdPlugin) {
+				if ($pubIdPlugin->getPubIdType() == $pubIdType) {
+					// If we already have an assigned ID, use it.
+					$storedId = $this->getStoredPubId($pubIdType);
+					if (!empty($storedId)) return $storedId;
+
+					return $pubIdPlugin->getPubId($this, $preview);
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Get ID of journal.
 	 * @return int
 	 */
@@ -144,19 +187,25 @@ class Article extends Submission {
 	}
 
 	/**
-	 * Get stored DOI of the submission.
+	 * Get stored public ID of the submission.
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
 	 * @return int
 	 */
-	function getStoredDOI() {
-		return $this->getData('doi');
+	function getStoredPubId($pubIdType) {
+		return $this->getData('pub-id::'.$pubIdType);
 	}
 
 	/**
-	 * Set the stored DOI of the submission.
-	 * @param $doi string
+	 * Set the stored public ID of the submission.
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
 	 */
-	function setStoredDOI($doi) {
-		return $this->setData('doi', $doi);
+	function setStoredPubId($pubIdType, $pubId) {
+		return $this->setData('pub-id::'.$pubIdType, $pubId);
 	}
 
 	/**
@@ -575,7 +624,7 @@ class Article extends Submission {
 			return $returner;
 		}
 
-		$user =& $userDao->getUser($signoff->getUserId());
+		$user =& $userDao->getById($signoff->getUserId());
 		return $user;
 	}
 

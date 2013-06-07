@@ -1,15 +1,14 @@
 {**
- * block.tpl
+ * plugins/generic/thesisFeed/templates/block.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Theses feed plugin navigation sidebar.
  *
- * $Id$
  *}
 <div class="block" id="sidebarThesisFeed">
-	<span class="blockTitle">{translate key="plugins.generic.thesis.manager.theses"}</span>	
+	<span class="blockTitle">{translate key="plugins.generic.thesis.manager.theses"}</span>
 	<a href="{url page="gateway" op="plugin" path="ThesisFeedGatewayPlugin"|to_array:"atom"}">
 	<img src="{$baseUrl}/plugins/generic/thesisFeed/templates/images/atom10_logo.gif" alt="{translate key="plugins.generic.thesisfeed.atom.altText"}" border="0" /></a>
 	<br/>

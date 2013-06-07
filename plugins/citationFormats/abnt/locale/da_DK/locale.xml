@@ -2,20 +2,18 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/abnt/locale/da_DK/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in da_DK.
   *
-  * $Id$
   -->
  
 <locale name="da_DK" full_name="Dutch">
 	<message key="plugins.citationFormats.abnt.displayName">ABNT citeringsformat plugin</message>
 	<message key="plugins.citationFormats.abnt.citationFormatName">ABNT</message>
 	<message key="plugins.citationFormats.abnt.description">Dette plugin implementerer ABNT citeringsformatet.</message>
-	<message key="plugins.citationFormat.abnt.location">Danmark</message>
 	<message key="plugins.citationFormats.abnt.retrieved"><![CDATA[Tilgængelig: &lt;<a href="{$url}" target="_new">{$url}</a>&gt;. Åbnet, dato: {$retrievedDate}]]></message>
 </locale>

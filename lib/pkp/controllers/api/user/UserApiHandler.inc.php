@@ -1,9 +1,12 @@
 <?php
+/**
+ * @defgroup controllers_api_user
+ */
 
 /**
  * @file controllers/api/user/UserApiHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserApiHandler
@@ -16,7 +19,7 @@
 import('lib.pkp.classes.handler.PKPHandler');
 
 // import JSON class for API responses
-import('lib.pkp.classes.core.JSON');
+import('lib.pkp.classes.core.JSONMessage');
 
 class UserApiHandler extends PKPHandler {
 	/**
@@ -34,9 +37,12 @@ class UserApiHandler extends PKPHandler {
 	 * @see PKPHandler::authorize()
 	 */
 	function authorize(&$request, $args, $roleAssignments) {
-		import('lib.pkp.classes.security.authorization.PKPAuthenticatedAccessPolicy');
-		$this->addPolicy(new PKPAuthenticatedAccessPolicy($request,
-				array('changeActingAsUserGroup', 'setUserSetting')));
+		import('lib.pkp.classes.security.authorization.PKPSiteAccessPolicy');
+		$this->addPolicy(new PKPSiteAccessPolicy(
+			$request,
+			array('updateUserMessageState'),
+			SITE_ACCESS_ALL_ROLES
+		));
 		return parent::authorize($request, $args, $roleAssignments);
 	}
 
@@ -45,96 +51,49 @@ class UserApiHandler extends PKPHandler {
 	// Public handler methods
 	//
 	/**
-	 * Change the user's current user group.
-	 * @param $args array
-	 * @param $request PKPRequest
-	 * @return string the serialized grid JSON message
-	 */
-	function changeActingAsUserGroup($args, &$request) {
-		// Check that the user group parameter is in the request
-		if (!isset($args['changedActingAsUserGroupId'])) {
-			fatalError('No acting-as user-group has been found in the request!');
-		}
-
-		// Retrieve the user from the session.
-		$user =& $request->getUser();
-		assert(is_a($user, 'User'));
-
-		// Check that the target user group exists and
-		// that the currently logged in user has been
-		// assigned to it.
-		$changedActingAsUserGroupId = $args['changedActingAsUserGroupId'];
-		$userGroupDao = DAORegistry::getDAO('UserGroupDAO');
-		$router =& $request->getRouter();
-		$context =& $router->getContext($request);
-		if ($context) {
-			// Handle context-specific user groups.
-			$userInGroup = $userGroupDao->userInGroup($context->getId(), $user->getId(), $changedActingAsUserGroupId);
-		} else {
-			$application =& PKPApplication::getApplication();
-			if ($application->getContextDepth() > 0) {
-				// Handle site-wide user groups.
-				$userInGroup = $userGroupDao->userInGroup(0, $user->getId(), $changedActingAsUserGroupId);
-			} else{
-				// Handle apps that don't have a context.
-				$userInGroup = $userGroupDao->userInGroup($user->getId(), $changedActingAsUserGroupId);
-			}
-		}
-
-		if ($userInGroup) {
-			$sessionManager =& SessionManager::getManager();
-			$session =& $sessionManager->getUserSession();
-			$session->setActingAsUserGroupId($changedActingAsUserGroupId);
-			$json = new JSON('true');
-		} else {
-			$json = new JSON('false', __('common.actingAsUserGroup.userIsNotInTargetUserGroup'));
-		}
-
-		return $json->getString();
-	}
-
-	/**
-	 * Remotely set a user setting.
+	 * Update the information whether user messages should be
+	 * displayed or not.
 	 * @param $args array
 	 * @param $request PKPRequest
 	 * @return string a JSON message
 	 */
-	function setUserSetting($args, &$request) {
+	function updateUserMessageState($args, &$request) {
+		// Exit with a fatal error if request parameters are missing.
+		if (!(isset($args['setting-name'])) && isset($args['setting-value'])) {
+			fatalError('Required request parameter "setting-name" or "setting-value" missing!');
+		}
+
 		// Retrieve the user from the session.
 		$user =& $request->getUser();
 		assert(is_a($user, 'User'));
 
-		// Exit with an error if request parameters are missing.
-		if (!(isset($args['setting-name'])) && isset($args['setting-value'])) {
-			$json = new JSON('false', 'Required request parameter "setting-name" or "setting-value" missing!');
-			return $json->getString();
-		}
-
 		// Validate the setting.
+		// FIXME: We don't have to retrieve the setting type (which is always bool
+		// for user messages) but only whether the setting name is valid and the
+		// value is boolean.
 		$settingName = $args['setting-name'];
 		$settingValue = $args['setting-value'];
 		$settingType = $this->_settingType($settingName);
 		switch($settingType) {
 			case 'bool':
 				if (!($settingValue === 'false' || $settingValue === 'true')) {
-					$json = new JSON('false', 'Invalid setting value! Must be "true" or "false".');
-					return $json->getString();
+					// Exit with a fatal error when the setting value is invalid.
+					fatalError('Invalid setting value! Must be "true" or "false".');
 				}
 				$settingValue = ($settingValue === 'true' ? true : false);
 				break;
 
 			default:
 				// Exit with a fatal error when an unknown setting is found.
-				$json = new JSON('false', 'Unknown setting!');
-				return $json->getString();
+				fatalError('Unknown setting!');
 		}
 
 		// Persist the validated setting.
-		$userSettingsDAO =& DAORegistry::getDAO('UserSettingsDAO');
-		$userSettingsDAO->updateSetting($user->getId(), $settingName, $settingValue, $settingType);
+		$userSettingsDao =& DAORegistry::getDAO('UserSettingsDAO');
+		$userSettingsDao->updateSetting($user->getId(), $settingName, $settingValue, $settingType);
 
 		// Return a success message.
-		$json = new JSON('true');
+		$json = new JSONMessage(true);
 		return $json->getString();
 
 	}
@@ -162,4 +121,5 @@ class UserApiHandler extends PKPHandler {
 		}
 	}
 }
+
 ?>

@@ -4,13 +4,12 @@
 <!--
   * user.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
-  * Provided by Constantinescu Nicolaie. 
+  * Provided by Constantinescu Nicolaie.
   *
-  * $Id: user.xml,v 1.0 7:25 PM 8/10/2010 kosson Exp $
   -->
 
 <locale name="ro_RO" full_name = "Romanian">
@@ -42,7 +41,6 @@
 	<message key="user.login.forgotPassword">Ai uitat parola?</message>
 	<message key="user.login.loginError">Nume şi parolă invalidă. Încearcă din nou.</message>
 	<message key="user.login">Autentificare</message>
-	<message key="user.logIn">Autentificare</message>
 	<message key="user.login.lostPassword.confirmationSent">A fost trimisă o confirmare la adresa ta de email. Urmează instrucţiunile din email pentru a reseta parola.</message>
 	<message key="user.login.lostPassword.invalidHash">Linkul pe care ai dat clic a expirat sau nu este valid. Te rugăm, resetează-ţi parola din nou.</message>
 	<message key="user.login.lostPassword.invalidUser">Nu există niciun utilizator care să aibe această adresă de email.</message>

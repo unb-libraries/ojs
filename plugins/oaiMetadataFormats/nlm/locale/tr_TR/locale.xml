@@ -2,17 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/oaiMetadataFormats/nlm/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the tr_TR (Turkish) locale.
   *
-  * $Id$
   -->
  
 <locale name="tr_TR" full_name = "Turkish">
-	<message key="plugins.oaiMetadata.nlm.displayName">NLM Metadata Format</message>
-	<message key="plugins.oaiMetadata.nlm.description">Structures metadata in a way that is consistent with the NLM Journal Article format.</message>
+	<message key="plugins.oaiMetadata.nlm.displayName">NLM Üst Veri Biçimi</message>
+	<message key="plugins.oaiMetadata.nlm.description">Üst veri yapısı bir bakıma NLM Dergi Makalesi biçimi ile  tutarlı olmanın yoludur.</message>
 </locale>

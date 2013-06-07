@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPComponentRouter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPComponentRouter
@@ -42,8 +42,6 @@
  *  before the request is routed. The initialization method must enforce authorization
  *  and request validation.
  */
-
-// $Id$
 
 
 // The string to be found in the URL to mark this request as a component request
@@ -341,20 +339,21 @@ class PKPComponentRouter extends PKPRouter {
 	function handleAuthorizationFailure($request, $authorizationMessage) {
 		// Translate the authorization error message.
 		if (defined('LOCALE_COMPONENT_APPLICATION_COMMON')) {
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+			AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 		}
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_USER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_USER);
 		$translatedAuthorizationMessage = __($authorizationMessage);
 
-		// Add the router name and operation.
-		$url = $request->getRequestUrl();
-		$queryString = $request->getQueryString();
-		if ($queryString) $queryString = '?'.$queryString;
-		$translatedAuthorizationMessage .= ' ['.$url.$queryString.']';
-
+		// Add the router name and operation if show_stacktrace is enabled.
+		if (Config::getVar('debug', 'show_stacktrace')) {
+			$url = $request->getRequestUrl();
+			$queryString = $request->getQueryString();
+			if ($queryString) $queryString = '?'.$queryString;
+			$translatedAuthorizationMessage .= ' ['.$url.$queryString.']';
+		}
 		// Return a JSON error message.
-		import('lib.pkp.classes.core.JSON');
-		$json = new JSON('false', $translatedAuthorizationMessage);
+		import('lib.pkp.classes.core.JSONMessage');
+		$json = new JSONMessage(false, $translatedAuthorizationMessage);
 		return $json->getString();
 	}
 
@@ -474,7 +473,7 @@ class PKPComponentRouter extends PKPRouter {
 					|| $partLen < COMPONENT_ROUTER_PARTS_MINLENGTH) return null;
 
 			// Service endpoint URLs are case insensitive.
-			$rpcServiceEndpointParts[$key] = strtolower($rpcServiceEndpointPart);
+			$rpcServiceEndpointParts[$key] = strtolower_codesafe($rpcServiceEndpointPart);
 
 			// We only allow letters, numbers and the hyphen.
 			if (!String::regexp_match('/^[a-z0-9-]*$/', $rpcServiceEndpointPart)) return null;

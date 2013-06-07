@@ -1,12 +1,11 @@
 {**
- * block.tpl
+ * plugins/blocks/readingTools/block.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Keyword cloud block plugin
  *
- * $Id$
  *}
 
 {if $journalRt && $journalRt->getEnabled()}
@@ -34,7 +33,7 @@
 			<img src="{$baseUrl}/plugins/blocks/readingTools/icons/citeArticle.png" class="articleToolIcon" /> <a href="javascript:openRTWindow('{url page="rt" op="captureCite" path=$articleId|to_array:$galleyId}');">{translate key="rt.captureCite"}</a><br />
 		</div>
 	{/if}
-	{if $journalRt->getSupplementaryFiles() && $article->getSuppFiles()}
+	{if $journalRt->getSupplementaryFiles() && is_a($article, 'PublishedArticle') && $article->getSuppFiles()}
 		<div class="articleToolItem">
 			<img src="{$baseUrl}/plugins/blocks/readingTools/icons/suppFiles.png" class="articleToolIcon" /> <a href="javascript:openRTWindow('{url page="rt" op="suppFiles" path=$articleId|to_array:$galleyId}');">{translate key="rt.suppFiles"}</a><br />
 		</div>
@@ -44,9 +43,11 @@
 			<img src="{$baseUrl}/plugins/blocks/readingTools/icons/findingReferences.png" class="articleToolIcon" /> <a href="javascript:openRTWindow('{url page="rt" op="findingReferences" path=$article->getId()|to_array:$galleyId}');">{translate key="rt.findingReferences"}</a>
 		</div>
 	{/if}
-	<div class="articleToolItem">
-		<img src="{$baseUrl}/plugins/blocks/readingTools/icons/editorialPolicies.png" class="articleToolIcon" /> <a href="{url page="about" op="editorialPolicies" anchor="peerReviewProcess"}" target="_parent">{translate key="rt.reviewPolicy"}</a>
-	</div>
+	{if $journalRt->getViewReviewPolicy()}
+		<div class="articleToolItem">
+			<img src="{$baseUrl}/plugins/blocks/readingTools/icons/editorialPolicies.png" class="articleToolIcon" /> <a href="{url page="about" op="editorialPolicies" anchor="peerReviewProcess"}" target="_parent">{translate key="rt.reviewPolicy"}</a>
+		</div>
+	{/if}
 	{if $journalRt->getEmailOthers()}
 		<div class="articleToolItem">
 			<img src="{$baseUrl}/plugins/blocks/readingTools/icons/emailArticle.png" class="articleToolIcon" />

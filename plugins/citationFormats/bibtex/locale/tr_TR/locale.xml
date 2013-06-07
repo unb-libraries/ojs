@@ -2,18 +2,17 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/bibtex/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in en_US.
   *
-  * $Id$
   -->
  
 <locale name="tr_TR" full_name="Türkiye Türkçesi">
-	<message key="plugins.citationFormats.bibtex.displayName">BibTeX citation format plugin</message>
+	<message key="plugins.citationFormats.bibtex.displayName">BibTeX atıf biçim eklentisi</message>
 	<message key="plugins.citationFormats.bibtex.citationFormatName">BibTeX</message>
-	<message key="plugins.citationFormats.bibtex.description">This plugin implements the BibTeX citation format.</message>
+	<message key="plugins.citationFormats.bibtex.description">Bu eklenti BibTeX atıf biçimini uygular.</message>
 </locale>

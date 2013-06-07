@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/reviewAssignment/PKPReviewAssignment.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPReviewAssignment
@@ -12,9 +12,6 @@
  *
  * @brief Describes review assignment properties (abstracted for PKP library).
  */
-
-// $Id$
-
 
 define('SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT', 1);
 define('SUBMISSION_REVIEWER_RECOMMENDATION_PENDING_REVISIONS', 2);
@@ -33,6 +30,9 @@ define('SUBMISSION_REVIEW_METHOD_BLIND', 1);
 define('SUBMISSION_REVIEW_METHOD_DOUBLEBLIND', 2);
 define('SUBMISSION_REVIEW_METHOD_OPEN', 3);
 
+define('REVIEW_ASSIGNMENT_NOT_UNCONSIDERED', 0);
+define('REVIEW_ASSIGNMENT_UNCONSIDERED', 1);
+define('REVIEW_ASSIGNMENT_UNCONSIDERED_READ', 2);
 
 class PKPReviewAssignment extends DataObject {
 	/** @var array The revisions of the reviewer file */
@@ -148,19 +148,19 @@ class PKPReviewAssignment extends DataObject {
 	}
 
 	/**
-	 * Get the type of the review.
+	 * Get the workflow stage id.
 	 * @return int
 	 */
-	function getReviewType() {
-		return $this->getData('reviewType');
+	function getStageId() {
+		return $this->getData('stageId');
 	}
 
 	/**
-	 * Set the type of review.
-	 * @param $type int
+	 * Set the workflow stage id.
+	 * @param $stageId int
 	 */
-	function setReviewType($type) {
-		return $this->setData('reviewType', $type);
+	function setStageId($stageId) {
+		return $this->setData('stageId', $stageId);
 	}
 
 	/**
@@ -177,6 +177,22 @@ class PKPReviewAssignment extends DataObject {
 	 */
 	function setReviewMethod($method) {
 		return $this->setData('reviewMethod', $method);
+	}
+
+	/**
+	 * Get review round id.
+	 * @return int
+	 */
+	function getReviewRoundId() {
+		return $this->getData('reviewRoundId');
+	}
+
+	/**
+	 * Set review round id.
+	 * @param $reviewRoundId int
+	 */
+	function setReviewRoundId($reviewRoundId) {
+		$this->setData('reviewRoundId', $reviewRoundId);
 	}
 
 	/**
@@ -209,6 +225,22 @@ class PKPReviewAssignment extends DataObject {
 	 */
 	function setRecommendation($recommendation) {
 		return $this->setData('recommendation', $recommendation);
+	}
+
+	/**
+	 * Get unconsidered state.
+	 * @return int
+	 */
+	function getUnconsidered() {
+		return $this->getData('unconsidered');
+	}
+
+	/**
+	 * Set unconsidered state.
+	 * @param $unconsidered int
+	 */
+	function setUnconsidered($unconsidered) {
+		return $this->setData('unconsidered', $unconsidered);
 	}
 
 	/**

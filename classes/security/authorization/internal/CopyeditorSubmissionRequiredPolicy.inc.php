@@ -2,7 +2,7 @@
 /**
  * @file classes/security/authorization/internal/CopyeditorSubmissionRequiredPolicy.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CopyeditorSubmissionRequiredPolicy
@@ -12,15 +12,15 @@
  *  copyeditor submission.
  */
 
-import('lib.pkp.classes.security.authorization.SubmissionRequiredPolicy');
+import('lib.pkp.classes.security.authorization.DataObjectRequiredPolicy');
 
-class CopyeditorSubmissionRequiredPolicy extends SubmissionRequiredPolicy {
+class CopyeditorSubmissionRequiredPolicy extends DataObjectRequiredPolicy {
 	/**
 	 * Constructor
 	 * @param $request PKPRequest
 	 */
 	function CopyeditorSubmissionRequiredPolicy(&$request, &$args, $submissionParameterName = 'articleId') {
-		parent::SubmissionRequiredPolicy($request, $args, $submissionParameterName, 'user.authorization.invalidCopyditorSubmission');
+		parent::DataObjectRequiredPolicy($request, $args, $submissionParameterName, 'user.authorization.invalidCopyditorSubmission');
 	}
 
 	//
@@ -34,7 +34,7 @@ class CopyeditorSubmissionRequiredPolicy extends SubmissionRequiredPolicy {
 		$request =& $this->getRequest();
 
 		// Get the submission id.
-		$submissionId = $this->getSubmissionId();
+		$submissionId = $this->getDataObjectId();
 		if ($submissionId === false) return AUTHORIZATION_DENY;
 
 		// Get the user

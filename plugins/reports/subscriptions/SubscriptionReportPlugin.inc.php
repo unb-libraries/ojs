@@ -3,7 +3,7 @@
 /**
  * @file plugins/reports/subscriptions/SubscriptionReportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionReportPlugin
@@ -224,7 +224,7 @@ class SubscriptionReportPlugin extends ReportPlugin {
 						$columns[$index] = $subscription->getInstitutionName();
 						break;
 					case 'institution_mailing_address':
-						$columns[$index] = $subscription->getInstitutionMailingAddress();
+						$columns[$index] = $this->_html2text($subscription->getInstitutionMailingAddress());
 						break;
 					case 'domain':
 						$columns[$index] = $subscription->getDomain();
@@ -267,10 +267,10 @@ class SubscriptionReportPlugin extends ReportPlugin {
 	 * @return String Text with replaced and stripped HTML tags
 	 */
 	function _html2text($html) {
-		$html = String::regexp_replace('/<[\/]?p>/', chr(10), $html);
+		$html = String::regexp_replace('/<[\/]?p>/', chr(13) . chr(10), $html);
 		$html = String::regexp_replace('/<li>/', '&bull; ', $html);
-		$html = String::regexp_replace('/<\/li>/', chr(10), $html);
-		$html = String::regexp_replace('/<br[ ]?[\/]?>/', chr(10), $html);
+		$html = String::regexp_replace('/<\/li>/', chr(13) . chr(10), $html);
+		$html = String::regexp_replace('/<br[ ]?[\/]?>/', chr(13) . chr(10), $html);
 		$html = String::html2utf(strip_tags($html));
 		return $html;
 	}
@@ -286,7 +286,7 @@ class SubscriptionReportPlugin extends ReportPlugin {
 
 		for($i=0; $i<$numRanges; $i++) {
 			$ipRangesString .= $ipRanges[$i];
-			if ( $i+1 < $numRanges) $ipRangesString .= chr(10);
+			if ( $i+1 < $numRanges) $ipRangesString .= chr(13) . chr(10);
 		}
 
 		return $ipRangesString;

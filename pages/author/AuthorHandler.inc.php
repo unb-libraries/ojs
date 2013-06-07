@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file AuthorHandler.inc.php
+ * @file pages/author/AuthorHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorHandler
@@ -12,16 +12,16 @@
  * @brief Handle requests for journal author functions. 
  */
 
-// $Id$
-
-
 import('classes.submission.author.AuthorAction');
 import('classes.handler.Handler');
 
 class AuthorHandler extends Handler {
+	/** @var $submission AuthorSubmission */
+	var $submission;
+
 	/**
 	 * Constructor
-	 **/
+	 */
 	function AuthorHandler() {
 		parent::Handler();
 
@@ -30,18 +30,20 @@ class AuthorHandler extends Handler {
 
 	/**
 	 * Display journal author index page.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function index($args) {
-		$this->validate();
-		$this->setupTemplate();
+	function index($args, $request) {
+		$this->validate($request);
+		$this->setupTemplate($request);
 		
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
-		$user =& Request::getUser();
-		$rangeInfo =& Handler::getRangeInfo('submissions');
+		$user =& $request->getUser();
+		$rangeInfo =& $this->getRangeInfo('submissions');
 		$authorSubmissionDao =& DAORegistry::getDAO('AuthorSubmissionDAO');
 
-		$page = isset($args[0]) ? $args[0] : '';
+		$page = array_shift($args);
 		switch($page) {
 			case 'completed':
 				$active = false;
@@ -51,9 +53,9 @@ class AuthorHandler extends Handler {
 				$active = true;
 		}
 
-		$sort = Request::getUserVar('sort');
+		$sort = $request->getUserVar('sort');
 		$sort = isset($sort) ? $sort : 'title';
-		$sortDirection = Request::getUserVar('sortDirection');
+		$sortDirection = $request->getUserVar('sortDirection');
 		$sortDirection = (isset($sortDirection) && ($sortDirection == SORT_DIRECTION_ASC || $sortDirection == SORT_DIRECTION_DESC)) ? $sortDirection : SORT_DIRECTION_ASC;
 
 		if ($sort == 'status') {
@@ -84,7 +86,7 @@ class AuthorHandler extends Handler {
 
 		// assign payment 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 
 		if ( $paymentManager->isConfigured() ) {		
 			$templateMgr->assign('submissionEnabled', $paymentManager->submissionEnabled());
@@ -105,11 +107,43 @@ class AuthorHandler extends Handler {
 	}
 
 	/**
-	 * Validate that user has author permissions in the selected journal.
+	 * Validate that user has author permissions in the selected journal
+	 * and, optionally, for the specified article.
 	 * Redirects to user index page if not properly authenticated.
+	 * @param $request PKPRequest
+	 * @param $articleId int optional
+	 * @param $reason string optional
 	 */
-	function validate($reason = null) {
+	function validate(&$request, $articleId = null, $reason = null) {
 		$this->addCheck(new HandlerValidatorRoles($this, true, $reason, null, array(ROLE_ID_AUTHOR)));		
+
+		if ($articleId !== null) {
+			$authorSubmissionDao =& DAORegistry::getDAO('AuthorSubmissionDAO');
+			$roleDao =& DAORegistry::getDAO('RoleDAO');
+			$journal =& $request->getJournal();
+			$user =& $request->getUser();
+
+			$isValid = true;
+
+			$authorSubmission =& $authorSubmissionDao->getAuthorSubmission($articleId);
+
+			if ($authorSubmission == null) {
+				$isValid = false;
+			} else if ($authorSubmission->getJournalId() != $journal->getId()) {
+				$isValid = false;
+			} else {
+				if (!$user || ($authorSubmission->getUserId() != $user->getId())) {
+					$isValid = false;
+				}
+			}
+
+			if (!$isValid) {
+				$request->redirect(null, $request->getRequestedPage());
+			}
+
+			$this->submission =& $authorSubmission;
+		}
+
 		return parent::validate();
 	}
 
@@ -117,13 +151,13 @@ class AuthorHandler extends Handler {
 	 * Setup common template variables.
 	 * @param $subclass boolean set to true if caller is below this handler in the hierarchy
 	 */
-	function setupTemplate($subclass = false, $articleId = 0, $parentPage = null) {
+	function setupTemplate($request, $subclass = false, $articleId = 0, $parentPage = null) {
 		parent::setupTemplate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_AUTHOR, LOCALE_COMPONENT_PKP_SUBMISSION));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_AUTHOR, LOCALE_COMPONENT_PKP_SUBMISSION);
 		$templateMgr =& TemplateManager::getManager();
 
-		$pageHierarchy = $subclass ? array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'author'), 'user.role.author'), array(Request::url(null, 'author'), 'article.submissions'))
-			: array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'author'), 'user.role.author'));
+		$pageHierarchy = $subclass ? array(array($request->url(null, 'user'), 'navigation.user'), array($request->url(null, 'author'), 'user.role.author'), array($request->url(null, 'author'), 'article.submissions'))
+			: array(array($request->url(null, 'user'), 'navigation.user'), array($request->url(null, 'author'), 'user.role.author'));
 
 		import('classes.submission.sectionEditor.SectionEditorAction');
 		$submissionCrumb = SectionEditorAction::submissionBreadcrumb($articleId, $parentPage, 'author');
@@ -135,12 +169,13 @@ class AuthorHandler extends Handler {
 
 	/**
 	 * Display submission management instructions.
-	 * @param $args (type)
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function instructions($args) {
+	function instructions($args, &$request) {
 		import('classes.submission.proofreader.ProofreaderAction');
 		if (!isset($args[0]) || !ProofreaderAction::instructions($args[0], array('copy', 'proof'))) {
-			Request::redirect(null, null, 'index');
+			$request->redirect(null, null, 'index');
 		}
 	}
 }

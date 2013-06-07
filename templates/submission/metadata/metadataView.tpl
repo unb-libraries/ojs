@@ -1,12 +1,11 @@
 {**
  * metadata_view.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * View (but not edit) metadata of an article. Used by MetadataForm.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="submission.viewMetadata"}

@@ -3,7 +3,7 @@
 /**
  * @file classes/security/Validation.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Validation
@@ -11,9 +11,6 @@
  *
  * @brief Class providing user validation/authentication operations.
  */
-
-// $Id$
-
 
 import('classes.security.Role');
 
@@ -45,7 +42,7 @@ class Validation {
 				$valid=true;
 			}
 		} else { // Regular Auth
-			$user =& $userDao->getUserByUsername($username, true);
+			$user =& $userDao->getByUsername($username, true);
 
 			if (!isset($user)) {
 				// User does not exist
@@ -201,7 +198,7 @@ class Validation {
 		$user =& $session->getUser();
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
-		return $roleDao->roleExists($journalId, $user->getId(), $roleId);
+		return $roleDao->userHasRole($journalId, $user->getId(), $roleId);
 	}
 
 	/**

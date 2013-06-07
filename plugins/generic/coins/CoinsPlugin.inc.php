@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file CoinsPlugin.inc.php
+ * @file plugins/generic/coins/CoinsPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CoinsPlugin
@@ -27,6 +27,7 @@ class CoinsPlugin extends GenericPlugin {
 		if (!Config::getVar('general', 'installed') || defined('RUNNING_UPGRADE')) return true;
 		if ($success && $this->getEnabled()) {
 			HookRegistry::register('Templates::Article::Footer::PageFooter', array($this, 'insertFooter'));
+			HookRegistry::register('Templates::Issue::Issue::Article', array($this, 'insertFooter'));
 		}
 		return $success;
 	}
@@ -91,10 +92,10 @@ class CoinsPlugin extends GenericPlugin {
 				$vars[] = array('rft.au', $author->getFullName());
 			}
 
-			if ($doi = $article->getDoi()) $vars[] = array('rft_id', 'info:doi/' . $doi);
+			if ($doi = $article->getPubId('doi')) $vars[] = array('rft_id', 'info:doi/' . $doi);
 			if ($article->getPages()) $vars[] = array('rft.pages', $article->getPages());
 			if ($journal->getSetting('printIssn')) $vars[] = array('rft.issn', $journal->getSetting('printIssn'));
-			if ($journal->getSetting('onlineIssn')) $vars[] = array('rft.issn', $journal->getSetting('onlineIssn'));
+			if ($journal->getSetting('onlineIssn')) $vars[] = array('rft.eissn', $journal->getSetting('onlineIssn'));
 
 			$title = '';
 			foreach ($vars as $entries) {

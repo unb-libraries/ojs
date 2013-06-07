@@ -2,7 +2,7 @@
 /**
  * @file classes/security/authorization/PolicySet.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PolicySet
@@ -35,6 +35,7 @@ class PolicySet {
 
 	/**
 	 * Constructor
+	 * @param $combiningAlgorithm int COMBINING_...
 	 */
 	function PolicySet($combiningAlgorithm = COMBINING_DENY_OVERRIDES) {
 		$this->_combiningAlgorithm = $combiningAlgorithm;

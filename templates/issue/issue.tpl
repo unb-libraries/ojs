@@ -1,12 +1,11 @@
 {**
- * issue.tpl
+ * templates/issue/issue.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Issue
  *
- * $Id$
  *} 
 {foreach name=sections from=$publishedArticles item=section key=sectionId}
 {if $section.title}<h4 class="tocSectionTitle">{$section.title|escape}</h4>{/if}
@@ -74,6 +73,7 @@
 	<td class="tocPages">{$article->getPages()|escape}</td>
 </tr>
 </table>
+{call_hook name="Templates::Issue::Issue::Article"}
 {/foreach}
 
 {if !$smarty.foreach.sections.last}

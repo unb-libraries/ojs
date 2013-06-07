@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file GroupHandler.inc.php
+ * @file pages/manager/GroupHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GroupHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for editorial team management functions.
  */
-
-// $Id$
 
 import('pages.manager.ManagerHandler');
 
@@ -42,14 +40,14 @@ class GroupHandler extends ManagerHandler {
 
 		$journal =& Request::getJournal();
 
-		$rangeInfo =& Handler::getRangeInfo('groups');
+		$rangeInfo =& $this->getRangeInfo('groups');
 
 		$groupDao =& DAORegistry::getDAO('GroupDAO');
 		$groups =& $groupDao->getGroups(ASSOC_TYPE_JOURNAL, $journal->getId(), null, $rangeInfo);
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 		$templateMgr->assign_by_ref('groups', $groups);
 		$templateMgr->assign('boardEnabled', $journal->getSetting('boardEnabled'));
 		$templateMgr->display('manager/groups/groups.tpl');
@@ -94,7 +92,7 @@ class GroupHandler extends ManagerHandler {
 				$prevSeq = 0;
 			else {
 				$journal =& Request::getJournal();
-				$prevGroup =& $groupDao->getGroup($prevId, ASSOC_TYPE_JOURNAL, $journal->getId());
+				$prevGroup =& $groupDao->getById($prevId, ASSOC_TYPE_JOURNAL, $journal->getId());
 				$prevSeq = $prevGroup->getSequence();
 			}
 
@@ -124,7 +122,7 @@ class GroupHandler extends ManagerHandler {
 
 		if ($groupId !== null) {
 			$groupDao =& DAORegistry::getDAO('GroupDAO');
-			$group =& $groupDao->getGroup($groupId, ASSOC_TYPE_JOURNAL, $journal->getId());
+			$group =& $groupDao->getById($groupId, ASSOC_TYPE_JOURNAL, $journal->getId());
 			if (!$group) {
 				Request::redirect(null, null, 'groups');
 			}
@@ -202,14 +200,14 @@ class GroupHandler extends ManagerHandler {
 		$this->validate($groupId);
 		$group =& $this->group;
 
-		$rangeInfo =& Handler::getRangeInfo('memberships');
+		$rangeInfo =& $this->getRangeInfo('memberships');
 
 		$this->setupTemplate($group, true);
 		$groupMembershipDao =& DAORegistry::getDAO('GroupMembershipDAO');
 		$memberships =& $groupMembershipDao->getMemberships($group->getId(), $rangeInfo);
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 		$templateMgr->assign_by_ref('memberships', $memberships);
 		$templateMgr->assign_by_ref('group', $group);
 		$templateMgr->display('manager/groups/memberships.tpl');
@@ -386,7 +384,7 @@ class GroupHandler extends ManagerHandler {
 
 		if ($groupId !== null) {
 			$groupDao =& DAORegistry::getDAO('GroupDAO');
-			$group =& $groupDao->getGroup($groupId, ASSOC_TYPE_JOURNAL, $journal->getId());
+			$group =& $groupDao->getById($groupId, ASSOC_TYPE_JOURNAL, $journal->getId());
 
 			if (!$group) $passedValidation = false;
 			else $this->group =& $group;

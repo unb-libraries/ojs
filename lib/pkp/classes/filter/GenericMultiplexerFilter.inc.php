@@ -2,7 +2,7 @@
 /**
  * @file classes/filter/GenericMultiplexerFilter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GenericMultiplexerFilter
@@ -16,6 +16,7 @@
  *  to a de-multiplexer filter.
  */
 
+
 import('lib.pkp.classes.filter.CompositeFilter');
 
 class GenericMultiplexerFilter extends CompositeFilter {
@@ -27,9 +28,11 @@ class GenericMultiplexerFilter extends CompositeFilter {
 
 	/**
 	 * Constructor
+	 * @param $filterGroup FilterGroup
+	 * @param $displayName string
 	 */
-	function GenericMultiplexerFilter($displayName = null, $transformation = null) {
-		parent::CompositeFilter($displayName, $transformation);
+	function GenericMultiplexerFilter(&$filterGroup, $displayName = null) {
+		parent::CompositeFilter($filterGroup, $displayName);
 	}
 
 
@@ -56,15 +59,19 @@ class GenericMultiplexerFilter extends CompositeFilter {
 
 
 	//
-	// Implementing abstract template methods from Filter
+	// Implementing abstract template methods from PersistentFilter
 	//
 	/**
-	 * @see Filter::getClassName()
+	 * @see PersistentFilter::getClassName()
 	 */
 	function getClassName() {
 		return 'lib.pkp.classes.filter.GenericMultiplexerFilter';
 	}
 
+
+	//
+	// Implementing abstract template methods from Filter
+	//
 	/**
 	 * @see Filter::process()
 	 * @param $input mixed

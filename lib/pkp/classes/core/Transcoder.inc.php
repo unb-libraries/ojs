@@ -3,7 +3,7 @@
 /**
  * @file classes/core/Transcoder.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Transcoder
@@ -11,8 +11,6 @@
  *
  * @brief Multi-class transcoder; uses mbstring and iconv if available, otherwise falls back to built-in classes
  */
-
-// $Id$
 
 
 class Transcoder {

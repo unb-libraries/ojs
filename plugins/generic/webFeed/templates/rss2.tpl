@@ -1,18 +1,17 @@
 {**
- * rss2.tpl
+ * plugins/generic/webFeed/templates/rss2.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS 2 feed template
  *
- * $Id$
  *}
 <?xml version="1.0" encoding="{$defaultCharset|escape}"?>
 <rss version="2.0">
 	<channel>
 		{* required elements *}
-		<title>{$journal->getLocalizedTitle()|escape:"html"|strip}</title>
+		<title>{$journal->getLocalizedTitle()|strip|escape:"html"}</title>
 		<link>{$journal->getUrl()|escape}</link>
 
 		{if $journal->getLocalizedDescription()}

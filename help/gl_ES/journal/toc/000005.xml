@@ -4,14 +4,13 @@
 <!--
   * 000005.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Táboa de Contidos da Administración da Revista - Páxinas de Administración - Ferramentas de Lectura.
   *
   * Translated Gabriel Beceiro: gbeceiro@gmail.com
   *
-  * $Id$
   -->
 
 <toc id="journal/toc/000005" locale="gl_ES" title="Ferramentas de Lectura" parent_topic="journal/topic/000009">

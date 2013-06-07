@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/PluginSettingsDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PluginSettingsDAO
@@ -42,7 +42,7 @@ class PluginSettingsDAO extends DAO {
 	 */
 	function getSetting($journalId, $pluginName, $name) {
 		// Normalize the plug-in name to lower case.
-		$pluginName = strtolower($pluginName);
+		$pluginName = strtolower_codesafe($pluginName);
 
 		// Retrieve the setting.
 		$cache =& $this->_getCache($journalId, $pluginName);
@@ -54,6 +54,8 @@ class PluginSettingsDAO extends DAO {
 		$journalId = array_pop($contextParts);
 		$settings =& $this->getPluginSettings($journalId, $cache->getCacheId());
 		if (!isset($settings[$id])) {
+			// Make sure that even null values are cached
+			$cache->setCache($id, null);
 			return null;
 		}
 		return $settings[$id];
@@ -67,7 +69,7 @@ class PluginSettingsDAO extends DAO {
 	 */
 	function &getPluginSettings($journalId, $pluginName) {
 		// Normalize plug-in name to lower case.
-		$pluginName = strtolower($pluginName);
+		$pluginName = strtolower_codesafe($pluginName);
 
 		$result =& $this->retrieve(
 			'SELECT setting_name, setting_value, setting_type FROM plugin_settings WHERE plugin_name = ? AND journal_id = ?', array($pluginName, $journalId)
@@ -99,7 +101,7 @@ class PluginSettingsDAO extends DAO {
 	 */
 	function updateSetting($journalId, $pluginName, $name, $value, $type = null) {
 		// Normalize the plug-in name to lower case.
-		$pluginName = strtolower($pluginName);
+		$pluginName = strtolower_codesafe($pluginName);
 
 		$cache =& $this->_getCache($journalId, $pluginName);
 		$cache->setCache($name, $value);
@@ -142,7 +144,7 @@ class PluginSettingsDAO extends DAO {
 	 */
 	function deleteSetting($journalId, $pluginName, $name) {
 		// Normalize the plug-in name to lower case.
-		$pluginName = strtolower($pluginName);
+		$pluginName = strtolower_codesafe($pluginName);
 
 		$cache =& $this->_getCache($journalId, $pluginName);
 		$cache->setCache($name, null);
@@ -160,7 +162,7 @@ class PluginSettingsDAO extends DAO {
 	 */
 	function deleteSettingsByPlugin($pluginName, $journalId = null) {
 		// Normalize the plug-in name to lower case.
-		$pluginName = strtolower($pluginName);
+		$pluginName = strtolower_codesafe($pluginName);
 
 		if ( $journalId ) {
 			$cache =& $this->_getCache($journalId, $pluginName);
@@ -232,6 +234,7 @@ class PluginSettingsDAO extends DAO {
 
 	/**
 	 * Install plugin settings from an XML file.
+	 * @param $journalId int
 	 * @param $pluginName name of plugin for settings to apply to
 	 * @param $filename string Name of XML file to parse and install
 	 * @param $paramArray array Optional parameters for variable replacement in settings

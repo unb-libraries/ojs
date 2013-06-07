@@ -1,12 +1,11 @@
 {**
- * announcementForm.tpl
+ * templates/manager/announcement/announcementForm.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Announcement form under management.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageCrumbTitle" value="$announcementTitle"}
@@ -21,7 +20,7 @@
 
 <br/>
 <div id="announcementForm">
-<form name="announcementForm" method="post" action="{url op="updateAnnouncement"}">
+<form id="announcementForm" method="post" action="{url op="updateAnnouncement"}">
 {if $announcementId}
 <input type="hidden" name="announcementId" value="{$announcementId|escape}" />
 {/if}
@@ -60,14 +59,14 @@
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="descriptionShort" required="true" key="manager.announcements.form.descriptionShort"}</td>
-	<td class="value"><textarea name="descriptionShort[{$formLocale|escape}]" id="descriptionShort" cols="40" rows="6" class="textArea">{$descriptionShort[$formLocale]|escape}</textarea>
+	<td class="value"><textarea name="descriptionShort[{$formLocale|escape}]" id="descriptionShort" cols="40" rows="6" class="textArea richContent">{$descriptionShort[$formLocale]|escape}</textarea>
 		<br />
 		<span class="instruct">{translate key="manager.announcements.form.descriptionShortInstructions"}</span>
 	</td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="description" key="manager.announcements.form.description"}</td>
-	<td class="value"><textarea name="description[{$formLocale|escape}]" id="description" cols="40" rows="6" class="textArea">{$description[$formLocale]|escape}</textarea>
+	<td class="value"><textarea name="description[{$formLocale|escape}]" id="description" cols="40" rows="6" class="textArea richContent">{$description[$formLocale]|escape}</textarea>
 		<br />
 		<span class="instruct">{translate key="manager.announcements.form.descriptionInstructions"}</span>
 	</td>

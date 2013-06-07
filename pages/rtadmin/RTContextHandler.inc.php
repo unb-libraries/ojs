@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RTContextHandler.inc.php
+ * @file pages/rtadmin/RTContextHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTContextHandler
@@ -12,10 +12,6 @@
  * @brief Handle Reading Tools administration requests -- contexts section.
  */
 
-// $Id$
-
-
-import('classes.rt.ojs.JournalRTAdmin');
 import('pages.rtadmin.RTAdminHandler');
 
 class RTContextHandler extends RTAdminHandler {
@@ -54,7 +50,7 @@ class RTContextHandler extends RTAdminHandler {
 		$journal = Request::getJournal();
 
 		$rtDao =& DAORegistry::getDAO('RTDAO');
-		$rangeInfo = Handler::getRangeInfo('contexts');
+		$rangeInfo = $this->getRangeInfo('contexts');
 
 		$versionId = isset($args[0])?$args[0]:0;
 		$version =& $rtDao->getVersion($versionId, $journal->getId());
@@ -63,8 +59,8 @@ class RTContextHandler extends RTAdminHandler {
 			$this->setupTemplate(true, $version);
 
 			$templateMgr =& TemplateManager::getManager();
-			$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-			$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+			$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+			$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 
 			$templateMgr->assign_by_ref('version', $version);
 

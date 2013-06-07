@@ -4,12 +4,11 @@
 <!--
   * locale/no_NO/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: common.xml,v 1.3 2009/08/15 00:13:57 asmecher Exp $
   -->
 
 <locale name="no_NO" full_name = "Norwegian">
@@ -113,7 +112,6 @@
 	<message key="common.notAvailable">Ikke tilgjengelig</message>
 	<message key="common.note">Notat</message>
 	<message key="common.notes">Notater</message>
-	<message key="common.notify">Send beskjed til</message>
 	<message key="common.off">Av</message>
 	<message key="common.on">På</message>
 	<message key="common.options">Valg</message>
@@ -273,16 +271,16 @@
 	<message key="notification.notifications">Varslinger</message>
 	<message key="notification.notificationsNew">({$numNew} nye)</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		Dette verket er lisensiert med en <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0-lisens</a>.]]></message>
+		Dette verket er lisensiert med en <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0-lisens</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Dette verket er lisensiert med en <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0-lisens</a>.
+		Dette verket er lisensiert med en <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0-lisens</a>.
 	</div>]]></message>
 	<message key="common.re">Ad:</message>
 	<message key="common.false">Feil</message>
@@ -315,10 +313,8 @@
 	<message key="notification.reminderError">Det oppstod en feil ved utsendelsen av passord, vennligst forsikre deg om at du har lagt inn e-postadressen din korrekt.</message>
 	<message key="notification.reminderSent">Ditt nye passord har blitt sendt til den e-postadressen du oppgav.</message>
 	<message key="notification.unsubscribe">Avslutt abonnement</message>
-	<message key="notification.unsubscribeDescription">Oppgi din e-postadresse og passord nedenfor for å avslutte abonnement på e-postvarslinger. Om du ikke husker passordet ditt, la det være tomt i feltet og du vil få tilsendt et nytt passord på den oppgitt e-postadressen.</message>
 	<message key="notification.unsubscribeError">Det oppstod en feil ved avslutningen av ditt abonnement. Sjekk at din e-postadresse og passord er korrekt angitt.</message>
 	<message key="notification.unsubscribeSuccess">Avslutning av ditt abonnement var vellykket.</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Du er ikke medlem av denne brukergruppen.</message>
 	<message key="common.disable">Slå av</message>
 	<message key="common.enable">Slå på</message>
 	<message key="common.fullscreen">Fullskjerm</message>
@@ -327,4 +323,52 @@
 	<message key="common.pluginDisabled">Programutvidelsen "{$pluginName}" er slått av.</message>
 	<message key="common.refresh">Oppdater</message>
 	<message key="common.loading">Laster ...</message>
+	<message key="announcement.postedOn">Annonsert {$postDate}</message>
+	<message key="common.accepted">Godtatt</message>
+	<message key="common.titleSmallWords">og i av med for på</message>
+	<message key="common.warning">Advarsel</message>
+	<message key="common.confirm">Bekreft</message>
+	<message key="common.content">Innhold</message>
+	<message key="common.declined">Avslått</message>
+	<message key="common.finish">Avslutt</message>
+	<message key="common.go">Fortsett</message>
+	<message key="common.less">Mindre enn</message>
+	<message key="common.billingAddress">Fakturaadresse (om annen)</message>
+	<message key="common.more">Mer</message>
+	<message key="common.noMatches">Ingen treff</message>
+	<message key="common.overdue">Forfalt</message>
+	<message key="common.reminder">Påminnelse</message>
+	<message key="common.signoff">Logg av</message>
+	<message key="common.unread">Ulest</message>
+	<message key="common.plugins">Programutvidelser</message>
+	<message key="form.confirmSubmit.title">Bekreft</message>
+	<message key="navigation.access">Brukere og roller</message>
+	<message key="navigation.admin">Administrasjon</message>
+	<message key="navigation.settings">Innstillinger</message>
+	<message key="navigation.setup">Oppsett</message>
+	<message key="common.element">Element</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Denne serveren har en maksimum filstørrelse for opplasting på {$fileSize}.  Ved behov, kontakt <a href="mailto:{$supportEmail}">{$supportName}</a> for hjelp.]]></message>
+	<message key="common.invalidFileType">Ingen fil opplastet, eller feil filtype!</message>
+	<message key="email.subjectRequired">Vennligst fyll ut emnefelt for e-post.</message>
+	<message key="email.bodyRequired">Vennligst skriv inn innholdet i e-posten.</message>
+	<message key="form.confirmSubmit">Er du sikker på at du vil sende inn dette skjemaet?</message>
+	<message key="form.emailRequired">Du må oppgi en e-postadresse.</message>
+	<message key="form.dataHasChanged">Data i skjemaet har blitt endret. Vil du fortsette likevel?</message>
+	<message key="form.invalidImage">Bildet som ble lastet opp, var av feil type. Mulige formater er .png, .gif, oeller.jpg.</message>
+	<message key="help.toggleInlineHelpOn">Slå på hjelp</message>
+	<message key="help.toggleInlineHelpOff">Slå av hjelp</message>
+	<message key="navigation.website">Nettsted</message>
+	<message key="navigation.browseByAuthor">Etter forfatter</message>
+	<message key="navigation.data">Data</message>
+	<message key="navigation.submissions">Innsendinger</message>
+	<message key="navigation.system">System</message>
+	<message key="navigation.userManagement">Brukeradministrasjon</message>
+	<message key="common.remote">Ekstern</message>
+	<message key="common.remoteURL">Ekstern URL</message>
+	<message key="navigation.sitemap">Nettstedskart</message>
+	<message key="common.reset">Tilbakestill</message>
+	<message key="common.considered">Vurdert</message>
+	<message key="common.notified">Varslet</message>
+	<message key="grid.action.downloadFile">Last ned denne filen</message>
+	<message key="common.acknowledged">Anerkjent</message>
 </locale>

@@ -4,14 +4,13 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the cs_CZ (Čeština) locale.
   *
   * Translated by František Chmelik, frantisek.chmelik 'at' upol.cz
   *
-  * $Id$
   -->
  
 <locale name="cs_CZ" full_name="Čeština">
@@ -357,7 +356,7 @@ Autoři, kteří publikují v tomto časopise, souhlasí s následujícími body
 	<li> Autoři mohou vstupovat do dalších samostatných smluvních dohod pro neexkluzivní šíření práce ve verzi, ve které byla publikována v časopise (například publikovat ji v knize), avšak s tím, že přiznají její první publikování v tomto časopisu.</li>
 	<li> Autorům je dovoleno a doporučováno, aby zpřístupnili svou práci online (například na svých webových stránkách) před a v průběhu redakčního řízení jejich příspěvku, protože takový postup může vést k produktivním výměnám názorů a také dřívější a vyšší citovanosti publikované práce (Viz <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">Efekt otevřeného přístupu</a>).</li>
 </ol>]]></message>
-	<message key="manager.setup.subjectClassificationDescription"><![CDATA[[Časopis bude používat systém klasifikace oborů dostupný na webu.<br />
+	<message key="manager.setup.subjectClassificationDescription"><![CDATA[Časopis bude používat systém klasifikace oborů dostupný na webu.<br />
 Název systému klasifikace]]></message>
 	<message key="manager.setup.registerJournalForIndexingDescription"><![CDATA[Aby byl obsah tohoto časopisu indexován v celosvětově distribuovaném systému výzkumných databází, <a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">zaregistrujte</a> URL Vašeho časopisu do <a href="http://pkp.sfu.ca/harvester/" target="_blank">shromažďovače</a> metadat Public Knowledge Projektu. Tento nástroj sbírá metadata z každé indexované položky tohoto časopisu a umožňuje přesné a hromadné vyhledávání v rámci výzkumných stránek, které dodržují <a href="http://www.openarchives.org/OAI/openarchivesprotocol.htm#Introduction" target="_blank"> protokol Iniciativy otevřených archivů pro shromažďování metadat </a> (Open Archives Initiative (OAI) Protocol for Metadata Harvesting).
 <br /><br />
@@ -619,7 +618,6 @@ současného hesla.<br /><br />Pro resetování Vašeho hesla vložte níže Va�
 	<!-- Profile -->
 	
 	<!-- Registration -->
-	<message key="user.register.repeatPassword">Zopakujte heslo</message>
 	<message key="user.register.selectJournal">Zvolte časopis, do kterého se chcete zaregistrovat</message>
 	<message key="user.register.noJournals">Na této stránce nejsou žádné časopisy, do kterých byste se mohl zaregistrovat.</message>
 	<message key="user.register.privacyStatement">Prohlášení o soukromí</message>

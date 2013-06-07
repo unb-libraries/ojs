@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file StatisticsHandler.inc.php
+ * @file pages/manager/StatisticsHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StatisticsHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for statistics functions. 
  */
-
-// $Id$
 
 import('pages.manager.ManagerHandler');
 
@@ -43,7 +41,7 @@ class StatisticsHandler extends ManagerHandler {
 		if (!is_array($sectionIds)) $sectionIds = array();
 		$templateMgr->assign('sectionIds', $sectionIds);
 
-		foreach ($this->getPublicStatisticsNames() as $name) {
+		foreach ($this->_getPublicStatisticsNames() as $name) {
 			$templateMgr->assign($name, $journal->getSetting($name));
 		}
 		$templateMgr->assign('statViews', $journal->getSetting('statViews'));
@@ -108,7 +106,7 @@ class StatisticsHandler extends ManagerHandler {
 		Request::redirect(null, null, 'statistics', null, array('statisticsYear' => Request::getUserVar('statisticsYear')));
 	}
 
-	function getPublicStatisticsNames() {
+	function _getPublicStatisticsNames() {
 		return array(
 			'statNumPublishedIssues',
 			'statItemsPublished',
@@ -129,14 +127,14 @@ class StatisticsHandler extends ManagerHandler {
 		$this->validate();
 
 		$journal =& Request::getJournal();
-		foreach ($this->getPublicStatisticsNames() as $name) {
+		foreach ($this->_getPublicStatisticsNames() as $name) {
 			$journal->updateSetting($name, Request::getUserVar($name)?true:false);
 		}
 		$journal->updateSetting('statViews', Request::getUserVar('statViews')?true:false);
 		Request::redirect(null, null, 'statistics', null, array('statisticsYear' => Request::getUserVar('statisticsYear')));
 	}
 
-	function report($args) {
+	function report($args, $request) {
 		$this->validate();
 		$this->setupTemplate();
 
@@ -150,7 +148,7 @@ class StatisticsHandler extends ManagerHandler {
 		}
 
 		$plugin =& $reportPlugins[$pluginName];
-		$plugin->display($args);
+		$plugin->display($args, $request);
 	}
 }
 

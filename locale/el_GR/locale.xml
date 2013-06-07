@@ -2,9 +2,9 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * locale/el_GR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the gr_GR (Greek) locale.
@@ -16,7 +16,6 @@
   * Kiriazis Vasilis (vaskir@lis.upatras.gr),
   * Papaxristopoulos Leonidas (leonidasp@lis.upatras.gr)
   *
-  * $Id$
   -->
  
 <locale name="el_GR" full_name="Greek">
@@ -360,7 +359,7 @@
 	 <li>Οι Συγγραφείς μπορούν να συνάπτουν ξεχωριστές, και πρόσθετες συμβάσεις και συμφωνίες για την μη αποκλειστική διανομή της εργασίας όπως δημοσιεύτηκε στο περιοδικό αυτό (π.χ. κατάθεση σε ένα ακαδημαϊκό καταθετήριο ή δημοσίευση σε ένα βιβλίο), με την προϋπόθεση της αναγνώρισης και την αναφοράς της πρώτης δημοσίευσης σε αυτό το περιοδικό.</li>
 	 <li>Το περιοδικό επιτρέπει και ενθαρρύνει τους Συγγραφείς να καταθέτουν τις εργασίες τους online (π.χ. σε ένα ακαδημαϊκό καταθετήριο ή στους προσωπικές τους ιστοσελίδες) πριν και μετά από τις διαδικασίες της δημοσίευσης, καθώς αυτό μπορεί να οδηγήσει σε παραγωγικές ανταλλαγές ιδεών και σκέψεων καθώς επίσης και σε γρηγορότερη και μεγαλύτερη χρήση και ευρετηρίαση της δημοσιευμένης εργασίας (See <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>).</li>
 </ol>]]></message>
-        <message key="manager.setup.subjectClassificationDescription"><![CDATA[[Το περιοδικό χρησιμοποιεί σύστημα θεματικής ταξινόμησης που είναι διαθέσιμο στον Παγκόσμιο Ιστό (web).<br /> 
+        <message key="manager.setup.subjectClassificationDescription"><![CDATA[Το περιοδικό χρησιμοποιεί σύστημα θεματικής ταξινόμησης που είναι διαθέσιμο στον Παγκόσμιο Ιστό (web).<br /> 
          Τίτλος συστήματος]]></message>
         <message key="manager.setup.registerJournalForIndexingDescription"><![CDATA[Για να ευρετηριάζοντα τα περιεχόμενα του περιοδικού σας εντός ενός παγκοσμίως κατανεμημένου συστήματος βάσεων δεδομένων αναζήτησης  , <a href="http://pkp.sfu.ca/harvester/add.php"  target="_blank">καταχωρίστε</a> το URL του περιοδικού στον Public Knowledge Project  metadata <a href="http://pkp.sfu.ca/harvester/" target="_blank">harvester</a>. Το εργαλείο αυτό συλλέγει μεταδεδόμενα από κάθε ευρετηριασμένο τεκμήριο στο περιοδικό αυτό, παρέχοντας τη δυνατότητα ακριβούς και συλλογικής αναζήτησης στους ιστοτόπους αναζήτησης που τηρούν το <a  href="http://www.openarchives.org/OAI/openarchivesprotocol.htm#Introduction"  target="_blank">Open Archives Initiative Protocol for Metadata Harvesting</a>.  
         <br /><br />  
@@ -621,7 +620,6 @@
         <!-- Profile -->
 
         <!-- Registration -->
-        <message key="user.register.repeatPassword">Επαναλάβετε τον κωδικό πρόσβασης (password)</message>
         <message key="user.register.selectJournal">Επιλέξτε ένα  περιοδικό για να εγγραφείτε</message>
         <message key="user.register.noJournals">Δεν υπάρχουν περιοδικά στα οποία μπορείτε να εγγραφείτε στον ιστότοπο αυτό.</message>
         <message key="user.register.privacyStatement">Πολιτική Προστασίας Προσωπικών Δεδομένων</message>

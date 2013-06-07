@@ -1,12 +1,11 @@
 {**
- * journalSettings.tpl
+ * templates/admin/journalSettings.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Basic journal settings under site administration.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="admin.journals.journalSettings"}
@@ -20,9 +19,9 @@
 <!--
 // Ensure that the form submit button cannot be double-clicked
 function doSubmit() {
-	if (document.journal.submitted.value != 1) {
-		document.journal.submitted.value = 1;
-		document.journal.submit();
+	if (document.getElementById('journal').submitted.value != 1) {
+		document.getElementById('journal').submitted.value = 1;
+		document.getElementById('journal').submit();
 	}
 	return true;
 }
@@ -30,7 +29,7 @@ function doSubmit() {
 {/literal}
 </script>
 
-<form name="journal" method="post" action="{url op="updateJournal"}">
+<form id="journal" method="post" action="{url op="updateJournal"}">
 <input type="hidden" name="submitted" value="0" />
 {if $journalId}
 <input type="hidden" name="journalId" value="{$journalId|escape}" />

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file DOAJPlugin.inc.php
+ * @file plugins/importexport/doaj/DOAJPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DOAJPlugin
@@ -11,9 +11,6 @@
  *
  * @brief DOAJ import/export plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -63,9 +60,9 @@ class DOAJPlugin extends ImportExportPlugin {
 	 * Display the plugin
 	 * @param $args array
 	 */
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
-		parent::display($args);
+		parent::display($args, $request);
 		$journal =& Request::getJournal();
 		
 		switch (array_shift($args)) {

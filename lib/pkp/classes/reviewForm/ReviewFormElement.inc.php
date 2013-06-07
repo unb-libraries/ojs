@@ -3,7 +3,7 @@
 /**
  * @file classes/reviewForm/ReviewFormElement.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewFormElement
@@ -22,7 +22,6 @@ define('REVIEW_FORM_ELEMENT_TYPE_RADIO_BUTTONS',	0x000005);
 define('REVIEW_FORM_ELEMENT_TYPE_DROP_DOWN_BOX',	0x000006);
 
 class ReviewFormElement extends DataObject {
-
 	/**
 	 * Constructor.
 	 */
@@ -99,7 +98,7 @@ class ReviewFormElement extends DataObject {
 	}
 
 	/**
-	 * get required
+	 * Get required flag
 	 * @return boolean
 	 */
 	function getRequired() {
@@ -107,14 +106,14 @@ class ReviewFormElement extends DataObject {
 	}
 
 	/**
-	 * Set 
+	 * Set required flag
 	 * @param $viewable boolean
 	 */
 	function setRequired($required) {
 		return $this->setData('required', $required);
 	}
 
- 	/**
+	/**
 	 * get included
 	 * @return boolean
 	 */

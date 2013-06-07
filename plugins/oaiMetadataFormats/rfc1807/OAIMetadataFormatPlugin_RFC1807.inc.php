@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file plugins/OAIMetadata/marc/OAIMetadataFormatPlugin_RFC1807.inc.php
+ * @file plugins/oaiMetadataFormats/rfc1807/OAIMetadataFormatPlugin_RFC1807.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin_RFC1807
@@ -13,10 +13,7 @@
  * @brief rfc1807 metadata format plugin for OAI.
  */
 
-// $Id$
-
-
-import('classes.plugins.OAIMetadataFormatPlugin');
+import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 
 class OAIMetadataFormatPlugin_RFC1807 extends OAIMetadataFormatPlugin {
 

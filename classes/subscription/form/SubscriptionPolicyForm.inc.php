@@ -3,7 +3,7 @@
 /**
  * @file classes/subscription/form/SubscriptionPolicyForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionPolicyForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for managers to setup subscription policies.
  */
-
-// $Id$
-
 
 define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MIN', '0');
 define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MAX', '24');

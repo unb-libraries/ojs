@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/openAIRE/OpenAIREPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OpenAIREPlugin
@@ -30,43 +30,46 @@ class OpenAIREPlugin extends GenericPlugin {
 			$this->import('OpenAIREDAO');
 			$openAIREDao = new OpenAIREDAO();
 			DAORegistry::registerDAO('OpenAIREDAO', $openAIREDao);
-			
-			
+
+
 			// Insert new field into author metadata submission form (submission step 3) and metadata form
 			HookRegistry::register('Templates::Author::Submit::AdditionalMetadata', array($this, 'metadataFieldEdit'));
 			HookRegistry::register('Templates::Submission::MetadataEdit::AdditionalMetadata', array($this, 'metadataFieldEdit'));
 			// Consider the new field in the metadata view
 			HookRegistry::register('Templates::Submission::Metadata::Metadata::AdditionalMetadata', array($this, 'metadataFieldView'));
-			
-			// Hook for initData in two forms -- init the new field 
+
+			// Hook for initData in two forms -- init the new field
 			HookRegistry::register('metadataform::initdata', array($this, 'metadataInitData'));
 			HookRegistry::register('authorsubmitstep3form::initdata', array($this, 'metadataInitData'));
-			
+
 			// Hook for readUserVars in two forms -- consider the new field entry
 			HookRegistry::register('metadataform::readuservars', array($this, 'metadataReadUserVars'));
 			HookRegistry::register('authorsubmitstep3form::readuservars', array($this, 'metadataReadUserVars'));
-			
-			// Hook for execute in two forms -- consider the new field in the article settings 
+
+			// Hook for execute in two forms -- consider the new field in the article settings
 			HookRegistry::register('authorsubmitstep3form::execute', array($this, 'metadataExecute'));
 			HookRegistry::register('metadataform::execute', array($this, 'metadataExecute'));
 
 			// Hook for save in two forms -- add validation for the new field
 			HookRegistry::register('authorsubmitstep3form::Constructor', array($this, 'addCheck'));
 			HookRegistry::register('metadataform::Constructor', array($this, 'addCheck'));
-			
+
 			// Consider the new field for ArticleDAO for storage
 			HookRegistry::register('articledao::getAdditionalFieldNames', array($this, 'articleSubmitGetFieldNames'));
-							
+
 			// Add OpenAIRE set to OAI results
-			HookRegistry::register('JournalOAI::sets', array($this, 'sets'));
-			HookRegistry::register('JournalOAI::identifiers', array($this, 'identifiers'));
-			HookRegistry::register('JournalOAI::records', array($this, 'records'));
-			HookRegistry::register('OAIDAO::_returnRecordFromRow', array($this, 'changeRecord'));
-			HookRegistry::register('OAIDAO::_returnIdentifierFromRow', array($this, 'changeIdentifier'));
-			
-			// Change Dc11Desctiption -- consider OpenAIRE elements relation, rights and date
-			HookRegistry::register('OAIMetadataFormat_DC::toXml', array($this, 'changeXml'));
-			
+			HookRegistry::register('OAIDAO::getJournalSets', array($this, 'sets'));
+			HookRegistry::register('JournalOAI::identifiers', array($this, 'recordsOrIdentifiers'));
+			HookRegistry::register('JournalOAI::records', array($this, 'recordsOrIdentifiers'));
+			HookRegistry::register('OAIDAO::_returnRecordFromRow', array($this, 'addSet'));
+			HookRegistry::register('OAIDAO::_returnIdentifierFromRow', array($this, 'addSet'));
+
+			 // Change Dc11Desctiption -- consider OpenAIRE elements relation, rights and date
+			HookRegistry::register('Dc11SchemaArticleAdapter::extractMetadataFromDataObject', array($this, 'changeDc11Desctiption'));
+
+			// consider OpenAIRE articles in article tombstones
+			HookRegistry::register('ArticleTombstoneManager::insertArticleTombstone', array($this, 'insertOpenAIREArticleTombstone'));
+
 		}
 		return $success;
 	}
@@ -77,12 +80,12 @@ class OpenAIREPlugin extends GenericPlugin {
 
 	function getDescription() {
 		return __('plugins.generic.openAIRE.description');
-	}	
-	
+	}
+
 	/*
 	 * Metadata
 	 */
-	
+
 	/**
 	 * Insert projectID field into author submission step 3 and metadata edit form
 	 */
@@ -93,7 +96,7 @@ class OpenAIREPlugin extends GenericPlugin {
 		$output .= $smarty->fetch($this->getTemplatePath() . 'projectIDEdit.tpl');
 		return false;
 	}
-	
+
 	/**
 	 * Add projectID to the metadata view
 	 */
@@ -113,7 +116,7 @@ class OpenAIREPlugin extends GenericPlugin {
 		$fields[] = 'projectID';
 		return false;
 	}
-	
+
 	/**
 	 * Set article projectID
 	 */
@@ -121,10 +124,10 @@ class OpenAIREPlugin extends GenericPlugin {
 		$form =& $params[0];
 		$article =& $form->article;
 		$formProjectID = $form->getData('projectID');
-		$article->setData('projectID', $formProjectID);		
+		$article->setData('projectID', $formProjectID);
 		return false;
 	}
-	
+
 	/**
 	 * Add check/validation for the projectID field (= 6 numbers)
 	 */
@@ -135,79 +138,45 @@ class OpenAIREPlugin extends GenericPlugin {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Init article projectID
 	 */
 	function metadataInitData($hookName, $params) {
 		$form =& $params[0];
 		$article =& $form->article;
-		$articleProjectID = $article->getData('projectID');	
+		$articleProjectID = $article->getData('projectID');
 		$form->setData('projectID', $articleProjectID);
 		return false;
 	}
-	
+
 	/**
 	 * Concern projectID field in the form
 	 */
 	function metadataReadUserVars($hookName, $params) {
-		$userVars =& $params[1];		
-		$userVars[] = 'projectID';		
+		$userVars =& $params[1];
+		$userVars[] = 'projectID';
 		return false;
 	}
-	
-		
+
+
 	/*
 	 * OAI interface
 	 */
-	
+
 	/**
 	 * Add OpenAIRE set
 	 */
 	function sets($hookName, $params) {
-		$journalOAI =& $params[0];
-		$offset = $params[1];
-		$total = $params[2];
-		$sets =& $params[3];
-		$journalId = $journalOAI->journalId;	
-		$journalDao =& DAORegistry::getDAO('JournalDAO');	
-		$sectionDao =& DAORegistry::getDAO('SectionDAO');
-
-		if (isset($journalId)) {
-			$journals = array($journalDao->getJournal($journalId));
-		} else {
-			$journals =& $journalDao->getJournals();
-			$journals =& $journals->toArray();
-		}
-
-		// FIXME Set descriptions
-		$sets = array();
-		$openAIRESetName = "EC_fundedresources";
-		$openAIRESetAbbrev = "ec_fundedresources";
-		foreach ($journals as $journal) {
-			$title = $journal->getLocalizedTitle();
-			$abbrev = $journal->getPath();
-			array_push($sets, new OAISet(urlencode($abbrev), $title, ''));
-
-			$sections =& $sectionDao->getJournalSections($journal->getId());
-			foreach ($sections->toArray() as $section) {
-				array_push($sets, new OAISet(urlencode($abbrev) . ':' . urlencode($section->getLocalizedAbbrev()), $section->getLocalizedTitle(), ''));
-			}			
-			array_push($sets, new OAISet(urlencode($abbrev) . ':' . urlencode($openAIRESetAbbrev), $openAIRESetName, ''));
-		}
-
-		
-		if ($offset != 0) {
-			$sets = array_slice($sets, $offset);
-		}
-
-		return true;
+		$sets =& $params[5];
+		array_push($sets, new OAISet('ec_fundedresources', 'EC_fundedresources', ''));
+		return false;
 	}
 
 	/**
-	 * Change OAI records to consider the OpenAIRE set
+	 * Get OpenAIRE records or identifiers
 	 */
-	function records($hookName, $params) {
+	function recordsOrIdentifiers($hookName, $params) {
 		$journalOAI =& $params[0];
 		$from = $params[1];
 		$until = $params[2];
@@ -216,150 +185,54 @@ class OpenAIREPlugin extends GenericPlugin {
 		$limit = $params[5];
 		$total = $params[6];
 		$records =& $params[7];
-		
+
 		$records = array();
-		if (isset($set) && strpos($set, 'ec_fundedresources') != false) {
+		if (isset($set) && $set == 'ec_fundedresources') {
 			$journalId = $journalOAI->journalId;
 			$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
 			$openAIREDao->setOAI($journalOAI);
-			$records = $openAIREDao->getOpenAIRERecords($journalId, $from, $until, $offset, $limit, $total);
-			return true;
-		} 
-		
-		return false;
-	}	
-	
-	/**
-	 * Change OAI identifier to consider the OpenAIRE set
-	 */
-	function identifiers($hookName, $params) {
-		$journalOAI =& $params[0];
-		$from = $params[1];
-		$until = $params[2];
-		$set = $params[3];
-		$offset = $params[4];
-		$limit = $params[5];
-		$total = $params[6];
-		$records =& $params[7];
-		
-		$records = array();
-		if (isset($set) && strpos($set, 'ec_fundedresources') != false) {
-			$journalId = $journalOAI->journalId;
-			$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
-			$openAIREDao->setOAI($journalOAI);
-			$records = $openAIREDao->getOpenAIREIdentifiers($journalId, $from, $until, $offset, $limit, $total);
-			return true;
-		}
-
-		return false;
-	}	
-		
-	/**
-	 * Change OAI record to consider the OpenAIRE set
-	 */
-	function changeRecord($hookName, $params) {
-		$record =& $params[0];
-		$row = $params[1];
-
-		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal = $journalDao->getJournal($row['journal_id']);
-		$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
-		if ($openAIREDao->isOpenAIREArticle($row['article_id'])) {
-			$record->sets[] = $journal->getPath() . ':ec_fundedresources';
-		}
-		return false;	
-	}
-
-	/**
-	 * Change OAI identifier to consider the OpenAIRE set
-	 */
-	function changeIdentifier($hookName, $params) {
-		$record =& $params[0];
-		$row = $params[1];
-		
-		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal = $journalDao->getJournal($row['journal_id']);
-		$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
-		if ($openAIREDao->isOpenAIREArticle($row['article_id'])) {
-			$record->sets[] = $journal->getPath() . ':ec_fundedresources';
-		}	
-		return false;	
-	}
-	
-	/**
-	 * Change DC XML to consider the OpenAIRE elements
-	 */
-	function changeXML($hookName, $params) {
-		$dcOAIMetadataFormat =& $params[0];
-		$record = $params[1];
-		$response =& $params[2];
-
-		$article =& $record->getData('article');
-		$journal =& $record->getData('journal');
-		$section =& $record->getData('section');
-		$issue =& $record->getData('issue');
-		$galleys =& $record->getData('galleys');
-	
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
-		
-		// Sources contains journal title, issue ID, and pages
-		$sources = $dcOAIMetadataFormat->stripAssocArray((array) $journal->getTitle(null));
-		$pages = $article->getPages();
-		if (!empty($pages)) $pages = '; ' . $pages;
-		foreach ($sources as $key => $source) {
-			$sources[$key] .= '; ' . $issue->getIssueIdentification() . $pages;
-		}
-	
-		// Format creators
-		$creators = array();
-		$authors = $article->getAuthors();
-		for ($i = 0, $num = count($authors); $i < $num; $i++) {
-			$authorName = $authors[$i]->getFullName(true);
-			$affiliation = $authors[$i]->getLocalizedAffiliation();
-			if (!empty($affiliation)) {
-				$authorName .= '; ' . $affiliation;
+			if ($hookName == 'JournalOAI::records') {
+				$funcName = '_returnRecordFromRow';
+			} else if ($hookName == 'JournalOAI::identifiers') {
+				$funcName = '_returnIdentifierFromRow';
 			}
-			$creators[] = $authorName;
+			$records = $openAIREDao->getOpenAIRERecordsOrIdentifiers($journalId, $from, $until, $offset, $limit, $total, $funcName);
+			return true;
 		}
-	
-		// Publisher
-		$publishers = $dcOAIMetadataFormat->stripAssocArray((array) $journal->getTitle(null)); // Default
-		$publisherInstitution = $journal->getSetting('publisherInstitution');
-		if (!empty($publisherInstitution)) {
-			$publishers = array($journal->getPrimaryLocale() => $publisherInstitution);
-		}
-	
-		// Types
-		$types = $dcOAIMetadataFormat->stripAssocArray((array) $section->getIdentifyType(null));
-		$types = array_merge_recursive(
-			empty($types)?array(AppLocale::getLocale() => __('rt.metadata.pkp.peerReviewed')):$types,
-			$dcOAIMetadataFormat->stripAssocArray((array) $article->getType(null))
-		);
-	
-		// Formats
-		$formats = array();
-		foreach ($galleys as $galley) {
-			$formats[] = $galley->getFileType();
-		}
-	
-		// Relation
-		$relation = array();
-		foreach ($article->getSuppFiles() as $suppFile) {
-			$relation[] = Request::url($journal->getPath(), 'article', 'download', array($article->getId(), $suppFile->getFileId()));
-		}
-		
-		// Date
-		$date = array();
-		$date[] = date('Y-m-d', strtotime($issue->getDatePublished()));
-		
-		// Rights
-		$rights = $dcOAIMetadataFormat->stripAssocArray((array) $journal->getSetting('copyrightNotice'));
+		return false;
+	}
+
+	/**
+	 * Change OAI record or identifier to consider the OpenAIRE set
+	 */
+	function addSet($hookName, $params) {
+		$record =& $params[0];
+		$row = $params[1];
 
 		$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
-		if ($openAIREDao->isOpenAIREArticle($article->getArticleId())) {
-		
+		if ($openAIREDao->isOpenAIRERecord($row)) {
+			$record->sets[] = 'ec_fundedresources';
+		}
+		return false;
+	}
+
+ 	/**
+	 * Change Dc11 Description to consider the OpenAIRE elements
+	 */
+	function changeDc11Desctiption($hookName, $params) {
+		$adapter =& $params[0];
+		$article = $params[1];
+		$journal = $params[2];
+		$issue = $params[3];
+		$dc11Description =& $params[4];
+
+		$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
+		$openAIREDao->setOAI($journalOAI);
+		if ($openAIREDao->isOpenAIREArticle($article->getId())) {
+
+			// Determine OpenAIRE DC elements values
 			// OpenAIRE DC Relation
-			$articleProjectID = $article->getData('projectID');	
+			$articleProjectID = $article->getData('projectID');
 			$openAIRERelation = 'info:eu-repo/grantAgreement/EC/FP7/' . $articleProjectID;
 
 			// OpenAIRE DC Rights
@@ -378,81 +251,71 @@ class OpenAIREPlugin extends GenericPlugin {
 					} else if ($issue->getAccessStatus() == ISSUE_ACCESS_SUBSCRIPTION && $issue->getOpenAccessDate() == NULL) {
 						$status = 'closedAccess';
 					}
-				} 
+				}
 			}
 			if ($journal->getSetting('restrictSiteAccess') == 1 || $journal->getSetting('restrictArticleAccess') == 1) {
 				$status = 'restrictedAccess';
 			}
 			$openAIRERights = $openAIRERights . $status;
-			$openAIRERightsValues = array();
-			foreach ($rights as $key => $value) {
-				$openAIRERightsValues[$key] = $openAIRERights;
-			}		
-			
+
 			// OpenAIRE DC Date
 			$openAIREDate = null;
 			if ($status == 'embargoedAccess') {
 				$openAIREDate = 'info:eu-repo/date/embargoEnd/' . date('Y-m-d', strtotime($issue->getOpenAccessDate()));
 			}
-			
-			// add OpenAIRE elements relation, rights, date
-			array_unshift($relation, $openAIRERelation);
 
-			$rights = array_merge_recursive(
-				empty($rights)?array(AppLocale::getLocale() => $openAIRERights):
-				$dcOAIMetadataFormat->stripAssocArray((array) $openAIRERightsValues), $rights
-			);
-			
+			// Get current DC statements
+			$dcRelationValues = array();
+			$dcRightsValues = array();
+			$dcDateValues = array();
+			if ($dc11Description->hasStatement('dc:relation')) {
+				$dcRelationValues = $dc11Description->getStatement('dc:relation');
+			}
+			if ($dc11Description->hasStatement('dc:rights')) {
+				$dcRightsValues = $dc11Description->getStatementTranslations('dc:rights');
+			}
+			if ($dc11Description->hasStatement('dc:date')) {
+				$dcDateValues = $dc11Description->getStatement('dc:date');
+			}
+
+			// Set new DC statements, concerning OpenAIRE
+			array_unshift($dcRelationValues, $openAIRERelation);
+			$newDCRelationStatements = array('dc:relation' => $dcRelationValues);
+			$dc11Description->setStatements($newDCRelationStatements);
+
+			foreach ($dcRightsValues as $key => $value) {
+				array_unshift($value, $openAIRERights);
+				$dcRightsValues[$key] = $value;
+			}
+			if (!array_key_exists($journal->getPrimaryLocale(), $dcRightsValues)) {
+				$dcRightsValues[$journal->getPrimaryLocale()] = array($openAIRERights);
+			}
+			$newDCRightsStatements = array('dc:rights' => $dcRightsValues);
+			$dc11Description->setStatements($newDCRightsStatements);
+
 			if ($openAIREDate != null) {
-				array_unshift($date, $openAIREDate);
-			}			
-			
+				array_unshift($dcDateValues, $openAIREDate);
+				$newDCDateStatements = array('dc:date' => $dcDateValues);
+				$dc11Description->setStatements($newDCDateStatements);
+			}
 		}
-		
-		$response = "<oai_dc:dc\n" .
-			"\txmlns:oai_dc=\"http://www.openarchives.org/OAI/2.0/oai_dc/\"\n" .
-			"\txmlns:dc=\"http://purl.org/dc/elements/1.1/\"\n" .
-			"\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" .
-			"\txsi:schemaLocation=\"http://www.openarchives.org/OAI/2.0/oai_dc/\n" .
-			"\thttp://www.openarchives.org/OAI/2.0/oai_dc.xsd\">\n" .
-			$dcOAIMetadataFormat->formatElement('title', $dcOAIMetadataFormat->stripAssocArray((array) $article->getTitle(null)), true) .
-			$dcOAIMetadataFormat->formatElement('creator', $creators) .
-			$dcOAIMetadataFormat->formatElement(
-				'subject',
-				array_merge_recursive(
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getDiscipline(null)),
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getSubject(null)),
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getSubjectClass(null))
-				),
-				true
-			) .
-			$dcOAIMetadataFormat->formatElement('description', $dcOAIMetadataFormat->stripAssocArray((array) $article->getAbstract(null)), true) .
-			$dcOAIMetadataFormat->formatElement('publisher', $publishers, true) .
-			$dcOAIMetadataFormat->formatElement('contributor', $dcOAIMetadataFormat->stripAssocArray((array) $article->getSponsor(null)), true) .
-			$dcOAIMetadataFormat->formatElement('date', $date) .
-			$dcOAIMetadataFormat->formatElement('type', $types, true) .
-			$dcOAIMetadataFormat->formatElement('format', $formats) .
-			$dcOAIMetadataFormat->formatElement('identifier', Request::url($journal->getPath(), 'article', 'view', array($article->getBestArticleId()))) .
-			(($doi = $article->getDOI())?$dcOAIMetadataFormat->formatElement('identifier', $doi, false):'') .
-			$dcOAIMetadataFormat->formatElement('source', $sources, true) .
-			$dcOAIMetadataFormat->formatElement('language', strip_tags($article->getLanguage())) .
-			$dcOAIMetadataFormat->formatElement('relation', $relation) .
-			$dcOAIMetadataFormat->formatElement(
-				'coverage',
-				array_merge_recursive(
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getCoverageGeo(null)),
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getCoverageChron(null)),
-					$dcOAIMetadataFormat->stripAssocArray((array) $article->getCoverageSample(null))
-				),
-				true
-			) .
-			$dcOAIMetadataFormat->formatElement('rights', $rights, true) .
-			"</oai_dc:dc>\n";
-	
-		return true;	
-		
+		return false;
 	}
-	
-	
+
+	/**
+	 * Consider the OpenAIRE set in the article tombstone
+	 */
+	function insertOpenAIREArticleTombstone($hookName, $params) {
+		$articleTombstone =& $params[0];
+
+		$openAIREDao =& DAORegistry::getDAO('OpenAIREDAO');
+		if ($openAIREDao->isOpenAIREArticle($articleTombstone->getDataObjectId())) {
+			$dataObjectTombstoneSettingsDao =& DAORegistry::getDAO('DataObjectTombstoneSettingsDAO');
+			$dataObjectTombstoneSettingsDao->updateSetting($articleTombstone->getId(), 'openaire', true, 'bool');
+		}
+		return false;
+	}
+
+
 }
 ?>

@@ -3,7 +3,7 @@
 /**
  * @file classes/article/ArticleHTMLGalley.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleHTMLGalley
@@ -11,9 +11,6 @@
  *
  * @brief An HTML galley may include an optional stylesheet and set of images.
  */
-
-// $Id$
-
 
 import('classes.article.ArticleGalley');
 
@@ -111,7 +108,7 @@ class ArticleHTMLGalley extends ArticleGalley {
 			$url = substr($url, 0, $i);
 		}
 		$urlParts = explode('/', $url);
-		if (isset($urlParts[0])) switch(String::strtolower($urlParts[0])) {
+		if (isset($urlParts[0])) switch(strtolower_codesafe($urlParts[0])) {
 			case 'journal':
 				$url = Request::url(
 					isset($urlParts[1]) ?

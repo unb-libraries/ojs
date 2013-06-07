@@ -3,7 +3,7 @@
 /**
  * @file classes/rt/RTStruct.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTVersion
@@ -12,8 +12,6 @@
  *
  * @brief Data structures associated with the Reading Tools component.
  */
-
-// $Id$
 
 
 /**

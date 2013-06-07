@@ -7,7 +7,7 @@
 /**
  * @file pages/notification/index.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_notification
@@ -15,7 +15,6 @@
  *
  */
 
-// $Id$
 
 switch ($op) {
 	case 'index':
@@ -29,6 +28,7 @@ switch ($op) {
 	case 'mailListSubscribed':
 	case 'confirmMailListSubscription':
 	case 'unsubscribeMailList':
+	case 'fetchNotification':
 		define('HANDLER_CLASS', 'NotificationHandler');
 		import('lib.pkp.pages.notification.NotificationHandler');
 		break;

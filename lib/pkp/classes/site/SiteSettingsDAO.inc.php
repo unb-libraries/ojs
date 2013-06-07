@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SiteSettingsDAO.inc.php
+ * @file classes/site/SiteSettingsDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package site
@@ -14,6 +14,13 @@
  */
 
 class SiteSettingsDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function SiteSettingsDAO() {
+		parent::DAO();
+	}
+
 	function &_getCache() {
 		$settingCache =& Registry::get('siteSettingCache', true, null);
 		if ($settingCache === null) {
@@ -79,7 +86,7 @@ class SiteSettingsDAO extends DAO {
 				else $siteSettings[$row['setting_name']][$row['locale']] = $value;
 				$result->MoveNext();
 			}
-			$result->close();
+			$result->Close();
 			unset($result);
 
 			$cache =& $this->_getCache();
@@ -155,7 +162,7 @@ class SiteSettingsDAO extends DAO {
 	 * Used internally by installSettings to perform variable and translation replacements.
 	 * @param $rawInput string contains text including variable and/or translate replacements.
 	 * @param $paramArray array contains variables for replacement
-	 * @returns string
+	 * @return string
 	 */
 	function _performReplacement($rawInput, $paramArray = array()) {
 		$value = preg_replace_callback('{{translate key="([^"]+)"}}', array(&$this, '_installer_regexp_callback'), $rawInput);
@@ -209,7 +216,7 @@ class SiteSettingsDAO extends DAO {
 
 			if (isset($nameNode) && isset($valueNode)) {
 				$type = $setting->getAttribute('type');
-				$isLocalized = $setting->getAttribute('localized') == 'true';
+				$isLocaleField = $setting->getAttribute('locale');
 				$name =& $nameNode->getValue();
 
 				if ($type == 'object') {
@@ -220,8 +227,12 @@ class SiteSettingsDAO extends DAO {
 				}
 
 				// Replace translate calls with translated content
-				if ($isLocalized) $value = array(AppLocale::getLocale() => $value);
-				$this->updateSetting($name, $value, $type, $isLocalized);
+				$this->updateSetting(
+					$name,
+					$isLocaleField?array(AppLocale::getLocale() => $value):$value,
+					$type,
+					$isLocaleField
+				);
 			}
 		}
 

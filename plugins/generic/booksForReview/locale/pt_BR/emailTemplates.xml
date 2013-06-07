@@ -3,12 +3,11 @@
 <!--
   * emailTemplateData.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
   *
-  * $Id$
   -->
 <email_texts locale="pt_BR">
 	<email_text key="BFR_REVIEW_REMINDER">

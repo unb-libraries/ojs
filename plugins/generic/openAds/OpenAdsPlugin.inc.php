@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file OpenAdsPlugin.inc.php
+ * @file plugins/generic/openAds/OpenAdsPlugin.inc.php
  *
  * Copyright (c) 2003-2009 Siavash Miri and Alec Smecher
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
@@ -11,8 +11,6 @@
  *
  * @brief Integrate OpenAds ad manager with OJS.
  */
-
-// $Id: CounterPlugin.inc.php,v 1.0 2006/10/20 12:28pm
 
 define ('AD_ORIENTATION_LEFT',		1);
 define ('AD_ORIENTATION_RIGHT',		2);
@@ -185,11 +183,12 @@ class OpenAdsPlugin extends GenericPlugin {
 	 * Execute a management verb on this plugin
 	 * @param $verb string
 	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
 	 * @return boolean
 	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
 		switch ($verb) {
 			case 'settings':

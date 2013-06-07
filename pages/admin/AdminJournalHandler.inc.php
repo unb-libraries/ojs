@@ -3,7 +3,7 @@
 /**
  * @file pages/admin/AdminJournalHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AdminJournalHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for journal management in site administration.
  */
-
-// $Id$
 
 import('pages.admin.AdminHandler');
 
@@ -31,14 +29,14 @@ class AdminJournalHandler extends AdminHandler {
 		$this->validate();
 		$this->setupTemplate();
 
-		$rangeInfo = Handler::getRangeInfo('journals');
+		$rangeInfo = $this->getRangeInfo('journals');
 
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journals =& $journalDao->getJournals($rangeInfo);
+		$journals =& $journalDao->getJournals(false, $rangeInfo);
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 		$templateMgr->assign_by_ref('journals', $journals);
 		$templateMgr->assign('helpTopicId', 'site.siteManagement');
 		$templateMgr->display('admin/journals.tpl');
@@ -98,9 +96,11 @@ class AdminJournalHandler extends AdminHandler {
 			PluginRegistry::loadCategory('blocks');
 			$settingsForm->execute();
 
-			import('lib.pkp.classes.notification.NotificationManager');
+			$user =& $request->getUser();
+
+			import('classes.notification.NotificationManager');
 			$notificationManager = new NotificationManager();
-			$notificationManager->createTrivialNotification('notification.notification', 'common.changesSaved');
+			$notificationManager->createTrivialNotification($user->getId());
 			$request->redirect(null, null, 'journals');
 
 		} else {
@@ -147,7 +147,7 @@ class AdminJournalHandler extends AdminHandler {
 		$this->validate();
 
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal =& $journalDao->getJournal($request->getUserVar('id'));
+		$journal =& $journalDao->getById($request->getUserVar('id'));
 
 		if ($journal != null) {
 			$direction = $request->getUserVar('d');
@@ -162,7 +162,7 @@ class AdminJournalHandler extends AdminHandler {
 				if ($prevId == null)
 					$prevSeq = 0;
 				else {
-					$prevJournal = $journalDao->getJournal($prevId);
+					$prevJournal = $journalDao->getById($prevId);
 					$prevSeq = $prevJournal->getSequence();
 				}
 
@@ -186,7 +186,7 @@ class AdminJournalHandler extends AdminHandler {
 	 */
 	function setupTemplate() {
 		parent::setupTemplate(true);
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_MANAGER);
 	}
 }
 

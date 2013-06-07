@@ -3,7 +3,7 @@
 /**
  * @file classes/rt/ojs/RTDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTDAO
@@ -12,9 +12,6 @@
  *
  * @brief DAO operations for the OJS Reading Tools interface.
  */
-
-// $Id$
-
 
 import('classes.rt.ojs.JournalRT');
 
@@ -39,11 +36,11 @@ class RTDAO extends DAO {
 		$rt->setViewMetadata($journal->getSetting('rtViewMetadata')?true:false);
 		$rt->setSupplementaryFiles($journal->getSetting('rtSupplementaryFiles')?true:false);
 		$rt->setPrinterFriendly($journal->getSetting('rtPrinterFriendly')?true:false);
-		$rt->setAuthorBio($journal->getSetting('rtAuthorBio')?true:false);
 		$rt->setDefineTerms($journal->getSetting('rtDefineTerms')?true:false);
 		$rt->setEmailAuthor($journal->getSetting('rtEmailAuthor')?true:false);
 		$rt->setEmailOthers($journal->getSetting('rtEmailOthers')?true:false);
 		$rt->setFindingReferences($journal->getSetting('rtFindingReferences')?true:false);
+		$rt->setViewReviewPolicy($journal->getSetting('rtViewReviewPolicy')?true:false);
 
 		$rt->setSharingEnabled($journal->getSetting("rtSharingEnabled") ? $journal->getSetting("rtSharingEnabled") : "");
 		$rt->setSharingUserName($journal->getSetting("rtSharingUserName") ? $journal->getSetting("rtSharingUserName") : "");
@@ -61,7 +58,7 @@ class RTDAO extends DAO {
 
 	function updateJournalRT(&$rt) {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journal =& $journalDao->getJournal($rt->getJournalId());
+		$journal =& $journalDao->getById($rt->getJournalId());
 
 		$journal->updateSetting('rtEnabled', $rt->getEnabled(), 'bool');
 		$journal->updateSetting('rtVersionId', $rt->getVersion(), 'int');
@@ -70,11 +67,11 @@ class RTDAO extends DAO {
 		$journal->updateSetting('rtViewMetadata', $rt->getViewMetadata(), 'bool');
 		$journal->updateSetting('rtSupplementaryFiles', $rt->getSupplementaryFiles(), 'bool');
 		$journal->updateSetting('rtPrinterFriendly', $rt->getPrinterFriendly(), 'bool');
-		$journal->updateSetting('rtAuthorBio', $rt->getAuthorBio(), 'bool');
 		$journal->updateSetting('rtDefineTerms', $rt->getDefineTerms(), 'bool');
 		$journal->updateSetting('rtEmailAuthor', $rt->getEmailAuthor(), 'bool');
 		$journal->updateSetting('rtEmailOthers', $rt->getEmailOthers(), 'bool');
 		$journal->updateSetting('rtFindingReferences', $rt->getFindingReferences());
+		$journal->updateSetting('rtViewReviewPolicy', $rt->getViewReviewPolicy());
 
 		$journal->updateSetting("rtSharingEnabled", $rt->getSharingEnabled());
 		$journal->updateSetting("rtSharingUserName", $rt->getSharingUserName());

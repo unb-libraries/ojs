@@ -4,12 +4,11 @@
 <!--
   * locale/en_US/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
   *
-  * $Id$
   -->
 
 <locale name="en_US" full_name = "English">
@@ -29,9 +28,11 @@
 	<message key="announcement.moreAnnouncements">More Announcements...</message>
 	<message key="announcement.noneExist">No announcements have been published.</message>
 	<message key="announcement.posted">Posted</message>
+	<message key="announcement.postedOn">Posted on {$postDate}</message>
 	<message key="announcement.viewLink">More...</message>
 	<message key="announcement.view">View Announcement</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">You are not in this user group.</message>
+	<message key="common.accepted">Accepted</message>
+	<message key="common.acknowledged">Acknowledged</message>
 	<message key="common.action">Action</message>
 	<message key="common.activate">Activate</message>
 	<message key="common.active">Active</message>
@@ -39,6 +40,7 @@
 	<message key="common.addSelf">Add Self</message>
 	<message key="common.all">All</message>
 	<message key="common.alphaList">A B C D E F G H I J K L M N O P Q R S T U V W X Y Z</message>
+	<message key="common.titleSmallWords">of a the and an or nor but is if then else when at from by on off for in out over to into with</message>
 	<message key="common.alreadyAssigned">Assigned</message>
 	<message key="common.altText">Alternate text</message>
 	<message key="common.altTextInstructions">Please provide alternate text for this image to ensure accessibility for users with text-only browsers or assistive devices.</message>
@@ -48,26 +50,27 @@
 	<message key="common.assigned">Assigned</message>
 	<message key="common.back">Back</message>
 	<message key="common.between">between</message>
-	<message key="common.cancel">Cancel</message>
+	<message key="common.cancel">Cancel</message>	
 	<message key="common.cancelled">Cancelled</message>
+	<message key="common.warning">Warning</message>
 	<message key="common.captchaField.altText">Validation image</message>
 	<message key="common.captchaField.badCaptcha">The characters you entered did not match the characters in the image. Please check the characters and try again.</message>
 	<message key="common.captchaField.description">Please enter the letters as they appear in the image above.</message>
 	<message key="common.captchaField">Validation</message>
 	<message key="common.ccLicense"><![CDATA[
 		<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		This work is licensed under a <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  License</a>.
+		This work is licensed under a <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  License</a>.
 	]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[
 	<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0 License</a>.
+		This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 License</a>.
 	</div>
 	]]></message>
 	<message key="common.changesSaved">Your changes have been saved.</message>
@@ -76,6 +79,9 @@
 	<message key="common.closeWindow">Close Window</message>
 	<message key="common.complete">Complete</message>
 	<message key="common.completed">Completed</message>
+	<message key="common.confirm">Confirm</message>
+	<message key="common.content">Content</message>
+	<message key="common.considered">Considered</message>
 	<message key="common.continue">Continue</message>
 	<message key="common.copy">Copy</message>
 	<message key="common.country">Country</message>
@@ -89,6 +95,7 @@
 	<message key="common.day">Day</message>
 	<message key="common.deactivate">Deactivate</message>
 	<message key="common.default">Default</message>
+	<message key="common.declined">Declined</message>
 	<message key="common.delete">Delete</message>
 	<message key="common.deleteSelection">Delete Selection</message>
 	<message key="common.description">Description</message>
@@ -105,13 +112,15 @@
 	<message key="common.error.framesRequired"><![CDATA[This page requires frames. <a href="{$url}">Click here</a> for the non-frames version.]]></message>
 	<message key="common.event">Event</message>
 	<message key="common.export">Export</message>
+	<message key="common.finish">Finish</message>
 	<message key="common.fullscreen">Fullscreen</message>
 	<message key="common.fullscreenOff">Fullscreen Off</message>
 	<message key="common.false">False</message>
 	<message key="common.file">File</message>
-	<message key="common.fileName">File name</message>
-	<message key="common.fileSize">File size</message>
-	<message key="common.fileType">File type</message>
+	<message key="common.fileName">File Name</message>
+	<message key="common.fileSize">File Size</message>
+	<message key="common.fileType">File Type</message>
+	<message key="common.go">Go</message>
 	<message key="common.height">Height</message>
 	<message key="common.homePageHeaderLogo.altText">Homepage Header Logo</message>
 	<message key="common.hour">Hour</message>
@@ -122,11 +131,14 @@
 	<message key="common.keywords">Keywords</message>
 	<message key="common.language">Language</message>
 	<message key="common.languages">Languages</message>
+	<message key="common.less">Less</message>
 	<message key="common.manage">Manage</message>
 	<message key="common.mailingAddress">Mailing Address</message>
+	<message key="common.billingAddress">Billing address (if different)</message>
 	<message key="common.minute">Minute(s)</message>
 	<message key="common.modify">Modify</message>
 	<message key="common.month">Month</message>
+	<message key="common.more">More</message>
 	<message key="common.noneAssigned">None assigned</message>
 	<message key="common.none">None</message>
 	<message key="common.no">No</message>
@@ -136,7 +148,8 @@
 	<message key="common.notAvailable">Not available</message>
 	<message key="common.note">Note</message>
 	<message key="common.notes">Notes</message>
-	<message key="common.notify">Notify</message>
+	<message key="common.notified">Notified</message>
+	<message key="common.noMatches">No Matches</message>
 	<message key="common.off">Off</message>
 	<message key="common.on">On</message>
 	<message key="common.ok">OK</message>
@@ -145,6 +158,7 @@
 	<message key="common.originalFileName">Original file name</message>
 	<message key="common.or">or</message>
 	<message key="common.other">Other</message>
+	<message key="common.overdue">Overdue</message>
 	<message key="common.pageHeaderLogo.altText">Page Header Logo</message>
 	<message key="common.plugin">Plugin</message>
 	<message key="common.pluginEnabled">The plugin "{$pluginName}" has been enabled.</message>
@@ -155,12 +169,16 @@
 	<message key="common.record">Record</message>
 	<message key="common.refresh">Refresh</message>
 	<message key="common.related">Related</message>
+	<message key="common.reminder">Reminder</message>
+	<message key="common.remote">Remote</message>
+	<message key="common.remoteURL">RemoteURL</message>
 	<message key="common.remove">Remove</message>
 	<message key="common.removeSelection">Remove Selection</message>
 	<message key="common.replaced">Replaced</message>
 	<message key="common.replaceFile">Replace file</message>
 	<message key="common.requiredField">* Denotes required field</message>
 	<message key="common.required">Required</message>
+	<message key="common.reset">Reset</message>
 	<message key="common.saveAndContinue">Save and continue</message>
 	<message key="common.saveAndEmail">Save and email</message>
 	<message key="common.save">Save</message>
@@ -169,6 +187,7 @@
 	<message key="common.selectAll">Select All</message>
 	<message key="common.selectNone">Select None</message>
 	<message key="common.select">Select</message>
+	<message key="common.signoff">Sign Off</message>
 	<message key="common.size">Size</message>
 	<message key="common.source">Source</message>
 	<message key="common.status">Status</message>
@@ -178,12 +197,16 @@
 	<message key="common.top">Top</message>
 	<message key="common.true">True</message>
 	<message key="common.type">Type</message>
+	<message key="common.element">Element</message>
 	<message key="common.uninitiated">Uninitiated</message>
+	<message key="common.unread">Unread</message>
 	<message key="common.untitled">Untitled</message>
 	<message key="common.updated">Updated</message>
 	<message key="common.uploadedFile">Uploaded file</message>
 	<message key="common.upload">Upload</message>
-	<message key="common.uploadFailed">The file could not be uploaded. Please try again or contact the administrator if the problem persists.</message>
+	<message key="common.uploadFailed">The file could not be uploaded or revised.</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[This server allows a file size upload maximum of {$fileSize}.  If required, please contact <a href="mailto:{$supportEmail}">{$supportName}</a> for assistance.]]></message>
+	<message key="common.invalidFileType">No file uploaded or invalid file type!</message>
 	<message key="common.up">Up</message>
 	<message key="common.url">URL</message>
 	<message key="common.user">User</message>
@@ -193,6 +216,7 @@
 	<message key="common.year">Year</message>
 	<message key="common.yes">Yes</message>
 	<message key="common.loading">Loading ...</message>
+	<message key="common.plugins">Plugins</message>
 	<message key="debug.databaseQueries">Number of database queries</message>
 	<message key="debug.executionTime">Page generated in</message>
 	<message key="debug.memoryUsage">Memory Usage</message>
@@ -222,7 +246,13 @@
 	<message key="email.send">Send</message>
 	<message key="email.skip">Skip Email</message>
 	<message key="email.subject">Subject</message>
+	<message key="email.subjectRequired">Please provide an email subject.</message>
+	<message key="email.bodyRequired">Please provide the email body text.</message>
 	<message key="email.to">To</message>
+	<message key="form.confirmSubmit">Are you sure you want to submit this form?</message>
+	<message key="form.confirmSubmit.title">Confirm</message>
+	<message key="form.emailRequired">An email address is required.</message>
+	<message key="form.dataHasChanged">The data on this form has changed. Continue anyway?</message>
 	<message key="form.errorsOccurred">Errors occurred processing this form</message>
 	<message key="form.formLanguage.description">To enter the information below in additional languages, first select the language.</message>
 	<message key="form.formLanguage">Form Language</message>
@@ -235,8 +265,11 @@
 	<message key="form.saveToUpload">Use Save to upload file.</message>
 	<message key="form.send">Send</message>
 	<message key="form.submit">Submit</message>
+	<message key="form.invalidImage">An invalid image was uploaded. Accepted formats are .png, .gif, or .jpg.</message>
 	<message key="help.contents">Contents</message>
 	<message key="help.help">Help</message>
+	<message key="help.toggleInlineHelpOn">Help On</message>
+	<message key="help.toggleInlineHelpOff">Help Off</message>
 	<message key="help.helpIndex">Help Index</message>
 	<message key="help.matchesFound">{$matches} matches found</message>
 	<message key="help.noMatchingTopics">No matching help topics were found.</message>
@@ -262,24 +295,36 @@
 	<message key="icon.view.alt">View</message>
 	<message key="locale.primary">Primary locale</message>
 	<message key="locale.supported">Supported locales</message>
+	<message key="navigation.website">Website</message>
+	<message key="navigation.access"><![CDATA[Users &amp; Roles]]></message>
 	<message key="navigation.about">About</message>
+	<message key="navigation.admin">Administration</message>
 	<message key="navigation.browse">Browse</message>
+	<message key="navigation.browseByAuthor">By Author</message>
 	<message key="navigation.browseByTitle">By Title</message>
 	<message key="navigation.dashboard">Dashboard</message>
+	<message key="navigation.data">Data</message>
 	<message key="navigation.home">Home</message>
 	<message key="navigation.infoForReaders">For Readers</message>
 	<message key="navigation.infoForReaders.long">Information For Readers</message>
 	<message key="navigation.items">{$from} - {$to} of {$total} Items</message>
-	<message key="navigation.login">Log In</message>
+	<message key="navigation.login">Login</message>
 	<message key="navigation.nextPage"><![CDATA[&gt;&gt;]]></message>
 	<message key="navigation.nextStep">Next Step</message>
 	<message key="navigation.previousPage"><![CDATA[&lt;&lt;]]></message>
 	<message key="navigation.previousStep">Previous Step</message>
+	<message key="navigation.publicMenu">Public Menu</message>
 	<message key="navigation.register">Register</message>
 	<message key="navigation.search">Search</message>
+	<message key="navigation.settings">Settings</message>
+	<message key="navigation.setup">Setup</message>
+	<message key="navigation.sitemap">Site Map</message>
 	<message key="navigation.stepNumber">Step {$step}</message>
+	<message key="navigation.submissions">Submissions</message>
+	<message key="navigation.system">System</message>
 	<message key="navigation.userHome">User Home</message>
 	<message key="navigation.user">User</message>
+	<message key="navigation.userManagement">User Management</message>
 	<message key="notification.allow">Allow these types of notifications to appear in my notification feed.</message>
 	<message key="notification.confirmError">There was an error confirming your subscription.</message>
 	<message key="notification.confirmSuccess">You have been successfully subscribed.</message>
@@ -305,30 +350,43 @@
 	<message key="notification.reminderError">There was an error sending your password, please ensure you've entered your email address correctly.</message>
 	<message key="notification.reminderSent">Your new password has been sent to the email address provided.</message>
 	<message key="notification.unsubscribe">Unsubscribe</message>
-	<message key="notification.unsubscribeDescription">Enter your email address and password below to unsubscribe from email notifications.  If you do not remember your password, leave the password field blank and a new one will be emailed to you at the given email address.</message>
-	<message key="notification.unsubscribeError">There was an error unsubscribing you.  Please ensure your email address and password are correct.</message>
+	<message key="notification.unsubscribeError">There was an error unsubscribing you.  Please ensure that you are using the correct URL as included in your notification email.</message>
 	<message key="notification.unsubscribeSuccess">You were successfully unsubscribed.</message>
 	<message key="search.abstract">Abstract</message>
+	<message key="search.activeFilters">Advanced filters</message>
+	<message key="search.advancedSearchMore">Additional Search Options (click to show)</message>
+	<message key="search.advancedSearchLess">Additional Search Options (click to hide)</message>
 	<message key="search.allFields">All</message>
+	<message key="search.cli.rebuildIndex.clearingIndex">Clearing index</message>
+	<message key="search.cli.rebuildIndex.done">done</message>
+	<message key="search.cli.rebuildIndex.error">error</message>
+	<message key="search.cli.rebuildIndex.indexing">Indexing "{$journalName}"</message>
+	<message key="search.cli.rebuildIndex.indexingByJournalNotSupported">This search implementation does not allow per-journal re-indexing.</message>
+	<message key="search.cli.rebuildIndex.result">{$numIndexed} articles indexed</message>
+	<message key="search.cli.rebuildIndex.unknownJournal">The given journal path "{$journalPath}" could not be resolved to a journal.</message>
 	<message key="search.coverage">Coverage</message>
-	<message key="search.date">Date</message>
+	<message key="search.date">Publication Date</message>
 	<message key="search.dateFrom">From</message>
 	<message key="search.dateTo">Until</message>
+	<message key="search.deleteFilter">Delete</message>
 	<message key="search.discipline">Discipline(s)</message>
 	<message key="search.fullText">Full Text</message>
 	<message key="search.indexTerms">Index terms</message>
+	<message key="search.indexTermsLong">All index term fields</message>
 	<message key="search.matchAll">Match all categories</message>
 	<message key="search.noKeywordError">You must enter at least one search keyword.</message>
 	<message key="search.noResults">No Results</message>
 	<message key="search.operator.and">and</message>
 	<message key="search.operator.not">not</message>
 	<message key="search.operator.or">or</message>
-	<message key="search.reviseSearch">Revise Search</message>
-	<message key="search.searchAllCategories">Search all categories for</message>
+	<message key="search.searchAllCategories">Search for</message>
 	<message key="search.searchCategories">Search categories</message>
-	<message key="search.searchResults">Search Results</message>
 	<message key="search.subject">Keyword(s)</message>
 	<message key="search.titleIndex">Browse Title Index</message>
 	<message key="search.title">Title</message>
 	<message key="search.typeMethodApproach">Type (method/approach)</message>
+		
+	<!-- Common -->
+	<message key="grid.action.downloadFile">Download this file</message>
+	
 </locale>

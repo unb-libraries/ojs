@@ -3,7 +3,7 @@
 /**
  * @file classes/citation/XmlWebService.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XmlWebService
@@ -12,9 +12,9 @@
  * @brief A web service that returns XML data.
  */
 
-// $Id$
 
 import('lib.pkp.classes.webservice.WebService');
+import('lib.pkp.classes.xslt.XSLTransformer');
 
 class XmlWebService extends WebService {
 	/** @var integer */
@@ -45,7 +45,9 @@ class XmlWebService extends WebService {
 	 */
 	function setReturnType($returnType) {
 		if ($returnType == XSL_TRANSFORMER_DOCTYPE_DOM) {
-			assert(checkPhpVersion('5.0.0') && extension_loaded('dom'));
+			if (!checkPhpVersion('5.0.0') || !extension_loaded('dom')) {
+				fatalError('This system does not meet minimum requirements!');
+			}
 		}
 
 		$this->_returnType = $returnType;

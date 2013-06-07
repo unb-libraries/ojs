@@ -1,12 +1,11 @@
 {**
- * subscriptionForm.tpl
+ * templates/subscription/subscriptionFormUser.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common subscription fields
  *
- * $Id$
  *}
 <tr valign="top">
 	<td>&nbsp;</td>
@@ -49,7 +48,7 @@
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="userUrl" key="user.url"}</td>
-	<td class="value"><input type="text" name="userUrl" id="userUrl" value="{$userUrl|escape}" size="30" maxlength="90" class="textField" /></td>
+	<td class="value"><input type="text" name="userUrl" id="userUrl" value="{$userUrl|escape}" size="30" maxlength="255" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="userEmail" required="true" key="user.email"}</td>

@@ -4,19 +4,18 @@
 <!--
   * locale/fr_CA/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
   *
-  * $Id$
   -->
 
 <locale name="fr_CA" full_name = "Français (Canada)">
 	<message key="installer.additionalLocales">Langues supplémentaires</message>
 	<message key="installer.administratorAccount">Compte administrateur</message>
 	<message key="installer.administratorAccountInstructions">Ce compte utilisateur deviendra l'administrateur du site et aura le plein accès à tout le système. D'autres comptes utilisateurs peuvent être créés après l'installation.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NON</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NON</span>]]></message>
 	<message key="installer.checkYes">Oui</message>
 	<message key="installer.clientCharset">Jeu de caractères du client</message>
 	<message key="installer.clientCharsetInstructions">L'encodage à utiliser pour les données envoyées et reçues des navigateurs.</message>
@@ -66,7 +65,8 @@
 	<message key="installer.publicFilesDirError">Le répertoire des fichiers publics n'existe pas ou n'est pas disponible en écriture.</message>
 	<message key="installer.releaseNotes">Instructions d'utilisation</message>
 	<message key="installer.securitySettings">Paramètres de sécurité</message>
-	<message key="installer.skipFilesDir">Ne pas créer de sous-répertoire (utile uniquement pour l'installation manuelle)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Une erreur s'est produite lors de l'analyse du fichier du modèle de courriel <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">Les langues sélectionnées peuvent être incomplètes.</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Détection des erreurs dans le fichier filtre de configuration <tt>{$file}</tt> ???]]></message>
+	<message key="installer.oaiSettings">Paramètres OAI</message>
 </locale>

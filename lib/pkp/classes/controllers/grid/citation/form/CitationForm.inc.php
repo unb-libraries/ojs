@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/citation/form/CitationForm.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CitationForm
@@ -53,10 +53,7 @@ class CitationForm extends Form {
 
 		// Identify all form field names for the citation
 		$this->_citationFormFieldNames = array();
-		foreach($citation->getSupportedMetadataAdapters() as $metadataAdapter) {
-			// Retrieve the meta-data schema
-			$metadataSchema =& $metadataAdapter->getMetadataSchema();
-
+		foreach($citation->getSupportedMetadataSchemas() as $metadataSchema) {
 			// Loop over the properties names in the schema and save
 			// them in a flat list.
 			$properties = $metadataSchema->getProperties();
@@ -124,10 +121,7 @@ class CitationForm extends Form {
 		$this->setData('rawCitation', $citation->getRawCitation());
 
 		// Citation meta-data
-		foreach($citation->getSupportedMetadataAdapters() as $metadataAdapter) {
-			// Retrieve the meta-data schema
-			$metadataSchema =& $metadataAdapter->getMetadataSchema();
-
+		foreach($citation->getSupportedMetadataSchemas() as $metadataSchema) {
 			// Loop over the properties in the schema and add string
 			// values for all form fields.
 			$properties = $metadataSchema->getProperties();
@@ -191,13 +185,12 @@ class CitationForm extends Form {
 
 		// Extract data from citation form fields and inject it into the citation
 		import('lib.pkp.classes.metadata.MetadataDescription');
-		$metadataAdapters = $citation->getSupportedMetadataAdapters();
-		foreach($metadataAdapters as $metadataAdapter) {
+		$metadataSchemas = $citation->getSupportedMetadataSchemas();
+		foreach($metadataSchemas as $metadataSchema) { /* @var $metadataSchema MetadataSchema */
 			// Instantiate a meta-data description for the given schema
-			$metadataDescription = new MetadataDescription($metadataAdapter->getMetadataSchemaName(), ASSOC_TYPE_CITATION);
+			$metadataDescription = new MetadataDescription($metadataSchema->getClassName(), ASSOC_TYPE_CITATION);
 
 			// Set the meta-data statements
-			$metadataSchema =& $metadataAdapter->getMetadataSchema();
 			foreach($metadataSchema->getProperties() as $propertyName => $property) {
 				$fieldName = $metadataSchema->getNamespacedPropertyId($propertyName);
 				$fieldValue = trim($this->getData($fieldName));
@@ -242,8 +235,8 @@ class CitationForm extends Form {
 							}
 
 							// Try to transform the field to a name composite.
-							import('lib.pkp.classes.metadata.nlm.PersonStringNlmNameSchemaFilter');
-							$personStringFilter = new PersonStringNlmNameSchemaFilter($assocType, PERSON_STRING_FILTER_MULTIPLE);
+							import('lib.pkp.plugins.metadata.nlm30.filter.PersonStringNlm30NameSchemaFilter');
+							$personStringFilter = new PersonStringNlm30NameSchemaFilter($assocType, PERSON_STRING_FILTER_MULTIPLE);
 							assert($personStringFilter->supportsAsInput($fieldValue));
 							$typedFieldValues =& $personStringFilter->execute($fieldValue);
 							break;
@@ -267,7 +260,7 @@ class CitationForm extends Form {
 			}
 
 			// Inject the meta-data into the citation.
-			$citation->injectMetadata($metadataDescription, true);
+			$citation->injectMetadata($metadataDescription);
 
 			// Save the meta-data description for later usage.
 			$this->_metadataDescriptions[] =& $metadataDescription;
@@ -284,11 +277,11 @@ class CitationForm extends Form {
 	function execute() {
 		// Persist citation
 		$citation =& $this->getCitation();
-		$citationDAO =& DAORegistry::getDAO('CitationDAO');
+		$citationDao =& DAORegistry::getDAO('CitationDAO');
 		if (is_numeric($citation->getId())) {
-			$citationDAO->updateObject($citation);
+			$citationDao->updateObject($citation);
 		} else {
-			$citationDAO->insertObject($citation);
+			$citationDao->insertObject($citation);
 		}
 		return true;
 	}
@@ -307,7 +300,7 @@ class CitationForm extends Form {
 		$context =& $router->getContext($request);
 		$citation =& $this->getCitation();
 		$assocObject =& $this->getAssocObject();
-		$citationDao =& DAORegistry::getDAO('CitationDAO');
+		$citationDao =& DAORegistry::getDAO('CitationDAO'); /* @var $citationDao CitationDAO */
 
 		/////////////////////////////////////////////////////
 		// Raw citation editing and citation comparison
@@ -354,9 +347,9 @@ class CitationForm extends Form {
 			// 3) Raw citation editing
 			//
 			// Retrieve all available citation filters
-			$availableParserFilters =& $citationDao->getCitationFilterInstances($context->getId(), true, false, array(), true);
+			$availableParserFilters =& $citationDao->getCitationFilterInstances($context->getId(), CITATION_PARSER_FILTER_GROUP, array(), true);
 			$templateMgr->assign_by_ref('availableParserFilters', $availableParserFilters);
-			$availableLookupFilters =& $citationDao->getCitationFilterInstances($context->getId(), false, true, array(), true);
+			$availableLookupFilters =& $citationDao->getCitationFilterInstances($context->getId(), CITATION_LOOKUP_FILTER_GROUP, array(), true);
 			$templateMgr->assign_by_ref('availableLookupFilters', $availableLookupFilters);
 
 			// Did the user disable the raw citation editing warning?
@@ -506,6 +499,7 @@ class CitationForm extends Form {
 			$templateMgr->assign('citationApproved', $citationApproved);
 
 			// Auto-add client-side validation
+			// FIXME: Move to JS framework's AjaxFormHandler, also see #6442
 			$templateMgr->assign('validateId', 'citationForm');
 		}
 
@@ -531,8 +525,8 @@ class CitationForm extends Form {
 				// name arrays to strings.
 				$allowedAssocTypes = $allowedTypes[METADATA_PROPERTY_TYPE_COMPOSITE];
 				assert(in_array(ASSOC_TYPE_AUTHOR, $allowedAssocTypes) || in_array(ASSOC_TYPE_EDITOR, $allowedAssocTypes));
-				import('lib.pkp.classes.metadata.nlm.NlmNameSchemaPersonStringFilter');
-				$personStringFilter = new NlmNameSchemaPersonStringFilter(PERSON_STRING_FILTER_MULTIPLE);
+				import('lib.pkp.plugins.metadata.nlm30.filter.Nlm30NameSchemaPersonStringFilter');
+				$personStringFilter = new Nlm30NameSchemaPersonStringFilter(PERSON_STRING_FILTER_MULTIPLE);
 				assert($personStringFilter->supportsAsInput($value));
 				$stringValue = $personStringFilter->execute($value);
 			} else {

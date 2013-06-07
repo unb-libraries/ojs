@@ -2,21 +2,19 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/sword/locale/en_US/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (U.S. English) locale.
-  *
-  * $Id: locale.xml,v 1.23 2010/01/21 18:52:13 asmecher Exp $
+  * Localization strings
   -->
 
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.sword.displayName">SWORD Plugin</message>
 	<message key="plugins.generic.sword.description">Allow Journal Managers and (optionally) Authors to deposit articles via the SWORD protocol</message>
+	<message key="plugins.generic.sword.descriptionUnsupported">Allow Journal Managers and (optionally) Authors to deposit articles via the SWORD protocol. Note that this plugin requires the Zip extension, which is currently NOT installed.</message>
 	<message key="plugins.generic.sword.enabled">The SWORD plugin has been enabled.</message>
-	<message key="plugins.generic.sword.disable">The SWORD plugin has been disabled.</message>
 	<message key="plugins.generic.sword.settings">Settings</message>
 	<message key="plugins.generic.sword.settings.allowAuthorSpecify">Allow the author to specify a deposit point</message>
 	<message key="plugins.generic.sword.settings.depositPoints">Deposit Points</message>

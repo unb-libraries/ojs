@@ -2,7 +2,7 @@
 /**
  * @file classes/filter/CompositeFilter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CompositeFilter
@@ -12,9 +12,9 @@
  *  filters into filter networks.
  */
 
-import('lib.pkp.classes.filter.GenericFilter');
+import('lib.pkp.classes.filter.PersistableFilter');
 
-class CompositeFilter extends GenericFilter {
+class CompositeFilter extends PersistableFilter {
 	/** @var array An ordered array of sub-filters */
 	var $_filters = array();
 
@@ -23,9 +23,12 @@ class CompositeFilter extends GenericFilter {
 
 	/**
 	 * Constructor
+	 * @param $filterGroup FilterGroup
+	 * @param $displayName string
 	 */
-	function CompositeFilter($displayName = null, $transformation = null) {
-		parent::GenericFilter($displayName, $transformation);
+	function CompositeFilter(&$filterGroup, $displayName = null) {
+		$this->setDisplayName($displayName);
+		parent::PersistableFilter($filterGroup);
 	}
 
 	//
@@ -40,11 +43,13 @@ class CompositeFilter extends GenericFilter {
 	 * @param $filter Filter
 	 * @return integer the filter's sequence number, null
 	 *  if the sequence number of the filter had already been
-	 *  set before by a different filter.
+	 *  set before by a different filter and the filter has
+	 *  not been added.
 	 */
 	function addFilter(&$filter) {
-		// Add the filter to the ordered sub-filter list.
 		assert(is_a($filter, 'Filter'));
+
+		// Identify an appropriate sequence number.
 		$seq = $filter->getSeq();
 		if (is_numeric($seq) && $seq > 0) {
 			// This filter has a pre-set sequence number
@@ -56,6 +61,8 @@ class CompositeFilter extends GenericFilter {
 			$seq = $this->_maxSeq;
 			$filter->setSeq($seq);
 		}
+
+		// Add the filter to the list.
 		$this->_filters[$seq] =& $filter;
 		return $seq;
 	}
@@ -137,10 +144,10 @@ class CompositeFilter extends GenericFilter {
 
 
 	//
-	// Overridden methods from Filter
+	// Overridden methods from PersistableFilter
 	//
 	/**
-	 * @see Filter::getSetting()
+	 * @see PersistableFilter::getSetting()
 	 */
 	function &getSetting($settingName) {
 		// Try first whether we have the setting locally.
@@ -151,7 +158,7 @@ class CompositeFilter extends GenericFilter {
 	}
 
 	/**
-	 * @see Filter::getSettings()
+	 * @see PersistableFilter::getSettings()
 	 */
 	function &getSettings() {
 		// Get local settings.
@@ -166,7 +173,7 @@ class CompositeFilter extends GenericFilter {
 	}
 
 	/**
-	 * @see Filter::hasSettings()
+	 * @see PersistableFilter::hasSettings()
 	 */
 	function hasSettings() {
 		// Return true if this filter has own
@@ -176,7 +183,7 @@ class CompositeFilter extends GenericFilter {
 	}
 
 	/**
-	 * @see Filter::getSettingNames()
+	 * @see PersistableFilter::getSettingNames()
 	 */
 	function getSettingNames() {
 		// Composite filters persist only
@@ -200,7 +207,7 @@ class CompositeFilter extends GenericFilter {
 	}
 
 	/**
-	 * @see Filter::getLocalizedSettingNames()
+	 * @see PersistableFilter::getLocalizedSettingNames()
 	 */
 	function getLocalizedSettingNames() {
 		// We cannot use the parent implementation
@@ -216,6 +223,19 @@ class CompositeFilter extends GenericFilter {
 	}
 
 	/**
+	 * @see PersistableFilter::getInternalSettings()
+	 */
+	function getInternalSettings() {
+		$filterInternalSettings = parent::getInternalSettings();
+		$filterInternalSettings[] = 'settingsMapping';
+		return $filterInternalSettings;
+	}
+
+
+	//
+	// Overridden methods from Filter
+	//
+	/**
 	 * @see Filter::isCompatibleWithRuntimeEnvironment()
 	 */
 	function isCompatibleWithRuntimeEnvironment() {
@@ -226,14 +246,6 @@ class CompositeFilter extends GenericFilter {
 		return true;
 	}
 
-	/**
-	 * @see Filter::getInternalSettings()
-	 */
-	function getInternalSettings() {
-		$filterInternalSettings = parent::getInternalSettings();
-		$filterInternalSettings[] = 'settingsMapping';
-		return $filterInternalSettings;
-	}
 
 	//
 	// Overridden methods from DataObject
@@ -243,7 +255,7 @@ class CompositeFilter extends GenericFilter {
 	 */
 	function getData($key, $locale = null) {
 		// Directly read local settings.
-		if (in_array($key, $this->getInternalSettings()) || parent::hasData($key, $locale)) return parent::getData($key, $locale);
+		if (in_array($key, $this->getInternalSettings()) || in_array($key, $this->getSettingNames())) return parent::getData($key, $locale);
 
 		// All other settings will be delegated to sub-filters.
 		$compositeSettingName = $this->_getCompositeSettingName($key);

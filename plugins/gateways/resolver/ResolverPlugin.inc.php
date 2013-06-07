@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ResolverPlugin.inc.php
+ * @file plugins/gateways/resolver/ResolverPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ResolverPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Simple resolver gateway plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.GatewayPlugin');
 
@@ -69,9 +66,9 @@ class ResolverPlugin extends GatewayPlugin {
 			case 'doi':
 				$doi = implode('/', $args);
 				$journal =& $request->getJournal();
-				$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-				$articles =& $publishedArticleDao->getPublishedArticlesByDOI($doi, $journal?$journal->getId():null);
-				while ($article =& $articles->next()) {
+				$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO'); /* @var $publishedArticleDao PublishedArticleDAO */
+				$article =& $publishedArticleDao->getPublishedArticleByPubId('doi', $doi, $journal?$journal->getId():null);
+				if(is_a($article, 'PublishedArticle')) {
 					$request->redirect(null, 'article', 'view', $article->getBestArticleId());
 				}
 				break;
@@ -120,7 +117,7 @@ class ResolverPlugin extends GatewayPlugin {
 		// Failure.
 		header("HTTP/1.0 500 Internal Server Error");
 		$templateMgr =& TemplateManager::getManager();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+		AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 		$templateMgr->assign('message', 'plugins.gateways.resolver.errors.errorMessage');
 		$templateMgr->display('common/message.tpl');
 		exit;
@@ -133,7 +130,7 @@ class ResolverPlugin extends GatewayPlugin {
 	function exportHoldings() {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
-		$journals =& $journalDao->getEnabledJournals();
+		$journals =& $journalDao->getJournals(true);
 		header('content-type: text/plain');
 		header('content-disposition: attachment; filename=holdings.txt');
 		echo "title\tissn\te_issn\tstart_date\tend_date\tembargo_months\tembargo_days\tjournal_url\tvol_start\tvol_end\tiss_start\tiss_end\n";

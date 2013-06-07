@@ -2,16 +2,15 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/implicitAuth/shibboleth/locale/fr_CA/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
   *
   * Contributed by Dan Galewsky, University of Texas
   *
-  * $Id$
   -->
  
 <locale name="fr_CA" full_name="Français (Canada)">

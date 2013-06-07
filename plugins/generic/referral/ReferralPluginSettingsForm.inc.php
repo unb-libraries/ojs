@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ReferralPluginSettingsForm.inc.php
+ * @file plugins/generic/referral/ReferralPluginSettingsForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReferralPluginSettingsForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for journal managers to modify referral plugin settings
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 

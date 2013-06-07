@@ -1,14 +1,16 @@
 {**
- * formArea.tpl
+ * templates/form/formArea.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * form area
  *}
 
-<ul{if $FBV_id} id="{$FBV_id}"{/if}>
+<fieldset {if $FBV_id} id="{$FBV_id}"{/if}{if $FBV_class} class="pkp_formArea {$FBV_class|escape}"{/if}>
+	{if $FBV_title}
+		<legend>{if $FBV_translate}{translate key=$FBV_title}{else}{$FBV_title}{/if}</legend>
+	{/if}
 	{$FBV_content}
-</ul>
-<div class="clear"></div>
-
+</fieldset>
+<div class="pkp_helpers_clear"></div>

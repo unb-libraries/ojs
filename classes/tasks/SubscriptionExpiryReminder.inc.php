@@ -3,7 +3,7 @@
 /**
  * @file classes/tasks/SubscriptionExpiryReminder.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionExpiryReminder
@@ -11,9 +11,6 @@
  *
  * @brief Class to perform automated reminders for reviewers.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 
@@ -46,7 +43,7 @@ class SubscriptionExpiryReminder extends ScheduledTask {
 
 		$subscriptionContactSignature = $subscriptionName;
 
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_USER, LOCALE_COMPONENT_APPLICATION_COMMON));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_USER, LOCALE_COMPONENT_APPLICATION_COMMON);
 		
 		if ($subscriptionMailingAddress != '') {
 			$subscriptionContactSignature .= "\n" . $subscriptionMailingAddress;
@@ -227,7 +224,7 @@ class SubscriptionExpiryReminder extends ScheduledTask {
 
 	function execute() {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journals =& $journalDao->getEnabledJournals();
+		$journals =& $journalDao->getJournals(true);
 
 		$todayDate = array(
 						'year' => date('Y'),
@@ -259,7 +256,7 @@ class SubscriptionExpiryReminder extends ScheduledTask {
 				$curDate['year'] = $todayDate['year'];
 			}
 
-			$journals =& $journalDao->getEnabledJournals();
+			$journals =& $journalDao->getJournals(true);
 
 			while (!$journals->eof()) {
 				$journal =& $journals->next();
@@ -278,7 +275,7 @@ class SubscriptionExpiryReminder extends ScheduledTask {
 			$curDate['month'] = 2;
 			$curDate['year'] = $todayDate['year'];
 
-			$journals =& $journalDao->getEnabledJournals();
+			$journals =& $journalDao->getJournals(true);
 
 			while (!$journals->eof()) {
 				$journal =& $journals->next();
@@ -293,7 +290,7 @@ class SubscriptionExpiryReminder extends ScheduledTask {
 
 				$curDate['day'] = 29;
 
-				$journals =& $journalDao->getEnabledJournals();
+				$journals =& $journalDao->getJournals(true);
 
 				while (!$journals->eof()) {
 					$journal =& $journals->next();

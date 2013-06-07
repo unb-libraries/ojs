@@ -1,12 +1,11 @@
 {**
- * step4.tpl
+ * templates/author/submit/step4.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 4 of author article submission.
  *
- * $Id$
  *}
 {assign var="pageTitle" value="author.submit.step4"}
 {include file="author/submit/submitHeader.tpl"}
@@ -15,7 +14,7 @@
 {literal}
 <!--
 function confirmForgottenUpload() {
-	var fieldValue = document.submitForm.uploadSuppFile.value;
+	var fieldValue = document.getElementById('submitForm').uploadSuppFile.value;
 	if (fieldValue) {
 		return confirm("{/literal}{translate key="author.submit.forgottenSubmitSuppFile"}{literal}");
 	}
@@ -25,7 +24,7 @@ function confirmForgottenUpload() {
 {/literal}
 </script>
 
-<form name="submitForm" method="post" action="{url op="saveSubmit" path=$submitStep}" enctype="multipart/form-data">
+<form id="submitForm" method="post" action="{url op="saveSubmit" path=$submitStep}" enctype="multipart/form-data">
 <input type="hidden" name="articleId" value="{$articleId|escape}" />
 {include file="common/formErrors.tpl"}
 

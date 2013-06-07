@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/en_US/admin.xml
+  * locale/ml_IN/admin.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ml_IN (Malayalam) locale.
   *
-  * $Id$
   -->
 
 <locale name="ml_IN" full_name = "Malayalam">

@@ -1,7 +1,7 @@
 {**
- * citationFormErrorsAndComparison.tpl
+ * templates/controllers/grid/citation/form/citationFormErrorsAndComparison.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * A part of the citation form that will be refreshed
@@ -33,6 +33,7 @@
 	{/foreach}
 {/strip}{/capture}
 <script type="text/javascript">
+	<!--
 	$(function() {ldelim}
 		//
 		// Initial setup
@@ -57,7 +58,7 @@
 		// with live as we use JS to insert messages sometimes.
 		$('#citationFormMessages li').die('click').live('click', function() {ldelim}
 			$(this).remove();
-			if($('#citationFormMessages .formErrorList').children().length === 0) {ldelim}
+			if($('#citationFormMessages .pkp_form_error_list').children().length === 0) {ldelim}
 				$('#citationFormMessages').remove();
 			{rdelim}
 		{rdelim});
@@ -138,7 +139,7 @@
 			// Feature to disable raw citation editing warning.
 			$('#rawCitationEditingWarningHide').die('click').live('click', function() {ldelim}
 				$.getJSON(
-					'{url router=$smarty.const.ROUTE_COMPONENT component="api.user.UserApiHandler" op="setUserSetting"}?setting-name=citation-editor-hide-raw-editing-warning&setting-value='+($(this).attr('checked')===true ? 'true' : 'false'),
+					'{url router=$smarty.const.ROUTE_COMPONENT component="api.user.UserApiHandler" op="updateUserMessageState"}?setting-name=citation-editor-hide-raw-editing-warning&setting-value='+($(this).attr('checked')===true ? 'true' : 'false'),
 					function(jsonData) {ldelim}
 						if (jsonData.status !== true) {ldelim}
 							alert(jsonData.content);
@@ -172,14 +173,15 @@
 			$('#citationFormErrorsAndComparison').triggerHandler('refresh');
 		{rdelim});
 	{rdelim});
+	// -->
 </script>
 <div id="citationFormErrorsAndComparison" class="form-block">
 	{if $unsavedChanges || $isError}
 		<div id="citationFormMessages" class="help-message" title="{translate key="submission.citations.editor.details.clickToDismissMessage"}">
 			<div id="formErrors">
 				<p>
-					<span class="formError">{translate key="submission.citations.editor.details.messages"}:</span>
-					<ul class="formErrorList">
+					<span class="pkp_form_error">{translate key="submission.citations.editor.details.messages"}:</span>
+					<ul class="pkp_form_error_list">
 						{if $unsavedChanges}
 							<li class="unsaved-data-warning">{translate key="submission.citations.editor.details.unsavedChanges"}</li>
 						{/if}
@@ -227,7 +229,7 @@
 				<button id="cancelRawCitationEditing" type="button" title="{translate key="common.cancel"}">{translate key="common.cancel"}</button>
 				<button id="processRawCitation" type="button" title="{translate key="submission.citations.editor.details.processRawCitation"}">{translate key="submission.citations.editor.details.processRawCitation"}</button>
 			</div>
-			<div class="clear"></div>
+			<div class="pkp_helpers_clear"></div>
 		{/if}
 	</div>
 	<div id="rawCitationWithMarkup" class="citation-comparison">

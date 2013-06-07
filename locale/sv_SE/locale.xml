@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * locale/sv_SE/locale.xml
   *
-  * Copyright (c) 2003-2007 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (U.S. English) locale.
+  * Localization strings.
   *
-  * $Id$
   -->
  
 <locale name="sv_SE" full_name="Svenska">
@@ -39,7 +38,7 @@
 	<message key="manager.setup.doiSuffixPattern">Till exempel, vol 3, häfte 2, sidor 2-30 kan skapa en DOI som 10.1234/vol3iss2pp230</message>
 	<message key="manager.setup.doiSuffixPattern.example">Exempel</message>
 	<message key="manager.setup.doiSuffixDefault">Använd standardformat</message>
-	<message key="manager.setup.doiSuffixCustomIdentifier">Använd DOI suffix för publicerat material (måste vara aktiverat i Steg 4).</message>
+	<message key="manager.setup.doiSuffixPublisherId">Använd DOI suffix för publicerat material (måste vara aktiverat i Steg 4).</message>
 	<message key="manager.setup.doiSuffixDescription">Ett DOI suffix kan ha vilken form som helst men måste vara unikt för varje publicerad enhet. </message>
 	<message key="manager.setup.publisherNoteDescription">Texten kommer återfinnas nedanför rubriken 'Utgivare' och ovanför utgivarens namn/url under 'Sponsorer' på sidan Om.</message>
 	<message key="manager.setup.sponsorNoteDescription">Texten kommer återfinnas nedanför rubriken "Sponsorer" och ovanför  listan över sponsorers namn och urls under 'Sponsorer' på sidan Om.</message>
@@ -680,7 +679,6 @@ Aktiva visar antalet granskare som för tillfället arbetar med granskning.]]></
 	<!-- Profile -->
 	
 	<!-- Registration -->
-	<message key="user.register.repeatPassword">Upprepa lösenord</message>
 	<message key="user.register.selectJournal">Välj tidskrift du vill registrera dig hos</message>
 	<message key="user.register.noJournals">Det finns inga tidskrifter att registrera sig hos på den här sidan.</message>
 	<message key="user.register.privacyStatement">Sekretesspolicy</message>

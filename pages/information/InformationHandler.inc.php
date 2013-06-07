@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file InformationHandler.inc.php
+ * @file pages/information/InformationHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InformationHandler
@@ -11,9 +11,6 @@
  *
  * @brief Display journal information.
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -59,7 +56,7 @@ class InformationHandler extends Handler {
 				$pageTitle = $pageCrumbTitle = 'navigation.competingInterestGuidelines';
 				break;
 			case 'sampleCopyrightWording':
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_MANAGER));				
+				AppLocale::requireComponents(LOCALE_COMPONENT_OJS_MANAGER);
 				$content = __('manager.setup.authorCopyrightNotice.sample');
 				$pageTitle = $pageCrumbTitle = 'manager.setup.copyrightNotice';
 				break;

@@ -4,12 +4,11 @@
 <!--
   * locale/sr_SR/reader.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the sr_SR (Serbian) locale.
   *
-  * $Id$
   -->
 
 <locale name="sr_SR" full_name = "Serbian">
@@ -178,4 +177,5 @@
 	<message key="rt.version.title">Naslov</message>
 	<message key="rt.version">Verzija</message>
 	<message key="rt.viewMetadata">Indeksiranje metapodataka</message>
+	<message key="rt.admin.settings.viewReviewPolicy">Prikaži politiku recenzija</message>
 </locale>

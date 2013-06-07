@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/vi_VN/author.xml
+  * locale/vi_VN/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the vi_VN (Tiếng Việt) locale.
   *
-  * $Id$
   -->
 
 <locale name="vi_VN" full_name = "Tiếng Việt">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">Tác giả có thể hoàn thành việc nộp bài viết vào thời gian khác bằng cách lựa chọn mục Các bài đang nộp dở trong trang dành cho Tác giả.</message>
 	<message key="author.submit.notAccepting">Tạp chí này hiện thời không nhận bài nộp.</message>
 	<message key="author.submit.requestWaiver">Đề nghị miễn thu phí</message>
-	<message key="author.submit.qualityForWaiver">Vui lòng xem xét miễn Phí Nộp bài cho bài viết này</message>
+	<message key="author.submit.qualifyForWaiver">Vui lòng xem xét miễn Phí Nộp bài cho bài viết này</message>
 	<message key="author.submit.addReasonsForWaiver">Sử dụng ô dưới đây để giải thích tại sao nên miễn thu phí.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Tải lên bản thảo đã sửa</message>
 	<message key="author.submissions.proofreadingCorrections">Sửa lỗi</message>
@@ -60,8 +59,6 @@
 	<message key="author.submit.addAuthor">Thêm tác giả</message>
 	<message key="author.submit.deleteAuthor">Xóa tác giả</message>
 	<message key="author.submit.submissionIndexingDescription">Nhập các từ khóa để lập chỉ mục cho bài nộp; phân tách các từ khóa bằng dấu chấm phẩy (từ khóa 1; từ khóa 2; từ khóa 3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Các cơ quan bảo trợ</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Nêu danh tính các cơ quan cung cấp tài chính hoặc hỗ trợ cho tác phẩm sử dụng trong bài nộp này.</message>
 	<message key="author.submit.coverageInstructions">Chỉ vị trí địa lý, phạm vi thời gian hoặc lịch sử, và/hoặc những đặc trưng của mẫu nghiên cứu.</message>
 	<message key="author.submit.subjectClassInstructions">Sử dụng các hệ thông phân loại có siêu liên kết để lựa chọn các thuật ngữ phân loại và chỉ số phân loại, nếu có thể.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[English=en; French=fr; Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Các mã khác</a>.]]></message>

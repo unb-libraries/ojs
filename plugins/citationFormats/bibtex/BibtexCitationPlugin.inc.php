@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file BibtexCitationPlugin.inc.php
+ * @file plugins/citationFormats/bibtex/BibtexCitationPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BibtexCitationPlugin
@@ -12,9 +12,6 @@
  * @brief BibTeX citation format plugin
  */
 
-// $Id$
-
-
 import('classes.plugins.CitationPlugin');
 
 class BibtexCitationPlugin extends CitationPlugin {
@@ -22,7 +19,8 @@ class BibtexCitationPlugin extends CitationPlugin {
 		$success = parent::register($category, $path);
 		$this->addLocaleData();
 
-		$templateMgr =& TemplateManager::getManager();
+		$request =& PKPApplication::getRequest();
+		$templateMgr =& TemplateManager::getManager($request);
 		$templateMgr->register_modifier('bibtex_escape', array(&$this, 'bibtexEscape'));
 
 		return $success;

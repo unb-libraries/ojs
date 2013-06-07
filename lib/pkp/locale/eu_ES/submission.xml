@@ -4,12 +4,11 @@
 <!--
   * locale/eu_ES/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Basque (Euskara)) locale.
   *
-  * $Id$
   -->
 
 <locale name="eu_ES" full_name = "Basque (Euskara)">
@@ -159,7 +158,6 @@
 	<message key="submission.submitter">Bidaltzailea</message>
 	<message key="submission.summary">Sumarioa</message>
 	<message key="submission.supplementaryFiles">Fitxategi osagarriak</message>
-	<message key="submission.supportingAgencies">Agentzia laguntzaileak</message>
 	<message key="submission.titleAndAbstract">Titulua eta laburpena</message>
 	<message key="submission.underway">Lanean</message>
 	<message key="submission.uploadFileTo">Kargatu fitxategia:</message>
@@ -355,9 +353,34 @@
 	<message key="submission.citations.filter.webserviceError">{$filterName} iragazkiaren web zerbitzuaren deiak errore bat sortu du honako URL honekin deitzean: {$webserviceUrl}. Agian, web zerbitzua ez dago erabilgarri aldi baterako. Gainerako zerbitzuekin lanean jarrai dezakezu, eta zure emaitzak gorde ditzakezu. Era berean, geroago saia zaitezke. Erroreak hor jarraitzen badu, eskatu aldizkariaren kudeatzaileari zerbitzu hori desaktibatzeko, eta errore-txostena irekitzeko.</message>
 	<message key="submission.citations.filter.webserviceResultTransformationError">Errore bat gertatu da  {$filterName} iragazkian: XML emaitzak (adib., web zerbitzu batekoak) eremuan oinarritutako metadatuetan eraldatzeak huts egin du. Ziurrenik web zerbitzua baliogabea bihurtu da edo datuak osatu gabe daude. Mesedez, artxibatu hori errore gisa.</message>
 	<message key="submission.citations.metadata.changeWarning">Ziur al zaude zure erreferentzien zerrenda eguneratu nahi duzula? “OK” botoian klik egiten baduzu, editoreek egindako aldaketa guztiak gainidatziko dira. Ez badakizu erreferentzien zerrendan aldaketak egin behar den edo ez, jar zaitez harremanetan dagokizun editorearekin.</message>
-	<message key="submission.uploadSuccessfulContinue">Zure artxiboa kargatu da. Sakatu “jarraitu” artxiboaren metadatuak editatzeko.</message>
 	<message key="submission.artworkFileDetails">Artelanen Artxiboaren Xehetasunak</message>
 	<message key="submission.nameRequired">Elementu honek izena behar du.</message>
 	<message key="submission.date.mmdd">HH-EE</message>
 	<message key="submission.date.yyyymmdd">UUUU-HH-EE</message>
+	<message key="metadata.property.displayName.name-type">Izen mota</message>
+	<message key="submission.addFile">Kargatu fitxategia</message>
+	<message key="submission.citations.editor.citationlist.approved">Onartua</message>
+	<message key="submission.citations.editor.citationlist.notApproved">Ez onartua</message>
+	<message key="submission.layout.galleyRemoteURL">Urruneko URL</message>
+	<message key="submission.reviewed">Berrikusia</message>
+	<message key="metadata.property.displayName.title-type">Titulu mota</message>
+	<message key="metadata.property.validationMessage.title-type">Mesedez, ziur izan titulu mota baliodun bat ezartzen duzula. Balio onartuak 'laburtua', 'itzulia', 'alternatiboa' eta 'uniformea' dira.</message>
+	<message key="metadata.property.displayName.nonSort">Tituluaren zati bat ez da kontuan hartu sailkatzean.</message>
+	<message key="metadata.property.displayName.title">Titulua</message>
+	<message key="metadata.property.validationMessage.title">Mesedez, sartu titulu baliodun bat.</message>
+	<message key="metadata.property.validationMessage.nonSort">Mesedez, sartu soilik titulua sailkatzean kontuan hartu beharko ez liratekeen tituluaren hasierako hizkiak.</message>
+	<message key="metadata.property.displayName.subTitle">Azpidatzia</message>
+	<message key="metadata.property.validationMessage.subTitle">Mesedez, sartu azpidatzi baliodun bat.</message>
+	<message key="metadata.property.displayName.partNumber">Zatiaren zenbakia</message>
+	<message key="metadata.property.validationMessage.partNumber">Mesedez, sartu zatiaren zenbaki baliodun bat.</message>
+	<message key="metadata.property.displayName.partName">Zatiaren izena</message>
+	<message key="metadata.property.validationMessage.partName">Mesedez, sartu zatiaren izen baliodun bat.</message>
+	<message key="metadata.property.validationMessage.name-type">Mesedez, ziur izan izen mota baliodun bat ezartzen duzula. Balio onartua 'pertsonala', 'korporatiboa' eta 'konferentzia' dira.</message>
+	<message key="submission.comments.addReviews">Erantsi berrikuspenak posta elektronikoari</message>
+	<message key="submission.copyedited">Zuzendua</message>
+	<message key="submission.layout.galleyRemoteURLValid">Mesedez, eman urruneko URL baliodun bat (sartu http://)</message>
+	<message key="submission.supportingAgencies">Agentzia babesleak</message>
+	<message key="submission.createRemote">Sortu urrunekoa</message>
+	<message key="submission.form.name">Eman fitxategi honi izen erabilgarri bat</message>
+	<message key="submission.form.replaceExisting">Ordeztu jada badagoen fitxategi bat?</message>
 </locale>

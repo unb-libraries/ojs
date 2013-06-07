@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/PluginRegistry.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PluginRegistry
@@ -17,6 +17,9 @@
 define('PLUGINS_PREFIX', 'plugins/');
 
 class PluginRegistry {
+	//
+	// Public methods
+	//
 	/**
 	 * Return all plugins in the given category as an array, or, if the
 	 * category is not specified, all plugins in an associative array of
@@ -84,8 +87,13 @@ class PluginRegistry {
 	 * @param $enabledOnly boolean if true load only enabled
 	 *  plug-ins (db-installation required), otherwise look on
 	 *  disk and load all available plug-ins (no db required).
+	 * @param $mainContextId integer To identify enabled plug-ins
+	 *  we need a context. This context is usually taken from the
+	 *  request but sometimes there is no context in the request
+	 *  (e.g. when executing CLI commands). Then the main context
+	 *  can be given as an explicit ID.
 	 */
-	function &loadCategory ($category, $enabledOnly = false) {
+	function &loadCategory ($category, $enabledOnly = false, $mainContextId = null) {
 		$plugins = array();
 		$categoryDir = PLUGINS_PREFIX . $category;
 		if (!is_dir($categoryDir)) return $plugins;
@@ -93,17 +101,12 @@ class PluginRegistry {
 		if ($enabledOnly && Config::getVar('general', 'installed')) {
 			// Get enabled plug-ins from the database.
 			$application =& PKPApplication::getApplication();
-			$products =& $application->getEnabledProducts('plugins.'.$category);
+			$products =& $application->getEnabledProducts('plugins.'.$category, $mainContextId);
 			foreach ($products as $product) {
 				$file = $product->getProduct();
-				if(!preg_match('/[a-zA-Z0-9]+/', $file)) fatalError('Invalid product name "'.$file.'"!');
-				$pluginPath = "$categoryDir/$file";
-				$pluginWrapper = "$pluginPath/index.php";
-				$plugin = include($pluginWrapper);
-				$pluginClass = $product->getProductClassName();
-				if ($pluginClass) assert(is_a($plugin, $pluginClass));
+				$plugin =& PluginRegistry::_instantiatePlugin($category, $categoryDir, $file, $product->getProductClassname());
 				if ($plugin && is_object($plugin)) {
-					$plugins[$plugin->getSeq()][$pluginPath] =& $plugin;
+					$plugins[$plugin->getSeq()]["$categoryDir/$file"] =& $plugin;
 					unset($plugin);
 				}
 			}
@@ -114,13 +117,9 @@ class PluginRegistry {
 			$handle = opendir($categoryDir);
 			while (($file = readdir($handle)) !== false) {
 				if ($file == '.' || $file == '..') continue;
-				$pluginPath = "$categoryDir/$file";
-				$pluginWrapper = "$pluginPath/index.php";
-				if (!file_exists($pluginWrapper)) continue;
-
-				$plugin = include($pluginWrapper);
+				$plugin =& PluginRegistry::_instantiatePlugin($category, $categoryDir, $file);
 				if ($plugin && is_object($plugin)) {
-					$plugins[$plugin->getSeq()][$pluginPath] =& $plugin;
+					$plugins[$plugin->getSeq()]["$categoryDir/$file"] =& $plugin;
 					unset($plugin);
 				}
 			}
@@ -166,6 +165,13 @@ class PluginRegistry {
 
 	/**
 	 * Get a list of the various plugin categories available.
+	 *
+	 * NB: The categories are returned in the order in which they
+	 * have to be registered and/or installed. Plug-ins in categories
+	 * later in the list may depend on plug-ins in earlier
+	 * categories.
+	 *
+	 * @return array
 	 */
 	function getCategories() {
 		$application =& PKPApplication::getApplication();
@@ -179,11 +185,62 @@ class PluginRegistry {
 	 * @param $enabledOnly boolean load only enabled plug-ins
 	 */
 	function &loadAllPlugins($enabledOnly = false) {
+		// Retrieve and register categories (order is significant).
 		foreach (PluginRegistry::getCategories() as $category) {
 			PluginRegistry::loadCategory($category, $enabledOnly);
 		}
 		$allPlugins =& PluginRegistry::getAllPlugins();
 		return $allPlugins;
+	}
+
+
+	//
+	// Private helper methods
+	//
+	/**
+	 * Instantiate a plugin.
+	 *
+	 * This method can be called statically.
+	 *
+	 * @param $category string
+	 * @param $categoryDir string
+	 * @param $file string
+	 * @param $classToCheck string set null to maintain pre-2.3.x backwards compatibility
+	 * @return Plugin
+	 */
+	function &_instantiatePlugin($category, $categoryDir, $file, $classToCheck = null) {
+		if(!is_null($classToCheck) && !preg_match('/[a-zA-Z0-9]+/', $file)) fatalError('Invalid product name "'.$file.'"!');
+
+		$pluginPath = "$categoryDir/$file";
+		$plugin = null;
+
+		// Try the plug-in wrapper first for backwards
+		// compatibility.
+		$pluginWrapper = "$pluginPath/index.php";
+		if (file_exists($pluginWrapper)) {
+			$plugin = include($pluginWrapper);
+			if ($classToCheck) {
+				assert(is_a($plugin, $classToCheck));
+			}
+		} else {
+			// Try the well-known plug-in class name next.
+			$pluginClassName = ucfirst($file).ucfirst($category).'Plugin';
+			$pluginClassFile = $pluginClassName.'.inc.php';
+			if (file_exists("$pluginPath/$pluginClassFile")) {
+				// Try to instantiate the plug-in class.
+				$pluginPackage = 'plugins.'.$category.'.'.$file;
+				$plugin =& instantiate($pluginPackage.'.'.$pluginClassName, $pluginClassName, $pluginPackage, 'register');
+			}
+		}
+
+		// Make sure that the plug-in inherits from the right class.
+		if (is_object($plugin)) {
+			assert(is_a($plugin, 'Plugin'));
+		} else {
+			assert(is_null($plugin));
+		}
+
+		return $plugin;
 	}
 }
 

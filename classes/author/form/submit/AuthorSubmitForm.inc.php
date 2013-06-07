@@ -7,7 +7,7 @@
 /**
  * @file classes/author/form/submit/AuthorSubmitForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorSubmitForm
@@ -16,12 +16,11 @@
  * @brief Base class for journal author submit forms.
  */
 
-// $Id$
-
-
 import('lib.pkp.classes.form.Form');
 
 class AuthorSubmitForm extends Form {
+	/** @var $request object */
+	var $request;
 
 	/** @var int the ID of the article */
 	var $articleId;
@@ -37,7 +36,7 @@ class AuthorSubmitForm extends Form {
 	 * @param $article object
 	 * @param $step int
 	 */
-	function AuthorSubmitForm(&$article, $step, &$journal) {
+	function AuthorSubmitForm(&$article, $step, &$journal, &$request) {
 		// Provide available submission languages. (Convert the array
 		// of locale symbolic names xx_XX into an associative array
 		// of symbolic names => readable names.)
@@ -56,6 +55,7 @@ class AuthorSubmitForm extends Form {
 		$this->step = (int) $step;
 		$this->article = $article;
 		$this->articleId = $article ? $article->getId() : null;
+		$this->request =& $request;
 	}
 
 	/**
@@ -82,7 +82,7 @@ class AuthorSubmitForm extends Form {
 		}
 		$templateMgr->assign('helpTopicId', $helpTopicId);
 
-		$journal =& Request::getJournal();
+		$journal =& $this->request->getJournal();
 		$settingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
 		$templateMgr->assign_by_ref('journalSettings', $settingsDao->getJournalSettings($journal->getId()));
 
@@ -105,7 +105,7 @@ class AuthorSubmitForm extends Form {
 	 */
 	function assignEditors(&$article) {
 		$sectionId = $article->getSectionId();
-		$journal =& Request::getJournal();
+		$journal =& $this->request->getJournal();
 
 		$sectionEditorsDao =& DAORegistry::getDAO('SectionEditorsDAO');
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');

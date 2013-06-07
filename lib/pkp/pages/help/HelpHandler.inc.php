@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file HelpHandler.inc.php
+ * @file pages/help/HelpHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class HelpHandler
@@ -34,12 +34,19 @@ class HelpHandler extends Handler {
 
 	/**
 	 * Display help table of contents.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function index() {
-		$this->view(array('index', 'topic', '000000'));
+	function index($args, &$request) {
+		$this->view(array('index', 'topic', '000000'), $request);
 	}
 
-	function toc() {
+	/**
+	 * Display help table of contents.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function toc($args, &$request) {
 		$this->validate();
 		$this->setupTemplate();
 
@@ -53,14 +60,15 @@ class HelpHandler extends Handler {
 	/**
 	 * Display the selected help topic.
 	 * @param $args array first parameter is the ID of the topic to display
+	 * @param $request PKPRequest
 	 */
-	function view($args) {
+	function view($args, $request) {
 		$this->validate();
 		$this->setupTemplate();
 
 		$topicId = implode("/",$args);
-		$keyword = trim(String::regexp_replace('/[^\w\s\.\-]/', '', strip_tags(Request::getUserVar('keyword'))));
-		$result = (int) Request::getUserVar('result');
+		$keyword = trim(String::regexp_replace('/[^\w\s\.\-]/', '', strip_tags($request->getUserVar('keyword'))));
+		$result = (int) $request->getUserVar('result');
 
 		$topicDao =& DAORegistry::getDAO('HelpTopicDAO');
 		$topic = $topicDao->getTopic($topicId);
@@ -108,14 +116,16 @@ class HelpHandler extends Handler {
 
 	/**
 	 * Display search results for a topic search by keyword.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function search() {
+	function search($args, &$request) {
 		$this->validate();
 		$this->setupTemplate();
 
 		$searchResults = array();
 
-		$keyword = trim(String::regexp_replace('/[^\w\s\.\-]/', '', strip_tags(Request::getUserVar('keyword'))));
+		$keyword = trim(String::regexp_replace('/[^\w\s\.\-]/', '', strip_tags($request->getUserVar('keyword'))));
 
 		if (!empty($keyword)) {
 			$topicDao =& DAORegistry::getDAO('HelpTopicDAO');

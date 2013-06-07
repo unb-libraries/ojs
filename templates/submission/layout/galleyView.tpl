@@ -1,12 +1,11 @@
 {**
- * galleyView.tpl
+ * templates/submission/layout/galleyView.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Read-only view of galley information.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="submission.galley"}
@@ -22,10 +21,10 @@
 	<td width="80%" class="value">{$galley->getGalleyLabel()|escape}</td>
 </tr>
 
-{if $galley->getPublicGalleyId()}
+{if $galley->getPubId('publisher-id')}
 	<tr valign="top">
 		<td class="label">{translate key="submission.layout.publicGalleyId"}</td>
-		<td class="value">{$galley->getPublicGalleyId()|escape}</td>
+		<td class="value">{$galley->getPubId('publisher-id')|escape}</td>
 	</tr>
 {/if}
 

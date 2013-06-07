@@ -1,25 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000006.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Administarción de páginas - Correos preparados 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Management Pages - Prepared Emails 
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000006" locale="es_ES" title="Correos preparados" toc="journal/toc/000001" key="journal.managementPages.emails">
+<topic id="journal/topic/000006" locale="es_ES" title="Plantillas de correo electrónico" toc="journal/toc/000001" key="journal.managementPages.emails">
 	<section>
-		<![CDATA[<p>La revista utiliza una variedad de correos electrónicos preparados para dirigir los procesos de editorial y publicación. Todos los correos están dirigidos a los recipiente(s) adecuado(s) de antemano (por ejemplo, el editor de la sección notifica al editor de correción de textos que que la correción de textos de una entrega puede comenzar). El adiminitrador de la revista puede editar versiones defectuosas de estos correos(disponibles bajo correos electrónicos en la página de administración de la revista). De igual manera, los correos pueden editarse por el usuario antes de ser enviados. Automaticamente, el sistema inserta cualquier información relevante y especifica dentro de la prioridad del correo antes de presentárlo al usuario para enviar (por ejemplo, el título y el resúmen del envío en cuestión o la fecha de entrega de la revisión). El correo también le informa al recipiente sobre las instrucciones para encontrar la página Web pertinente, para que pueda hacer la tarea que se le solicita realizar.</p>]]>	
+		<![CDATA[<p>La revista utiliza distintas plantillas de correo electrónico para dirigirse a los miembros del proceso editorial y de publicaciones. Los correos electrónicos están todos dirigidos al receptor adecuado/as (por ejemplo, el editor de sección informa al corrector de que ya puede empezar la corrección de un envío). El gestor/a de la revista puede editar las versiones predeterminadas de estos correos electrónicos (disponibles en el apartado plantillas para mensajes de la página de administración de la revista). Asimismo, el usuario puede editar los correos electrónicos antes de enviarlos. El sistema inserta automáticamente en el mensaje información relevante y específica antes de presentárselo al usuario al que se le envía (por ejemplo, el título y el resumen del envío en cuestión o la fecha de entrega para la revisión). El correo electrónico también le facilita al destinatario/a las instrucciones para encontrar la ruta apropiada de la página web y así llevar a cabo la tarea que se les solicita.</p>]]>	
 	</section>
 	
-	<section title="Sending Emails">
-		<![CDATA[<p>OJS uses email to coordinate the functioning of the editorial and publishing process. All of the prepared emails have default versions, which come up each time the relevant email icon is clicked. The default emails can edited by the Journal Manager at any point. As well, an email can be edited by the sender prior to mailing it. When an email icon is clicked, it will have the intended recipient automatically filled in, along with all of the pertinent information needed for the editorial or publishing function. The sender can add comments or further direction, as needed. The sender can alter the recipient's email address and additional recipients, except in those cases that involve the sending of passwords (for security reasons). Note that correcting a recipient's address does not alter the email address listed on their Profile page in this system. Correcting the recipient's email address on a permanent basis for this system requires notifying the Journal Manager, who has the authority to make such changes to users' profiles.</p>]]>
+	<section title="Enviar correos electrónicos">
+		<![CDATA[<p>OJS utiliza el correo electrónico para coordinar el funcionamiento del proceso editorial y de publicación. Todas las plantillas de mensajes tienen versiones predeterminadas que aparecen cada vez que se hace clic sobre el icono correspondiente. El gestor/a de proyectos puede editar en cualquier momento los mensajes predeterminados. Asimismo, el remitente puede editar el mensaje antes de enviarlo. Al hacer clic sobre el icono, el mensaje ya contendrá de manera automática la dirección del destinatario y la información pertinente que se necesita para la función editorial y de publicación. El remitente puede añadir comentarios, en el caso de que sea necesario. El remitente puede cambiar la dirección de correo electrónico del destinatario y de receptores adicionales, excepto en aquellos casos en los que implique el envío de contraseñas (por razones de seguridad). Tenga en cuenta que al corregir la dirección de un destinatarioo no se modifica la dirección de correo electrónico que se muestra en su página de perfil dentro del sistema. Para corregir la dirección de correo electrónico del destinatario de forma permanente en este sistema es necesario informar al gestor/a de la revista, quien de hecho cuenta con los permisos para realizar dichos cambios en el perfil de los usuarios.</p>]]>
 	</section>
 </topic>

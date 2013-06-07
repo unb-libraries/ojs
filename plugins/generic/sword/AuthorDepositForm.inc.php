@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/sword/AuthorDepositForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorDepositForm
@@ -11,9 +11,6 @@
  *
  * @brief Form to perform an author's SWORD deposit(s)
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -78,15 +75,17 @@ class AuthorDepositForm extends Form {
 
 	/**
 	 * Perform SWORD deposit
+	 * @param $request Request
 	 */
-	function execute() {
+	function execute(&$request) {
+		$user =& $request->getUser();
 		import('classes.sword.OJSSwordDeposit');
 		$deposit = new OJSSwordDeposit($this->article);
 		$deposit->setMetadata();
 		$deposit->addEditorial();
 		$deposit->createPackage();
 
-		import('lib.pkp.classes.notification.NotificationManager');
+		import('classes.notification.NotificationManager');
 		$notificationManager = new NotificationManager();
 
 		$allowAuthorSpecify = $this->swordPlugin->getSetting($this->article->getJournalId(), 'allowAuthorSpecify');
@@ -98,7 +97,8 @@ class AuthorDepositForm extends Form {
 				$this->getData('authorDepositPassword')
 			);
 
-			$notificationManager->createTrivialNotification(__('notification.notification'), __('plugins.generic.sword.depositComplete', array('itemTitle' => $this->article->getLocalizedTitle(), 'repositoryName' => $this->getData('authorDepositUrl'))), NOTIFICATION_TYPE_SUCCESS, null, false);
+			$params = array('itemTitle' => $this->article->getLocalizedTitle(), 'repositoryName' => $this->getData('authorDepositUrl'));
+			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SWORD_DEPOSIT_COMPLETE, $params);
 		}
 
 		$depositableDepositPoints = $this->_getDepositableDepositPoints();
@@ -118,7 +118,9 @@ class AuthorDepositForm extends Form {
 				$depositPoint['password']
 			);
 
-			$notificationManager->createTrivialNotification(__('notification.notification'), __('plugins.generic.sword.depositComplete', array('itemTitle' => $this->article->getLocalizedTitle(), 'repositoryName' => $depositPoint['name'])), NOTIFICATION_TYPE_SUCCESS, null, false);
+			$user =& $request->getUser();
+			$params = array('itemTitle' => $this->article->getLocalizedTitle(), 'repositoryName' => $depositPoint['name']);
+			$notificationManager->createTrivialNotification($user->getId(), NOTIFICATION_TYPE_SWORD_DEPOSIT_COMPLETE, $params);
 		}
 
 		$deposit->cleanup();

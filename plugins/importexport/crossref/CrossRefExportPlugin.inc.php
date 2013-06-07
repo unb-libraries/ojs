@@ -3,7 +3,7 @@
 /**
  * @file plugins/importexport/crossref/CrossRefExportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportPlugin
@@ -11,9 +11,6 @@
  *
  * @brief CrossRef/MEDLINE XML metadata export plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.ImportExportPlugin');
 
@@ -47,15 +44,15 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 		return __('plugins.importexport.crossref.description');
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
-		parent::display($args);
+		parent::display($args, $request);
 
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 
 		$journal =& Request::getJournal();
 
-		switch (array_shift($args)) {							
+		switch (array_shift($args)) {
 			case 'exportIssues':
 				$issueIds = Request::getUserVar('issueId');
 				if (!isset($issueIds)) $issueIds = array();
@@ -88,7 +85,7 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 			case 'issues':
 				// Display a list of issues for export
 				$this->setBreadcrumbs(array(), true);
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_EDITOR));
+				AppLocale::requireComponents(LOCALE_COMPONENT_OJS_EDITOR);
 				$issueDao =& DAORegistry::getDAO('IssueDAO');
 				$issues =& $issueDao->getPublishedIssues($journal->getId(), Handler::getRangeInfo('issues'));
 
@@ -110,7 +107,12 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 				break;
 			default:
 				$this->setBreadcrumbs();
-				$templateMgr->assign_by_ref('journal', $journal);
+				$doiPrefix = null;
+				$pubIdPlugins = PluginRegistry::loadCategory('pubIds', true);
+				if (isset($pubIdPlugins['DOIPubIdPlugin'])) {
+					$doiPrefix = $pubIdPlugins['DOIPubIdPlugin']->getSetting($journal->getId(), 'doiPrefix');
+				}
+				$templateMgr->assign('doiPrefix', $doiPrefix);
 				$templateMgr->display($this->getTemplatePath() . 'index.tpl');
 		}
 	}
@@ -153,9 +155,6 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 			$journalArticleNode =& CrossRefExportDom::generateJournalArticleDom($doc, $journal, $issue, $section, $article);
 			XMLCustomWriter::appendChild($journalNode, $journalArticleNode);
 
-			// Create the DOI data
-			$DOIdataNode =& CrossRefExportDom::generateDOIdataDom($doc, $article->getDOI(), Request::url(null, 'article', 'view', $article->getId()));
-			XMLCustomWriter::appendChild($journalArticleNode, $DOIdataNode);							
 			XMLCustomWriter::appendChild($bodyNode, $journalNode);
 		}
 
@@ -180,8 +179,6 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 		$doc =& CrossRefExportDom::generateCrossRefDom();
 		$doiBatchNode =& CrossRefExportDom::generateDoiBatchDom($doc);
 
-		$journal =& Request::getJournal();
-
 		// Create Head Node and all parts inside it
 		$head =& CrossRefExportDom::generateHeadDom($doc, $journal);
 
@@ -199,7 +196,7 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 				foreach ($publishedArticleDao->getPublishedArticlesBySectionId($section->getId(), $issue->getId()) as $article) {
 					// Create the metadata node
 					// this does not need to be repeated for every article
-					// but its allowed to be and its simpler to do so					
+					// but its allowed to be and its simpler to do so
 					$journalNode =& XMLCustomWriter::createElement($doc, 'journal');
 					$journalMetadataNode =& CrossRefExportDom::generateJournalMetadataDom($doc, $journal);
 					XMLCustomWriter::appendChild($journalNode, $journalMetadataNode);
@@ -211,11 +208,7 @@ class CrossRefExportPlugin extends ImportExportPlugin {
 					$journalArticleNode =& CrossRefExportDom::generateJournalArticleDom($doc, $journal, $issue, $section, $article);
 					XMLCustomWriter::appendChild($journalNode, $journalArticleNode);
 
-					// DOI data node
-					$DOIdataNode =& CrossRefExportDom::generateDOIdataDom($doc, $article->getDOI(), Request::url(null, 'article', 'view', $article->getId()));
-					XMLCustomWriter::appendChild($journalArticleNode, $DOIdataNode);							
 					XMLCustomWriter::appendChild($bodyNode, $journalNode);
-
 				}
 			}
 		}

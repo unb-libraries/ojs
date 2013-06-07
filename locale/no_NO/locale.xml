@@ -2,17 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * locale/no_NO/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * (Norwegian translation from english by Karl Henrik Flyum, Dept. of teacher education and school development, University of Oslo, Norway, 2006-2007)
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: locale.xml,v 1.12 2009/08/15 00:45:15 asmecher Exp $
   -->
  
- <locale name="no_NO" full_name="Norwegian">
+<locale name="no_NO" full_name="Norwegian">
 	<!--
 	 * This file is organized into several major sections, separated
 	 * by comments like this one. These sections are called:
@@ -201,12 +200,6 @@
 	 * LOG - This section contains entries related to log entries.
 	 *
 	-->
-	<message key="submission.event.logLevel">Nivå</message>
-	<message key="submission.event.logLevel.info">Info</message>
-	<message key="submission.event.logLevel.notice">Merknad</message>
-	<message key="submission.event.logLevel.warning">Advarsel</message>
-	<message key="submission.event.logLevel.error">Feil</message>
-	
 	<message key="submission.event.general.defaultEvent">Manuskripthendelse</message>
 	<message key="submission.event.general.articleSubmitted">Artikkel innsendt</message>
 	<message key="submission.event.general.issueScheduled">Manuskript sendt til publiseringsplanen</message>
@@ -548,7 +541,6 @@ nåværende passordet.<br /><br />Skriv inn e-postadressen din nedenfor for å t
 	<!-- Profile -->
 	
 	<!-- Registration -->
-	<message key="user.register.repeatPassword">Gjenta passord</message>
 	<message key="user.register.selectJournal">Velg et tidsskrift du vil registrere deg hos</message>
 	<message key="user.register.noJournals">Det finnes ingen tidsskrift å registrere seg hos på dette nettstedet.</message>
 	<message key="user.register.privacyStatement">Erklæring om personopplysninger</message>
@@ -586,6 +578,8 @@ nåværende passordet.<br /><br />Skriv inn e-postadressen din nedenfor for å t
 
 	<!-- Interstitial page for PDFs -->
 	<message key="article.pdf.title">Portable Document Format (PDF)</message>
+	<message key="article.pdf.download">Last ned denne PDF-filen</message>
+	<message key="article.pdf.pluginMissing"><![CDATA[<p>PDF-filen du valgte skal nå lastes i denne rammen dersom din nettleser har en PDF-plugin installert (f.eks. en nyere versjon av <a href="http://www.adobe.com/products/acrobat/readstep2.html">Adobe Acrobat Reader</a>).</p> <p>Dersom du bare får opp denne meldingen så må du laste ned filen og åpne den lokalt på din egen maskin.</p><p>For å laste ned PDF-filen, trykk på linken under rammen.</p> <p>Hvis du vil ha mer informasjon om hvordan du skriver ut, lagrer og jobber med PDF-filer så har Highwire Press en hjelpsom <a href="http://highwire.stanford.edu/help/pdf-faq.dtl">FAQ</a> (FAQ=Ofte Stillte Spørsmål) på engelsk om PDF.</p>]]></message>
 	<!-- Interstitial page for non-PDF non-HTML galleys -->
 	<message key="article.nonpdf.title">Artikkelnedlasting</message>
 	<message key="article.nonpdf.note"><![CDATA[Filen du valgte skal nå bli lastet ned automatisk. Hvis ikke, kan du klikke på lenken nedenfor. Merk at filen kan kreve et spesielt leseprogram eller en programutvidelse for å vises.<br /><br />Hvis filen ikke lastes ned automatisk, <a href="{$url}">klikk her</a>.]]></message>
@@ -944,7 +938,6 @@ Authors who publish with this journal agree to the following terms:
 	<message key="rt.admin.settings.addComment.authenticated">Brukeren må være registrert og innlogget før innsending; anonym innsending tillates ikke.</message>
 	<message key="rt.admin.settings.addComment.anonymous">Brukeren må være registrert og innlogget før innsending; anonym innsending tillates.</message>
 	<message key="rt.admin.settings.addComment.unauthenticated">Brukeren trenger ikke være registrert før innsending; anonym innsending tillates.</message>
-	<message key="rt.metadata.pkp.doi">Digital Object Identifier</message>
 	<message key="debug.notes.helpMappingLoad">Gjenopplastet XML bidrar til å kartlegge filen {$filename} under søk etter {$id}.</message>
 	<message key="article.article">Artikkel</message>
 	<message key="user.manageMySubscriptions">Administrer mine abonnementer</message>
@@ -1045,5 +1038,29 @@ Authors who publish with this journal agree to the following terms:
 	<message key="user.subscriptions.subscriptionStatus">Abonnementsstatus</message>
 	<message key="user.subscriptions.status">Status</message>
 	<message key="user.subscriptions.statusDescription">Beskrivelse</message>
+	<message key="navigation.categories">Kategorier</message>
+	<message key="issue.fullIssue">Hele nummeret</message>
+	<message key="issue.nonpdf.title">Last ned nummeret</message>
+	<message key="issue.viewIssue">Vis nummeret</message>
+	<message key="issue.viewIssueDescription">Vis eller last ned hele nummeret</message>
+	<message key="site.noJournals">Det er ingen tidsskrift tilgjengelig.</message>
+	<message key="gifts.buyer">Fra</message>
+	<message key="gifts.buyerDescription">Hvem er denne gaven fra?</message>
+	<message key="gifts.recipient">Til</message>
+	<message key="gifts.recipientDescription">Hvem er denne gaven til?</message>
+	<message key="gifts.thankYou">Takk</message>
+	<message key="gifts.details">Gavedetaljer</message>
+	<message key="gifts.gift">Gave</message>
+	<message key="gifts.noteTitle">Tittel</message>
+	<message key="gifts.myGifts">Mine gaver</message>
+	<message key="gifts.status.notRedeemed">Tilgjengelig</message>
+	<message key="payment.type.gift">Gave</message>
+	<message key="payment.authorFees">Forfatteravgifter</message>
+	<message key="user.authorization.sectionAssignment">Du forsøker å få tilgang til en artikkel som ikke er en del av din seksjon.</message>
+	<message key="user.subscriptions.statusInformation">Aktive og utløpte abonnementer vises nedenfor sammen med sine utløpsdatoer. I tillegg kan følgende statusinformasjoner også vises med hvert abonnement.</message>
+	<message key="user.subscriptions.status.needsInformationDescription">Det trengs mer informasjon før abonnementet kan aktiviseres.</message>
+	<message key="user.subscriptions.status.needsApprovalDescription">Abonnementet må vurderes før det kan aktiviseres.</message>
+	<message key="user.subscriptions.status.awaitingManualPaymentDescription">Manuell betaling er initiert men ennå ikke mottatt</message>
+	<message key="user.subscriptions.status.awaitingOnlinePaymentDescription">En nettbetaling har blitt initiert men har blitt kansellert eller ikke fullført</message>
 </locale>
 

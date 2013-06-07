@@ -2,18 +2,17 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/endNote/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in en_US.
   *
-  * $Id$
   -->
  
 <locale name="tr_TR" full_name="Türkiye Türkçesi">
-	<message key="plugins.citationFormats.endNote.displayName">EndNote citation format plugin</message>
-	<message key="plugins.citationFormats.endNote.citationFormatName">EndNote - EndNote format (Macintosh &amp; Windows)</message>
-	<message key="plugins.citationFormats.endNote.description">This plugin implements the EndNote citation format.</message>
+	<message key="plugins.citationFormats.endNote.displayName">EndNote atıf biçim eklentisi</message>
+	<message key="plugins.citationFormats.endNote.citationFormatName">EndNote - EndNote biçimi (Macintosh ve Windows)</message>
+	<message key="plugins.citationFormats.endNote.description">Bu eklenti EndNote atıf biçimini uygular.</message>
 </locale>

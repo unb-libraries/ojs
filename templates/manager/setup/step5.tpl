@@ -1,12 +1,11 @@
 {**
- * step5.tpl
+ * templates/manager/setup/step5.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 5 of journal setup.
  *
- * $Id$
  *}
 {assign var="pageTitle" value="manager.setup.customizingTheLook"}
 {include file="manager/setup/setupHeader.tpl"}
@@ -68,7 +67,7 @@ function jumpList(a, b) {
 
 function prepBlockFields() {
 	var i;
-	var theForm = document.setupForm;
+	var theForm = document.getElementById('setupForm');
 
 	theForm.elements["blockSelectLeft"].value = "";
 	for (i=0; i<theForm.blockSelectLeftWidget.options.length; i++) {
@@ -91,7 +90,7 @@ function prepBlockFields() {
 {/literal}
 </script>
 
-<form name="setupForm" method="post" action="{url op="saveSetup" path="5"}" enctype="multipart/form-data">
+<form id="setupForm" method="post" action="{url op="saveSetup" path="5"}" enctype="multipart/form-data">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}
@@ -160,6 +159,34 @@ function prepBlockFields() {
 	<tr valign="top">
 		<td width="20%" class="label">{fieldLabel name="homeHeaderLogoImageAltText" key="common.altText"}</td>
 		<td width="80%" class="value"><input type="text" name="homeHeaderLogoImageAltText[{$formLocale|escape}]" value="{$homeHeaderLogoImageAltText[$formLocale]|escape}" size="40" maxlength="255" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td>&nbsp;</td>
+		<td class="value"><span class="instruct">{translate key="common.altTextInstructions"}</span></td>
+		</tr>
+</table>
+{/if}
+</div>
+
+<div id="journalThumbnail">
+<h4>{translate key="manager.setup.journalThumbnail"}</h4>
+
+<table width="100%" class="data">
+	<tr valign="top">
+		<td width="20%" class="label">{translate key="manager.setup.useThumbnail"}</td>
+		<td width="80%" class="value"><input type="file" name="journalThumbnail" class="uploadField" /> <input type="submit" name="uploadJournalThumbnail" value="{translate key="common.upload"}" class="button" /></td>
+	</tr>
+</table>
+
+{if $journalThumbnail[$formLocale]}
+{translate key="common.fileName"}: {$journalThumbnail[$formLocale].name|escape} {$journalThumbnail[$formLocale].dateUploaded|date_format:$datetimeFormatShort} <input type="submit" name="deleteJournalThumbnail" value="{translate key="common.delete"}" class="button" />
+<br />
+<img src="{$publicFilesDir}/{$journalThumbnail[$formLocale].uploadName|escape:"url"}" width="{$journalThumbnail[$formLocale].width|escape}" height="{$journalThumbnail[$formLocale].height|escape}" style="border: 0;" alt="{translate key="common.journalThumbnail.altText"}" />
+<br />
+<table width="100%" class="data">
+	<tr valign="top">
+		<td width="20%" class="label">{fieldLabel name="journalThumbnailAltText" key="common.altText"}</td>
+		<td width="80%" class="value"><input type="text" name="journalThumbnailAltText[{$formLocale|escape}]" value="{$journalThumbnailAltText[$formLocale]|escape}" size="40" maxlength="255" class="textField" /></td>
 	</tr>
 	<tr valign="top">
 		<td>&nbsp;</td>
@@ -459,7 +486,7 @@ function prepBlockFields() {
 					<option value=""></option>
 				{/foreach}
 			</select>
-		</td> 
+		</td>
 		<td>
 			<input class="button defaultButton" style="width: 30px;" type="button" value="&larr;" onclick="jumpList(this.form.elements['blockSelectRightWidget'],this.form.elements['blockUnselectedWidget']);" /><br/>
 			<input class="button defaultButton" style="width: 30px;" type="button" value="&rarr;" onclick="jumpList(this.form.elements['blockUnselectedWidget'],this.form.elements['blockSelectRightWidget']);" />

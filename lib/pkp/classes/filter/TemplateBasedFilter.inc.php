@@ -3,7 +3,7 @@
 /**
  * @file classes/filter/TemplateBasedFilter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TemplateBasedFilter
@@ -13,14 +13,15 @@
  *  their input via smarty templates.
  */
 
-import('lib.pkp.classes.filter.Filter');
+import('lib.pkp.classes.filter.PersistableFilter');
 
-class TemplateBasedFilter extends Filter {
+class TemplateBasedFilter extends PersistableFilter {
 	/**
 	 * Constructor
+	 * @param $filterGroup FilterGroup
 	 */
-	function TemplateBasedFilter() {
-		parent::Filter();
+	function TemplateBasedFilter(&$filterGroup) {
+		parent::PersistableFilter($filterGroup);
 	}
 
 
@@ -53,7 +54,7 @@ class TemplateBasedFilter extends Filter {
 	 * @param $templateMgr TemplateManager
 	 * @param $input mixed the filter input
 	 * @param $request Request
-	 * @param $locale Locale
+	 * @param $locale AppLocale
 	 */
 	function addTemplateVars(&$templateMgr, &$input, &$request, &$locale) {
 		// Must be implemented by sub-classes.
@@ -61,6 +62,9 @@ class TemplateBasedFilter extends Filter {
 	}
 
 
+	//
+	// Implement template methods from Filter
+	//
 	/**
 	 * @see Filter::process()
 	 */

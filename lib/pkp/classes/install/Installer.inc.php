@@ -3,7 +3,7 @@
 /**
  * @file classes/install/Installer.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Installer
@@ -400,7 +400,15 @@ class Installer {
 				}
 				break;
 			case 'code':
-				$this->log(sprintf('code: %s %s::%s', isset($action['file']) ? $action['file'] : 'Installer', isset($action['attr']['class']) ? $action['attr']['class'] : 'Installer', $action['attr']['function']));
+				$condition = isset($action['attr']['condition'])?$action['attr']['condition']:null;
+				$includeAction = true;
+				if ($condition) {
+					$funcName = create_function('$installer,$action', $condition);
+					$includeAction = $funcName($this, $action);
+				}
+				$this->log(sprintf('code: %s %s::%s' . ($includeAction?'':' (skipped)'), isset($action['file']) ? $action['file'] : 'Installer', isset($action['attr']['class']) ? $action['attr']['class'] : 'Installer', $action['attr']['function']));
+				if (!$includeAction) return true; // Condition not met; skip the action.
+
 				if (isset($action['file'])) {
 					require_once($action['file']);
 				}
@@ -615,162 +623,47 @@ class Installer {
 		return true;
 	}
 
-
 	/**
-	 * Installs filter template entries into the filters table.
-	 * FIXME: Move this to plug-in installation when moving filters to plug-ins, see #5157.
+	 * Install the given filter configuration file.
+	 * @param $filterConfigFile string
+	 * @return boolean true when successful, otherwise false
 	 */
-	function installFilterTemplates() {
-		// Filters are supported on PHP5+ only.
-		if (!checkPhpVersion('5.0.0')) return true;
+	function installFilterConfig($filterConfigFile) {
+		static $filterHelper = false;
 
-		$filterDao =& DAORegistry::getDAO('FilterDAO');
-		$filtersToBeInstalled = array(
-			'lib.pkp.classes.citation.lookup.crossref.CrossrefNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.lookup.pubmed.PubmedNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.lookup.worldcat.WorldcatNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.parser.freecite.FreeciteRawCitationNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.parser.paracite.ParaciteRawCitationNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.parser.parscit.ParscitRawCitationNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.parser.regex.RegexRawCitationNlmCitationSchemaFilter',
-			'lib.pkp.classes.citation.output.abnt.NlmCitationSchemaAbntFilter',
-			'lib.pkp.classes.citation.output.apa.NlmCitationSchemaApaFilter',
-			'lib.pkp.classes.citation.output.mla.NlmCitationSchemaMlaFilter',
-			'lib.pkp.classes.citation.output.vancouver.NlmCitationSchemaVancouverFilter',
-			'lib.pkp.classes.importexport.nlm.PKPSubmissionNlmXmlFilter'
-		);
-		import('lib.pkp.classes.citation.output.PlainTextReferencesListFilter');
-		foreach($filtersToBeInstalled as $filterToBeInstalled) {
-			// Instantiate filter.
-			$filter =& instantiate($filterToBeInstalled, 'Filter');
+		// Parse the filter configuration.
+		$xmlParser = new XMLParser();
+		$tree =& $xmlParser->parse($filterConfigFile);
 
-			// Install citation output filters as non-configurable site-wide filter instances.
-			if (is_a($filter, 'NlmCitationSchemaCitationOutputFormatFilter') ||
-					is_a($filter, 'PKPSubmissionNlmXmlFilter')) {
-				$filter->setIsTemplate(false);
+		// Validate the filter configuration.
+		if (!$tree) {
+			$xmlParser->destroy();
+			return false;
+		}
 
-				// Check whether the filter instance has been
-				// installed before.
-				$existingFilters =& $filterDao->getObjectsByClass($filterToBeInstalled, 0, false);
+		// Get the filter helper.
+		if ($filterHelper === false) {
+			import('lib.pkp.classes.filter.FilterHelper');
+			$filterHelper = new FilterHelper();
+		}
 
-			// Install other filter as configurable templates.
-			} else {
-				$filter->setIsTemplate(true);
+		// Are there any filter groups to be installed?
+		$filterGroupsNode =& $tree->getChildByName('filterGroups');
+		if (is_a($filterGroupsNode, 'XMLNode')) {
+			$filterHelper->installFilterGroups($filterGroupsNode);
+		}
 
-				// Check whether the filter template has been
-				// installed before.
-				$existingFilters =& $filterDao->getObjectsByClass($filterToBeInstalled, 0, true);
+		// Are there any filters to be installed?
+		$filtersNode =& $tree->getChildByName('filters');
+		if (is_a($filtersNode, 'XMLNode')) {
+			foreach ($filtersNode->getChildren() as $filterNode) { /* @var $filterNode XMLNode */
+				$filterHelper->configureFilter($filterNode);
 			}
-
-			// Guarantee idempotence.
-			if ($existingFilters->getCount()) continue;
-
-			// Install the filter or template.
-			$filterDao->insertObject($filter, 0);
-
-			// If this is a citation output filter then also install a corresponding references list filter.
-			if (is_a($filter, 'NlmCitationSchemaCitationOutputFormatFilter')) {
-				// Only Vancouver Style listings require numerical ordering.
-				if (is_a($filter, 'NlmCitationSchemaVancouverFilter')) {
-					$ordering = REFERENCES_LIST_ORDERING_NUMERICAL;
-				} else {
-					$ordering = REFERENCES_LIST_ORDERING_ALPHABETICAL;
-				}
-
-				// Instantiate the filter.
-				$referencesListFilter = new PlainTextReferencesListFilter($filter->getDisplayName(), $filter->getClassName(), $ordering);
-				$referencesListFilter->setIsTemplate(false);
-
-				// Install the filter.
-				$filterDao->insertObject($referencesListFilter, 0);
-				unset($referencesListFilter);
-			}
-
-			unset($filter);
 		}
 
-		// Composite filters are more complex to install because they
-		// need to be constructed first:
-		// 1) Check and install the ISBNdb filter template.
-		$alreadyInstalled = false;
-		$existingTemplatesFactory =& $filterDao->getObjectsByClass('lib.pkp.classes.filter.GenericSequencerFilter', 0, true);
-		$existingTemplates =& $existingTemplatesFactory->toArray();
-		foreach($existingTemplates as $existingTemplate) {
-			$subFilters =& $existingTemplate->getFilters();
-			if (count($subFilters) != 2) continue;
-			if (!(isset($subFilters[1]) && is_a($subFilters[1], 'IsbndbNlmCitationSchemaIsbnFilter'))) continue;
-			if (!(isset($subFilters[2]) && is_a($subFilters[2], 'IsbndbIsbnNlmCitationSchemaFilter'))) continue;
-			$alreadyInstalled = true;
-			break;
-		}
-		if (!$alreadyInstalled) {
-			// Instantiate the filter as a configurable template.
-			$isbndbTransformation = array(
-				'metadata::lib.pkp.classes.metadata.nlm.NlmCitationSchema(CITATION)',
-				'metadata::lib.pkp.classes.metadata.nlm.NlmCitationSchema(CITATION)'
-			);
-			import('lib.pkp.classes.filter.GenericSequencerFilter');
-			$isbndbFilter = new GenericSequencerFilter('ISBNdb', $isbndbTransformation);
-			$isbndbFilter->setIsTemplate(true);
-
-			// Instantiate and add the NLM-to-ISBN filter.
-			import('lib.pkp.classes.citation.lookup.isbndb.IsbndbNlmCitationSchemaIsbnFilter');
-			$nlmToIsbnFilter = new IsbndbNlmCitationSchemaIsbnFilter();
-			$isbndbFilter->addFilter($nlmToIsbnFilter);
-
-			// Instantiate and add the ISBN-to-NLM filter.
-			import('lib.pkp.classes.citation.lookup.isbndb.IsbndbIsbnNlmCitationSchemaFilter');
-			$isbnToNlmFilter = new IsbndbIsbnNlmCitationSchemaFilter();
-			$isbndbFilter->addFilter($isbnToNlmFilter);
-
-			// Add the settings mapping.
-			$isbndbFilter->setSettingsMapping(
-					array(
-						'apiKey' => array('seq'.$nlmToIsbnFilter->getSeq().'_apiKey', 'seq'.$isbnToNlmFilter->getSeq().'_apiKey'),
-						'isOptional' => array('seq'.$nlmToIsbnFilter->getSeq().'_isOptional', 'seq'.$isbnToNlmFilter->getSeq().'_isOptional')
-					));
-
-			// Persist the composite filter.
-			$filterDao->insertObject($isbndbFilter, 0);
-		}
-
-		// 3) Check and install the NLM XML 2.3 output filter.
-		$alreadyInstalled = false;
-		$existingTemplatesFactory =& $filterDao->getObjectsByClass('lib.pkp.classes.filter.GenericSequencerFilter', 0, false);
-		$existingTemplates =& $existingTemplatesFactory->toArray();
-		foreach($existingTemplates as $existingTemplate) {
-			$subFilters =& $existingTemplate->getFilters();
-			if (count($subFilters) != 2) continue;
-			if (!(isset($subFilters[1]) && is_a($subFilters[1], 'PKPSubmissionNlmXmlFilter'))) continue;
-			if (!(isset($subFilters[2]) && is_a($subFilters[2], 'XSLTransformationFilter'))) continue;
-			$alreadyInstalled = true;
-			break;
-		}
-		if (!$alreadyInstalled) {
-			// Instantiate the filter as a non-configurable filter instance.
-			$nlm23Transformation = array(
-				'class::lib.pkp.classes.submission.Submission',
-				'xml::*'
-			);
-			$nlm23Filter = new GenericSequencerFilter('NLM Journal Publishing V2.3 ref-list', $nlm23Transformation);
-			$nlm23Filter->setIsTemplate(false);
-
-			// Instantiate and add the NLM 3.0 export filter.
-			import('lib.pkp.classes.importexport.nlm.PKPSubmissionNlmXmlFilter');
-			$nlm30Filter = new PKPSubmissionNlmXmlFilter();
-			$nlm23Filter->addFilter($nlm30Filter);
-
-			// Instantiate, configure and add the NLM 3.0 to 2.3 downgrade XSL transformation.
-			import('lib.pkp.classes.xslt.XSLTransformationFilter');
-			$downgradeFilter = new XSLTransformationFilter(
-				'NLM 3.0 to 2.3 ref-list downgrade',
-				array('xml::*', 'xml::*'));
-			$downgradeFilter->setXSLFilename('lib/pkp/classes/importexport/nlm/nlm-ref-list-30-to-23.xsl');
-			$nlm23Filter->addFilter($downgradeFilter);
-
-			// Persist the composite filter.
-			$filterDao->insertObject($nlm23Filter, 0);
-		}
+		// Get rid of the parser.
+		$xmlParser->destroy();
+		unset($xmlParser);
 
 		return true;
 	}
@@ -784,7 +677,7 @@ class Installer {
 	 */
 	function columnExists($tableName, $columnName) {
 		$siteDao =& DAORegistry::getDAO('SiteDAO');
-		$dict = NewDataDictionary($siteDao->_dataSource);
+		$dict = NewDataDictionary($siteDao->getDataSource());
 
 		// Make sure the table exists
 		$tables = $dict->MetaTables('TABLES', false);
@@ -800,6 +693,21 @@ class Installer {
 	}
 
 	/**
+	 * Check to see whether a table exists.
+	 * Used in installer XML in conditional checks on <data> nodes.
+	 * @param $tableName string
+	 * @return boolean
+	 */
+	function tableExists($tableName) {
+		$siteDao =& DAORegistry::getDAO('SiteDAO');
+		$dict = NewDataDictionary($siteDao->getDataSource());
+
+		// Check whether the table exists.
+		$tables = $dict->MetaTables('TABLES', false);
+		return in_array($tableName, $tables);
+	}
+
+	/**
 	 * Insert or update plugin data in versions
 	 * and plugin_settings tables.
 	 * @return boolean
@@ -807,6 +715,7 @@ class Installer {
 	function addPluginVersions() {
 		$versionDao =& DAORegistry::getDAO('VersionDAO');
 		import('lib.pkp.classes.site.VersionCheck');
+		$fileManager = new FileManager();
 		$categories = PluginRegistry::getCategories();
 		foreach ($categories as $category) {
 			PluginRegistry::loadCategory($category);
@@ -815,16 +724,19 @@ class Installer {
 				foreach ($plugins as $plugin) {
 					$versionFile = $plugin->getPluginPath() . '/version.xml';
 
-					if (FileManager::fileExists($versionFile)) {
+					if ($fileManager->fileExists($versionFile)) {
 						$versionInfo =& VersionCheck::parseVersionXML($versionFile);
 						$pluginVersion = $versionInfo['version'];
 					} else {
 						$pluginVersion = new Version(
-							1, 0, 0, 0, // major minor revision build
-							Core::getCurrentDate(), 1, // dateInstalled current
-							'plugins.'.$category, basename($plugin->getPluginPath()), '', // productType product productClassName
-							0, // lazyLoad
-							$plugin->isSitePlugin() // sitewide
+							1, 0, 0, 0, // Major, minor, revision, build
+							Core::getCurrentDate(), // Date installed
+							1,	// Current
+							'plugins.'.$category, // Type
+							basename($plugin->getPluginPath()), // Product
+							'',	// Class name
+							0,	// Lazy load
+							$plugin->isSitePlugin()	// Site wide
 						);
 					}
 					$versionDao->insertVersion($pluginVersion, true);

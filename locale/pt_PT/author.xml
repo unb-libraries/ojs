@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/pt_PT/author.xml
+  * locale/pt_PT/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_PT (Português) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_PT" full_name = "Português">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">A submissão pode ser concluída numa data posterior, clicando em Submissões Activas nas opções da página do Autor.</message>
 	<message key="author.submit.notAccepting">Neste momento esta revista não aceita submissões.</message>
 	<message key="author.submit.requestWaiver">Solicitar isenção de taxas</message>
-	<message key="author.submit.qualityForWaiver">Solicito considerar isenção de Taxa de Submissão para este artigo</message>
+	<message key="author.submit.qualifyForWaiver">Solicito considerar isenção de Taxa de Submissão para este artigo</message>
 	<message key="author.submit.addReasonsForWaiver">Indique no campo de comentários a motivação para a isenção de taxa</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Transferir cópia editada</message>
 	<message key="author.submissions.proofreadingCorrections">Correcções da Leitura de Prova</message>
@@ -60,8 +59,6 @@
 	<message key="author.submit.addAuthor">Adicionar autor</message>
 	<message key="author.submit.deleteAuthor">Eliminar autor</message>
 	<message key="author.submit.submissionIndexingDescription">Insira os termos que descrevam da melhor maneira o conteúdo da submissão, segundo as categorias utilizadas pela revista e os exemplos oferecidos pelo editor. Separe os termos com ponto-e-vírgula (termo1; termo2; termo3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Entidades patrocinadoras</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Indique as entidades que patrocinaram o trabalho.</message>
 	<message key="author.submit.coverageInstructions">Refere-se à localização ou cobertura geográfica, cronológica ou histórica, e/ou às características de amostragem da pesquisa.</message>
 	<message key="author.submit.subjectClassInstructions">Use o sistema de classificação definido para escolher termos específicos da área do conhecimento e numeração se apropriado.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Português=pt; English=en; French=fr; Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Códigos Adicionais</a>.]]></message>

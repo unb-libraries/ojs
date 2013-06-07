@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file PKPAnnouncementType.inc.php
+ * @file classes/announcement/PKPAnnouncementType.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAnnouncementType
@@ -14,6 +14,13 @@
  */
 
 class PKPAnnouncementType extends DataObject {
+	/**
+	 * Constructor
+	 */
+	function PKPAnnouncementType() {
+		parent::DataObject();
+	}
+
 	//
 	// Get/set methods
 	//
@@ -98,7 +105,6 @@ class PKPAnnouncementType extends DataObject {
 	function setName($name, $locale) {
 		return $this->setData('name', $name, $locale);
 	}
-
 }
 
 ?>

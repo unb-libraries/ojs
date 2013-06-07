@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package core
@@ -149,6 +149,21 @@ class PKPHandler {
 	}
 
 	/**
+	 * Get the authorized context.
+	 *
+	 * NB: You should avoid accessing the authorized context
+	 * directly to avoid accidentally overwriting an object
+	 * in the context. Try to use getAuthorizedContextObject()
+	 * instead where possible.
+	 *
+	 * @return array
+	 */
+	function &getAuthorizedContext() {
+		assert(is_a($this->_authorizationDecisionManager, 'AuthorizationDecisionManager'));
+		return $this->_authorizationDecisionManager->getAuthorizedContext();
+	}
+
+	/**
 	 * Retrieve the last authorization message from the
 	 * decision manager.
 	 * @return string
@@ -241,6 +256,15 @@ class PKPHandler {
 		import('lib.pkp.classes.security.authorization.HttpsPolicy');
 		$this->addPolicy(new HttpsPolicy($request), true);
 
+		if (!defined('SESSION_DISABLE_INIT')) {
+			// Add user roles in authorized context.
+			$user = $request->getUser();
+			if (is_a($user, 'User')) {
+				import('lib.pkp.classes.security.authorization.UserRolesRequiredPolicy');
+				$this->addPolicy(new UserRolesRequiredPolicy($request), true);
+			}
+		}
+
 		// Make sure that we have a valid decision manager instance.
 		assert(is_a($this->_authorizationDecisionManager, 'AuthorizationDecisionManager'));
 
@@ -298,7 +322,7 @@ class PKPHandler {
 			// instantiating handlers without reference. Should not
 			// be removed or otherwise used.
 			// See <http://pkp.sfu.ca/wiki/index.php/Information_for_Developers#Use_of_.24this_in_the_constructor>
-			// for a similar proplem.
+			// for a similar problem.
 			$check->_setHandler($this);
 
 			// check should redirect on fail and continue on pass
@@ -394,13 +418,18 @@ class PKPHandler {
 	}
 
 	function setupTemplate() {
-		AppLocale::requireComponents(array(
-			 LOCALE_COMPONENT_PKP_COMMON,
-			 LOCALE_COMPONENT_PKP_USER
-		));
+		AppLocale::requireComponents(
+			LOCALE_COMPONENT_PKP_COMMON,
+			LOCALE_COMPONENT_PKP_USER
+		);
 		if (defined('LOCALE_COMPONENT_APPLICATION_COMMON')) {
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+			AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 		}
+
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->assign('userRoles', $this->getAuthorizedContextObject(ASSOC_TYPE_USER_ROLES));
+		$accessibleWorkflowStages = $this->getAuthorizedContextObject(ASSOC_TYPE_ACCESSIBLE_WORKFLOW_STAGES);
+		if ($accessibleWorkflowStages) $templateMgr->assign('accessibleWorkflowStages', $accessibleWorkflowStages);
 	}
 
 	/**

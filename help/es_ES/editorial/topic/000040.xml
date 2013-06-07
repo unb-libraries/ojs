@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000040.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Rol del Editor de Digramación - Diagramación
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Layout Editor's Role - Layout
   *
   * $Id$
   -->
 
-<topic id="editorial/topic/000040" locale="es_ES" title="Diagramación" toc="editorial/toc/000013" key="editorial.layoutEditorsRole.layout">
+<topic id="editorial/topic/000040" locale="es_ES" title="Maquetación" toc="editorial/toc/000013" key="editorial.layoutEditorsRole.layout">
 	<section>
-		<![CDATA[<p>La Versión de Diagramación del envío fue preparada por el Editor de Corrección de Textos de acuerdo con los estándares de la revista. El Editor de Diagramación se encargará de cambiar el envío al formato de archivo apropiado, y del estilo de distribución para la revista. El Editor de Diagramación necesitará utilizar otros software para preparar los archivos HTML, PDF, Postscript, etc.(por ejemplo, Dreamweaver, Front Page, Acrobat). El Administrador de la Revista puede elaborar un conjunto de Instrucciones de Diagramación disponibles para los Editores de Diagramación, para ayudarlos a formatear correctamente los archivos para la publicación.</p><p><i>Cargando las galeras</i>. Cuando el Editor de Diagramación carga un archivo al Formato Galera, el sistema normalmente identificará el tipo de archivo basado en su sufijo (por ejemplo, PDF, HTML), también proveerá información sobre el tamaño del archivo y su nombre original. Esta etiqueta, que aparecerá en la Tabla de Contenido de la revista y estará asociada al artículo publicado, informará a los lectores que tipo de formato de publicación del archivo está disponible. El Editor de Diagramación también tiene la opción de etiquetar manualmente el archivo. El Editor de Diagramación puede cargar más de un formato de archivo a la Galera, eliminar archivos que han sido cargados, y editar información como, por ejemplo, el nombre del archivo. Cuando se cargan archivos HTML, las imágenes y las hojas de estilo deben ser cargadas también con el archivo .htm o .html.</p><p><i>Archivos Suplementarios</i>. Si el Autor ha cargado Archivos Suplementarios, estos  ya estarán colocados. Estos deben ser publicados en la revista en su formato original, a menos que la revista tenga una política especial en cuanto a la preparación de estos archivos (por ejemplo para Figuras o ilustraciones). Incluso si la política es publicarlos en su formato original, el Editor de Diagramación puede consultar los archivos para asegurarse que son leíbles y para ver si pueden cambiarse para adaptarse mejor a los estándares y al estilo de la revista. Los Archivos Suplementarios pueden ser creados, modificados, sobrescritos y eliminados por el Editor de Diagramación (así como por el Autor, si es necesario debido a aspectos del formato de archivo).</p>]]>	
+		<![CDATA[<p>El corrector/a de originales ha preparado la versión de maquetación del envío según los estándares de la revista. El maquetista diseñará el envío en el formato de archivo y estilo de maquetación adecuados para la revista. El maquetista tendrá que recurrir a otro tipo de programas para preparar los archivos HTML, PDF, PostScript, etc. (p. ej., Dreamweaver, Front Page o Acrobat). El gestor/a de la revista puede crear un conjunto de instrucciones de maquetación para que los maquetistas consigan que los archivos tengan el formato adecuado para ser publicados.</p><p><em>Cargar galeradas</em>. Cuando el maquetista carga un archivo en formato de galerada, el sistema identificará el tipo de archivo según su sufijo (p. ej., PDF o HTML), además de proporcionar información sobre su tamaño y nombre original. Esta etiqueta, que aparecerá en el índice de la revista junto con elemento publicado, informará al lector del formato en el que está disponible una publicación. El maquetista también puede etiquetar el archivo de forma manual. El maquetista puede cargar archivos en diferentes formatos de galerada, suprimir archivos cargados y editar información, p. ej., el nombre del archivo. Se deben cargar las imágenes y las hojas de estilo al cargar un archivo HTML.</p><p><em>Archivos adicionales</em>. Aparecerán siempre y cuando el autor haya cargado alguno. Deben cargarse en la revista en su formato original, a no ser que exista una política especial respecto a su preparación (como ocurre con las figuras o ilustraciones). Aunque la política sea publicarlos en su formato original, el maquetista puede querer consultar los archivos para asegurarse de que son legibles y si se pueden adecuar sin problemas al estilo y estándares de la revista. El maquetista puede crear, modificar, sobrescribir y suprimir los archivos adicionales (el autor/a también puede hacerlo, en caso de que el formato del archivo así lo requiera).</p>]]>	
 	</section>
 </topic>

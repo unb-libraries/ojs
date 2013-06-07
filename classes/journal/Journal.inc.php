@@ -7,7 +7,7 @@
 /**
  * @file classes/journal/Journal.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Journal
@@ -55,8 +55,8 @@ class Journal extends DataObject {
 	}
 
 	/**
-	 * Return associative array of all locales supported by the site.
-	 * These locales are used to provide a language toggle on the main site pages.
+	 * Return associative array of all locales supported by the journal.
+	 * These locales are used to provide a language toggle on the journal-specific pages.
 	 * @return array
 	 */
 	function &getSupportedLocaleNames() {
@@ -80,8 +80,8 @@ class Journal extends DataObject {
 	}
 
 	/**
-	 * Return associative array of all locales supported by forms on the site.
-	 * These locales are used to provide a language toggle on the main site pages.
+	 * Return associative array of all locales supported by forms of the journal.
+	 * These locales are used to provide a language toggle on the journal-specific pages.
 	 * @return array
 	 */
 	function &getSupportedFormLocaleNames() {
@@ -105,27 +105,28 @@ class Journal extends DataObject {
 	}
 
 	/**
-	* Return associative array of all locales supported for the submissions.
-	* These locales are used to provide a language toggle on the submission setp1 and the galley edit page.
-	* @return array
-	*/
+	 * Return associative array of all locales supported for the submissions.
+	 * These locales are used to provide a language toggle on the submission setp1 and the galley edit page.
+	 * @return array
+	 */
 	function &getSupportedSubmissionLocaleNames() {
 		$supportedLocales =& $this->getData('supportedSubmissionLocales');
-	
+
 		if (!isset($supportedLocales)) {
 			$supportedLocales = array();
 			$localeNames =& AppLocale::getAllLocales();
-			
+
 			$locales = $this->getSetting('supportedSubmissionLocales');
 			if (empty($locales)) $locales = array($this->getPrimaryLocale());
-			
+
 			foreach ($locales as $localeKey) {
 				$supportedLocales[$localeKey] = $localeNames[$localeKey];
 			}
 		}
-	
+
 		return $supportedLocales;
-	}	
+	}
+
 	/**
 	 * Get "localized" journal page title (if applicable).
 	 * param $home boolean get homepage title
@@ -191,10 +192,11 @@ class Journal extends DataObject {
 
 	/**
 	 * Get the localized title of the journal.
+	 * @param $preferredLocale string
 	 * @return string
 	 */
-	function getLocalizedTitle() {
-		return $this->getLocalizedSetting('title');
+	function getLocalizedTitle($preferredLocale = null) {
+		return $this->getLocalizedSetting('title', $preferredLocale);
 	}
 
 	function getJournalTitle() {
@@ -330,8 +332,15 @@ class Journal extends DataObject {
 		return $settings;
 	}
 
-	function &getLocalizedSetting($name) {
-		$returner = $this->getSetting($name, AppLocale::getLocale());
+	/**
+	 * Retrieve a localized setting.
+	 * @param $name string
+	 * @param $preferredLocale string
+	 * @return mixed
+	 */
+	function &getLocalizedSetting($name, $preferredLocale = null) {
+		if (is_null($preferredLocale)) $preferredLocale = AppLocale::getLocale();
+		$returner = $this->getSetting($name, $preferredLocale);
 		if ($returner === null) {
 			unset($returner);
 			$returner = $this->getSetting($name, AppLocale::getPrimaryLocale());

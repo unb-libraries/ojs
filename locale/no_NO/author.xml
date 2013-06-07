@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/no_NO/author.xml
+  * locale/no_NO/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: author.xml,v 1.6 2009/08/15 00:45:15 asmecher Exp $
   -->
 
 <locale name="no_NO" full_name = "Norwegian">
@@ -54,8 +53,6 @@
 	<message key="author.submit.addAuthor">Legg til forfatter</message>
 	<message key="author.submit.deleteAuthor">Slett forfatter</message>
 	<message key="author.submit.submissionIndexingDescription">Velg de begrepene som best beskriver manuskriptets innhold, i samsvar med kategoriene som brukes av dette tidsskriftet, og eksemplene som er gitt av redaktøren. Skill termene med semikolon (term1; term2; term3). Bruk så langt det er mulig kategorier fra offentlige standarder, som for eksempel Universitets- og høgskolerådets "Oversikt over fagråd og faginndeling." (Eksempel: per 1/1 2007 inndeles hovedkategorien Utdanningsvitenskap  i underkategoriene: Allmennpedagogikk, Lærerutdanning, Spesialpedagogikk, Fagdidaktikk, Yrkespedagogikk og yrkesdidaktikk, Førskolelærerpedagogikk, og Andre pedagogiske fag.)</message>
-	<message key="author.submit.submissionSupportingAgencies">Støttet av</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Oppgi dem som har vært kilde til finansiering eller annen vesentlig støtte til det arbeidet som blir presentert i dette manuskriptet.</message>
 	<message key="author.submit.coverageInstructions">Viser til dekning i både tid og rom; geografisk, topologisk, kronologisk eller historisk dekning, og/eller karakteristika ved materialet/utvalget.</message>
 	<message key="author.submit.subjectClassInstructions">Bruk det lenkete klassifikasjonssystemet for å finne klassifikasjonstermer og koder.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Norsk=no; English=en; French=fr; Spanish=es. <a href="http://www.loc.gov/standards/iso639-2/langcodes.html" target="_blank">Flere koder</a>.]]></message>
@@ -110,7 +107,7 @@
 	<message key="author.competingInterests"><![CDATA[Interessekonflikter <a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">Retningslinjer for erklæring om interessekonflikter</a>]]></message>
 	<message key="author.submit.startHereTitle">Start innsending av et nytt manuskript</message>
 	<message key="author.submit.requestWaiver">Be om gebyrfritak</message>
-	<message key="author.submit.qualityForWaiver">Vennligst vurder å gi gebyrfritak for dette manuskriptet</message>
+	<message key="author.submit.qualifyForWaiver">Vennligst vurder å gi gebyrfritak for dette manuskriptet</message>
 	<message key="author.submit.addReasonsForWaiver">Vennligst oppgi hvorfor du ber om gebyrfritak i kommentarboksen nedenfor.</message>
 	<message key="author.submit.howToSubmitNoPhone"><![CDATA[Trenger du hjelp? Kontakt <a href="mailto:{$supportEmail}">{$supportName}</a>]]></message>
 	<message key="author.submit.form.abstractRequired">Vennligst skriv inn sammendraget til artikkelen din.</message>
@@ -124,4 +121,7 @@
 	<message key="author.submissions.queuedEditingProofread">Under redigering: Korrekturlesing ønsket</message>
 	<message key="author.submit.reorder">Endre rekkefølgen på forfatternavnene</message>
 	<message key="author.submit.form.wordCountAlert">Du har overskredet maksimalt antall ord i et sammendrag i denne seksjonen.</message>
+	<message key="author.submit.submissionLocale">Innleveringsspråk</message>
+	<message key="author.submit.submissionLocaleDescription">Dette tidsskriftet tillater innleveringer på flere språk. Velg hovedspråket for innleveringen fra rullegardinmenyen under.</message>
+	<message key="author.submit.form.localeRequired">Vennligst velg innleveringsspråk.</message>
 </locale>

@@ -2,21 +2,19 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/sword/locale/pt_PT/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (U.S. English) locale.
   *
-  * $Id: locale.xml,v 1.23 2010/01/21 18:52:13 asmecher Exp $
   -->
 
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.sword.displayName">Plugin SWORD</message>
 	<message key="plugins.generic.sword.description">Permite aos Editores de Revistas e (opcionalmente) Autores depositar artigos via protocolo SWORD</message>
 	<message key="plugins.generic.sword.enabled">O plugin SWORD foi activado</message>
-	<message key="plugins.generic.sword.disable">O plugin SWORD foi desactivado.</message>
 	<message key="plugins.generic.sword.settings">Configurações</message>
 	<message key="plugins.generic.sword.settings.allowAuthorSpecify">Permitir ao autor especificar um ponto de depósito</message>
 	<message key="plugins.generic.sword.settings.depositPoints">Pontos de Depósito</message>

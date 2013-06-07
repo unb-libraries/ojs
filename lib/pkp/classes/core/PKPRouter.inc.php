@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPRouter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPRouter
@@ -311,7 +311,7 @@ class PKPRouter {
 	 * @param $path mixed Optional string or array of args to pass to handler
 	 * @param $params array Optional set of name => value pairs to pass as user parameters
 	 * @param $anchor string Optional name of anchor to add to URL
-	 * @param $escape boolean Whether or not to escape ampersands for this URL; default false.
+	 * @param $escape boolean Whether or not to escape ampersands, square brackets, etc. for this URL; default false.
 	 * @return string the URL
 	 */
 	function url(&$request, $newContext = null, $handler = null, $op = null, $path = null,
@@ -375,7 +375,7 @@ class PKPRouter {
 
 			// Set a generic authorization message if no
 			// specific authorization message was set.
-			if (is_null($authorizationMessage)) $authorizationMessage = 'user.authorization.accessDenied';
+			if ($authorizationMessage == '') $authorizationMessage = 'user.authorization.accessDenied';
 
 			// Handle the authorization failure.
 			$result = $this->handleAuthorizationFailure($request, $authorizationMessage);
@@ -460,7 +460,6 @@ class PKPRouter {
 				$contextObject =& $this->getContextByName($request, $contextName);
 				if ($contextObject) $contextValue = $contextObject->getPath();
 				else $contextValue = 'index';
-
 			}
 
 			// Check whether the base URL is overridden.
@@ -468,7 +467,7 @@ class PKPRouter {
 				$overriddenBaseUrl = Config::getVar('general', "base_url[$contextValue]");
 			}
 
-			$context[] = $contextParameter.$contextValue;;
+			$context[] = $contextParameter.$contextValue;
 		}
 
 		// Generate the base url

@@ -3,7 +3,7 @@
 /**
  * @file classes/db/DBDataXMLParser.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DBDataXMLParser
@@ -12,8 +12,6 @@
  * @brief Class to import and export database data from an XML format.
  * See dbscripts/xml/dtd/xmldata.dtd for the XML schema used.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.xml.XMLParser');
@@ -153,7 +151,7 @@ class DBDataXMLParser {
 										if ($col->not_null) $fld['NOTNULL'] = 'NOTNULL';
 										if ($col->has_default) $fld['DEFAULT'] = $col->default_value;
 										$flds = array($colId => $fld);
-									}
+									} else assert(false);
 									$this->sql[] = $dbdict->RenameColumnSQL($table, $column, $to, $flds);
 								}
 							} else {

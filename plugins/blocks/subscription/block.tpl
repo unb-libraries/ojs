@@ -1,7 +1,7 @@
 {**
- * block.tpl
+ * plugins/blocks/subscription/block.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common site sidebar menu -- subscription info.
@@ -53,5 +53,9 @@
 	{/if}
 	{if $userLoggedIn}
 		<a href="{url page="user" op="subscriptions"}">{translate key="user.subscriptions.mySubscriptions"}</a>
+	{/if}
+	{if $acceptGiftSubscriptionPayments}
+		<br />
+		<a href="{url page="gifts" op="purchaseGiftSubscription"}">{translate key="gifts.purchaseGiftSubscription"}</a>
 	{/if}
 </div>

@@ -7,7 +7,7 @@
 /**
  * @file classes/db/DAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DAO
@@ -16,8 +16,6 @@
  *
  * @brief Operations for retrieving and modifying objects from a database.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.db.DBConnection');
@@ -32,6 +30,30 @@ class DAO {
 	var $_dataSource;
 
 	/**
+	 * Get db conn.
+	 * @return ADONewConnection
+	 */
+	function &getDataSource() {
+		return $this->_dataSource;
+	}
+
+	/**
+	 * Set db conn.
+	 * @param $dataSource ADONewConnection
+	 */
+	function setDataSource(&$dataSource) {
+		$this->_dataSource =& $dataSource;
+	}
+
+	/**
+	 * Concatenation.
+	 */
+	function concat() {
+		$args = func_get_args();
+		return call_user_func_array(array($this->getDataSource(), 'Concat'), $args);
+	}
+
+	/**
 	 * Constructor.
 	 * Initialize the database connection.
 	 */
@@ -39,15 +61,15 @@ class DAO {
 		if ($callHooks === true && checkPhpVersion('4.3.0')) {
 			// Call hooks based on the object name. Results
 			// in hook calls named e.g. "sessiondao::_Constructor"
-			if (HookRegistry::call(strtolower(get_class($this)) . '::_Constructor', array(&$this, &$dataSource))) {
+			if (HookRegistry::call(strtolower_codesafe(get_class($this)) . '::_Constructor', array(&$this, &$dataSource))) {
 				return;
 			}
 		}
 
 		if (!isset($dataSource)) {
-			$this->_dataSource =& DBConnection::getConn();
+			$this->setDataSource(DBConnection::getConn());
 		} else {
-			$this->_dataSource = $dataSource;
+			$this->setDataSource($dataSource);
 		}
 	}
 
@@ -65,17 +87,18 @@ class DAO {
 			// in hook calls named e.g. "sessiondao::_getsession"
 			// (always lower case).
 			$value = null;
-			if (HookRegistry::call(strtolower($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$value))) {
+			if (HookRegistry::call(strtolower_codesafe($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$value))) {
 				return $value;
 			}
 		}
 
 		$start = Core::microtime();
-		$result =& $this->_dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);
+		$dataSource = $this->getDataSource();
+		$result =& $dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);
 		DBConnection::logQuery($sql, $start, $params);
-		if ($this->_dataSource->errorNo()) {
+		if ($dataSource->errorNo()) {
 			// FIXME Handle errors more elegantly.
-			fatalError('DB Error: ' . $this->_dataSource->errorMsg());
+			fatalError('DB Error: ' . $dataSource->errorMsg());
 		}
 		return $result;
 	}
@@ -94,7 +117,7 @@ class DAO {
 			// in hook calls named e.g. "sessiondao::_getsession"
 			// (all lowercase).
 			$value = null;
-			if (HookRegistry::call(strtolower($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$secsToCache, &$value))) {
+			if (HookRegistry::call(strtolower_codesafe($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$secsToCache, &$value))) {
 				return $value;
 			}
 		}
@@ -102,11 +125,12 @@ class DAO {
 		$this->setCacheDir();
 
 		$start = Core::microtime();
-		$result =& $this->_dataSource->CacheExecute($secsToCache, $sql, $params !== false && !is_array($params) ? array($params) : $params);
+		$dataSource = $this->getDataSource();
+		$result =& $dataSource->CacheExecute($secsToCache, $sql, $params !== false && !is_array($params) ? array($params) : $params);
 		DBConnection::logQuery($sql, $start, $params);
-		if ($this->_dataSource->errorNo()) {
+		if ($dataSource->errorNo()) {
 			// FIXME Handle errors more elegantly.
-			fatalError('DB Error: ' . $this->_dataSource->errorMsg());
+			fatalError('DB Error: ' . $dataSource->errorMsg());
 		}
 		return $result;
 	}
@@ -127,16 +151,17 @@ class DAO {
 			// in hook calls named e.g. "sessiondao::_getsession"
 			// (all lowercase).
 			$value = null;
-			if (HookRegistry::call(strtolower($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$numRows, &$offset, &$value))) {
+			if (HookRegistry::call(strtolower_codesafe($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$numRows, &$offset, &$value))) {
 				return $value;
 			}
 		}
 
 		$start = Core::microtime();
-		$result =& $this->_dataSource->selectLimit($sql, $numRows === false ? -1 : $numRows, $offset === false ? -1 : $offset, $params !== false && !is_array($params) ? array($params) : $params);
+		$dataSource = $this->getDataSource();
+		$result =& $dataSource->selectLimit($sql, $numRows === false ? -1 : $numRows, $offset === false ? -1 : $offset, $params !== false && !is_array($params) ? array($params) : $params);
 		DBConnection::logQuery($sql, $start, $params);
-		if ($this->_dataSource->errorNo()) {
-			fatalError('DB Error: ' . $this->_dataSource->errorMsg());
+		if ($dataSource->errorNo()) {
+			fatalError('DB Error: ' . $dataSource->errorMsg());
 		}
 		return $result;
 	}
@@ -154,17 +179,18 @@ class DAO {
 			// this method is only called by a subclass. Results
 			// in hook calls named e.g. "sessiondao::_getsession"
 			$value = null;
-			if (HookRegistry::call(strtolower($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$dbResultRange, &$value))) {
+			if (HookRegistry::call(strtolower_codesafe($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$dbResultRange, &$value))) {
 				return $value;
 			}
 		}
 
 		if (isset($dbResultRange) && $dbResultRange->isValid()) {
 			$start = Core::microtime();
-			$result =& $this->_dataSource->PageExecute($sql, $dbResultRange->getCount(), $dbResultRange->getPage(), $params);
+			$dataSource = $this->getDataSource();
+			$result =& $dataSource->PageExecute($sql, $dbResultRange->getCount(), $dbResultRange->getPage(), $params);
 			DBConnection::logQuery($sql, $start, $params);
-			if ($this->_dataSource->errorNo()) {
-				fatalError('DB Error: ' . $this->_dataSource->errorMsg());
+			if ($dataSource->errorNo()) {
+				fatalError('DB Error: ' . $dataSource->errorMsg());
 			}
 		}
 		else {
@@ -189,18 +215,19 @@ class DAO {
 			// in hook calls named e.g. "sessiondao::_updateobject"
 			// (all lowercase)
 			$value = null;
-			if (HookRegistry::call(strtolower($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$value))) {
+			if (HookRegistry::call(strtolower_codesafe($trace[1]['class'] . '::_' . $trace[1]['function']), array(&$sql, &$params, &$value))) {
 				return $value;
 			}
 		}
 
 		$start = Core::microtime();
-		$this->_dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);
+		$dataSource = $this->getDataSource();
+		$dataSource->execute($sql, $params !== false && !is_array($params) ? array($params) : $params);
 		DBConnection::logQuery($sql, $start, $params);
-		if ($dieOnError && $this->_dataSource->errorNo()) {
-			fatalError('DB Error: ' . $this->_dataSource->errorMsg());
+		if ($dieOnError && $dataSource->errorNo()) {
+			fatalError('DB Error: ' . $dataSource->errorMsg());
 		}
-		return $this->_dataSource->errorNo() == 0 ? true : false;
+		return $dataSource->errorNo() == 0 ? true : false;
 	}
 
 	/**
@@ -210,8 +237,9 @@ class DAO {
 	 * @param $keyCols array Array of column names that are keys
 	 */
 	function replace($table, $arrFields, $keyCols) {
-		$arrFields = array_map(array($this->_dataSource, 'qstr'), $arrFields);
-		$this->_dataSource->Replace($table, $arrFields, $keyCols, false);
+		$dataSource = $this->getDataSource();
+		$arrFields = array_map(array($dataSource, 'qstr'), $arrFields);
+		$dataSource->Replace($table, $arrFields, $keyCols, false);
 	}
 
 	/**
@@ -221,7 +249,17 @@ class DAO {
 	 * @return int
 	 */
 	function getInsertId($table = '', $id = '', $callHooks = true) {
-		return $this->_dataSource->po_insert_id($table, $id);
+		$dataSource = $this->getDataSource();
+		return $dataSource->po_insert_id($table, $id);
+	}
+
+	/**
+	 * Return the number of affected rows by the last UPDATE or DELETE.
+	 * @return int (or false if not supported)
+	 */
+	function getAffectedRows() {
+		$dataSource = $this->getDataSource();
+		return $dataSource->Affected_Rows();
 	}
 
 	/**
@@ -245,7 +283,8 @@ class DAO {
 	 */
 	function flushCache() {
 		$this->setCacheDir();
-		$this->_dataSource->CacheFlush();
+		$dataSource = $this->getDataSource();
+		$dataSource->CacheFlush();
 	}
 
 	/**
@@ -254,7 +293,8 @@ class DAO {
 	 * @return string
 	 */
 	function datetimeToDB($dt) {
-		return $this->_dataSource->DBTimeStamp($dt);
+		$dataSource = $this->getDataSource();
+		return $dataSource->DBTimeStamp($dt);
 	}
 
 	/**
@@ -263,7 +303,8 @@ class DAO {
 	 * @return string
 	 */
 	function dateToDB($d) {
-		return $this->_dataSource->DBDate($d);
+		$dataSource = $this->getDataSource();
+		return $dataSource->DBDate($d);
 	}
 
 	/**
@@ -273,7 +314,8 @@ class DAO {
 	 */
 	function datetimeFromDB($dt) {
 		if ($dt === null) return null;
-		return $this->_dataSource->UserTimeStamp($dt, 'Y-m-d H:i:s');
+		$dataSource = $this->getDataSource();
+		return $dataSource->UserTimeStamp($dt, 'Y-m-d H:i:s');
 	}
 	/**
 	 * Return date from DB as ISO date string.
@@ -282,7 +324,8 @@ class DAO {
 	 */
 	function dateFromDB($d) {
 		if ($d === null) return null;
-		return $this->_dataSource->UserDate($d, 'Y-m-d');
+		$dataSource = $this->getDataSource();
+		return $dataSource->UserDate($d, 'Y-m-d');
 	}
 
 	/**
@@ -357,7 +400,15 @@ class DAO {
 				$value = serialize($value);
 				break;
 			case 'bool':
-				$value = $value ? 1 : 0;
+				// Cast to boolean, ensuring that string
+				// "false" evaluates to boolean false
+				$value = ($value && $value !== 'false') ? 1 : 0;
+				break;
+			case 'int':
+				$value = (int) $value;
+				break;
+			case 'float':
+				$value = (float) $value;
 				break;
 			case 'date':
 				if ($value !== null) {
@@ -365,7 +416,9 @@ class DAO {
 					$value = strftime('%Y-%m-%d %H:%M:%S', $value);
 				}
 				break;
+			case 'string':
 			default:
+				// do nothing.
 		}
 
 		return $value;
@@ -381,7 +434,7 @@ class DAO {
 		// this method is only called by a subclass. Results
 		// in hook calls named e.g. "sessiondao::getAdditionalFieldNames"
 		// (class names lowercase)
-		HookRegistry::call(strtolower(get_class($this)) . '::getAdditionalFieldNames', array(&$this, &$returner));
+		HookRegistry::call(strtolower_codesafe(get_class($this)) . '::getAdditionalFieldNames', array(&$this, &$returner));
 
 		return $returner;
 	}
@@ -392,7 +445,7 @@ class DAO {
 		// this method is only called by a subclass. Results
 		// in hook calls named e.g. "sessiondao::getLocaleFieldNames"
 		// (class names lowercase)
-		HookRegistry::call(strtolower(get_class($this)) . '::getLocaleFieldNames', array(&$this, &$returner));
+		HookRegistry::call(strtolower_codesafe(get_class($this)) . '::getLocaleFieldNames', array(&$this, &$returner));
 
 		return $returner;
 	}
@@ -539,6 +592,74 @@ class DAO {
 				return 'DESC';
 			default:
 				return 'ASC';
+		}
+	}
+
+	/**
+	 * Generate a JSON message with an event that can be sent
+	 * to the client to refresh itself according to changes
+	 * in the DB.
+	 *
+	 * @param $elementId string To refresh a single element
+	 * give the element ID here. Otherwise all elements will
+	 * be refreshed.
+	 * @param $parentElementId string To refresh a single element
+	 * that is associated with another one give the parent element
+	 * ID here.
+	 * @return string A rendered JSON message.
+	 */
+	function getDataChangedEvent($elementId = null, $parentElementId = null) {
+		// Create the event data.
+		$eventData = null;
+		if ($elementId) {
+			$eventData = array($elementId);
+			if ($parentElementId) {
+				$eventData['parentElementId'] = $parentElementId;
+			}
+		}
+
+		// Create and render the JSON message with the
+		// event to be triggered on the client side.
+		import('lib.pkp.classes.core.JSONMessage');
+		$json = new JSONMessage(true);
+		$json->setEvent('dataChanged', $eventData);
+		return $json->getString();
+	}
+
+	/**
+	 * Format a passed date (in English textual datetime)
+	 * to Y-m-d H:i:s format, used in database.
+	 * @param $date string Any English textual datetime.
+	 * @param $defaultNumWeeks int If passed and date is null,
+	 * used to calculate a data in future from today.
+	 * @param $acceptPastDate boolean Will not accept past dates,
+	 * returning today if false and the passed date
+	 * is in the past.
+	 * @return string or null
+	 */
+	function formatDateToDB($date, $defaultNumWeeks = null, $acceptPastDate = true) {
+		$today = getDate();
+		$todayTimestamp = mktime(0, 0, 0, $today['mon'], $today['mday'], $today['year']);
+		if ($date != null) {
+			$dueDateParts = explode('-', $date);
+
+			// If we don't accept past dates...
+			if (!$acceptPastDate && $todayTimestamp > strtotime($date)) {
+				// ... return today.
+				return date('Y-m-d H:i:s', $todayTimestamp);
+			} else {
+				// Return the passed date.
+				return date('Y-m-d H:i:s', mktime(0, 0, 0, $dueDateParts[1], $dueDateParts[2], $dueDateParts[0]));
+			}
+		} elseif (isset($defaultNumWeeks)) {
+			// Add the equivalent of $numWeeks weeks, measured in seconds, to $todaysTimestamp.
+			$numWeeks = max((int) $defaultNumWeeks, 2);
+			$newDueDateTimestamp = $todayTimestamp + ($numWeeks * 7 * 24 * 60 * 60);
+			return date('Y-m-d H:i:s', $newDueDateTimestamp);
+		} else {
+			// Either the date or the defaultNumWeeks must be set
+			assert(false);
+			return null;
 		}
 	}
 }

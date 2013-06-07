@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ThesisPlugin.inc.php
+ * @file plugins/generic/thesis/ThesisPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ThesisPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Thesis abstracts plugin class
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -141,7 +138,8 @@ class ThesisPlugin extends GenericPlugin {
 		if ($this->getEnabled()) {
 			$smarty =& $params[1];
 			$output =& $params[2];
-			$output .= '<li><a href="' . TemplateManager::smartyUrl(array('page'=>'thesis'), $smarty) . '" target="_parent">' . TemplateManager::smartyTranslate(array('key'=>'plugins.generic.thesis.headerLink'), $smarty) . '</a></li>';
+			$templateMgr = TemplateManager::getManager();
+			$output .= '<li><a href="' . $templateMgr->smartyUrl(array('page'=>'thesis'), $smarty) . '" target="_parent">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.thesis.headerLink'), $smarty) . '</a></li>';
 		}
 		return false;
 	}
@@ -150,7 +148,8 @@ class ThesisPlugin extends GenericPlugin {
 		if ($this->getEnabled()) {
 			$smarty =& $params[1];
 			$output =& $params[2];
-			$output .= '<li>&#187; <a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'theses'), $smarty) . '">' . TemplateManager::smartyTranslate(array('key'=>'plugins.generic.thesis.manager.theses'), $smarty) . '</a></li>';
+			$templateMgr = TemplateManager::getManager();
+			$output .= '<li>&#187; <a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'theses'), $smarty) . '">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.thesis.manager.theses'), $smarty) . '</a></li>';
 		}
 		return false;
 	}
@@ -161,7 +160,8 @@ class ThesisPlugin extends GenericPlugin {
 			$output =& $params[2];
 			$currentJournal = $smarty->get_template_vars('currentJournal');
 			if (!empty($currentJournal)) {
-				$output .= '<a href="' . TemplateManager::smartyUrl(array('page'=>'thesis'), $smarty) . '" class="action">' . TemplateManager::smartyTranslate(array('key'=>'plugins.generic.thesis.searchLink'), $smarty) . '</a><br /><br />';
+				$templateMgr = TemplateManager::getManager();
+				$output .= '<a href="' . $templateMgr->smartyUrl(array('page'=>'thesis'), $smarty) . '" class="action">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.thesis.searchLink'), $smarty) . '</a><br /><br />';
 			}
 		}
 		return false;
@@ -171,13 +171,14 @@ class ThesisPlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
- 	 * @return boolean
- 	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
+	 * @return boolean
+	 */
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_PKP_USER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_PKP_USER);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 		$journal =& Request::getJournal();

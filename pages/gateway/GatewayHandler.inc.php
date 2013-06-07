@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file GatewayHandler.inc.php
+ * @file pages/gateway/GatewayHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GatewayHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle external gateway requests. 
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -107,7 +104,7 @@ class GatewayHandler extends Handler {
 
 		} else {
 			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journals =& $journalDao->getEnabledJournals();
+			$journals =& $journalDao->getJournals(true);
 			$templateMgr->assign_by_ref('journals', $journals);
 		}
 

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file WebFeedPlugin.inc.php
+ * @file plugins/generic/webFeed/WebFeedPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WebFeedPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Web Feeds plugin class
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -93,18 +90,20 @@ class WebFeedPlugin extends GenericPlugin {
 
 			$currentJournal =& $templateManager->get_template_vars('currentJournal');
 			$requestedPage = Request::getRequestedPage();
+			$journalTitle = '';
 			if ($currentJournal) {
 				$issueDao =& DAORegistry::getDAO('IssueDAO');
 				$currentIssue =& $issueDao->getCurrentIssue($currentJournal->getId(), true);
 				$displayPage = $this->getSetting($currentJournal->getId(), 'displayPage');
+				$journalTitle = $this->sanitize($currentJournal->getLocalizedTitle());
 			}
 
 			if ( ($currentIssue) && (($displayPage == 'all') || ($displayPage == 'homepage' && (empty($requestedPage) || $requestedPage == 'index' || $requestedPage == 'issue')) || ($displayPage == 'issue' && $displayPage == $requestedPage)) ) {
 				$additionalHeadData = $templateManager->get_template_vars('additionalHeadData');
 
-				$feedUrl1 = '<link rel="alternate" type="application/atom+xml" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/atom" />';
-				$feedUrl2 = '<link rel="alternate" type="application/rdf+xml" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/rss" />';
-				$feedUrl3 = '<link rel="alternate" type="application/rss+xml" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/rss2" />';
+				$feedUrl1 = '<link rel="alternate" type="application/atom+xml" title="' . $journalTitle . ' (atom+xml)" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/atom" />';
+				$feedUrl2 = '<link rel="alternate" type="application/rdf+xml" title="' . $journalTitle . ' (rdf+xml)" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/rss" />';
+				$feedUrl3 = '<link rel="alternate" type="application/rss+xml" title="' . $journalTitle . ' (rss+xml)" href="'.$currentJournal->getUrl().'/gateway/plugin/WebFeedGatewayPlugin/rss2" />';
 
 				$templateManager->assign('additionalHeadData', $additionalHeadData."\n\t".$feedUrl1."\n\t".$feedUrl2."\n\t".$feedUrl3);
 			}
@@ -156,17 +155,18 @@ class WebFeedPlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
- 	 * @return boolean
- 	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
+	 * @return boolean
+	 */
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
 		switch ($verb) {
 			case 'settings':
 				$journal =& Request::getJournal();
 
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER));
+				AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON,  LOCALE_COMPONENT_PKP_MANAGER);
 				$templateMgr =& TemplateManager::getManager();
 				$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 
@@ -192,6 +192,15 @@ class WebFeedPlugin extends GenericPlugin {
 				assert(false);
 				return false;
 		}
+	}
+
+	/**
+	 * Clean up the Journal title.
+	 * @param $string
+	 * @return $string
+	 */
+	function sanitize($string) {
+		return htmlspecialchars(strip_tags($string));
 	}
 }
 

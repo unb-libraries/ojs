@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/booksForReview/classes/form/BookForReviewForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BookForReviewForm
@@ -236,7 +236,7 @@ class BookForReviewForm extends Form {
 
 		// If a url is provided, ensure it includes a proper prefix (i.e. http:// or https://).
 		if (!empty($this->_data['url'])) {
-			$this->addCheck(new FormValidatorCustom($this, 'url', 'required', 'plugins.generic.booksForReview.editor.form.urlPrefixIncluded', create_function('$url', 'return strpos(trim(strtolower($url)), \'http://\') === 0 || strpos(trim(strtolower($url)), \'https://\') === 0 ? true : false;'), array()));
+			$this->addCheck(new FormValidatorCustom($this, 'url', 'required', 'plugins.generic.booksForReview.editor.form.urlPrefixIncluded', create_function('$url', 'return strpos(trim(strtolower_codesafe($url)), \'http://\') === 0 || strpos(trim(strtolower_codesafe($url)), \'https://\') === 0 ? true : false;'), array()));
 		}
 	}
 

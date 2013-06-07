@@ -3,7 +3,7 @@
 /**
  * @file classes/article/PublishedArticle.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PublishedArticle
@@ -12,9 +12,6 @@
  *
  * @brief Published article class.
  */
-
-// $Id$
-
 
 import('classes.article.Article');
 
@@ -35,16 +32,16 @@ class PublishedArticle extends Article {
 	 * Get ID of published article.
 	 * @return int
 	 */
-	function getPubId() {
-		return $this->getData('pubId');
+	function getPublishedArticleId() {
+		return $this->getData('publishedArticleId');
 	}
 
 	/**
 	 * Set ID of published article.
-	 * @param $pubId int
+	 * @param $publishedArticleId int
 	 */
-	function setPubId($pubId) {
-		return $this->setData('pubId', $pubId);
+	function setPublishedArticleId($publishedArticleId) {
+		return $this->setData('publishedArticleId', $publishedArticleId);
 	}
 
 	/**
@@ -83,11 +80,9 @@ class PublishedArticle extends Article {
 	 * Get date published.
 	 * @return date
 	 */
-
 	function getDatePublished() {
 		return $this->getData('datePublished');
 	}
-
 
 	/**
 	 * Set date published.
@@ -202,107 +197,6 @@ class PublishedArticle extends Article {
 	 */
 	function setSuppFiles($suppFiles) {
 		return $this->setData('suppFiles', $suppFiles);
-	}
-
-	/**
-	 * Get public article id
-	 * @return string
-	 */
-	function getPublicArticleId() {
-		// Ensure that blanks are treated as nulls.
-		$returner = $this->getData('publicArticleId');
-		if ($returner === '') return null;
-		return $returner;
-	}
-
-	/**
-	 * Set public article id
-	 * @param $publicArticleId string
-	 */
-	function setPublicArticleId($publicArticleId) {
-		return $this->setData('publicArticleId', $publicArticleId);
-	}
-
-	/**
-	 * Return the "best" article ID -- If a public article ID is set,
-	 * use it; otherwise use the internal article Id. (Checks the journal
-	 * settings to ensure that the public ID feature is enabled.)
-	 * @param $journal Object the journal this article is in
-	 * @return string
-	 */
-	function getBestArticleId($journal = null) {
-		// Retrieve the journal, if necessary.
-		if (!isset($journal)) {
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal = $journalDao->getJournal($this->getJournalId());
-		}
-
-		if ($journal->getSetting('enablePublicArticleId')) {
-			$publicArticleId = $this->getPublicArticleId();
-			if (!empty($publicArticleId)) return $publicArticleId;
-		}
-		return $this->getId();
-	}
-
-	/**
-	 * Get a DOI for this article.
-	 * @var $preview boolean If true, generate a non-persisted preview only.
-	 */
-	function getDOI($preview = false) {
-		// If we already have an assigned DOI, use it.
-		$storedDOI = $this->getStoredDOI();
-		if ($storedDOI) return $storedDOI;
-
-		// Otherwise, create a new one.
-		$journalId = $this->getJournalId();
-
-		// Get the Journal object (optimized)
-		$journal =& Request::getJournal();
-		if (!$journal || $journal->getId() != $journalId) {
-			unset($journal);
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($journalId);
-		}
-
-		if (($doiPrefix = $journal->getSetting('doiPrefix')) == '') return null;
-		$doiSuffixSetting = $journal->getSetting('doiSuffix');
-
-		// Get the issue
-		$issueDao =& DAORegistry::getDAO('IssueDAO');
-		$issue =& $issueDao->getIssueById($this->getIssueId(), $this->getJournalId(), true);
-
-		if (!$issue || !$journal || $journal->getId() != $issue->getJournalId() ) return null;
-
-		switch ( $doiSuffixSetting ) {
-			case 'customIdentifier':
-				$doi = $doiPrefix . '/' . $this->getBestArticleId();
-				break;
-			case 'pattern':
-				$suffixPattern = $journal->getSetting('doiSuffixPattern');
-				// %j - journal initials
-				$suffixPattern = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials')), $suffixPattern);
-				// %v - volume number
-				$suffixPattern = String::regexp_replace('/%v/', $issue->getVolume(), $suffixPattern);
-				// %i - issue number
-				$suffixPattern = String::regexp_replace('/%i/', $issue->getNumber(), $suffixPattern);
-				// %a - article id
-				$suffixPattern = String::regexp_replace('/%a/', $this->getId(), $suffixPattern);
-				// %p - page number
-				$suffixPattern = String::regexp_replace('/%p/', $this->getPages(), $suffixPattern);
-				$doi = $doiPrefix . '/' . $suffixPattern;
-				break;
-			default:
-				$doi = $doiPrefix . '/' . String::strtolower($journal->getLocalizedSetting('initials')) . '.v' . $issue->getVolume() . 'i' . $issue->getNumber() . '.' . $this->getId();
-		}
-
-		if (!$preview) {
-			// Save the generated DOI
-			$this->setStoredDOI($doi);
-			$articleDao =& DAORegistry::getDAO('ArticleDAO');
-			$articleDao->changeDOI($this->getId(), $doi);
-		}
-
-		return $doi;
 	}
 }
 

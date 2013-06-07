@@ -4,7 +4,7 @@
 <!--
   * 000002.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Users Index 
@@ -16,7 +16,6 @@
   * Kiriazis Vasilis (vaskir@lis.upatras.gr),
   * Papaxristopoulos Leonidas (leonidasp@lis.upatras.gr)
   *
-  * $Id$
   -->
 
 <topic id="journal/topic/000002" locale="el_GR" title="Χρήστες" toc="journal/toc/000000" subtoc="journal/toc/000002" key="journal.users.index">

@@ -2,29 +2,28 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * lcoale/de_DE/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
-  *
   -->
 
-<locale name="de_DE" full_name = "Deutsch (Deutschland)">
+<locale name="de_DE" full_name="Deutsch (Deutschland)">
 	<!--
-	 * Diese Datei ist in einige größere Abschnitte gegliedert, die jeweils  
-	 *            durch Kommentare wie diesen voneinander getrennt sind. Diese Abschnitte sind:
+	 * Diese Datei ist in einige größere Abschnitte gegliedert, die jeweils
+	 * durch Kommentare wie diesen voneinander getrennt sind. Diese Abschnitte sind:
 	 * ALLGEMEINES - Enthält häufig vorkommende Wörter
 	 * EINHEITEN - Enthält Bezeichnungen, die sich auf die Hauptbestandteile 
-	 *            des Systems beziehen, z.B. Artikel, Zeitschrift, Rubrik
+	 *             des Systems beziehen, z.B. Artikel, Zeitschrift, Rubrik
 	 * OBERFLÄCHE - Enthält Wörter und Wortfolgen, die nach den Rubriken der 
-	 *           Benutzer/innenoberfläche gegliedert sind, in denen sie jeweils auftauchen 
+	 *              Benutzer/innenoberfläche gegliedert sind, in denen sie jeweils auftauchen 
 	 * PROTOKOLL - Enthält Wörter und Wortfolgen zu den Protokoll-Einträgen
 	 * VERSCHIEDENES - Enthält Einträge, die unter keinen der anderen Abschnitte fallen 
 	 * STANDARD - Enthält Standardeinstellungen für die Konfiguration.
 	-->
-	
+
 	<!-- review froms start -->
 
 	<!-- common -->
@@ -33,9 +32,9 @@
 
 	<!-- Categories -->
 	<message key="navigation.categories">Kategorien</message>
-	<message key="navigation.categories.browse">Durchsehen</message>
+	<message key="navigation.categories.browse">Durchblättern</message>
 
-	<!--  peer review -->
+	<!-- peer review -->
 	<message key="submission.reviewForm">Begutachtungsformular</message>
 	<message key="submission.reviewFormResponse">Antwort zum Begutachtungsformular</message>
 
@@ -98,7 +97,7 @@
 	<!--
 	 *
 	 * EINHEITEN - Dieser Abschnitt enthält Bezeichnungen, die sich auf die Hauptbestandteile 
-	 *            des Systems beziehen, z.B. Artikel, Zeitschrift, Rubrik
+	 *             des Systems beziehen, z.B. Artikel, Zeitschrift, Rubrik
 	 *
 	-->
 
@@ -185,7 +184,7 @@
 	<message key="submissions.editorRuling">Redaktionsbeschluss</message>
 	<message key="submission.eventLog">Protokoll der Ereignisse</message>
 	
-	<!-- Auflistung von Beiträgen Suchmaschine  -->
+	<!-- Auflistung von Beiträgen Suchmaschine -->
 	<message key="submissions.copyeditComplete">Lektorat beendet</message>
 	<message key="submissions.layoutComplete">Layout fertig</message>
 	<message key="submissions.proofreadingComplete">Korrekturlektorat beendet</message>
@@ -193,7 +192,7 @@
 	<!-- Anmerkungen zu Einreichungen -->
 
 	<!-- Allgemeine Begriffe: Zeitschrift -->
-	<message key="journal.currentIssue">Letzte Ausgabe</message>
+	<message key="journal.currentIssue">Aktuelle Ausgabe</message>
 	<message key="journal.journals">Zeitschriften</message>
 	<message key="journal.path">Zugangspfad</message>
 	<message key="journal.journal">Zeitschrift</message>
@@ -204,7 +203,7 @@
 	<message key="user.registerForOtherJournals">Für andere Zeitschriften registrieren</message>
 	<message key="user.myJournals">Meine Zeitschriften</message>
 	<message key="user.manageMySubscriptions">Meine Abonnements verwalten</message>
-	<message key="user.noRoles.chooseJournal">Ihr Account ist derzeit  keiner Zeitschrift zugeordnet. Bitte wählen Sie eine Zeitschrift aus:</message>
+	<message key="user.noRoles.chooseJournal">Ihr Account ist derzeit keiner Zeitschrift zugeordnet. Bitte wählen Sie eine Zeitschrift aus:</message>
 	<message key="user.noRoles.noRolesForJournal">Ihrem Account sind derzeit keine Rollen bei dieser Zeitschrift zugeordnet. Bitte wählen Sie aus den unten stehenden Aktionen aus:</message>
 	<message key="user.noRoles.submitArticle">Einen Vorschlag einreichen</message>
 	<message key="user.noRoles.submitArticleRegClosed">Einen Vorschlag einreichen: Registrierung als Autor/in ist momentan ausgeschaltet.</message>
@@ -317,11 +316,11 @@
 	<!--
 	 *
 	 * OBERFLÄCHE - Enthält Wörter und Wortfolgen, die nach den Rubriken der Benutzer/innenoberfläche gegliedert sind, 
-	 *                         in denen sie jeweils auftauchen 
+	 *              in denen sie jeweils auftauchen 
 	 *
 	-->
 
-	<!-- Beitrag Leser/innenzugang  -->
+	<!-- Beitrag Leser/innenzugang -->
 	<message key="reader.subscribersOnly">Nur für Abonnent/innen</message>
 	<message key="reader.subscriptionRequiredLoginText">Für den Zugang ist ein Abonnement erforderlich. Um Ihr Abonnement zu bestätigen, loggen Sie sich bei der Zeitschrift ein.</message>
 	<message key="reader.openAccess">Freier Zugang (Open Access)</message>
@@ -330,13 +329,13 @@
 
 	<!-- Leser/innenkommentare -->
 	<message key="comments.commentsOnArticle">Kommentare zu diesem Artikel</message>
-	<message key="comments.authenticated">{$userName} </message>
+	<message key="comments.authenticated"><![CDATA[von <a href="{$publicProfileUrl}" target="_parent">{$userName}</a>]]></message>
 
 	<!-- Verwaltung der Website -->
 
 	<message key="admin.settings.oaiRegistrationDescription"><![CDATA[Um den Inhalt aller von dieser Website angebotenen Zeitschriften bei einem allgemein verbreiteten System von Forschungsdatenbanken zu indizieren, <a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">registrieren Sie</a> die URL Ihrer Website beim Metadaten-Harvester des Public Knowledge Project <a href="http://pkp.sfu.ca/harvester/" target="_blank"></a>. Der Harvester sammelt die Metadaten jedes indizierten Artikels dieser Zeitschrift und macht somit eine umfassende und genaue Suche auf allen Forschungs-Webseiten, die sich an dem Projekt <a href="http://www.openarchives.org/OAI/openarchivesprotocol.htm#Introduction" target="_blank"> Open Archives Initiative Protocol for Metadata Harvesting</a> beteiligen.
 <br /><br />
-<a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">Klicken Sie hier</a> und geben Sie <span class="highlight">{$siteUrl}</span>unter <strong>URL der Website</strong>, und <span class="highlight">{$oaiUrl}</span> unter <strong>Basis-URL für OAI (Open Access Archives)</strong> ein.
+<a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">Klicken Sie hier</a> und geben Sie <span class="highlight">{$siteUrl}</span> unter <strong>URL</strong> und <span class="highlight">{$oaiUrl}</span> unter <strong>OAI Base URL</strong> ein.
 <br /><br />
 Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Systemkonfiguration deaktiviert werden kann. Zukünftige Versionen von OJS werden es ermöglichen, die Aktivierung der OAI-Schnittstelle für jede einzelne Zeitschrift einer Website zu regeln.]]></message>
 
@@ -357,7 +356,7 @@ Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Sys
 
 	<!-- Systeminformationen -->
 	<message key="admin.overwriteConfigFileInstructions"><![CDATA[<h4>Beachten Sie:</div>
-<p>Das System konnte die Konfigurationsdatei nicht automatisch überschreiben. Öffnen Sie  <tt>config.inc.php</tt> mit einem geeigneten Texteditor und ersetzen Sie den Inhalt durch den Text im nachstehenden Textfeld.</p>]]></message>
+<p>Das System konnte die Konfigurationsdatei nicht automatisch überschreiben. Öffnen Sie <tt>config.inc.php</tt> mit einem geeigneten Texteditor und ersetzen Sie den Inhalt durch den Text im nachstehenden Textfeld.</p>]]></message>
 
 
 	<!-- Website-Verwaltung: Benutzer/innendaten zusammenführen -->
@@ -377,13 +376,15 @@ Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Sys
 	<!-- Verwaltung Zahlungen -->
 
 	<!-- Allgemeine Informationen: Plug-Ins -->
-	<message key="plugins.categories.auth.description">Die Zugangs-Plug-Ins ermöglichen OJS, die Zugangsberechtigung von Benutzer/innen an andere Systeme, wie etwa LDAP-Server, zu übertragen.</message>
+	<message key="plugins.categories.auth.description">Die Zugangs-Plug-Ins ermöglichen Open Journal Systems, die Zugangsberechtigung von Benutzer/innen an andere Systeme, wie etwa LDAP-Server, zu übertragen.</message>
 	<message key="plugins.categories.citationFormats.description">Plug-Ins für Zitatformate bieten Benutzer/innen unterschiedliche Formate zur Zitation der Artikel an.</message>
-	<message key="plugins.categories.generic.description">Generische Plugins werden zur Erweiterung von Open Journal Systems in einer Vielzahl von Wegen, die nicht durch die anderen Plug-In-Kategorien bereitgestellt werden.</message>
+	<message key="plugins.categories.generic.description">Generische Plugins werden zur Erweiterung von Open Journal Systems in einer Vielzahl von Wegen genutzt, die nicht durch die anderen Plug-In-Kategorien bereitgestellt werden.</message>
 	<message key="plugins.categories.implicitAuth">Plug-Ins zur impliziten Authentifizierung</message>
 	<message key="plugins.categories.implicitAuth.description">Plug-Ins zur impliziten Authentifizierung stellen Mittel zur Verfügung, um Nutzer/innen anhand ihrer HTTP-Header zu authentifizieren.</message>
 	<message key="plugins.categories.oaiMetadataFormats">Plug-In für OAI-Metadaten-Format</message>
 	<message key="plugins.categories.oaiMetadataFormats.description">Diese Format-Plug-Ins beziehen sich auf Metadaten für die OAI-Kommunikation</message>
+	<message key="plugins.categories.pubIds">Plug-Ins für öffentliche Kennungen</message>
+	<message key="plugins.categories.pubIds.description">Diese Plug-Ins liefern Unterstützung für öffentliche Kennungen (public identifiers).</message>
 
 	<!-- Dateinavigator -->
 
@@ -402,7 +403,7 @@ Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Sys
 <br /><br />
 LOCKSS muss erst dann eingerichtet werden, wenn die Zeitschrift vollständig in Betrieb genommen wurde. Dann führen Sie bitte die folgenden beiden Schritte aus:]]></message>
 
-	<!-- 3. Einrichtungsschritt  -->
+	<!-- 3. Einrichtungsschritt -->
 	<message key="manager.setup.authorCopyrightNotice.sample"><![CDATA[<h3>Empfohlene Creative-Commons-Lizenz</h3>
 <h4>1. Empfohlene Copyright-Regelungen für Zeitschriften mit Open Access</h4>
 Autor/innen, die in dieser Zeitschrift publizieren möchten, stimmen den folgenden Bedingungen zu:
@@ -421,7 +422,7 @@ Autor/innen, die in dieser Zeitschrift publizieren möchten, stimmen den folgend
 </ol>]]></message>
 	<message key="manager.setup.subjectClassificationDescription"><![CDATA[[Die Zeitschrift verwendet ein online verfügbares Klassifikationssystem.<br />
 Titel des Klassifikationssystems]]></message>
-	<message key="manager.setup.registerJournalForIndexingDescription"><![CDATA[Damit der Inhalt dieser Zeitschrift in einem weltweiten System von Forschungsdatenbanken indiziert wird, lesen Sie bitte die <a href="http://www.oaister.org/dataproviders.html" target="_blank">Schritte, um Daten zu liefern</a> und registrieren Sie Ihre Zeitschrift bei der offiziellen <a href="http://www.openarchives.org/data/registerasprovider.html" target="_blank">Open-Archives-Registrierung</a>. Zum registrieren benötigen Sie die Basis-URL für Ihr Repositorium: <span class="highlight">{$oaiUrl}</span>. Danach können Sie Ihre Zeitschrift bei der <a href="http://gita.grainger.uiuc.edu/registry/" target="_blank">UIUC OAI registry</a> und bei <a href="http://www.oaister.org/" target="_blank">OAIster</a> registrieren.
+	<message key="manager.setup.registerJournalForIndexingDescription"><![CDATA[Damit der Inhalt dieser Zeitschrift in einem weltweiten System von Forschungsdatenbanken indiziert wird, lesen Sie bitte die <a href="http://www.oaister.org/dataproviders.html" target="_blank">Schritte, um Daten zu liefern</a> und registrieren Sie Ihre Zeitschrift bei der offiziellen <a href="http://www.openarchives.org/data/registerasprovider.html" target="_blank">Open-Archives-Registrierung</a>. Zum Registrieren benötigen Sie die Basis-URL für Ihr Repositorium: <span class="highlight">{$oaiUrl}</span>. Danach können Sie Ihre Zeitschrift bei der <a href="http://gita.grainger.uiuc.edu/registry/" target="_blank">UIUC OAI registry</a> und bei <a href="http://www.oaister.org/" target="_blank">OAIster</a> registrieren.
 <br /><br />
 Beachten Sie bitte, dass Ihre Zeitschrift bereits automatisch indiziert wird, wenn Ihr/e Website-Administrator/in die gesamte Installation bereits bei diesen Diensten registriert hat. In diesem Fall müssen Sie Ihre Zeitschrift nicht gesondert registrieren.]]></message>
 	<message key="manager.setup.citations">Den Zitationsauszeichnungsassistenten aktivieren.</message>
@@ -452,7 +453,7 @@ Wählen Sie ein Schema für diese Schritte im redaktionellen Verfahren. (Zur Bes
 	<message key="manager.people.confirmDisable">Diese Nutzerin/diesen Nutzer sperren? Dies wird die Nutzerin/den Nutzer daran hindern, sich bei diesem System anzumelden.
 
 Sie können der Nutzerin/dem Nutzer einen Grund für die Sperrung des Zugangs angeben.</message>
-	<message key="manager.people.noAdministrativeRights"><![CDATA[Leider haben Sie keine Verwaltungsrechte für diese/n Benutzer/in. Die Gründe mögen sein:  
+	<message key="manager.people.noAdministrativeRights"><![CDATA[Leider haben Sie keine Verwaltungsrechte für diese/n Benutzer/in. Die Gründe mögen sein:
 		<ul>
 			<li>Die Benutzerin/der Benutzer ist ein/e Website-Administrator/in</li>
 			<li>Die Benutzerin/der Benutzer ist an Zeitschriften beteiligt, die Sie nicht verwalten.</li>
@@ -475,9 +476,28 @@ Sie können der Nutzerin/dem Nutzer einen Grund für die Sperrung des Zugangs an
 	<!-- Mitteilungsverwaltung -->
 
 	<!-- Redaktion -->
-	<message key="editor.submissionReview.notes"><![CDATA[<ol>
-	<li>Hervorgehobene Einträge verweisen darauf, dass eine Aktion seitens der Redakteur/innen erforderlich ist.</li>
-	<li>"Fällig" erscheint, wenn ein Gutachter/eine Gutachterin den Begutachtungsauftrag akzeptiert hat; es wird die Zahl der Wochen bis zum Abgabezeitpunkt des Reviews angezeigt oder (-) Wochen, wenn das Gutachten überfällig ist.</li>
+	<message key="editor.submissionReview.notes">
+	<![CDATA[<ol>
+	<li>Hervorgehobene Einträge geben an, dass eine Aktion durch eine/n Redakteur/in erforderlich ist, gekennzeichnet wie folgt:
+		<ul>
+			<li class="highlightReviewerNotNotified">Ein/e Gutachter/in ist zugewiesen worden, aber noch nicht per E-Mail benachrichtigt worden.</li>
+			<li class="highlightNoDecision">Alle Gutachter/innen haben ihre Kommentare eingereicht, aber es ist noch keine Entscheidung protokolliert worden.</li>
+			<li class="highlightRevisedCopyUploaded">Autor/in hat ein überarbeitetes Manuskript hochgeladen.</li>
+			<li class="highlightReviewerConfirmationOverdue">Gutachter/in hat die Begutachtungsanfrage noch nicht beantwortet, die Frist ist abgelaufen.</li>
+			<li class="highlightReviewerCompletionOverdue">Gutachter/in hat die Begutachtung noch nicht abgeschlossen, die Frist ist abgelaufen.</li>
+		</ul>
+	</li>
+	<li>"Fällig" wird ausgefüllt, wenn ein/e Gutachter/in die Begutachtungsaufgabe übernimmt; die Spalte nennt die Anzahl der Wochen, bis ein Gutachten fällig ist oder (-) die Anzahl der Wochen, die ein Gutachten überfällig ist.</li>
+</ol>]]></message>
+	<message key="editor.submissionEditing.notes">
+	<![CDATA[<ol>
+	<li>Hervorgehobene Einträge geben an, dass eine Aktion durch eine/n Redakteur/in erforderlich ist, gekennzeichnet wie folgt:
+		<ul>
+			<li class="highlightCopyediting">Eine Aktion in der Lektoratsphase ist erforderlich.</li>
+			<li class="highlightLayoutEditing">Eine Aktion in der Layoutphase ist erforderlich.</li>
+			<li class="higlightProofreading">Eine Aktion in der Korrekturphase ist erforderlich.</li>
+		</ul>
+	</li>
 </ol>]]></message>
 
 	<!-- Startseite Redakteur/innen -->
@@ -491,10 +511,10 @@ Sie können der Nutzerin/dem Nutzer einen Grund für die Sperrung des Zugangs an
 	<!-- Navigation im Seitenleistenmenü -->
 
 	<!-- Begutachtung von Beiträgen (Redakteur/innen) -->
-	<message key="editor.article.selectReviewerNotes"><![CDATA[Der Name verweist zum Profil der Gutachterin/des Gutachters.<br/>
-Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br/>
-"Wochen" bezieht sich auf die durchschnittlich von der Gutachterin/dem Gutachter für die Erstellung einer Begutachtung benötigte Zeit<br/>
-"Zuletzt" bezieht sich auf das Annahmedatum der letzten Begutachtung<br/>
+	<message key="editor.article.selectReviewerNotes"><![CDATA[Der Name verweist zum Profil der Gutachterin/des Gutachters.<br />
+Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
+"Wochen" bezieht sich auf die durchschnittlich von der Gutachterin/dem Gutachter für die Erstellung einer Begutachtung benötigte Zeit<br />
+"Zuletzt" bezieht sich auf das Annahmedatum der letzten Begutachtung<br />
 "Aktuell" bezieht sich auf die Anzahl momentan übernommener oder in Betracht gezogener Begutachtungen.]]></message>
 
 
@@ -515,8 +535,8 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br/>
 	<message key="sectionEditor.regrets.title">#{$articleId} Absagen durch Gutachter/innen, Abbrüche &amp; Frühere Durchgänge</message>
 	<message key="sectionEditor.regrets">Absagen</message>
 	<message key="sectionEditor.regrets.link">Absagen, Abbrüche, frühere Durchgänge anzeigen</message>
-	<message key="sectionEditor.regrets.reviewRound">Peer Review, Durchgang {$cycle}</message>
-	<message key="sectionEditor.regrets.decisionRound">Redaktionsentscheidung, Durchgang {$cycle}</message>
+	<message key="sectionEditor.regrets.reviewRound">Peer Review, Durchgang {$round}</message>
+	<message key="sectionEditor.regrets.decisionRound">Redaktionsentscheidung, Durchgang {$round}</message>
 	<message key="sectionEditor.regrets.regretsAndCancels">Absagen durch Gutachter/innen &amp; Abbrüche</message>
 	<message key="sectionEditor.regrets.regret">Absage</message>
 	<message key="sectionEditor.regrets.result">Ergebnis</message>
@@ -683,21 +703,20 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br/>
 Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. Eine Bestätigung geht an diese E-Mail-Adresse.]]></message>
 
 	<!-- Registrierung -->
-	<message key="user.register.repeatPassword">Passwort wiederholen</message>
 	<message key="user.register.selectJournal">Wählen Sie die Zeitschrift aus, für die Sie sich registrieren wollen</message>
 	<message key="user.register.noJournals">Auf dieser Seite gibt es keine Zeitschriften, bei denen Sie sich eintragen könnten.</message>
 	<message key="user.register.privacyStatement">Schutz persönlicher Daten</message>
-	<message key="user.register.alreadyRegisteredOtherJournal"><![CDATA[<a href="{$registerUrl}">Hier klicken</a>, wenn Sie bereits für diese oder eine andere Zeitschrift auf dieser Seite registriert sind.]]></message>
-	<message key="user.register.notAlreadyRegisteredOtherJournal"><![CDATA[<a href="{$registerUrl}">Hier klicken</a>, wenn Sie sich <strong>noch nicht</strong> für diese oder eine andere Zeitschrift auf dieser Seite registriert haben.]]></message>
+	<message key="user.register.alreadyRegisteredOtherJournal"><![CDATA[<a href="{$registerUrl}">Hier klicken</a>, wenn Sie bereits für diese oder eine andere Zeitschrift auf dieser Site registriert sind.]]></message>
+	<message key="user.register.notAlreadyRegisteredOtherJournal"><![CDATA[<a href="{$registerUrl}">Hier klicken</a>, wenn Sie sich <strong>noch nicht</strong> für diese oder eine andere Zeitschrift auf dieser Site registriert haben.]]></message>
 	<message key="user.register.loginToRegister">Tragen Sie bitte Ihren bestehenden Benutzer/innen-Namen und Ihr aktuelles Passwort ein, um sich für diese Zeitschrift zu registrieren.</message>
 	<message key="user.register.registrationDisabled">Gegenwärtig nimmt diese Zeitschrift keine Registrierung von Benutzer/innen entgegen.</message>
 	<message key="user.register.form.passwordLengthTooShort">Das eingetragene Passwort ist zu kurz.</message>
 	<message key="user.register.readerDescription">Sie werden per E-Mail über neue Ausgaben der Zeitschrift informiert.</message>
 	<message key="user.register.openAccessNotificationDescription">Sie werden per E-Mail benachrichtigt, wenn eine Ausgabe der Zeitschrift frei zugänglich gemacht wird. </message>
 	<message key="user.register.authorDescription">Sie können Beiträge bei der Zeitschrift einreichen</message>
-	<message key="user.register.reviewerDescriptionNoInterests">Sie sind bereit zum Peer Review eingereichter Beiträge.</message>
-	<message key="user.register.reviewerDescription">Sie sind bereit zum Peer Review eingereichter Beiträge. Bitte Forschungs- und Interessengebiete angeben.</message>
-	<message key="user.register.reviewerInterests">Angabe von Begutachtungsinteressen (Wissenschaftsbereiche und Forschungsmethoden):</message>
+	<message key="user.register.reviewerDescriptionNoInterests">Sie sind bereit, bei der Zeitschrift eingereichte Beiträge im Peer Review zu begutachten.</message>
+	<message key="user.register.reviewerDescription">Sie sind bereit, bei der Website eingereichte Beiträge im Rahmen des Peer Review zu begutachten.</message>
+	<message key="user.register.reviewerInterests">Bitte geben Sie Begutachtungsinteressen an (Wissenschaftsbereiche und Forschungsmethoden):</message>
 
 	<!-- Abonnements -->
 	<message key="user.subscriptions.mySubscriptions">Meine Abonnements</message>
@@ -741,12 +760,12 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 
 
 	<!-- Suche -->
-	<message key="search.browseAuthorIndex">Verzeichnis der Autor/innen durchsuchen</message>
+	<message key="search.browseAuthorIndex">Verzeichnis der Autor/innen durchblättern</message>
 	<message key="search.searchFor">Artikel durchsuchen nach</message>
 	<message key="search.author">Autor/in</message>
 	<message key="search.withinJournal">In</message>
 	<message key="search.allJournals">allen Zeitschriften</message>
-	<message key="search.authorIndex">Autor/innenverzeichnis durchsuchen</message>
+	<message key="search.authorIndex">Autor/innenverzeichnis durchblättern</message>
 	<message key="search.authorDetails">Nähere Angaben zu den Autor/innen</message>
 	<message key="search.syntaxInstructions"><![CDATA[Suchhinweise: <ul>
 <li>Groß- und Kleinschreibung der Suchbegriffe werden nicht unterschieden.</li>
@@ -756,18 +775,18 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 <li>Verwenden Sie Klammern für eine komplexere Suche, z.B. <em>Archiv ((Zeitschrift ODER Vortrag) NICHT Dissertation)</em>.</li>
 <li>Suchen Sie nach einer genauen Wortfolge, indem Sie sie in Anführungszeichen setzen, z.B. <em>"Veröffentlichung mit freiem Zugang"</em>.</li>
 <li>Schließen Sie ein Wort aus, indem Sie ihm <strong>-</strong> oder <em>NICHT</em> voranstellen, z.B. <em>Internetpublikation -Politik</em> oder <em>Internetpublikation NICHT Politik</em>.</li>
-<li>Verwenden Sie <b>*</strong> als Platzhalter für beliebige Zeichenfolgen, z.B. <em>Sozi* Moral</em> listet alle Dokumente, die "soziologisch" oder "sozial" enthalten.</li>
+<li>Verwenden Sie <strong>*</strong> als Platzhalter für beliebige Zeichenfolgen, z.B. <em>Sozi* Moral</em> listet alle Dokumente, die "soziologisch" oder "sozial" enthalten.</li>
 </ul>]]></message>
 
 	<!-- Einschubseite für PDFs -->
 	<message key="article.pdf.title">Portable Document Format (PDF)</message>
 	<message key="article.pdf.download">Diese PDF-Datei herunterladen</message>
-	<message key="article.pdf.pluginMissing"><![CDATA[<p>Die PDF-Datei, die Sie ausgewählt haben, sollte hier geöffnet werden, wenn für Ihren Webbrowser ein PDF-Lese-Plug-In installiert ist (zum Beispiel eine aktuelle Version des <a href="http://www.adobe.com/products/acrobat/readstep2.html">Adobe Acrobat Reader</a>).</p> <p>Alternativ können Sie die PDF-Datei direkt auf Ihren Computer laden, von wo aus sie in einem PDF-Leseprogramm geöffnet werden kann. Um die PDF-Datei zu laden, klicken Sie auf den Download-Link unten.</p><p>Falls Sie mehr Informationen über das Drucken, Speichern und Arbeiten von und mit PDF-Dateien erhalten möchten, bietet Highwire Press hilfreiche <a href="http://highwire.stanford.edu/help/pdf-faq.dtl">Frequently Asked Questions about PDFs</a>.</p>]]></message>
+	<message key="article.pdf.pluginMissing"><![CDATA[<p>Die PDF-Datei, die Sie ausgewählt haben, sollte hier geöffnet werden, wenn für Ihren Webbrowser ein PDF-Lese-Plug-In installiert ist (zum Beispiel eine aktuelle Version des <a href="http://www.adobe.com/products/acrobat/readstep2.html">Adobe Acrobat Reader</a>).</p> <p>Falls Sie mehr Informationen über das Drucken, Speichern und Arbeiten von und mit PDF-Dateien erhalten möchten, bietet Highwire Press hilfreiche <a href="http://highwire.stanford.edu/help/pdf-faq.dtl">Frequently Asked Questions about PDFs</a>.</p> <p>Alternativ können Sie die PDF-Datei direkt auf Ihren Computer laden, von wo aus sie in einem PDF-Leseprogramm geöffnet werden kann. Um die PDF-Datei herunterzuladen, klicken Sie auf den Download-Link unten.</p>]]></message>
 
 
 	<!-- Einschubseite für Fahnen, die weder PDF noch HTML sind -->
 	<message key="article.nonpdf.title">Artikel herunterladen</message>
-	<message key="article.nonpdf.note"><![CDATA[Die gewählte Datei sollte automatisch geladen werden. Falls nicht, klicken Sie auf den nachstehenden Link. Beachten Sie bitte, dass die Datei zur Wiedergabe ein spezielles Programm oder ein Plug-In benötigen kann.<br /><br />Falls die Datei nicht automatisch geladen wird <a href="{$pdfUrl}">hier klicken</a>.]]></message>
+	<message key="article.nonpdf.note"><![CDATA[Die gewählte Datei sollte automatisch geladen werden. Falls nicht, klicken Sie auf den nachstehenden Link. Beachten Sie bitte, dass die Datei zur Wiedergabe ein spezielles Programm oder ein Plug-In benötigen kann.<br /><br />Falls die Datei nicht automatisch geladen wird, <a href="{$url}">hier klicken</a>.]]></message>
 
 	<!-- Index: Site -->
 	<message key="site.journalsHosted">Zeitschriften auf dieser Seite</message>
@@ -783,7 +802,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 
 	<!-- Index: Archiv -->
 	<message key="archive.archives">Archiv</message>
-	<message key="archive.browse">Ältere Ausgaben durchsuchen</message>
+	<message key="archive.browse">Ältere Ausgaben durchblättern</message>
 	<message key="archive.issueUnavailable">Ausgabe nicht verfügbar</message>
 
 	<!-- Über uns -->
@@ -807,7 +826,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="about.onlineSubmissions.registrationRequired">Um Beiträge online einzureichen oder den aktuellen Status eines eingereichten Beitrags zu überprüfen, müssen Sie registriert und eingeloggt sein.</message>
 	<message key="about.authorGuidelines">Richtlinien für Autor/innen</message>
 	<message key="about.submissionPreparationChecklist">Checkliste für Beitragseinreichungen</message>
-	<message key="about.submissionPreparationChecklist.description">Als Teil des Einreichungsverfahren werden die Autor/innen gebeten, anhand der  Checkliste für Beiträge die Übereinstimmung ihres Beitrags Punkt für Punkt mit den angegebenen Vorgaben abzugleichen. Beiträge können an Autor/innen, die die Richtlinien nicht befolgen, zurückgegeben werden.</message>
+	<message key="about.submissionPreparationChecklist.description">Als Teil des Einreichungsverfahren werden die Autor/innen gebeten, anhand der Checkliste für Beiträge die Übereinstimmung ihres Beitrags Punkt für Punkt mit den angegebenen Vorgaben abzugleichen. Beiträge können an Autor/innen, die die Richtlinien nicht befolgen, zurückgegeben werden.</message>
 	<message key="about.copyrightNotice">Copyright-Vermerk</message>
 	<message key="about.privacyStatement">Schutz persönlicher Daten</message>
 	<message key="about.authorFees">Autor/innen-Gebühren</message>
@@ -938,7 +957,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 
 <ul>
 	<li><a href="http://www.php.net/" target="_blank">PHP</a> >= {$phpRequiredVersion} (einschließlich PHP 5.x); Sie nutzen momentan PHP {$phpVersion}{$wrongPhpText}</li>
-	<li><a href="http://www.mysql.com/" target="_blank">MySQL</a> >= 3.23.23 (einschließlich MySQL 4.x) oder <a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a> >= 7.1  (einschließlich PostgreSQL 8.x)</li>
+	<li><a href="http://www.mysql.com/" target="_blank">MySQL</a> >= 3.23.23 (einschließlich MySQL 4.x) oder <a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a> >= 7.1 (einschließlich PostgreSQL 8.x)</li>
 	<li><a href="http://httpd.apache.org/" target="_blank">Apache</a> >= 1.3.2x oder >= 2.0.4x oder Microsoft IIS 6</li>
 	<li>Betriebssystem: Jedes Betriebssystem, das die obigen Programme unterstützt, darunter <a href="http://www.linux.org/" target="_blank">Linux</a>, <a href="http://www.bsd.org/" target="_blank">BSD</a>, <a href="http://www.sun.com/" target="_blank">Solaris</a>, <a href="http://www.apple.com/" target="_blank">Mac OS X</a>, <a href="http://www.microsoft.com/">Windows</a></li>
 </ul>
@@ -972,13 +991,15 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="installer.localeSettingsInstructions"><![CDATA[Zur durchgängigen Unterstützung von Unicode (UTF-8) verwenden Sie stets UTF-8 als Zeichensatz. Beachten Sie, dass MySQL >= 4.1.1 oder PostgreSQL >= 7.1-Datenbankserver erforderlich sind. Beachten Sie bitte außerdem, dass die Unterstützung von Unicode PHP >= 4.3.0 kompiliert mit der Bibliothek <a href="http://www.php.net/mbstring" target="_blank">mbstring</a> verlangt (in den meisten neueren PHP-Installationen standardmäßig aktiviert). Falls Ihr Server diese Anforderungen nicht erfüllt, können Schwierigkeiten mit erweiterten Schriftsätzen auftreten.
 	<br /><br />
 	Ihr Server unterstützt derzeit : <strong>{$supportsMBString}</strong>]]></message>
+	<message key="installer.allowFileUploads"><![CDATA[Ihr Server erlaubt momentan Dateiuploads: <strong>{$allowFileUploads}</strong>]]></message>
+	<message key="installer.maxFileUploadSize"><![CDATA[Ihr Server erlaubt beim Upload momentan eine maximale Dateigröße von: <strong>{$maxFileUploadSize}</strong>]]></message>
 	<message key="installer.localeInstructions">Die Hauptsprache dieses Systems. Falls Sie an hier nicht aufgeführten Sprachen interessiert sind, sehen Sie bitte in der OJS-Dokumentation nach.</message>
 	<message key="installer.additionalLocalesInstructions">Wählen Sie alle weiteren Regionaleinstellungen, die das System unterstützen soll. Diese Regionaleinstellungen stehen allen Zeitschriften der Website zur Verfügung. Weitere Regionaleinstellungen können jederzeit über die Website-Administration eingerichtet werden.</message>
 	<message key="installer.filesDirInstructions"><![CDATA[Bitte geben Sie den vollständigen Pfad zu einem existierenden Verzeichnis an, in dem hochgeladene Dateien gespeichert werden sollen. Dieses Verzeichnis sollte nicht direkt aus dem WWW lesbar sein. <strong>Bitte stellen Sie sicher, dass dieses Verzeichnis existiert und beschreibbar ist, bevor Sie mit der Installation fortfahren.</strong> Pfadangaben auf Windows-Rechnern sollten normale Schrägstriche enthalten, z.B. "C:/myjournal/files".]]></message>
 	<message key="installer.databaseSettingsInstructions">OJS benötigt eine SQL-Datenbank zur Speicherung der Daten. Eine Liste der unterstützten Datenbanken können Sie der oben stehenden Liste der Systemanforderungen entnehmen. Bitte geben Sie in den folgenden Feldern die Einstellungen zur Verbindung zur Datenbank ein.</message>
 	<message key="installer.installApplication">Open Journal Systems installieren</message>
 	<message key="installer.upgradeApplication">Open Journal Systems upgraden</message>
-	<message key="installer.reinstallAfterDatabaseError"><![CDATA[<b>Warnung:</strong> Wenn die Datenbank-Installation fehlschlägt, müssen Sie eventuell die OJS-Datenbank bzw. die Datenbank-Tabellen von Hand löschen, bevor Sie eine erneute Installation der Datenbank probieren können.]]></message>
+	<message key="installer.reinstallAfterDatabaseError"><![CDATA[<strong>Warnung:</strong> Wenn die Datenbank-Installation fehlschlägt, müssen Sie eventuell die OJS-Datenbank bzw. die Datenbank-Tabellen von Hand löschen, bevor Sie eine erneute Installation der Datenbank probieren können.]]></message>
 	<message key="installer.overwriteConfigFileInstructions"><![CDATA[<h4>WICHTIG!</h4>
 <p>Die Installationsprozedur konnte die Konfigurationsdatei nicht automatisch überschreiben. Bevor Sie versuchen, das System zu benutzen, öffnen Sie bitte <tt>config.inc.php</tt> in einem geeigneten Text-Editor und ersetzen Sie den Dateiinhalt durch den Inhalt des folgenden Textfeldes.</p>]]></message>
 	<message key="installer.installationComplete"><![CDATA[<p>Die Installation von OJS wurde erfolgreich abgeschlossen.</p>
@@ -994,6 +1015,9 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 <p>Bitte vergessen Sie nicht, die "installed"-Einstellung in Ihrer config.inc.php-Konfigurationsdatei wieder zurück auf <em>On</em> zu setzen.</p>
 <p>Wenn Sie sich noch nicht registriert haben und in Zukunft Neuigkeiten und Hinweise auf Aktualisierungen erhalten möchten, <strong>registrieren Sie sich bitte auf <a href="http://pkp.sfu.ca/ojs/register" target="_new">http://pkp.sfu.ca/ojs/register</a>.</strong> Wenn Sie Fragen oder Kommentare haben, besuchen Sie bitte das <a href="http://pkp.sfu.ca/support/forum" target="_new">Support-Forum</a>.</p>]]></message>
 
+	<!-- Warnungen zum Upgrade -->
+	<message key="site.upgradeAvailable.admin"><![CDATA[Eine neue Version von OJS ist verfügbar! Sie benutzen momentan OJS {$currentVersion}. Die aktuelleste Version ist OJS {$latestVersion}. Bitte gehen Sie zu <a href="http://pkp.sfu.ca/ojs_download" target="_new">dieser Seite</a>, um die aktuelle Version herunterzuladen und um Informationen zum Upgrade einzusehen.]]></message>
+	<message key="site.upgradeAvailable.manager"><![CDATA[Eine neue Version von OJS ist verfügbar! Sie benutzen momentan OJS {$currentVersion}. Die aktuellste Version ist OJS {$latestVersion}. Bitte benachrichtigen Sie Ihre/n Website-Administrator/in ({$siteAdminName}, <a href="mailto:{$siteAdminEmail}">{$siteAdminEmail}</a>), um sie/ihn über dieses neue Release zu informieren. Mehr Informationen können <a href="http://pkp.sfu.ca/ojs_download" target="_new">hier</a> gefunden werden.]]></message>
 
 	<!-- Protokolle - Beiträge -->
 	<message key="log.author.submitted">{$authorName} hat einen neuen Beitrag eingereicht, ID {$submissionId}.</message>
@@ -1002,7 +1026,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="log.review.reviewerUnassigned">Der Beitrag {$articleId} wird nicht länger von {$reviewerName} im Durchgang {$round} begutachtet.</message>
 	<message key="log.review.reviewInitiated">Durchgang {$round} der Begutachtung von Beitrag {$articleId} durch {$reviewerName} hat begonnen.</message>
 	<message key="log.review.reviewReinitiated">Durchgang {$round} der Begutachtung von Beitrag {$articleId} durch {$reviewerName} wurde erneut begonnen.</message>
-	<message key="log.review.reviewCancelled">Durchgang {$round} der Begutachtung von Beitrag {$articleId}  durch {$reviewerName} wurde abgebrochen.</message>
+	<message key="log.review.reviewCancelled">Durchgang {$round} der Begutachtung von Beitrag {$articleId} durch {$reviewerName} wurde abgebrochen.</message>
 	<message key="log.review.reviewCleared">Die Begutachtung von Beitrag {$articleId} in Durchgang {$round} durch {$reviewerName} wurde gelöscht.</message>
 	<message key="log.review.reviewerRated">{$reviewerName} wurde beurteilt für Durchgang {$round} der Begutachtung von Beitrag {$articleId}.</message>
 	<message key="log.review.reviewDueDateSet">Abgabetermin für Durchgang {$round} der Begutachtung von Beitrag {$articleId} durch {$reviewerName} festgesetzt auf {$dueDate}.</message>
@@ -1068,8 +1092,8 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 
 	<!-- Lesewerkzeuge - Suche -->
 
-	<message key="rt.admin.validateUrls.description"><![CDATA[Für Suchmaschinen möglicherweise ungültige URL sind unten aufgeführt.<br/>
-Dieser Test ist nicht 100% genau, Sie sollten daher jede hier als ungültig gekennzeichneten URL manuell nachprüfen.<br/>
+	<message key="rt.admin.validateUrls.description"><![CDATA[Für Suchmaschinen möglicherweise ungültige URL sind unten aufgeführt.<br />
+Dieser Test ist nicht 100% genau, Sie sollten daher jede hier als ungültig gekennzeichneten URL manuell nachprüfen.<br />
 Die Prüfung kann bei Such-URLs, die Formularausfüllung verlangen, fehlschlagen.]]></message>
 
 	<!-- Lesewerkzeuge - Elemente -->
@@ -1081,7 +1105,6 @@ Die Prüfung kann bei Such-URLs, die Formularausfüllung verlangen, fehlschlagen
 
 	<message key="rt.metadata.pkp.primaryAuthor">Name der Autorin/des Autors, Institution, Land</message>
 	<message key="rt.metadata.pkp.peerReviewed">Begutachter Beitrag</message>
-	<message key="rt.metadata.pkp.doi">Digital Object Identifier (DOI)</message>
 
 
 
@@ -1098,26 +1121,26 @@ Die Prüfung kann bei Such-URLs, die Formularausfüllung verlangen, fehlschlagen
 
 	<!-- Benachrichtigungsarten -->
 	<message key="notification.mailListDescription">Geben Sie Ihre E-Mail-Adresse ein, wenn Sie über neue Inhalte in dieser Zeitschrift informiert werden wollen</message>
-	<message key="notification.notificationsPublicDescription"><![CDATA[Auf dieser Seite finden Sie Updates wie neue Ausgaben oder Ankündigungen. Sie können diese Benachrichtigungen als RSS-Feed abonnieren (indem Sie auf die Abbildungen rechts klicken) oder   <a href="{$emailUrl}">via E-Mail.</a>]]></message>
+	<message key="notification.notificationsPublicDescription"><![CDATA[Auf dieser Seite finden Sie Updates wie neue Ausgaben oder Ankündigungen. Sie können diese Benachrichtigungen als RSS-Feed abonnieren (indem Sie auf die Abbildungen rechts klicken) oder <a href="{$emailUrl}">via E-Mail.</a>]]></message>
 
-	<message key="notification.type.articleSubmitted">Ein neuer Beitrag, "{$param}", wurde eingereicht.</message>
-	<message key="notification.type.copyeditComment">Ein Lektor/eine Lektorin hat einen Kommentar zu "{$param}" hinterlassen.</message>
+	<message key="notification.type.articleSubmitted">Ein neuer Beitrag, "{$title}", wurde eingereicht.</message>
+	<message key="notification.type.copyeditComment">Ein Lektor/eine Lektorin hat einen Kommentar zu "{$title}" hinterlassen.</message>
 	<message key="notification.type.editing">Redaktionelle Ereignisse</message>
-	<message key="notification.type.editorDecisionComment">Ein Kommentar zur Entscheidung des Redakteur/der Redaktuerin über "{$param}" wurde hinterlassen.</message>
-	<message key="notification.type.galleyModified">Für "{$param}" wurde eine Korrekturfahne geändert.</message>
+	<message key="notification.type.editorDecisionComment">Ein Kommentar zur Entscheidung des Redakteur/der Redaktuerin über "{$title}" wurde hinterlassen.</message>
+	<message key="notification.type.galleyModified">Für "{$title}" wurde eine Korrekturfahne geändert.</message>
 	<message key="notification.type.issuePublished">Eine Ausgabe wurde veröffentlicht.</message>
-	<message key="notification.type.layoutComment">Zum Layout von "{$param}'s" wurde ein Kommentar hinterlassen.</message>
-	<message key="notification.type.metadataModified">Die Metdadaten von "{$param}'s" wurden verändert.</message>
+	<message key="notification.type.layoutComment">Zum Layout von "{$title}'s" wurde ein Kommentar hinterlassen.</message>
+	<message key="notification.type.metadataModified">Die Metdadaten von "{$title}'s" wurden verändert.</message>
 	<message key="notification.type.newAnnouncement">Eine neue Ankündigung wurde erstellt.</message>
-	<message key="notification.type.proofreadComment">Ein/e Korrekturlektor/in hat einen Kommentar zu "{$param}" hinterlassen.</message>
-	<message key="notification.type.reviewerComment">Ein/e Gutachter/in hat "{$param} kommentiert.</message>
-	<message key="notification.type.reviewerFormComment">Für "{$param}" wurde ein Begutachtungsformular eingereicht.</message>
+	<message key="notification.type.proofreadComment">Ein/e Korrekturlektor/in hat einen Kommentar zu "{$title}" hinterlassen.</message>
+	<message key="notification.type.reviewerComment">Ein/e Gutachter/in hat "{$title} kommentiert.</message>
+	<message key="notification.type.reviewerFormComment">Für "{$title}" wurde ein Begutachtungsformular eingereicht.</message>
 	<message key="notification.type.reviewing">Begutachtungsereignisse</message>
 	<message key="notification.type.site">Site-Ereignisse</message>
-	<message key="notification.type.submissionComment">Ein/e Redakteur/in hat "{$param}" kommentiert.</message>
+	<message key="notification.type.submissionComment">Ein/e Redakteur/in hat "{$title}" kommentiert.</message>
 	<message key="notification.type.submissions">Einreichungsereignisse</message>
-	<message key="notification.type.suppFileModified">Die Zusatzdatei(en) zu "{$param}" wurden verändert.</message>
-	<message key="notification.type.userComment">Ein/e Leser/in hat "{$param}" kommentiert.</message>
+	<message key="notification.type.suppFileModified">Die Zusatzdatei(en) zu "{$title}" wurden verändert.</message>
+	<message key="notification.type.userComment">Ein/e Leser/in hat "{$title}" kommentiert.</message>
 
 	<!--
 	 *

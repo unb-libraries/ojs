@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SubmissionProofreadHandler.inc.php
+ * @file pages/proofreader/SubmissionProofreadHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionProofreadHandler
@@ -12,50 +12,46 @@
  * @brief Handle requests for proofreader submission functions.
  */
 
-// $Id$
-
 import('pages.proofreader.ProofreaderHandler');
 
 class SubmissionProofreadHandler extends ProofreaderHandler {
-	/** submission associated with the request **/
-	var $submission;
-
 	/**
 	 * Constructor
-	 **/
+	 */
 	function SubmissionProofreadHandler() {
 		parent::ProofreaderHandler();
 	}
 
 	/**
 	 * Submission - Proofreading view
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function submission($args) {
-		$articleId = isset($args[0]) ? (int)$args[0] : 0;
-		$journal =& Request::getJournal();
+	function submission($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$journal =& $request->getJournal();
 
-		$this->validate($articleId);
-		$submission =& $this->submission;
+		$this->validate($request, $articleId);
 		$this->setupTemplate(true, $articleId);
 
 		$useProofreaders = $journal->getSetting('useProofreaders');
 
 		$authorDao =& DAORegistry::getDAO('AuthorDAO');
-		$authors = $authorDao->getAuthorsByArticle($articleId);
+		$authors = $authorDao->getAuthorsBySubmissionId($articleId);
 
-		ProofreaderAction::proofreadingUnderway($submission, 'SIGNOFF_PROOFREADING_PROOFREADER');
+		ProofreaderAction::proofreadingUnderway($this->submission, 'SIGNOFF_PROOFREADING_PROOFREADER');
 		$useLayoutEditors = $journal->getSetting('useLayoutEditors');
 
 		$templateMgr =& TemplateManager::getManager();
 
 		$templateMgr->assign('useProofreaders', $useProofreaders);
 		$templateMgr->assign_by_ref('authors', $authors);
-		$templateMgr->assign_by_ref('submission', $submission);
+		$templateMgr->assign_by_ref('submission', $this->submission);
 		$templateMgr->assign('useLayoutEditors', $useLayoutEditors);
 		$templateMgr->assign('helpTopicId', 'editorial.proofreadersRole.proofreading');
 
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-		$publishedArticle =& $publishedArticleDao->getPublishedArticleByArticleId($submission->getArticleId());
+		$publishedArticle =& $publishedArticleDao->getPublishedArticleByArticleId($this->submission->getId());
 		if ($publishedArticle) {
 			$issueDao =& DAORegistry::getDAO('IssueDAO');
 			$issue =& $issueDao->getIssueById($publishedArticle->getIssueId());
@@ -68,57 +64,32 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 
 	/**
 	 * Sets proofreader completion date
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function completeProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
+	function completeProofreader($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 
-		$this->validate($articleId);
+		$this->validate($request, $articleId);
 		$this->setupTemplate(true);
 
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_COMPLETE', Request::getUserVar('send')?'':Request::url(null, 'proofreader', 'completeProofreader'))) {
-			Request::redirect(null, null, 'submission', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_COMPLETE', $request, $request->getUserVar('send')?'':$request->url(null, 'proofreader', 'completeProofreader'))) {
+			$request->redirect(null, null, 'submission', $articleId);
 		}
-	}
-
-	function viewMetadata($args, $request) {
-		$articleId = (int) array_shift($args);
-		$journal =& $request->getJournal();
-		$this->validate($articleId);
-		$submission =& $this->submission;
-		$this->setupTemplate(true, $articleId, 'summary');
-
-		ProofreaderAction::viewMetadata($submission, $journal);
 	}
 
 	/**
-	 * Validate that the user is the assigned proofreader for the submission.
-	 * Redirects to proofreader index page if validation fails.
+	 * View submission metadata.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function validate($articleId) {
-		parent::validate();
+	function viewMetadata($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$journal =& $request->getJournal();
+		$this->validate($request, $articleId);
+		$this->setupTemplate(true, $articleId, 'summary');
 
-		$isValid = false;
-
-		$journal =& Request::getJournal();
-		$user =& Request::getUser();
-
-		$proofreaderDao =& DAORegistry::getDAO('ProofreaderSubmissionDAO');
-		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
-		$submission =& $proofreaderDao->getSubmission($articleId, $journal->getId());
-
-		if (isset($submission)) {
-			$proofSignoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $articleId);
-			if ($proofSignoff->getUserId() == $user->getId()) {
-				$isValid = true;
-			}
-		}
-
-		if (!$isValid) {
-			Request::redirect(null, Request::getRequestedPage());
-		}
-
-		$this->submission =& $submission;
-		return true;
+		ProofreaderAction::viewMetadata($this->submission, $journal);
 	}
 
 	//
@@ -128,27 +99,28 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 	/**
 	 * Download a file.
 	 * @param $args array ($articleId, $fileId, [$revision])
+	 * @param $request PKPRequest
 	 */
-	function downloadFile($args) {
-		$articleId = isset($args[0]) ? $args[0] : 0;
-		$fileId = isset($args[1]) ? $args[1] : 0;
-		$revision = isset($args[2]) ? $args[2] : null;
+	function downloadFile($args, $request) {
+		$articleId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revision = array_shift($args); // May be null
 
-		$this->validate($articleId);
-		$submission =& $this->submission;
-		if (!ProofreaderAction::downloadProofreaderFile($submission, $fileId, $revision)) {
-			Request::redirect(null, null, 'submission', $articleId);
+		$this->validate($request, $articleId);
+		if (!ProofreaderAction::downloadProofreaderFile($this->submission, $fileId, $revision)) {
+			$request->redirect(null, null, 'submission', $articleId);
 		}
 	}
 
 	/**
 	 * Proof / "preview" a galley.
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalley($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
-		$this->validate($articleId);
+	function proofGalley($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+		$this->validate($request, $articleId);
 
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('articleId', $articleId);
@@ -159,11 +131,12 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 	/**
 	 * Proof galley (shows frame header).
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalleyTop($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
-		$this->validate($articleId);
+	function proofGalleyTop($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+		$this->validate($request, $articleId);
 
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('articleId', $articleId);
@@ -175,11 +148,12 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 	/**
 	 * Proof galley (outputs file contents).
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalleyFile($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
-		$this->validate($articleId);
+	function proofGalleyFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+		$this->validate($request, $articleId);
 
 		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
 		$galley =& $galleyDao->getGalley($galleyId, $articleId);
@@ -191,7 +165,7 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 				$templateMgr =& TemplateManager::getManager();
 				$templateMgr->assign_by_ref('galley', $galley);
 				if ($galley->isHTMLGalley() && $styleFile =& $galley->getStyleFile()) {
-					$templateMgr->addStyleSheet(Request::url(null, 'article', 'viewFile', array(
+					$templateMgr->addStyleSheet($request->url(null, 'article', 'viewFile', array(
 						$articleId, $galleyId, $styleFile->getFileId()
 					)));
 				}
@@ -207,18 +181,18 @@ class SubmissionProofreadHandler extends ProofreaderHandler {
 	/**
 	 * View a file (inlines file).
 	 * @param $args array ($articleId, $fileId, [$revision])
+	 * @param $request PKPRequest
 	 */
-	function viewFile($args) {
-		$articleId = isset($args[0]) ? $args[0] : 0;
-		$fileId = isset($args[1]) ? $args[1] : 0;
-		$revision = isset($args[2]) ? $args[2] : null;
+	function viewFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revision = array_shift($args); // Can be null
 
-		$this->validate($articleId);
+		$this->validate($request, $articleId);
 		if (!ProofreaderAction::viewFile($articleId, $fileId, $revision)) {
-			Request::redirect(null, null, 'submission', $articleId);
+			$request->redirect(null, null, 'submission', $articleId);
 		}
 	}
-
 }
 
 ?>

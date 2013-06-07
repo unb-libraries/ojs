@@ -1,12 +1,11 @@
 {**
- * authorSubmit.tpl
+ * plugins/generic/googleAnalytics/authorSubmit.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Google Analytics author submission account information
  *
- * $Id$
  *}
 <!-- Google Analytics -->
 <tr valign="top">

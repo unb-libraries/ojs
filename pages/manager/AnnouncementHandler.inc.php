@@ -1,93 +1,123 @@
 <?php
 
 /**
- * @file AnnouncementHandler.inc.php
+ * @file pages/manager/AnnouncementHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AnnouncementHandler
  * @ingroup pages_manager
  *
- * @brief Handle requests for announcement management functions. 
+ * @brief Handle requests for announcement management functions.
  */
-
-// $Id$
 
 import('lib.pkp.pages.manager.PKPAnnouncementHandler');
 
 class AnnouncementHandler extends PKPAnnouncementHandler {
 	/**
 	 * Constructor
-	 **/
+	 */
 	function AnnouncementHandler() {
 		parent::PKPAnnouncementHandler();
 	}
+
 	/**
 	 * Display a list of announcements for the current journal.
+	 * @see PKPAnnouncementHandler::announcements
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function announcements() {
+	function announcements($args, &$request) {
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('helpTopicId', 'journal.managementPages.announcements');
-		parent::announcements();
+		parent::announcements($args, $request);
 	}
 
 	/**
 	 * Display a list of announcement types for the current journal.
+	 * @see PKPAnnouncementHandler::announcementTypes
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function announcementTypes() {
+	function announcementTypes($args, &$request) {
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('helpTopicId', 'journal.managementPages.announcements');
-		parent::announcementTypes();
+		parent::announcementTypes($args, $request);
 	}
-	
-	function &_getAnnouncements($rangeInfo = null) {
-		$journal =& Request::getJournal();
+
+	/**
+	 * @see PKPAnnouncementHandler::getContextId()
+	 */
+	function getContextId(&$request) {
+		$journal =& $request->getJournal();
+		if ($journal) {
+			return $journal->getId();
+		} else {
+			return null;
+		}
+
+	}
+
+	/**
+	 * @see PKPAnnouncementHandler::_getAnnouncements
+	 * @param $request PKPRequest
+	 * @param $rangeInfo Object optional
+	 */
+	function &_getAnnouncements($request, $rangeInfo = null) {
+		$journalId = $this->getContextId($request);
 		$announcementDao =& DAORegistry::getDAO('AnnouncementDAO');
-		$announcements =& $announcementDao->getAnnouncementsByAssocId(ASSOC_TYPE_JOURNAL, $journal->getId(), $rangeInfo);
+		$announcements =& $announcementDao->getByAssocId(ASSOC_TYPE_JOURNAL, $journalId, $rangeInfo);
 
 		return $announcements;
 	}
-	
-	function &_getAnnouncementTypes($rangeInfo = null) {
-		$journal =& Request::getJournal();
+
+	/**
+	 * @see PKPAnnouncementHandler::_getAnnouncementTypes
+	 * @param $request PKPRequest
+	 * @param $rangeInfo object optional
+	 */
+	function &_getAnnouncementTypes(&$request, $rangeInfo = null) {
+		$journalId = $this->getContextId($request);
 		$announcementTypeDao =& DAORegistry::getDAO('AnnouncementTypeDAO');
-		$announcements =& $announcementTypeDao->getAnnouncementTypesByAssocId(ASSOC_TYPE_JOURNAL, $journal->getId(), $rangeInfo);
+		$announcements =& $announcementTypeDao->getByAssoc(ASSOC_TYPE_JOURNAL, $journalId, $rangeInfo);
 
 		return $announcements;
-	}	
+	}
 
 	/**
 	 * Checks the announcement to see if it belongs to this journal or scheduled journal
+	 * @param $request PKPRequest
 	 * @param $announcementId int
 	 * return bool
-	 */	
-	function _announcementIsValid($announcementId) {
-		if ($announcementId == null) 
-			return true;
+	 */
+	function _announcementIsValid($request, $announcementId) {
+		if ($announcementId == null) return true;
 
 		$announcementDao =& DAORegistry::getDAO('AnnouncementDAO');
-		$announcement =& $announcementDao->getAnnouncement($announcementId);
-		
-		$journal =& Request::getJournal();
-		if ( $announcement && $journal 
-			&& $announcement->getAssocType() == ASSOC_TYPE_JOURNAL 
-			&& $announcement->getAssocId() == $journal->getId())
+		$announcement =& $announcementDao->getById($announcementId);
+
+		$journalId = $this->getContextId($request);
+		if ( $announcement && $journalId
+			&& $announcement->getAssocType() == ASSOC_TYPE_JOURNAL
+			&& $announcement->getAssocId() == $journalId)
 				return true;
-			
+
 		return false;
-	}	
+	}
 
 	/**
 	 * Checks the announcement type to see if it belongs to this journal.  All announcement types are set at the journal level.
+	 * @param $request PKPRequest
 	 * @param $typeId int
 	 * return bool
 	 */
-	function _announcementTypeIsValid($typeId) {
-		$journal =& Request::getJournal();
+	function _announcementTypeIsValid(&$request, $typeId) {
+		$journalId = $this->getContextId($request);
 		$announcementTypeDao =& DAORegistry::getDAO('AnnouncementTypeDAO');
-		return (($typeId != null && $announcementTypeDao->getAnnouncementTypeAssocId($typeId) == $journal->getId()) || $typeId == null);
-	}	
+		$announcementType = $announcementTypeDao->getById($typeId);
+		return (($announcementType && $announcementType->getAssocId() == $journalId && $announcementType->getAssocType() == ASSOC_TYPE_JOURNAL) || $typeId == null);
+	}
 }
 
 ?>

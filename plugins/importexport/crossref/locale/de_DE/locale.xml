@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/importexport/crossref/locale/de_DE/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   *
-  * $Id$
   -->
  
 <locale name="de_DE" full_name="Deutsch (Deutschland)">
@@ -31,5 +30,5 @@
 	<message key="plugins.importexport.crossref.export.error.issueNotFound">Keine Ausgabe passt zu der angegebenen Kennzeichnung "{$issueId}".</message>
 	<message key="plugins.importexport.crossref.export.error.articleNotFound">Kein Beitrag passt zu der angegebenen Kennzeichnung "{$articleId}".</message>
 
-	<message key="plugins.importexport.crossref.errors.noDOIprefix">Zur Verwendung dieses Plug-Ins muss ein gültiger DOI-Präfix in der Zeitschriftenverwaltung angegeben werden.</message>
+	<message key="plugins.importexport.crossref.errors.noDOIprefix">Um dieses Plug-In zu verwenden, gehen Sie bitte zur Plug-In-Kategorie "Öffentliche Kennungen". Aktivieren und konfigurieren Sie das DOI-Plug-In und geben Sie dort einen gültigen DOI-Präfix an.</message>
 </locale>

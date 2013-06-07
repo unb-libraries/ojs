@@ -4,13 +4,12 @@
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * User Interface - Register and Profile
   * Thanks to AePIC Team CILEA.
   *
-  * $Id: 000003.xml,v 1.8 2009/04/08 19:54:28 asmecher Exp $
   -->
 
 <topic id="user/topic/000003" locale="it_IT" title="Registrazione e profilo" toc="user/toc/000000" key="user.registerAndProfile">

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RTAdminHandler.inc.php
+ * @file pages/rtadmin/RTAdminHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTAdminHandler
@@ -12,12 +12,8 @@
  * @brief Handle Reading Tools administration requests.
  */
 
-// $Id$
-
-
 import('classes.rt.ojs.JournalRTAdmin');
 import('classes.handler.Handler');
-import('pages.rtadmin.RTSharingHandler');
 
 class RTAdminHandler extends Handler {
 	/**
@@ -27,7 +23,7 @@ class RTAdminHandler extends Handler {
 		parent::Handler();
 
 		$this->addCheck(new HandlerValidatorJournal($this));
-		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_SITE_ADMIN, ROLE_ID_JOURNAL_MANAGER)));		
+		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_SITE_ADMIN, ROLE_ID_JOURNAL_MANAGER)));
 	}
 
 	/**
@@ -65,7 +61,7 @@ class RTAdminHandler extends Handler {
 			$allJournals =& $allJournals->toArray();
 
 			foreach ($allJournals as $journal) {
-				if ($roleDao->roleExists($journal->getId(), $user->getId(), ROLE_ID_JOURNAL_MANAGER)) {
+				if ($roleDao->userHasRole($journal->getId(), $user->getId(), ROLE_ID_JOURNAL_MANAGER)) {
 					$journals[] = $journal;
 				}
 			}
@@ -80,16 +76,6 @@ class RTAdminHandler extends Handler {
 			Validation::redirectLogin();
 		}
 	}
-
-	function configureSharing() {
-		import('pages.rtadmin.RTSharingHandler');
-		RTSharingHandler::settings();
-	}
-
-	function saveConfigureSharing() {
-		import('pages.rtadmin.RTSharingHandler');
-		RTSharingHandler::saveSettings();
-	}	
 
 	function validateUrls($args) {
 		$this->validate();
@@ -134,7 +120,7 @@ class RTAdminHandler extends Handler {
 	 */
 	function setupTemplate($subclass = false, $version = null, $context = null, $search = null) {
 		parent::setupTemplate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_READER, LOCALE_COMPONENT_OJS_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_READER, LOCALE_COMPONENT_OJS_MANAGER);
 		$templateMgr =& TemplateManager::getManager();
 
 		$pageHierarchy = array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'manager'), 'manager.journalManagement'));

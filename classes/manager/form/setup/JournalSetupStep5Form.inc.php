@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/setup/JournalSetupStep5Form.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSetupStep5Form
@@ -11,9 +11,6 @@
  *
  * @brief Form for Step 5 of journal setup.
  */
-
-// $Id$
-
 
 import('classes.manager.form.setup.JournalSetupForm');
 
@@ -41,6 +38,7 @@ class JournalSetupStep5Form extends JournalSetupForm {
 				'itemsPerPage' => 'int',
 				'numPageLinks' => 'int',
 				'journalTheme' => 'string',
+				'journalThumbnailAltText' => 'string',
 				'homeHeaderTitleImageAltText' => 'string',
 				'homeHeaderLogoImageAltText' => 'string',
 				'homepageImageAltText' => 'string',
@@ -55,7 +53,7 @@ class JournalSetupStep5Form extends JournalSetupForm {
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
-		return array('homeHeaderTitleType', 'homeHeaderTitle', 'pageHeaderTitleType', 'pageHeaderTitle', 'readerInformation', 'authorInformation', 'librarianInformation', 'journalPageHeader', 'journalPageFooter', 'homepageImage', 'journalFavicon', 'additionalHomeContent', 'description', 'navItems', 'homeHeaderTitleImageAltText', 'homeHeaderLogoImageAltText', 'homepageImageAltText', 'pageHeaderTitleImageAltText', 'pageHeaderLogoImageAltText');
+		return array('homeHeaderTitleType', 'homeHeaderTitle', 'pageHeaderTitleType', 'pageHeaderTitle', 'readerInformation', 'authorInformation', 'librarianInformation', 'journalPageHeader', 'journalPageFooter', 'homepageImage', 'journalFavicon', 'additionalHomeContent', 'description', 'navItems', 'homeHeaderTitleImageAltText', 'homeHeaderLogoImageAltText', 'journalThumbnailAltText', 'homepageImageAltText', 'pageHeaderTitleImageAltText', 'pageHeaderLogoImageAltText');
 
 	}
 
@@ -78,6 +76,7 @@ class JournalSetupStep5Form extends JournalSetupForm {
 		$templateMgr->assign(array(
 			'homeHeaderTitleImage' => $journal->getSetting('homeHeaderTitleImage'),
 			'homeHeaderLogoImage'=> $journal->getSetting('homeHeaderLogoImage'),
+			'journalThumbnail'=> $journal->getSetting('journalThumbnail'),
 			'pageHeaderTitleImage' => $journal->getSetting('pageHeaderTitleImage'),
 			'pageHeaderLogoImage' => $journal->getSetting('pageHeaderLogoImage'),
 			'homepageImage' => $journal->getSetting('homepageImage'),

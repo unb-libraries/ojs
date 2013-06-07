@@ -3,7 +3,7 @@
 /**
  * @file classes/search/ArticleSearchDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleSearchDAO
@@ -13,9 +13,6 @@
  * @brief DAO class for article search index.
  */
 
-// $Id$
-
-
 import('classes.search.ArticleSearch');
 
 class ArticleSearchDAO extends DAO {
@@ -24,7 +21,7 @@ class ArticleSearchDAO extends DAO {
 	 * @param $keyword string
 	 * @return int the keyword ID
 	 */
-	function insertKeyword($keyword) {
+	function _insertKeyword($keyword) {
 		static $articleSearchKeywordIds = array();
 		if (isset($articleSearchKeywordIds[$keyword])) return $articleSearchKeywordIds[$keyword];
 		$result =& $this->retrieve(
@@ -197,13 +194,25 @@ class ArticleSearchDAO extends DAO {
 	 * @return $keywordId
 	 */
 	function insertObjectKeyword($objectId, $keyword, $position) {
-		$keywordId = $this->insertKeyword($keyword);
+		$keywordId = $this->_insertKeyword($keyword);
 		if ($keywordId === null) return null; // Bug #2324
 		$this->update(
 			'INSERT INTO article_search_object_keywords (object_id, keyword_id, pos) VALUES (?, ?, ?)',
 			array($objectId, $keywordId, $position)
 		);
 		return $keywordId;
+	}
+
+	/**
+	 * Clear the search index.
+	 */
+	function clearIndex() {
+		$this->update('DELETE FROM article_search_object_keywords');
+		$this->update('DELETE FROM article_search_objects');
+		$this->update('DELETE FROM article_search_keyword_list');
+		$this->setCacheDir(Config::getVar('files', 'files_dir') . '/_db');
+		$dataSource = $this->getDataSource();
+		$dataSource->CacheFlush();
 	}
 }
 

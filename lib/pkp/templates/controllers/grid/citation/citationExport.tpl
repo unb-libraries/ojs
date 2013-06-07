@@ -1,8 +1,7 @@
-
 {**
  * citationExport.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Formatted citation export
@@ -15,6 +14,7 @@
 			</div>
 		{else}
 			<script type="text/javascript">
+				<!--
 				$(function() {ldelim}
 					// Activate the export filter selection drop-down boxes.
 					$('#exportCitationForm .select')
@@ -47,7 +47,7 @@
 						{rdelim})
 						.each(function() {ldelim}
 							// Save the original selection.
-							$(this).data('original-value', $(this).val()); 
+							$(this).data('original-value', $(this).val());
 						{rdelim});
 
 					// Activate throbber for tab reloading.
@@ -59,27 +59,28 @@
 						return false;
 					{rdelim});
 				{rdelim});
+				// -->
 			</script>
-			<form name="exportCitationForm" id="exportCitationForm" method="post" action="" >
+			<form class="pkp_form" id="exportCitationForm" method="post" action="">
 				<br />
 				<p>
 					<p>{translate key="submission.citations.editor.export.filterSelectionDescription"}</p>
-					<select class="field select" name="filterId" id="xmlExportFilterSelect">
-						<option value="-1">{translate key="submission.citations.editor.export.pleaseSelectXmlFilter"}</option>
-						{html_options options=$xmlExportFilters selected=$exportFilterId}
-						<option value="-1">&nbsp;</option>
-						<option value="-1">{translate key="submission.citations.editor.export.pleaseSelectPlaintextFilter"}</option>
-						{html_options options=$textExportFilters selected=$exportFilterId}
+					<select class="field select" name="filterId" id="exportFilterSelect">
+						{foreach name="exportFilters" from=$exportFilters key="exportFilterGroupHeader" item="exportFilterOptions"}
+							<option value="-1">{translate key=$exportFilterGroupHeader}</option>
+							{html_options options=$exportFilterOptions selected=$exportFilterId}
+							{if !$smarty.foreach.exportFilters.last}<option value="-1">&nbsp;</option>{/if}
+						{/foreach}
 					</select>
 				</p>
 			</form>
-		
+
 			{if $exportOutput}
 				<p>{translate key="submission.citations.editor.export.exportDescription"}</p>
-				
-				<div class="scrollable">	
+
+				<div class="scrollable">
 					--<p/>
-					{if $exportFilterType == 'xml'}
+					{if substr($exportFilterType, 0, 5) == 'xml::'}
 						<pre>{$exportOutput|escape:htmlall}</pre>
 					{else}
 						{$exportOutput}
@@ -90,9 +91,3 @@
 		{/if}
 	</div>
 </div>
-
-{* FIXME: Move to references list filter
-{foreach from=$formattedCitations key=citationIndex item=formattedCitation}
-	<a name="c{$citationIndex+1}_{$formattedCitation|strip_tags|truncate:50:'':false|regex_replace:'/[ ,.;:()]+/':'_'}" ></a>{$formattedCitation}
-{/foreach *}
-

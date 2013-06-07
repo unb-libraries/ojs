@@ -4,12 +4,11 @@
 <!--
   * locale/da_DK/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the da_DK (Danish) locale.
   *
-  * $Id$
   -->
 
 <locale name="da_DK" full_name = "Danish">
@@ -40,7 +39,6 @@
 	<message key="user.login.forgotPassword">Har du glemt din adgangskode?</message>
 	<message key="user.login.loginError">Ugyldigt brugernavn eller ugyldig adgangskode. Forsøg igen.</message>
 	<message key="user.login">Log på</message>
-	<message key="user.logIn">Log på</message>
 	<message key="user.login.lostPassword.confirmationSent">Der er sendt en bekræftelse til din e-mail-adresse. Følg instruktionerne i e-mailen for at nulstille din adgangskode.</message>
 	<message key="user.login.lostPassword.invalidHash">Det link, du har klikket på, er udløbet eller er ikke gyldigt. Forsøg at nulstille din adgangskode igen.</message>
 	<message key="user.login.lostPassword.invalidUser">Der findes ingen brugere med den angivne e-mail-adresse.</message>
@@ -55,6 +53,7 @@
 	<message key="user.myAccount">Min konto</message>
 	<message key="user.name">Navn</message>
 	<message key="user.password">Adgangskode</message>
+	<message key="user.repeatPassword">Gentag adgangskode</message>
 	<message key="user.phone">Telefon</message>
 	<message key="user.profile.changePasswordInstructions">Angiv din aktuelle og din nye adgangskode nedenfor for at ændre adgangskoden til din konto.</message>
 	<message key="user.profile.editProfile">Rediger profil</message>
@@ -116,4 +115,14 @@
 	<message key="user.repeatPassword">Gentag adgangskode</message>
 	<message key="user.profile.form.affiliationRequired">Kræver et tilhørsforhold.</message>
 	<message key="user.register.form.emailsDoNotMatch">Felterne for e-mail-adresse stemmer ikke overens.</message>
+	<message key="user.accountInformation">Kontoinformation</message>
+	<message key="user.authorization.pressManagerRequired">En bruger med rollen som pressechef (f.eks. presse- eller produktionsredaktør) skal indskrives, før du kan gå videre.</message>
+	<message key="user.interests.description">(Adskil interesser ved at trykke på Enter- eller komma-tasten)</message>
+	<message key="user.group">Brugergruppe</message>
+	<message key="user.hello">Hej</message>
+	<message key="user.profile.form.countryRequired">Et land er påkrævet</message>
+	<message key="user.profile.form.mailingAddressRequired">En e-mailadresse er påkrævet.</message>
+	<message key="user.profile.form.passwordSameAsOld">Din nye adgangskode er den samme som din gamle adgangskode.</message>
+	<message key="user.profile.form.usergroupRequired">En brugergruppe er påkrævet.</message>
+	<message key="user.suffix">Suffiks</message>
 </locale>

@@ -4,12 +4,11 @@
 <!--
   * locale/it_IT/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
   *
-  * $Id: admin.xml,v 1.4 2009/12/08 04:19:13 jmacgreg Exp $
   -->
 
 <locale name="it_IT" full_name = "Italiano">
@@ -39,7 +38,6 @@
 	<message key="admin.languages.reload">Ricarica localizzazione</message>
 	<message key="admin.languages.uninstall">Disinstalla localizzazione</message>
 	<message key="admin.phpInfo">Informazioni dettagliate su PHP</message>
-	<message key="admin.saveSystemConfig">Salva la configurazione</message>
 	<message key="admin.server.apacheVersion">Versione di Apache</message>
 	<message key="admin.server.dbDriver">Driver del database</message>
 	<message key="admin.server.dbVersion">Versione del server di database</message>
@@ -82,4 +80,7 @@
 	<message key="admin.version.updateAvailable"><![CDATA[&Egrave; disponibile una versione aggiornata]]></message>
 	<message key="admin.version.upToDate">Il tuo sistema è aggiornato</message>
 	<message key="admin.version">Versione</message>
+	<message key="admin.settings">Impostazioni</message>
+	<message key="admin.settings.siteTheme">Tema del sito</message>
+	<message key="admin.siteSetup">Setup del sito</message>
 </locale>

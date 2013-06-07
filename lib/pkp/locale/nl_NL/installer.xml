@@ -4,19 +4,18 @@
 <!--
   * locale/nl_NL/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
   *
-  * $Id$
   -->
 
 <locale name="nl_NL" full_name = "Nederlands">
 	<message key="installer.additionalLocales">Additionele talen</message>
 	<message key="installer.administratorAccount">Beheerdersaccount</message>
 	<message key="installer.administratorAccountInstructions">Deze gebruiker wordt de sitebeheerder en heeft volledige toegang tot het systeem. Additionele gebruikersaccounts kunnen na installatie aangemaakt worden.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NEE</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NEE</span>]]></message>
 	<message key="installer.checkYes">Ja</message>
 	<message key="installer.clientCharset">Browser karakterset</message>
 	<message key="installer.clientCharsetInstructions">De codering die gebruikt moet worden voor de gegevens die verzonden worden naar en ontvangen worden van browsers.</message>
@@ -60,13 +59,13 @@
 	<message key="installer.installParseDBFileError"><![CDATA[Fout bij het parseren van het database installatiebestand <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Taal</message>
 	<message key="installer.localeSettings">Taalinstelingen</message>
-	<message key="installer.miscSettings">Diverse instellingen</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Een unieke identificatie om metadatarecords van deze site te indexeren, gebruikmakend van het <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting.]]></message>
 	<message key="installer.oaiRepositoryId">OAI repository identificatie</message>
 	<message key="installer.publicFilesDirError">De map met publieke bestanden bestaat niet of er mag niet in geschreven worden.</message>
 	<message key="installer.releaseNotes">Over deze versie</message>
 	<message key="installer.securitySettings">Security instellingen</message>
-	<message key="installer.skipFilesDir">De benodigde submappen niet aanmaken (alleen nuttig voor handmatige installatie)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Fout bij het parsen van het e-mail sjabloon <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">De gemarkeerde talen zijn mogelijk incompleet</message>
+	<message key="installer.oaiSettings">OAI instellingen</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Fout in het filter configuratiebestand <tt>{$file}</tt>]]></message>
 </locale>

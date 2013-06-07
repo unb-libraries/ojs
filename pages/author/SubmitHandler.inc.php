@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SubmitHandler.inc.php
+ * @file pages/author/SubmitHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmitHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for author article submission.
  */
-
-// $Id$
 
 import('pages.author.AuthorHandler');
 
@@ -22,7 +20,7 @@ class SubmitHandler extends AuthorHandler {
 
 	/**
 	 * Constructor
-	 **/
+	 */
 	function SubmitHandler() {
 		parent::AuthorHandler();
 	}
@@ -31,20 +29,21 @@ class SubmitHandler extends AuthorHandler {
 	 * Display journal author article submission.
 	 * Displays author index page if a valid step is not specified.
 	 * @param $args array optional, if set the first parameter is the step to display
+	 * @param $request PKPRequest
 	 */
 	function submit($args, $request) {
-		$step = isset($args[0]) ? (int) $args[0] : 0;
+		$step = (int) array_shift($args);
 		$articleId = (int) $request->getUserVar('articleId');
 		$journal =& $request->getJournal();
 
-		$this->validate($articleId, $step, 'author.submit.authorSubmitLoginMessage');
+		$this->validate($request, $articleId, $step, 'author.submit.authorSubmitLoginMessage');
 		$article =& $this->article;
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		$formClass = "AuthorSubmitStep{$step}Form";
 		import("classes.author.form.submit.$formClass");
 
-		$submitForm = new $formClass($article, $journal);
+		$submitForm = new $formClass($article, $journal, $request);
 		if ($submitForm->isLocaleResubmit()) {
 			$submitForm->readInputData();
 		} else {
@@ -58,19 +57,19 @@ class SubmitHandler extends AuthorHandler {
 	 * @param $args array first parameter is the step being saved
 	 * @param $request Request
 	 */
-	function saveSubmit($args, &$request) {
-		$step = isset($args[0]) ? (int) $args[0] : 0;
+	function saveSubmit($args, $request) {
+		$step = (int) array_shift($args);
 		$articleId = (int) $request->getUserVar('articleId');
 		$journal =& $request->getJournal();
 
-		$this->validate($articleId, $step);
-		$this->setupTemplate(true);
+		$this->validate($request, $articleId, $step);
+		$this->setupTemplate($request, true);
 		$article =& $this->article;
 
 		$formClass = "AuthorSubmitStep{$step}Form";
 		import("classes.author.form.submit.$formClass");
 
-		$submitForm = new $formClass($article, $journal);
+		$submitForm = new $formClass($article, $journal, $request);
 		$submitForm->readInputData();
 
 		if (!HookRegistry::call('SubmitHandler::saveSubmit', array($step, &$article, &$submitForm))) {
@@ -145,19 +144,19 @@ class SubmitHandler extends AuthorHandler {
 
 				case 4:
 					if ($request->getUserVar('submitUploadSuppFile')) {
-						SubmitHandler::submitUploadSuppFile(array(), $request);
+						$this->submitUploadSuppFile(array(), $request);
 						return;
 					}
 					break;
 			}
 
 			if (!isset($editData) && $submitForm->validate()) {
-				$articleId = $submitForm->execute($request);
+				$articleId = $submitForm->execute();
 				HookRegistry::call('Author::SubmitHandler::saveSubmit', array(&$step, &$article, &$submitForm));
 
 				if ($step == 5) {
 					// Send a notification to associated users
-					import('lib.pkp.classes.notification.NotificationManager');
+					import('classes.notification.NotificationManager');
 					$notificationManager = new NotificationManager();
 					$articleDao =& DAORegistry::getDAO('ArticleDAO');
 					$article =& $articleDao->getArticle($articleId);
@@ -165,10 +164,9 @@ class SubmitHandler extends AuthorHandler {
 					$notificationUsers = array();
 					$editors = $roleDao->getUsersByRoleId(ROLE_ID_EDITOR, $journal->getId());
 					while ($editor =& $editors->next()) {
-						$url = $request->url(null, 'editor', 'submission', $articleId);
 						$notificationManager->createNotification(
-							$editor->getId(), 'notification.type.articleSubmitted',
-							$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_ARTICLE_SUBMITTED
+							$request, $editor->getId(), NOTIFICATION_TYPE_ARTICLE_SUBMITTED,
+							$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 						);
 						unset($editor);
 					}
@@ -196,35 +194,38 @@ class SubmitHandler extends AuthorHandler {
 
 	/**
 	 * Create new supplementary file with a uploaded file.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function submitUploadSuppFile($args, $request) {
 		$articleId = (int) $request->getUserVar('articleId');
 		$journal =& $request->getJournal();
 
-		$this->validate($articleId, 4);
+		$this->validate($request, $articleId, 4);
 		$article =& $this->article;
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		import('classes.author.form.submit.AuthorSubmitSuppFileForm');
 		$submitForm = new AuthorSubmitSuppFileForm($article, $journal);
 		$submitForm->setData('title', array($article->getLocale() => __('common.untitled')));
 		$suppFileId = $submitForm->execute();
 
-		Request::redirect(null, null, 'submitSuppFile', $suppFileId, array('articleId' => $articleId));
+		$request->redirect(null, null, 'submitSuppFile', $suppFileId, array('articleId' => $articleId));
 	}
 
 	/**
 	 * Display supplementary file submission form.
 	 * @param $args array optional, if set the first parameter is the supplementary file to edit
+	 * @param $request PKPRequest
 	 */
 	function submitSuppFile($args, $request) {
 		$articleId = (int) $request->getUserVar('articleId');
 		$suppFileId = isset($args[0]) ? (int) $args[0] : 0;
 		$journal =& $request->getJournal();
 
-		$this->validate($articleId, 4);
+		$this->validate($request, $articleId, 4);
 		$article =& $this->article;
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		import('classes.author.form.submit.AuthorSubmitSuppFileForm');
 		$submitForm = new AuthorSubmitSuppFileForm($article, $journal, $suppFileId);
@@ -240,15 +241,16 @@ class SubmitHandler extends AuthorHandler {
 	/**
 	 * Save a supplementary file.
 	 * @param $args array optional, if set the first parameter is the supplementary file to update
+	 * @param $request PKPRequest
 	 */
 	function saveSubmitSuppFile($args, $request) {
 		$articleId = (int) $request->getUserVar('articleId');
 		$suppFileId = isset($args[0]) ? (int) $args[0] : 0;
 		$journal =& $request->getJournal();
 
-		$this->validate($articleId, 4);
+		$this->validate($request, $articleId, 4);
 		$article =& $this->article;
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		import('classes.author.form.submit.AuthorSubmitSuppFileForm');
 		$submitForm = new AuthorSubmitSuppFileForm($article, $journal, $suppFileId);
@@ -267,15 +269,15 @@ class SubmitHandler extends AuthorHandler {
 	 * @param $args array, the first parameter is the supplementary file to delete
 	 * @param $request PKPRequest
 	 */
-	function deleteSubmitSuppFile($args, &$request) {
+	function deleteSubmitSuppFile($args, $request) {
 		import('classes.file.ArticleFileManager');
 
 		$articleId = (int) $request->getUserVar('articleId');
-		$suppFileId = isset($args[0]) ? (int) $args[0] : 0;
+		$suppFileId =(int) array_shift($args);
 
-		$this->validate($articleId, 4);
+		$this->validate($request, $articleId, 4);
 		$article =& $this->article;
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
 		$suppFile = $suppFileDao->getSuppFile($suppFileId, $articleId);
@@ -290,20 +292,21 @@ class SubmitHandler extends AuthorHandler {
 	}
 
 	/**
-	 * Expedite a submission through the editing process.
+	 * Expedite a submission -- rush it through the editorial process, for
+	 * users who are both authors and editors.
 	 * @param $args array
 	 * @param $request PKPRequest
 	 */
-	function expediteSubmission($args, &$request) {
+	function expediteSubmission($args, $request) {
 		$articleId = (int) $request->getUserVar('articleId');
-		$this->validate($articleId);
+		$this->validate($request, $articleId);
 		$journal =& $request->getJournal();
 		$article =& $this->article;
 
 		// The author must also be an editor to perform this task.
 		if (Validation::isEditor($journal->getId()) && $article->getSubmissionFileId()) {
 			import('classes.submission.editor.EditorAction');
-			EditorAction::expediteSubmission($article);
+			EditorAction::expediteSubmission($article, $request);
 			$request->redirect(null, 'editor', 'submissionEditing', array($article->getId()));
 		}
 
@@ -316,14 +319,14 @@ class SubmitHandler extends AuthorHandler {
 	 * @param $articleId int
 	 * @param $step int
 	 */
-	function validate($articleId = null, $step = false, $reason = null) {
+	function validate($request, $articleId = null, $step = false, $reason = null) {
 		parent::validate($reason);
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
-		$user =& Request::getUser();
-		$journal =& Request::getJournal();
+		$user =& $request->getUser();
+		$journal =& $request->getJournal();
 
 		if ($step !== false && ($step < 1 || $step > 5 || (!$articleId && $step != 1))) {
-			Request::redirect(null, null, 'submit', array(1));
+			$request->redirect(null, null, 'submit', array(1));
 		}
 
 		$article = null;
@@ -332,7 +335,7 @@ class SubmitHandler extends AuthorHandler {
 		if ($articleId) {
 			$article =& $articleDao->getArticle((int) $articleId);
 			if (!$article || $article->getUserId() !== $user->getId() || $article->getJournalId() !== $journal->getId() || ($step !== false && $step > $article->getSubmissionProgress())) {
-				Request::redirect(null, null, 'submit');
+				$request->redirect(null, null, 'submit');
 			}
 		}
 
@@ -340,4 +343,5 @@ class SubmitHandler extends AuthorHandler {
 		return true;
 	}
 }
+
 ?>

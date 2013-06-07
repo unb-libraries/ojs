@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPRequest.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPRequest
@@ -12,6 +12,7 @@
  * @brief Class providing operations associated with HTTP requests.
  */
 
+define('USER_AGENTS_FILE', Core::getBaseDir() . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'pkp' . DIRECTORY_SEPARATOR . 'registry' . DIRECTORY_SEPARATOR . 'botAgents.txt');
 
 class PKPRequest {
 	//
@@ -83,8 +84,19 @@ class PKPRequest {
 			return;
 		}
 
-		header("Refresh: 0; url=$url");
+		header("Location: $url");
 		exit();
+	}
+
+	/**
+	 * Request an HTTP redirect via JSON to be used from components.
+	 * @param $url string
+	 */
+	function redirectUrlJson($url) {
+		import('lib.pkp.classes.core.JSONMessage');
+		$json = new JSONMessage(true);
+		$json->setEvent('redirectRequested', $url);
+		return $json->getString();
 	}
 
 	/**
@@ -296,7 +308,7 @@ class PKPRequest {
 		$_this =& PKPRequest::_checkThis();
 
 		if (!isset($_this->_protocol)) {
-			$_this->_protocol = (!isset($_SERVER['HTTPS']) || strtolower($_SERVER['HTTPS']) != 'on') ? 'http' : 'https';
+			$_this->_protocol = (!isset($_SERVER['HTTPS']) || strtolower_codesafe($_SERVER['HTTPS']) != 'on') ? 'http' : 'https';
 			HookRegistry::call('Request::getProtocol', array(&$_this->_protocol));
 		}
 		return $_this->_protocol;
@@ -410,8 +422,7 @@ class PKPRequest {
 		if (!isset($isBot)) {
 			$userAgent = $_this->getUserAgent();
 			$isBot = false;
-			$userAgentsFile = Config::getVar('general', 'registry_dir') . DIRECTORY_SEPARATOR . 'botAgents.txt';
-			$regexps = array_filter(file($userAgentsFile), create_function('&$a', 'return ($a = trim($a)) && !empty($a) && $a[0] != \'#\';'));
+			$regexps = array_filter(file(USER_AGENTS_FILE), create_function('&$a', 'return ($a = trim($a)) && !empty($a) && $a[0] != \'#\';'));
 			foreach ($regexps as $regexp) {
 				if (String::regexp_match($regexp, $userAgent)) {
 					$isBot = true;
@@ -756,6 +767,12 @@ class PKPRequest {
 		// we can put a deprecation warning in here.
 		$_this =& PKPRequest::_checkThis();
 		$router =& $_this->getRouter();
+
+		if (is_null($router)) {
+			assert(false);
+			$nullValue = null;
+			return $nullValue;
+		}
 
 		// Construct the method call
 		$callable = array($router, $method);

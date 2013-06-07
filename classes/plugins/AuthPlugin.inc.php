@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/AuthPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthPlugin
@@ -14,9 +14,6 @@
  * TODO: Error reporting when updating remote source fails.
  * TODO: Support importing user accounts from the authentication source into OJS.
  */
-
-// $Id$
-
 
 define('AUTH_PLUGIN_CATEGORY', 'auth');
 import('classes.plugins.Plugin');

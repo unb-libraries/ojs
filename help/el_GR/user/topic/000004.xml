@@ -4,7 +4,7 @@
 <!--
   * 000004.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * User Interface - Current and Archives
@@ -16,7 +16,6 @@
   * Kiriazis Vasilis (vaskir@lis.upatras.gr),
   * Papaxristopoulos Leonidas (leonidasp@lis.upatras.gr)
   *
-  * $Id$
   -->
 
 <topic id="user/topic/000004" locale="el_GR" title="Τρέχον Τεύχος και Αρχείο Τευχών" toc="user/toc/000000" key="user.currentAndArchives">

@@ -1,18 +1,16 @@
 <?php
 
 /**
- * @file ViewReportPlugin.inc.php
+ * @file plugins/reports/views/ViewReportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
- * 
+ *
  * @class ViewReportPlugin
  * @ingroup plugins_reports_views
  *
  * @brief View report plugin
  */
-
-// $Id: ViewReportPlugin.inc.php,v 1.3.2.2 2008/10/28 22:23:05 mcrider Exp $
 
 
 import('classes.plugins.ReportPlugin');
@@ -50,8 +48,14 @@ class ViewReportPlugin extends ReportPlugin {
 	function display(&$args) {
 		$journal =& Request::getJournal();
 
-		// FIXME: Localize this.
-		$columns = array("Article ID", "Article Title", "Issue", "Date Published", "Abstract Views", "Total Galley Views");
+		$columns = array(
+			__('plugins.reports.views.articleId'),
+			__('plugins.reports.views.articleTitle'),
+			__('issue.issue'),
+			__('plugins.reports.views.datePublished'),
+			__('plugins.reports.views.abstractViews'),
+			__('plugins.reports.views.galleyViews'),
+		);
 		$galleyLabels = array();
 		$galleyViews = array();
 		$galleyViewTotals = array();
@@ -66,7 +70,7 @@ class ViewReportPlugin extends ReportPlugin {
 
 		$publishedArticles =& $publishedArticleDao->getPublishedArticlesByJournalId($journal->getJournalId());
 		while ($publishedArticle =& $publishedArticles->next()) {
-			$articleId = $publishedArticle->getArticleId();
+			$articleId = $publishedArticle->getId();
 			$issueId = $publishedArticle->getIssueId();
 			$articleTitles[$articleId] = $publishedArticle->getArticleTitle();
 
@@ -107,7 +111,7 @@ class ViewReportPlugin extends ReportPlugin {
 		}
 
 		header('content-type: text/comma-separated-values');
-		header('content-disposition: attachment; filename=report.csv');
+		header('content-disposition: attachment; filename=views-' . date('Ymd') . '.csv');
 		$fp = fopen('php://output', 'wt');
 		fputcsv($fp, array_merge($columns, $galleyLabels));
 

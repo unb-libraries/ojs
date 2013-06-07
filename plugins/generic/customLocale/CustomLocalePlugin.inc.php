@@ -1,18 +1,15 @@
 <?php
 
 /**
- * @file CustomLocalePlugin.inc.php
+ * @file plugins/generic/customLocale/CustomLocalePlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CustomLocalePlugin
  *
  * @brief This plugin enables customization of locale strings.
  */
-
-// $Id$
-
 
 define('CUSTOM_LOCALE_DIR', 'customLocale');
 import('lib.pkp.classes.plugins.GenericPlugin');
@@ -30,9 +27,10 @@ class CustomLocalePlugin extends GenericPlugin {
 				$customLocalePathBase = $publicFilesDir . DIRECTORY_SEPARATOR . 'journals' . DIRECTORY_SEPARATOR . $journalId . DIRECTORY_SEPARATOR . CUSTOM_LOCALE_DIR . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR;
 
 				import('lib.pkp.classes.file.FileManager');
+				$fileManager = new FileManager();
 				foreach ($localeFiles as $localeFile) {
 					$customLocalePath = $customLocalePathBase . $localeFile->getFilename();
-					if (FileManager::fileExists($customLocalePath)) {
+					if ($fileManager->fileExists($customLocalePath)) {
 						AppLocale::registerLocaleFile($locale, $customLocalePath, true);
 					}
 				}
@@ -56,12 +54,12 @@ class CustomLocalePlugin extends GenericPlugin {
 		$customLocalePath = $publicFilesDir . DIRECTORY_SEPARATOR . 'journals' . DIRECTORY_SEPARATOR . $journalId . DIRECTORY_SEPARATOR . CUSTOM_LOCALE_DIR . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . $localeFilename;
 
 		import('lib.pkp.classes.file.FileManager');
-		if (FileManager::fileExists($customLocalePath)) {
-			AppLocale::registerLocaleFile($locale, $customLocalePath, true);
+		$fileManager = new FileManager();
+		if ($fileManager->fileExists($customLocalePath)) {
+			AppLocale::registerLocaleFile($locale, $customLocalePath, false);
 		}
 
 		return true;
-
 	}
 
 	function getDisplayName() {
@@ -107,11 +105,12 @@ class CustomLocalePlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
- 	 * @return boolean
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
+	 * @return boolean
  	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
 		$this->import('CustomLocaleHandler');
 		$customLocaleHandler = new CustomLocaleHandler($this->getName());

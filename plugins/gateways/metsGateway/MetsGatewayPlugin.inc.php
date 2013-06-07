@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file MetsGatewayPlugin.inc.php
+ * @file plugins/gateways/metsGateway/MetsGatewayPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class METSGatewayPlugin
@@ -11,9 +11,6 @@
  *
  * @brief A plugin to allow exposure of Journals in METS format for web service access
  */
-
-// $Id$
-
 
 import('classes.plugins.GatewayPlugin');
 
@@ -131,7 +128,7 @@ class METSGatewayPlugin extends GatewayPlugin {
 
 		// Failure.
 		header("HTTP/1.0 500 Internal Server Error");
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_APPLICATION_COMMON));
+		AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('message', 'plugins.gateways.metsGateway.errors.errorMessage');
 		$templateMgr->display('common/message.tpl');

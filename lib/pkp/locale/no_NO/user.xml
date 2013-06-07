@@ -4,12 +4,11 @@
 <!--
   * locale/no_NO/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: user.xml,v 1.3 2009/08/15 00:13:57 asmecher Exp $
   -->
 
 <locale name="no_NO" full_name = "Norwegian">
@@ -40,7 +39,6 @@
 	<message key="user.login.forgotPassword">Har du glemt passordet?</message>
 	<message key="user.login.loginError">Ugyldig brukernavn eller passord. Vennligst prøv igjen.</message>
 	<message key="user.login">Logg inn</message>
-	<message key="user.logIn">Logg inn</message>
 	<message key="user.login.lostPassword.confirmationSent">En bekreftelse er nå sendt til din e-postadresse. Vennligst følg instruksjonene i e-posten for å tilbakestille passordet ditt.</message>
 	<message key="user.login.lostPassword.invalidHash">Beklager, lenken du klikket på har utløpt eller er ugyldig. Vennligst prøv å tilbakestille passordet ditt igjen.</message>
 	<message key="user.login.lostPassword.invalidUser">Det finnes ingen bruker med denne e-postadressen.</message>
@@ -55,6 +53,7 @@
 	<message key="user.myAccount">Min brukerkonto</message>
 	<message key="user.name">Navn</message>
 	<message key="user.password">Passord</message>
+	<message key="user.repeatPassword">Gjenta passord</message>
 	<message key="user.phone">Telefon</message>
 	<message key="user.profile.changePasswordInstructions">Skriv inn ditt nåværende og ditt nye passord nedenfor for å endre passordet for kontoen din.</message>
 	<message key="user.profile.editProfile">Rediger profil</message>
@@ -105,4 +104,18 @@
 	<message key="user.affiliation.description">(Din institusjon, f.eks. «Det Kongelige Frederiks Universitet»</message>
 	<message key="user.confirmEmail">Bekreft e-post</message>
 	<message key="user.profile.form.affiliationRequired">Institusjonstilhørighet må angis.</message>
+	<message key="user.accountInformation">Kontoinformasjon</message>
+	<message key="user.authorization.loginRequired">Pålogging kreves.</message>
+	<message key="user.group">Brukergruppe</message>
+	<message key="user.hello">Hei,</message>
+	<message key="user.profile.form.passwordSameAsOld">Ditt nye passord er det samme som ditt gamle passord.</message>
+	<message key="user.authorization.accessDenied">Ingen tilgang.</message>
+	<message key="user.authorization.restrictedSiteAccess">Du har blitt nektet adgang. Adgang til denne siden er på nåværende tidspunkt begrenset.</message>
+	<message key="user.gossip">Private notater</message>
+	<message key="user.profile.form.usergroupRequired">En brukergruppe påkreves.</message>
+	<message key="user.authorization.privateOperation">Operasjonen du prøvde å få tilgang er enten privat eller eksisterer ikke.</message>
+	<message key="user.profile.form.countryRequired">Land må oppgis.</message>
+	<message key="user.profile.form.mailingAddressRequired">En postadresse må oppgis.</message>
+	<message key="user.register.form.emailsDoNotMatch">E-postadressene samsvarer ikke med hverandre.</message>
+	<message key="user.suffix">Suffiks</message>
 </locale>

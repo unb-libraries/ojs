@@ -5,9 +5,9 @@
  */
 
 /**
- * @file PKPAnnouncement.inc.php
+ * @file classes/announcement/PKPAnnouncement.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAnnouncement
@@ -20,6 +20,13 @@
 define('ANNOUNCEMENT_EXPIRE_YEAR_OFFSET_FUTURE',	'+10');
 
 class PKPAnnouncement extends DataObject {
+	/**
+	 * Constructor
+	 */
+	function PKPAnnouncement() {
+		parent::DataObject();
+	}
+
 	//
 	// Get/set methods
 	//

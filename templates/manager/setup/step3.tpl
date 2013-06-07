@@ -1,7 +1,7 @@
 {**
- * step3.tpl
+ * templates/manager/setup/step3.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 3 of journal setup.
@@ -9,7 +9,7 @@
 {assign var="pageTitle" value="manager.setup.guidingSubmissions"}
 {include file="manager/setup/setupHeader.tpl"}
 
-<form name="setupForm" method="post" action="{url op="saveSetup" path="3"}">
+<form id="setupForm" method="post" action="{url op="saveSetup" path="3"}">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}
@@ -150,11 +150,11 @@
 			<span class="instruct">{translate key="manager.setup.disciplineExamples"}</span>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="separator" colspan="2"><br />&nbsp;</td>
 	</tr>
-	
+
 	<tr valign="top">
 		<td width="5%" class="label" valign="bottom"><input type="checkbox" name="metaSubjectClass" id="metaSubjectClass" value="1"{if $metaSubjectClass} checked="checked"{/if} /></td>
 		<td width="95%" class="value">
@@ -171,17 +171,17 @@
 				</tr>
 				<tr valign="top">
 					<td width="10%">{fieldLabel name="metaSubjectClassUrl" key="common.url"}</td>
-					<td width="90%"><input type="text" name="metaSubjectClassUrl[{$formLocale|escape}]" id="metaSubjectClassUrl" value="{if $metaSubjectClassUrl[$formLocale]}{$metaSubjectClassUrl[$formLocale]|escape}{else}http://{/if}" size="40" maxlength="255" class="textField" /></td>
+					<td width="90%"><input type="text" name="metaSubjectClassUrl[{$formLocale|escape}]" id="metaSubjectClassUrl" value="{$metaSubjectClassUrl[$formLocale]|escape}" size="40" maxlength="255" class="textField" /></td>
 				</tr>
 			</table>
 			<span class="instruct">{translate key="manager.setup.subjectClassificationExamples"}</span>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="separator" colspan="2"><br />&nbsp;</td>
 	</tr>
-	
+
 	<tr valign="top">
 		<td width="5%" class="label" valign="bottom"><input type="checkbox" name="metaSubject" id="metaSubject" value="1"{if $metaSubject} checked="checked"{/if} /></td>
 		<td width="95%" class="value">
@@ -198,11 +198,11 @@
 			<span class="instruct">{translate key="manager.setup.subjectExamples"}</span>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="separator" colspan="2"><br />&nbsp;</td>
 	</tr>
-	
+
 	<tr valign="top">
 		<td width="5%" class="label" valign="bottom"><input type="checkbox" name="metaCoverage" id="metaCoverage" value="1"{if $metaCoverage} checked="checked"{/if} /></td>
 		<td width="95%" class="value">
@@ -249,11 +249,11 @@
 			<span class="instruct">{translate key="manager.setup.coverageResearchSampleExamples"}</span>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td class="separator" colspan="2"><br />&nbsp;</td>
 	</tr>
-	
+
 	<tr valign="top">
 		<td width="5%" class="label" valign="bottom"><input type="checkbox" name="metaType" id="metaType" value="1"{if $metaType} checked="checked"{/if} /></td>
 		<td width="95%" class="value">
@@ -279,7 +279,7 @@
 <h3>3.5 {translate key="manager.setup.registerJournalForIndexing"}</h3>
 
 {url|assign:"oaiUrl" page="oai"}
-<p>{translate key="manager.setup.registerJournalForIndexingDescription" oaiUrl=$oaiUrl}</p>
+<p>{translate key="manager.setup.registerJournalForIndexingDescription" oaiUrl=$oaiUrl siteUrl=$baseUrl}</p>
 </div>
 
 <div class="separator"></div>
@@ -327,18 +327,18 @@
 			</td>
 		</tr>
 	</table>
-	
+
 	<div id="citationFilterSetupToggle" {if !$metaCitations}style="visible: none"{/if}>
 		<h4>{translate key="manager.setup.citationFilterParser"}</h4>
 		<p>{translate key="manager.setup.citationFilterParserDescription"}</p>
 		{load_url_in_div id="parserFilterGridContainer" loadMessageId="manager.setup.filter.parser.grid.loadMessage" url="$parserFilterGridUrl"}
-		
+
 		<h4>{translate key="manager.setup.citationFilterLookup"}</h4>
 		<p>{translate key="manager.setup.citationFilterLookupDescription"}</p>
 		{load_url_in_div id="lookupFilterGridContainer" loadMessageId="manager.setup.filter.lookup.grid.loadMessage" url="$lookupFilterGridUrl"}
 		<h4>{translate key="manager.setup.citationOutput"}</h4>
 		<p>{translate key="manager.setup.citationOutputStyleDescription"}</p>
-		{fbvSelect id="metaCitationOutputFilterSelect" name="metaCitationOutputFilterId"
+		{fbvElement type="select" id="metaCitationOutputFilterSelect" name="metaCitationOutputFilterId"
 				from=$metaCitationOutputFilters translate=false selected=$metaCitationOutputFilterId|escape
 				defaultValue="-1" defaultLabel="manager.setup.filter.pleaseSelect"|translate}
 	</div>
@@ -347,7 +347,7 @@
 			// jQuerify DOM elements
 			$metaCitationsCheckbox = $('#metaCitations');
 			$metaCitationsSetupBox = $('#citationFilterSetupToggle');
-			
+
 			// Set the initial state
 			initialCheckboxState = $metaCitationsCheckbox.attr('checked');
 			if (initialCheckboxState) {
@@ -355,7 +355,7 @@
 			} else {
 				$metaCitationsSetupBox.css('display', 'none');
 			}
-			
+
 			// Toggle the settings box.
 			// NB: Has to be click() rather than change() to work in IE.
 			$metaCitationsCheckbox.click(function(){
@@ -365,7 +365,7 @@
 					$metaCitationsSetupBox.toggle(300);
 				}
 			});
-		});	
+		});
 	</script>{/literal}
 {/if}
 </div>
@@ -379,4 +379,3 @@
 </form>
 
 {include file="common/footer.tpl"}
-

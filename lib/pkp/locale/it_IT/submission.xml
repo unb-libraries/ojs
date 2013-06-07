@@ -4,12 +4,11 @@
 <!--
   * locale/it_IT/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
   *
-  * $Id: submission.xml,v 1.4 2009/12/08 04:19:13 jmacgreg Exp $
   -->
 
 <locale name="it_IT" full_name = "Italiano">
@@ -158,7 +157,6 @@
 	<message key="submission.submitter">Submitter</message>
 	<message key="submission.summary">Riepilogo</message>
 	<message key="submission.supplementaryFiles">File supplementari</message>
-	<message key="submission.supportingAgencies">Enti/organizzazione sponsor</message>
 	<message key="submission.titleAndAbstract">Titolo e abstract</message>
 	<message key="submission.underway">Avviata</message>
 	<message key="submission.uploadFileTo">Carica un file</message>
@@ -281,7 +279,6 @@
 	<message key="submission.citations.editor.introduction">Introduzione</message>
 	<message key="submission.indexingInformation">Informazioni di indicizzazione</message>
 	<message key="submission.uploadSuccessful"><![CDATA[Il file &#232; stato caricato.]]></message>
-	<message key="submission.uploadSuccessfulContinue"><![CDATA[Il file &#232; stato caricato. Scegli "continua" per modificare i metadati del file.]]></message>
 	<message key="submission.loadMessage">Attendi il caricamento del file sul server.</message>
 	<message key="submission.artworkFileDetails">Dettagli dell'immagine</message>
 	<message key="submission.fileDetails">Dettagli del file</message>
@@ -345,13 +342,12 @@
 	<message key="submission.citations.editor.export.foundUnapprovedCitationsMessage"><![CDATA[<p>Non hai ancora approvato tutte le citazioni. Vai a <strong>Modifica citazioni</strong> e assicurati di aver approvato tutte le citazioni prima di esportare la lista. Le citazioni non approvate appaiono nell'elenco con uno sfondo bianco, mentre quelle approvate hanno uno sfondo celeste.]]></message>
 	<message key="submission.citations.editor.php5Required">La modifica delle citazioni richiede supporto XML XSL, disponibile solo in PHP 5.0.0 o superiore. Sembra che la tua installazione di OJS abbia invece una versione di PHP precedente. Non potrai utilizzare l'assistente bibliografico fino all'aggiornamento del PHP.</message>
 	<message key="submission.citations.editor.unprocessedCitations">Il server sta elaborando le citazioni dell'articolo. La lista corrente contiene solo le citazioni già processate. Clicca sul tasto aggiorna per vedere le citazioni lavorate nel frattempo.</message>
-	<message key="submission.citations.filter.invalidMetadata">Si è verificato un errore in $filterName}: Uno degli elementi restituiti dalla fonte (es. un webservice) non è conforme al formato dei metadati interni. Perciò i dati sono stati scartati; segnala questo problema all'amministratore.</message>
+	<message key="submission.citations.filter.invalidMetadata">Si è verificato un errore in {$filterName}: Uno degli elementi restituiti dalla fonte (es. un webservice) non è conforme al formato dei metadati interni. Perciò i dati sono stati scartati; segnala questo problema all'amministratore.</message>
 	<message key="submission.citations.filter.noResultFromFilterError">Alcuni servizi di citazioni non hanno restituito alcun risultato. Puoi provare a modificare manualmente i campi e poi ripetere la ricerca per migliorare i risultati. Se neppure questo aiuta, significa che le citazioni non esistono in nessuno dei database connessi.</message>
 	<message key="submission.citations.editor.details.authorQuery">Chiedi all'autore</message>
 	<message key="submission.citations.editor.details.citationServices">Servizi di citazione</message>
 	<message key="submission.citations.editor.details.googleScholar">Google Scholar</message>
 	<message key="submission.citations.editor.details.manualEditing">Modifica manuale</message>
-	<message key="metadata.property.displayName.title-type">Tipo di titolo</message>
 	<message key="metadata.property.validationMessage.title-type">Assicurati di aver selezionato un tipo valido. I valori permessi sono: abbreviato, tradotto, alternativo e uniforme.</message>
 	<message key="metadata.property.displayName.nonSort">Parte del titolo ignorata ai fini dell'ordinamento</message>
 	<message key="metadata.property.validationMessage.nonSort">Inserisci solo i caratteri iniziali del titolo che devono essere ignorati nell'ordinamento dei titoli</message>
@@ -365,4 +361,17 @@
 	<message key="metadata.property.validationMessage.partName">Inserisci un nome della parte valido</message>
 	<message key="metadata.property.displayName.name-type">Tipo di nome</message>
 	<message key="metadata.property.validationMessage.name-type">Assicurati di aver selezionato un tipo di nome valido. Valori ammessi sono: personale, ente, convegno.</message>
+	<message key="metadata.property.displayName.title-type">Tipo di titolo</message>
+	<message key="submission.citations.editor.citationlist.approved">Approvato</message>
+	<message key="submission.layout.galleyRemoteURL">URL remota</message>
+	<message key="submission.reviewed">Revisionato</message>
+	<message key="submission.citations.editor.citationlist.notApproved">Non approvato</message>
+	<message key="submission.comments.addReviews">Aggiungi il commento del revisore al messaggio</message>
+	<message key="submission.layout.galleyRemoteURLValid">Inserisci una URL remota valida (includi http://)</message>
+	<message key="submission.form.name">Dai al file un nome comprensibile</message>
+	<message key="submission.copyedited">Revisionato</message>
+	<message key="submission.supportingAgencies">Agenzie di supporto</message>
+	<message key="submission.createRemote">Crea remoto</message>
+	<message key="submission.form.replaceExisting">Sostituire un file esistente?</message>
+	<message key="submission.addFile">Carica file</message>
 </locale>

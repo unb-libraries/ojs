@@ -3,7 +3,7 @@
 /**
  * @file classes/file/TemporaryFileManager.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPTemporaryFileManager
@@ -13,20 +13,24 @@
  * @brief Class defining operations for temporary file management.
  */
 
-// $Id$
+import('lib.pkp.classes.file.PrivateFileManager');
 
-
-import('lib.pkp.classes.file.FileManager');
-
-class PKPTemporaryFileManager extends FileManager {
+class PKPTemporaryFileManager extends PrivateFileManager {
 	/**
 	 * Constructor
 	 */
 	function PKPTemporaryFileManager() {
 		parent::FileManager();
-		$this->filesDir = Config::getVar('files', 'files_dir') . '/temp/';
 
 		$this->_performPeriodicCleanup();
+	}
+
+	/**
+	 * Get the base path for temporary file storage.
+	 * @return string
+	 */
+	function getBasePath() {
+		return parent::getBasePath() . '/temp/';
 	}
 
 	/**
@@ -48,7 +52,7 @@ class PKPTemporaryFileManager extends FileManager {
 		$temporaryFile =& $this->getFile($fileId, $userId);
 
 		if (isset($temporaryFile)) {
-			$filePath = $this->filesDir . $temporaryFile->getFileName();
+			$filePath = $this->getBasePath() . $temporaryFile->getFileName();
 			return parent::readFile($filePath, $output);
 		} else {
 			return false;
@@ -62,7 +66,7 @@ class PKPTemporaryFileManager extends FileManager {
 	function deleteFile($fileId, $userId) {
 		$temporaryFile =& $this->getFile($fileId, $userId);
 
-		parent::deleteFile($this->filesDir . $temporaryFile->getFileName());
+		parent::deleteFile($this->getBasePath() . $temporaryFile->getFileName());
 
 		$temporaryFileDao =& DAORegistry::getDAO('TemporaryFileDAO');
 		$temporaryFileDao->deleteTemporaryFileById($fileId, $userId);
@@ -77,38 +81,11 @@ class PKPTemporaryFileManager extends FileManager {
 	function downloadFile($fileId, $userId, $inline = false) {
 		$temporaryFile =& $this->getFile($fileId, $userId);
 		if (isset($temporaryFile)) {
-			$filePath = $this->filesDir . $temporaryFile->getFileName();
+			$filePath = $this->getBasePath() . $temporaryFile->getFileName();
 			return parent::downloadFile($filePath, null, $inline);
 		} else {
 			return false;
 		}
-	}
-
-	/**
-	 * View a file inline (variant of downloadFile).
-	 * @see PKPTemporaryFileManager::downloadFile
-	 */
-	function viewFile($fileId) {
-		$this->downloadFile($fileId, true);
-	}
-
-	/**
-	 * Parse the file extension from a filename/path.
-	 * @param $fileName string
-	 * @return string
-	 */
-	function parseFileExtension($fileName) {
-		$fileParts = explode('.', $fileName);
-		if (is_array($fileParts)) {
-			$fileExtension = $fileParts[count($fileParts) - 1];
-		}
-
-		// FIXME Check for evil
-		if (!isset($fileExtension) || strstr($fileExtension, 'php') || strlen($fileExtension) > 6 || !preg_match('/^\w+$/', $fileExtension)) {
-			$fileExtension = 'txt';
-		}
-
-		return $fileExtension;
 	}
 
 	/**
@@ -121,23 +98,23 @@ class PKPTemporaryFileManager extends FileManager {
 		// Get the file extension, then rename the file.
 		$fileExtension = $this->parseFileExtension($this->getUploadedFileName($fileName));
 
-		if (!$this->fileExists($this->filesDir, 'dir')) {
+		if (!$this->fileExists($this->getBasePath(), 'dir')) {
 			// Try to create destination directory
-			$this->mkdirtree($this->filesDir);
+			$this->mkdirtree($this->getBasePath());
 		}
 
-		$newFileName = basename(tempnam($this->filesDir, $fileExtension));
+		$newFileName = basename(tempnam($this->getBasePath(), $fileExtension));
 		if (!$newFileName) return false;
 
-		if ($this->uploadFile($fileName, $this->filesDir . $newFileName)) {
+		if ($this->uploadFile($fileName, $this->getBasePath() . $newFileName)) {
 			$temporaryFileDao =& DAORegistry::getDAO('TemporaryFileDAO');
-			$temporaryFile = new TemporaryFile();
+			$temporaryFile = $temporaryFileDao->newDataObject();
 
 			$temporaryFile->setUserId($userId);
 			$temporaryFile->setFileName($newFileName);
-			$temporaryFile->setFileType(String::mime_content_type($this->filesDir . $newFileName));
+			$temporaryFile->setFileType(String::mime_content_type($this->getBasePath() . $newFileName));
 			$temporaryFile->setFileSize($_FILES[$fileName]['size']);
-			$temporaryFile->setOriginalFileName(TemporaryFileManager::truncateFileName($_FILES[$fileName]['name'], 127));
+			$temporaryFile->setOriginalFileName($this->truncateFileName($_FILES[$fileName]['name'], 127));
 			$temporaryFile->setDateUploaded(Core::getCurrentDate());
 
 			$temporaryFileDao->insertTemporaryFile($temporaryFile);

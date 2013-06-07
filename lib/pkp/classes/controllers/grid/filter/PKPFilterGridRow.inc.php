@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/filter/PKPFilterGridRow.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPFilterGridRow
@@ -50,7 +50,7 @@ class PKPFilterGridRow extends GridRow {
 			assert(is_a($filter, 'Filter'));
 			if ($filter->hasSettings()) {
 				$this->addAction(
-					new LinkAction(
+					new LegacyLinkAction(
 						'editFilter',
 						LINK_ACTION_MODE_MODAL,
 						LINK_ACTION_TYPE_REPLACE,
@@ -62,7 +62,7 @@ class PKPFilterGridRow extends GridRow {
 				);
 			}
 			$this->addAction(
-				new LinkAction(
+				new LegacyLinkAction(
 					'deleteFilter',
 					LINK_ACTION_MODE_CONFIRM,
 					LINK_ACTION_TYPE_REMOVE,
@@ -73,9 +73,8 @@ class PKPFilterGridRow extends GridRow {
 					__('manager.setup.filter.grid.confirmDelete', array('filterName' => $filter->getDisplayName()))
 				)
 			);
-
-			// Set a non-default template that supports row actions
-			$this->setTemplate('controllers/grid/gridRowWithActions.tpl');
 		}
 	}
 }
+
+?>

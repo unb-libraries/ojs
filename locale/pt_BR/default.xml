@@ -2,16 +2,15 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * default.xml
+  * locale/pt_BR/default.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português do Brasil) locale.
   * Translation by Desenvolvimento Web, Ibict/MCT
   * Ramón Martins Sodoma da Fonseca (ramon@ibict.br)
   *
-  * $Id$
   -->
  
 <locale name="pt_BR" full_name="Português do Brasil">
@@ -139,4 +138,6 @@ Siga o seguinte protocolo para fazer revisões eletrônicas em seu manuscrito:
 	<message key="default.journalSettings.membershipFee">Registro em entidade de classe</message>
 	<message key="default.journalSettings.donationFee">Doações à revista</message>
 	<message key="section.default.policy">Política padrão de seção</message>
+	<message key="default.journalSettings.purchaseIssueFee">Adquirir edição</message>
+	<message key="default.journalSettings.purchaseIssueFeeDescription">O pagamento desta taxa permite ver, baixar e imprimir esta edição.</message>
 </locale>

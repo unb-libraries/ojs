@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE countries SYSTEM "../../dtd/countries.dtd">
+
 <!--
   * locale/fa_IR/countries.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * تحت مجوزGNU GPL v2 منتشرشد. برای دیدن متن کامل فایل docs/COPYING را ببینید.
   *
   * لیست بومی کشورها.
   *
-  * $Id$
   -->
 <countries>
 	<country code="AX" name="جزایر آلند" />

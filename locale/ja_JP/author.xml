@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/ja_JP/author.xml
+  * locale/ja_JP/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
   *
-  * $Id$
   -->
 
 <locale name="ja_JP" full_name = "日本語">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">後日、著者のホームページからこの投稿物を選択することにより、この投稿を完了することもできます。</message>
 	<message key="author.submit.notAccepting">この雑誌は現在投稿を受け付けていません。</message>
 	<message key="author.submit.requestWaiver">免除依頼</message>
-	<message key="author.submit.qualityForWaiver">この論文に対する論文投稿料の免除を検討してください。</message>
+	<message key="author.submit.qualifyForWaiver">この論文に対する論文投稿料の免除を検討してください。</message>
 	<message key="author.submit.addReasonsForWaiver">投稿料免除が必要な理由を下のコメントボックスに入力してください。</message>
 	<message key="author.submissions.uploadCopyeditedVersion">コピーエディタ版のアップロード</message>
 	<message key="author.submissions.proofreadingCorrections">校正による修正</message>
@@ -58,8 +57,6 @@
 	<message key="author.submit.addAuthor">著者の追加</message>
 	<message key="author.submit.deleteAuthor">著者の削除</message>
 	<message key="author.submit.submissionIndexingDescription">投稿物の索引語を入力してください。各索引語は（索引語1;索引語2;索引語3）のようにセミコロンで区切ってください。</message>
-	<message key="author.submit.submissionSupportingAgencies">支援機関</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">この投稿物の元となる研究を助成または支援した機関を指定してください。</message>
 	<message key="author.submit.coverageInstructions">地理空間的・年代的・歴史的範囲または研究材料の特性を示してください。</message>
 	<message key="author.submit.subjectClassInstructions">分類語または（可能であれば）分類標数の選択にはハイパーリンク分類システムを使用してください。</message>
 	<message key="author.submit.form.authorRequired">少なくとも1人の著者が必須です。</message>

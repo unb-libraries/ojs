@@ -1,19 +1,18 @@
 {**
- * groupForm.tpl
+ * templates/manager/groups/groupForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Group form under journal management.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageId" value="manager.groups.groupForm"}
 {assign var="pageCrumbTitle" value=$pageTitle}
 {include file="common/header.tpl"}
 {/strip}
-<div id="groupForm">
+<div id="groupFormDiv">
 {if $group}
 	<ul class="menu">
 		<li class="current"><a href="{url op="editGroup" path=$group->getId()}">{translate key="manager.groups.editTitle"}</a></li>
@@ -23,7 +22,7 @@
 
 <br/>
 
-<form name="groupForm" method="post" action="{url op="updateGroup"}">
+<form id="groupForm" method="post" action="{url op="updateGroup"}">
 {if $group}
 	<input type="hidden" name="groupId" value="{$group->getId()}"/>
 {/if}

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RTSharingHandler.inc.php
+ * @file pages/rtadmin/RTSharingHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTSharingHandler
@@ -12,15 +12,18 @@
  * @brief Handle Reading Tools sharing requests -- setup section.
  */
 
-// $Id$
-
-
-import('classes.rt.ojs.JournalRTAdmin');
 import('pages.rtadmin.RTAdminHandler');
 import('classes.rt.ojs.SharingRT');
 
-class RTSharingHandler {
-	function settings() {
+class RTSharingHandler extends RTAdminHandler {
+	/**
+	 * Constructor
+	 **/
+	function RTSharingHandler() {
+		parent::RTAdminHandler();
+	}
+
+	function sharingSettings() {
 		$this->validate();
 		$journal = Request::getJournal();
 		if ($journal) {
@@ -50,7 +53,7 @@ class RTSharingHandler {
 		}
 	}
 
-	function saveSettings() {
+	function saveSharingSettings() {
 		$this->validate();
 
 		$journal = Request::getJournal();

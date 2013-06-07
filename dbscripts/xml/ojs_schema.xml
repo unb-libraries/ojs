@@ -4,12 +4,11 @@
 <!--
   * ojs_schema.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * OJS database schema in XML.
   *
-  * $Id$
   -->
 
 <schema version="0.2">
@@ -44,7 +43,7 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE journal_settings
@@ -77,7 +76,7 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE plugin_settings
@@ -114,7 +113,7 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE roles
@@ -204,7 +203,7 @@
 			<col>journal_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE section_settings
@@ -237,7 +236,7 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE section_editors
@@ -278,7 +277,7 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE issues
@@ -310,7 +309,6 @@
 			<DEFAULT VALUE="1" />
 		</field>
 		<field name="open_access_date" type="T" />
-		<field name="public_issue_id" type="C2" size="255" />
 		<field name="show_volume" type="I1">
 			<NOTNULL />
 			<DEFAULT VALUE="0" />
@@ -332,11 +330,6 @@
 		<descr>Journal issues.</descr>
 		<index name="issues_journal_id">
 			<col>journal_id</col>
-		</index>
-		<index name="issues_public_issue_id">
-			<col>public_issue_id</col>
-			<col>journal_id</col>
-			<UNIQUE />
 		</index>
 	</table>
 
@@ -369,6 +362,108 @@
 			<col>locale</col>
 			<col>setting_name</col>
 			<UNIQUE />
+		</index>
+	</table>
+
+	<!--
+	  *
+	  * TABLE issue_galleys
+	  *
+	  -->
+	<table name="issue_galleys">
+		<field name="galley_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="locale" type="C2" size="5"/>
+		<field name="issue_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="file_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="label" type="C2" size="32"/>
+		<field name="seq" type="F">
+			<NOTNULL/>
+			<DEFAULT VALUE="0"/>
+		</field>
+		<field name="views" type="I4">
+			<NOTNULL/>
+			<DEFAULT VALUE="0"/>
+		</field>
+		<descr>Issue galleys.</descr>
+		<index name="issue_galleys_issue_id">
+			<col>issue_id</col>
+		</index>
+	</table>
+
+	<!--
+	  *
+	  * TABLE issue_galley_settings
+	  *
+	  -->
+	<table name="issue_galley_settings">
+		<field name="galley_id" type="I8">
+			<NOTNULL />
+		</field>
+		<field name="locale" type="C2" size="5">
+			<NOTNULL />
+			<DEFAULT VALUE=""/>
+		</field>
+		<field name="setting_name" type="C2" size="255">
+			<NOTNULL />
+		</field>
+		<field name="setting_value" type="X"/>
+		<field name="setting_type" type="C2" size="6">
+			<NOTNULL/>
+			<descr>(bool|int|float|string|object)</descr>
+		</field>
+		<descr>Issue galley metadata.</descr>
+		<index name="issue_galley_settings_galley_id">
+			<col>galley_id</col>
+		</index>
+		<index name="issue_galley_settings_pkey">
+			<col>galley_id</col>
+			<col>locale</col>
+			<col>setting_name</col>
+			<UNIQUE/>
+		</index>
+	</table>
+
+	<!--
+	  *
+	  * TABLE issue_files
+	  *
+	  -->
+	<table name="issue_files">
+		<field name="file_id" type="I8">
+			<KEY />
+			<AUTOINCREMENT/>
+		</field>
+		<field name="issue_id" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="file_name" type="C2" size="90">
+			<NOTNULL/>
+		</field>
+		<field name="file_type" type="C2" size="255">
+			<NOTNULL/>
+		</field>
+		<field name="file_size" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="content_type" type="I8">
+			<NOTNULL/>
+		</field>
+		<field name="original_file_name" type="C2" size="127"/>
+		<field name="date_uploaded" type="T">
+			<NOTNULL/>
+		</field>
+		<field name="date_modified" type="T">
+			<NOTNULL/>
+		</field>
+		<index name="issue_files_issue_id">
+			<col>issue_id</col>
 		</index>
 	</table>
 
@@ -456,7 +551,6 @@
 		<field name="review_file_id" type="I8"/>
 		<field name="editor_file_id" type="I8"/>
 		<field name="pages" type="C2" size="255"/>
-		<field name="doi" type="C2" size="255"/>
 		<field name="fast_tracked" type="I1">
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
@@ -480,7 +574,7 @@
 			<col>section_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_settings
@@ -520,7 +614,7 @@
 	  *
 	  -->
 	<table name="published_articles">
-		<field name="pub_id" type="I8">
+		<field name="published_article_id" type="I8">
 			<KEY />
 			<AUTOINCREMENT/>
 		</field>
@@ -543,7 +637,6 @@
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
 		</field>
-		<field name="public_article_id" type="C2" size="255"/>
 		<descr>Journal articles.</descr>
 		<index name="published_articles_article_id">
 			<col>article_id</col>
@@ -551,9 +644,6 @@
 		</index>
 		<index name="published_articles_issue_id">
 			<col>issue_id</col>
-		</index>
-		<index name="published_articles_public_article_id">
-			<col>public_article_id</col>
 		</index>
 	</table>
 
@@ -585,7 +675,7 @@
 			<NOTNULL/>
 		</field>
 		<field name="original_file_name" type="C2" size="127"/>
-		<field name="type" type="C2" size="40">
+		<field name="file_stage" type="I8">
 			<NOTNULL/>
 		</field>
 		<field name="viewable" type="I1" />
@@ -604,7 +694,7 @@
 			<col>article_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_supplementary_files
@@ -623,7 +713,7 @@
 		</field>
 		<field name="type" type="C2" size="255"/>
 		<field name="language" type="C2" size="10"/>
-		<field name="public_supp_file_id" type="C2" size="255"/>
+		<field name="remote_url" type="C2" size="255"/>
 		<field name="date_created" type="D"/>
 		<field name="show_reviewers" type="I1">
 			<DEFAULT VALUE="0"/>
@@ -641,9 +731,6 @@
 		</index>
 		<index name="article_supplementary_files_article_id">
 			<col>article_id</col>
-		</index>
-		<index name="supp_public_supp_file_id">
-			<col>public_supp_file_id</col>
 		</index>
 	</table>
 
@@ -682,47 +769,6 @@
 
 	<!--
 	  *
-	  * TABLE article_notes
-	  *
-	  -->
-	<table name="article_notes">
-		<field name="note_id" type="I8">
-			<KEY />
-			<AUTOINCREMENT/>
-		</field>
-		<field name="article_id" type="I8">
-			<NOTNULL/>
-		</field>
-		<field name="user_id" type="I8">
-			<NOTNULL/>
-		</field>
-		<field name="date_created" type="T">
-			<NOTNULL/>
-		</field>
-		<field name="date_modified" type="T">
-			<NOTNULL/>
-		</field>
-		<field name="title" type="C2" size="255">
-			<NOTNULL/>
-		</field>
-		<field name="note" type="X"/>
-		<field name="file_id" type="I8">
-			<NOTNULL/>
-		</field>
-		<descr>Article submission notes added by editors to each submission</descr>
-		<index name="article_notes_article_id">
-			<col>article_id</col>
-		</index>
-		<index name="article_notes_user_id">
-			<col>user_id</col>
-		</index>
-		<index name="article_notes_file_id">
-			<col>file_id</col>
-		</index>
-	</table>
-	
-	<!--
-	  *
 	  * TABLE edit_assignments
 	  *
 	  -->
@@ -756,7 +802,7 @@
 			<col>editor_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE edit_decisions
@@ -790,7 +836,7 @@
 			<col>editor_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_galleys
@@ -801,7 +847,6 @@
 			<KEY />
 			<AUTOINCREMENT/>
 		</field>
-		<field name="public_galley_id" type="C2" size="255" />
 		<field name="locale" type="C2" size="5"/>
 		<field name="article_id" type="I8">
 			<NOTNULL/>
@@ -823,17 +868,46 @@
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
 		</field>
+		<field name="remote_url" type="C2" size="255" />
 		<descr>Article galleys.</descr>
 		<index name="article_galleys_article_id">
 			<col>article_id</col>
 		</index>
-		<index name="article_galleys_public_id">
-			<col>public_galley_id</col>
-			<col>article_id</col>
+	</table>
+
+	<!--
+	  *
+	  * TABLE article_galley_settings
+	  *
+	  -->
+	<table name="article_galley_settings">
+		<field name="galley_id" type="I8">
+			<NOTNULL />
+		</field>
+		<field name="locale" type="C2" size="5">
+			<NOTNULL />
+			<DEFAULT VALUE=""/>
+		</field>
+		<field name="setting_name" type="C2" size="255">
+			<NOTNULL />
+		</field>
+		<field name="setting_value" type="X"/>
+		<field name="setting_type" type="C2" size="6">
+			<NOTNULL/>
+			<descr>(bool|int|float|string|object)</descr>
+		</field>
+		<descr>Article galley metadata.</descr>
+		<index name="article_galley_settings_galley_id">
+			<col>galley_id</col>
+		</index>
+		<index name="article_galley_settings_pkey">
+			<col>galley_id</col>
+			<col>locale</col>
+			<col>setting_name</col>
 			<UNIQUE/>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_html_galley_images
@@ -853,7 +927,7 @@
 			<UNIQUE/>
 		</index>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_event_log
@@ -886,42 +960,7 @@
 			<col>article_id</col>
 		</index>
 	</table>
-	
-	<!--
-	  *
-	  * TABLE article_email_log
-	  *
-	  -->
-	<table name="article_email_log">
-		<field name="log_id" type="I8">
-			<KEY />
-			<AUTOINCREMENT/>
-		</field>
-		<field name="article_id" type="I8">
-			<NOTNULL/>
-		</field>
-		<field name="sender_id" type="I8">
-			<NOTNULL/>
-		</field>
-		<field name="date_sent" type="T">
-			<NOTNULL/>
-		</field>
-		<field name="ip_address" type="C2" size="15"/>
-		<field name="event_type" type="I8"/>
-		<field name="assoc_type" type="I8"/>
-		<field name="assoc_id" type="I8"/>
-		<field name="from_address" type="C2" size="255"/>
-		<field name="recipients" type="X"/>
-		<field name="cc_recipients" type="X"/>
-		<field name="bcc_recipients" type="X"/>
-		<field name="subject" type="C2" size="255"/>
-		<field name="body" type="X"/>
-		<descr>A log of all emails sent out related to a submission.</descr>
-		<index name="article_email_log_article_id">
-			<col>article_id</col>
-		</index>
-	</table>
-	
+
 	<!--
 	  *
 	  * TABLE article_comments
@@ -957,7 +996,7 @@
 			<col>article_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	 *
 	 * TABLE article_search_keyword_list
@@ -977,7 +1016,7 @@
 			<UNIQUE/>
 		</index>
 	</table>
-	
+
 	<!--
 	 *
 	 * TABLE article_search_objects
@@ -1000,7 +1039,7 @@
 		</field>
 		<descr>Indexed objects.</descr>
 	</table>
-	
+
 	<!--
 	 *
 	 * TABLE article_search_object_keywords
@@ -1027,9 +1066,9 @@
 			<UNIQUE />
 		</index>
 	</table>
-	
+
 	<!-- Reading Tools Tables -->
-	
+
 	<!--
 	 *
 	 * TABLE rt_versions
@@ -1061,7 +1100,7 @@
 			<col>version_key</col>
 		</index>
 	</table>
-	
+
 	<!--
 	 *
 	 * TABLE rt_contexts
@@ -1107,7 +1146,7 @@
 			<col>version_id</col>
 		</index>
 	</table>
-	
+
 	<!--
 	 *
 	 * TABLE rt_searches
@@ -1140,7 +1179,7 @@
 
 	<!--
 	 *
-	 * TABLE subscription_types 
+	 * TABLE subscription_types
 	 *
 	 -->
 	<table name="subscription_types">
@@ -1328,7 +1367,7 @@
 		<field name="payment_data" type="X" />
 		<descr>Logs queued (unfulfilled) payments.</descr>
 	</table>
-	
+
 	<!--
 	  *
 	  * TABLE completed_payments
@@ -1352,7 +1391,7 @@
 		<field name="assoc_id" type="I8" />
 		<field name="amount" type="F">
 			<NOTNULL/>
-		</field>		
+		</field>
 		<field name="currency_code_alpha" type="C2" size="3" />
 		<field name="payment_method_plugin_name" type="C2" size="80" />
 		<descr>Logs completed (fulfilled) payments.</descr>

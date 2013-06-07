@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ManagerHandler.inc.php
+ * @file pages/manager/ManagerHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ManagerHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for journal management functions. 
  */
-
-// $Id$
 
 import('classes.handler.Handler');
 import('pages.manager.ManagerHandler');
@@ -35,6 +33,26 @@ class ManagerHandler extends Handler {
 		$this->setupTemplate();
 		$journal =& Request::getJournal();
 		$templateMgr =& TemplateManager::getManager();
+
+		// Display a warning message if there is a new version of OJS available
+		$newVersionAvailable = false;
+		if (Config::getVar('general', 'show_upgrade_warning')) {
+			import('lib.pkp.classes.site.VersionCheck');
+			if($latestVersion = VersionCheck::checkIfNewVersionExists()) {
+				$newVersionAvailable = true;
+				$templateMgr->assign('latestVersion', $latestVersion);
+				$currentVersion =& VersionCheck::getCurrentDBVersion();
+				$templateMgr->assign('currentVersion', $currentVersion->getVersionString());
+				
+				// Get contact information for site administrator
+				$roleDao =& DAORegistry::getDAO('RoleDAO');
+				$siteAdmins =& $roleDao->getUsersByRoleId(ROLE_ID_SITE_ADMIN);
+				$templateMgr->assign_by_ref('siteAdmin', $siteAdmins->next());
+			}
+		}
+
+
+		$templateMgr->assign('newVersionAvailable', $newVersionAvailable);
 		$templateMgr->assign_by_ref('roleSettings', $this->retrieveRoleAssignmentPreferences($journal->getId()));
 		$templateMgr->assign('publishingMode', $journal->getSetting('publishingMode'));
 		$templateMgr->assign('announcementsEnabled', $journal->getSetting('enableAnnouncements'));
@@ -74,7 +92,7 @@ class ManagerHandler extends Handler {
 					// Special case for emailing entire groups:
 					// Check for a group ID and add recipients.
 					$groupDao =& DAORegistry::getDAO('GroupDAO');
-					$group =& $groupDao->getGroup($groupId);
+					$group =& $groupDao->getById($groupId);
 					if ($group && $group->getAssocId() == $journal->getId() && $group->getAssocType() == ASSOC_TYPE_JOURNAL) {
 						$groupMembershipDao =& DAORegistry::getDAO('GroupMembershipDAO');
 						$memberships =& $groupMembershipDao->getMemberships($group->getId());
@@ -97,7 +115,7 @@ class ManagerHandler extends Handler {
 	 */
 	function setupTemplate($subclass = false) {
 		parent::setupTemplate();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_OJS_MANAGER, LOCALE_COMPONENT_PKP_ADMIN));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_OJS_MANAGER, LOCALE_COMPONENT_PKP_ADMIN);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('pageHierarchy',
 			$subclass ? array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'manager'), 'manager.journalManagement'))

@@ -4,12 +4,11 @@
 <!--
   * locale/no_NO/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: admin.xml,v 1.3 2009/08/15 00:13:57 asmecher Exp $
   -->
 
 <locale name="no_NO" full_name = "Norwegian">
@@ -81,4 +80,7 @@
 	<message key="admin.version.updateAvailable">En oppdatert versjon er tilgjengelig</message>
 	<message key="admin.version.upToDate">Systemet er nyeste versjon</message>
 	<message key="admin.version">Versjon</message>
+	<message key="admin.settings">Innstillinger</message>
+	<message key="admin.settings.siteTheme">Nettstedstema</message>
+	<message key="admin.siteSetup">Nettstedsoppsett</message>
 </locale>

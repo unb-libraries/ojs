@@ -3,7 +3,7 @@
 /**
  * @file plugins/importexport/crossref/CrossRefExportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportDom
@@ -11,9 +11,6 @@
  *
  * @brief CrossRef XML export plugin DOM functions
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -108,7 +105,12 @@ class CrossRefExportDom {
 		$journalMetadataNode =& XMLCustomWriter::createElement($doc, 'journal_metadata');
 
 		/* Full Title of Journal */
-		XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'full_title', $journal->getLocalizedTitle());
+		$journalTitle = $journal->getLocalizedTitle();
+		// Attempt a fall back, in case the localized name is not set.
+		if ($journalTitle == '') {
+			$journalTitle = $journal->getLocalizedSetting('abbreviation');
+		}
+		XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'full_title', $journalTitle);
 
 		/* Abbreviated title - defaulting to initials if no abbreviation found */
 		if ($journal->getLocalizedSetting('abbreviation') != '' ) {
@@ -153,6 +155,11 @@ class CrossRefExportDom {
 
 		XMLCustomWriter::createChildWithText($doc, $journalIssueNode, 'issue', $issue->getNumber());
 
+		if ($issue->getDatePublished()) {
+			$issueDoiNode =& CrossRefExportDom::generateDOIdataDom($doc, $issue->getPubId('doi'), Request::url(null, 'issue', 'view', $issue->getBestIssueId($journal)));
+			XMLCustomWriter::appendChild($journalIssueNode, $issueDoiNode);
+		}
+
 		return $journalIssueNode;
 	}
 
@@ -174,9 +181,9 @@ class CrossRefExportDom {
 		$titlesNode =& XMLCustomWriter::createElement($doc, 'titles');
 		XMLCustomWriter::createChildWithText($doc, $titlesNode, 'title', $article->getLocalizedTitle());
 		XMLCustomWriter::appendChild($journalArticleNode, $titlesNode);
-		$contributorsNode =& XMLCustomWriter::createElement($doc, 'contributors');
 
 		/* AuthorList */
+		$contributorsNode =& XMLCustomWriter::createElement($doc, 'contributors');
 		$isFirst = true;
 		foreach ($article->getAuthors() as $author) {
 			$authorNode =& CrossRefExportDom::generateAuthorDom($doc, $author, $isFirst);
@@ -193,12 +200,75 @@ class CrossRefExportDom {
 
 		/* publisher_item is the article pages */
 		if ($article->getPages() != '') {
-			$publisherItemNode =& XMLCustomWriter::createElement($doc, 'publisher_item');
-			XMLCustomWriter::createChildWithText($doc, $publisherItemNode, 'item_number', $article->getPages());
-			XMLCustomWriter::appendChild($journalArticleNode, $publisherItemNode);
+			$pageNode =& XMLCustomWriter::createElement($doc, 'pages');
+			// extract the first page for the first_page element, store the remaining bits in otherPages,
+			// after removing any preceding non-numerical characters.
+			if (preg_match('/^[^\d]*(\d+)\D*(.*)$/', $article->getPages(), $matches)) {
+				$firstPage = $matches[1];
+				$otherPages = $matches[2];
+				XMLCustomWriter::createChildWithText($doc, $pageNode, 'first_page', $firstPage);
+				if ($otherPages != '') {
+					XMLCustomWriter::createChildWithText($doc, $pageNode, 'other_pages', $otherPages);
+				}
+			}
+			XMLCustomWriter::appendChild($journalArticleNode, $pageNode);
+		}
+
+		// DOI data node
+		$DOIdataNode =& CrossRefExportDom::generateDOIdataDom($doc, $article->getPubId('doi'), Request::url(null, 'article', 'view', $article->getBestArticleId()));
+		XMLCustomWriter::appendChild($journalArticleNode, $DOIdataNode);
+
+		/* Component list (supplementary files) */
+		$componentListNode =& CrossRefExportDom::generateComponentListDom($doc, $journal, $article);
+		if ($componentListNode) {
+			XMLCustomWriter::appendChild($journalArticleNode, $componentListNode);
 		}
 
 		return $journalArticleNode;
+	}
+
+	/**
+	 * Generate the component_list node (supplementary files).
+	 * @param $doc XMLNode
+	 * @param $journal Journal
+	 * @param $issue Issue
+	 * @param $section Section
+	 * @param $article Article
+	 * @return XMLNode
+	 */
+	function &generateComponentListDom(&$doc, &$journal, &$article) {
+		$suppFiles =& $article->getSuppFiles();
+		if ($suppFiles) {
+			// Create the base node
+			$componentListNode =& XMLCustomWriter::createElement($doc, 'component_list');
+
+			// Run through supp files and add component nodes.
+			foreach($suppFiles as $suppFile) {
+				$componentNode =& XMLCustomWriter::createElement($doc, 'component');
+				XMLCustomWriter::setAttribute($componentNode, 'parent_relation', 'isPartOf');
+
+				/* Titles */
+				$suppFileTitle = $suppFile->getSuppFileTitle();
+				if (!empty($suppFileTitle)) {
+					$titlesNode =& XMLCustomWriter::createElement($doc, 'titles');
+					XMLCustomWriter::createChildWithText($doc, $titlesNode, 'title', $suppFileTitle);
+					XMLCustomWriter::appendChild($componentNode, $titlesNode);
+				}
+
+				// DOI data node
+				$suppFileUrl = Request::url(
+					null, 'article', 'downloadSuppFile',
+					array($article->getId(), $suppFile->getBestSuppFileId($journal))
+				);
+				$suppFileDoiNode =& CrossRefExportDom::generateDOIdataDom($doc, $suppFile->getPubId('doi'), $suppFileUrl);
+				XMLCustomWriter::appendChild($componentNode, $suppFileDoiNode);
+
+				XMLCustomWriter::appendChild($componentListNode, $componentNode);
+				unset($componentNode);
+			}
+		}
+
+		return $componentListNode;
 	}
 
 	/**

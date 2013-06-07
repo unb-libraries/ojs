@@ -7,7 +7,7 @@
 /**
  * @file classes/rt/RT.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RT
@@ -16,8 +16,6 @@
  *
  * @brief Class to process and respond to Reading Tools requests.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.rt.RTStruct');
@@ -32,6 +30,9 @@ class RT {
 
 	/** @var $abstract boolean */
 	var $abstract;
+
+	/** @var $viewReviewPolicy boolean */
+	var $viewReviewPolicy;
 
 	/** @var $captureCite boolean */
 	var $captureCite;
@@ -97,6 +98,14 @@ class RT {
 		return $this->abstract;
 	}
 
+	function setViewReviewPolicy($viewReviewPolicy) {
+		$this->viewReviewPolicy = $viewReviewPolicy;
+	}
+
+	function getViewReviewPolicy() {
+		return $this->viewReviewPolicy;
+	}
+
 	function setViewMetadata($viewMetadata) {
 		$this->viewMetadata = $viewMetadata;
 	}
@@ -122,10 +131,12 @@ class RT {
 	}
 
 	function setAuthorBio($authorBio) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
 		$this->authorBio = $authorBio;
 	}
 
 	function getAuthorBio() {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
 		return $this->authorBio;
 	}
 

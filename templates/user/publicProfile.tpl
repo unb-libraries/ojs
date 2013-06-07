@@ -1,12 +1,11 @@
 {**
- * publicProfile.tpl
+ * templates/user/publicProfile.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Public user profile display.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="user.profile.publicProfile"}

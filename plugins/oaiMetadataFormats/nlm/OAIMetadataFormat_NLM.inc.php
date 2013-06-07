@@ -5,9 +5,9 @@
  */
 
 /**
- * @file classes/oai/format/OAIMetadataFormat_NLM.inc.php
+ * @file plugins/oaiMetadataFormats/nlm/OAIMetadataFormat_NLM.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormat_NLM
@@ -45,7 +45,7 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 			$sectionSeq = array();
 			$i=0;
 			foreach ($sections as $thisSection) {
-				$sectionSeq[$thisSection->getSectionId()] = $i++;
+				$sectionSeq[$thisSection->getId()] = $i++;
 			}
 			unset($sections);
 		}
@@ -66,12 +66,12 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 			"\txmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n" .
 			"\txsi:schemaLocation=\"http://dtd.nlm.nih.gov/publishing/2.3\n" .
 			"\thttp://dtd.nlm.nih.gov/publishing/2.3/xsd/journalpublishing.xsd\"\n" .
-			(($s = $section->getSectionIdentifyType())!=''?"\tarticle-type=\"" . htmlspecialchars(Core::cleanVar($s)) . "\"":'') .
+			(($s = $section->getLocalizedIdentifyType())!=''?"\tarticle-type=\"" . htmlspecialchars(Core::cleanVar($s)) . "\"":'') .
 			"\txml:lang=\"" . strtoupper(substr($primaryLocale, 0, 2)) . "\">\n" .
 			"\t<front>\n" .
 			"\t\t<journal-meta>\n" .
 			"\t\t\t<journal-id journal-id-type=\"other\">" . htmlspecialchars(Core::cleanVar(($s = Config::getVar('oai', 'nlm_journal_id'))!=''?$s:$journal->getPath())) . "</journal-id>\n" .
-			"\t\t\t<journal-title>" . htmlspecialchars(Core::cleanVar($journal->getJournalTitle())) . "</journal-title>\n";
+			"\t\t\t<journal-title>" . htmlspecialchars(Core::cleanVar($journal->getLocalizedTitle())) . "</journal-title>\n";
 
 		// Include translated journal titles
 		foreach ($journal->getTitle(null) as $locale => $title) {
@@ -86,10 +86,10 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 			"\t\t</journal-meta>\n" .
 			"\t\t<article-meta>\n" .
 			"\t\t\t<article-id pub-id-type=\"other\">" . htmlspecialchars(Core::cleanVar($article->getBestArticleId())) . "</article-id>\n" .
-			(($s = $article->getDOI()) != ''?"\t\t\t<article-id pub-id-type=\"doi\">" . htmlspecialchars(Core::cleanVar($s)) . "</article-id>\n":'') .
-			"\t\t\t<article-categories><subj-group subj-group-type=\"heading\"><subject>" . htmlspecialchars(Core::cleanVar($section->getSectionTitle())) . "</subject></subj-group></article-categories>\n" .
+			(($s = $article->getPubId('doi'))?"\t\t\t<article-id pub-id-type=\"doi\">" . htmlspecialchars(Core::cleanVar($s)) . "</article-id>\n":'') .
+			"\t\t\t<article-categories><subj-group subj-group-type=\"heading\"><subject>" . htmlspecialchars(Core::cleanVar($section->getLocalizedTitle())) . "</subject></subj-group></article-categories>\n" .
 			"\t\t\t<title-group>\n" .
-			"\t\t\t\t<article-title>" . htmlspecialchars(Core::cleanVar(strip_tags($article->getArticleTitle()))) . "</article-title>\n";
+			"\t\t\t\t<article-title>" . htmlspecialchars(Core::cleanVar(strip_tags($article->getLocalizedTitle()))) . "</article-title>\n";
 
 		// Include translated journal titles
 		foreach ($article->getTitle(null) as $locale => $title) {
@@ -131,7 +131,7 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 			($issue->getShowVolume()?"\t\t\t<volume>" . htmlspecialchars(Core::cleanVar($issue->getVolume())) . "</volume>\n":'') .
 			($issue->getShowNumber()?"\t\t\t<issue seq=\"" . htmlspecialchars(Core::cleanVar(($sectionSeq[$section->getId()]*100) + $article->getSeq())) . "\">" . htmlspecialchars(Core::cleanVar($issue->getNumber())) . "</issue>\n":'') .
 			"\t\t\t<issue-id pub-id-type=\"other\">" . htmlspecialchars(Core::cleanVar($issue->getBestIssueId())) . "</issue-id>\n" .
-			($issue->getShowTitle()?"\t\t\t<issue-title>" . htmlspecialchars(Core::cleanVar($issue->getIssueTitle())) . "</issue-title>\n":'');
+			($issue->getShowTitle()?"\t\t\t<issue-title>" . htmlspecialchars(Core::cleanVar($issue->getLocalizedTitle())) . "</issue-title>\n":'');
 
 		// Include page info, if available and parseable.
 		$matches = null;
@@ -161,7 +161,7 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 		}
 
 		// Include abstract(s)
-		$abstract = htmlspecialchars(Core::cleanVar(strip_tags($article->getArticleAbstract())));
+		$abstract = htmlspecialchars(Core::cleanVar(strip_tags($article->getLocalizedAbstract())));
 		if (!empty($abstract)) {
 			$abstract = "<p>$abstract</p>";
 			// $abstract = '<p>' . String::regexp_replace('/\n+/', '</p><p>', $abstract) . '</p>';
@@ -221,19 +221,12 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 		if (!empty($text)) $response .= "\t<body><p>" . htmlspecialchars(Core::cleanVar(Core::cleanVar($text))) . "</p></body>\n";
 
 		// Add NLM citation info
-		import('lib.pkp.classes.importexport.nlm.PKPSubmissionNlmXmlFilter');
-		$nlmFilter = new PKPSubmissionNlmXmlFilter();
-		$nlmXml = $nlmFilter->execute($article);
-
-		// Downgrade to an NLM 2.3 ref-list
-		import('lib.pkp.classes.xslt.XSLTransformationFilter');
-		$downgradeFilter = new XSLTransformationFilter('NLM 3.0 to 2.3 ref-list downgrade', array('xml::*', 'xml::*'));
-		$downgradeFilter->setXSLFilename('lib/pkp/classes/importexport/nlm/nlm-ref-list-30-to-23.xsl');
-
-		// To suppress the XML header, get the DOM and convert it to
-		// string explicitly. (Also check for empty node.)
-		$downgradeFilter->setResultType(XSL_TRANSFORMER_DOCTYPE_DOM);
-		$nlmXmlDom = $downgradeFilter->execute($nlmXml);
+		$filterDao =& DAORegistry::getDAO('FilterDAO'); /* @var $filterDao FilterDAO */
+		$nlmFilters = $filterDao->getObjectsByGroup('submission=>nlm23-article-xml');
+		assert(count($nlmFilters) == 1);
+		$nlmFilter = array_pop($nlmFilters);
+		$nlmXmlDom = new DOMDocument();
+		$nlmXmlDom->loadXML($nlmFilter->execute($article));
 		$documentElement =& $nlmXmlDom->documentElement;
 
 		// Work-around for hasChildNodes being stupid about whitespace.
@@ -244,8 +237,8 @@ class OAIMetadataFormat_NLM extends OAIMetadataFormat {
 
 		// If there were any citations, include them.
 		if ($hasChildren) {
-			$nlmXml = $nlmXmlDom->saveXML($documentElement);
-			$response .= "<back>$nlmXml</back>\n";
+			$innerXml = $nlmXmlDom->saveXML($documentElement);
+			$response .= "<back>$innerXml</back>\n";
 		}
 
 		$response .= "</article>";

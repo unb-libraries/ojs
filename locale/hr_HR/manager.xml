@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/hr_HR/manager.xml
+  * locale/hr_HR/manager.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
   *
-  * $Id$
   -->
 
 <locale name="hr_HR" full_name = "Hrvatski">
@@ -117,7 +116,6 @@
 	<message key="manager.reviewForms.title">Naslov</message>
 	<message key="manager.sections.abstractsNotRequired">Ne trebaju sadržavati sažetke</message>
 	<message key="manager.sections.assigned">Urednici ove rubrike</message>
-	<message key="manager.sections.confirmDelete">Jeste li sigurni da želite trajno izbrisati ovu rubriku? Morat ćete iznova objaviti svaki članak u ovoj rubrici.</message>
 	<message key="manager.sections.create">Kreiraj rubriku</message>
 	<message key="manager.sections.disableComments">Onemogući komentare čitatelja za ovu rubriku.</message>
 	<message key="manager.section.sectionEditorInstructions">Opcijama "odredi urednika" i "ukloni ulogu urednika" odredite koji će od postojećih urednika rubrika imati ovlasti uređivanja ove rubrike.</message>

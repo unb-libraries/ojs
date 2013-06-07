@@ -4,12 +4,11 @@
 <!--
   * locale/hr_HR/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
   *
-  * $Id$
   -->
 
 <locale name="hr_HR" full_name = "Hrvatski">
@@ -152,7 +151,6 @@
 	<message key="submission.submissionReview">Recenzija prijave</message>
 	<message key="submission.submitter">Podnositelj</message>
 	<message key="submission.supplementaryFiles">Dopunske datoteke</message>
-	<message key="submission.supportingAgencies">Institucionalna potpora</message>
 	<message key="submission.titleAndAbstract">Naslov i sažetak</message>
 	<message key="submission.underway">U tijeku</message>
 	<message key="submission.uploadFileTo">Slanje datoteke kao</message>

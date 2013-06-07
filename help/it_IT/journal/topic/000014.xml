@@ -4,13 +4,12 @@
 <!--
   * 000014.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Users - Email Users
   * Thanks to AePIC Team CILEA.
   *
-  * $Id: 000014.xml,v 1.8 2009/04/08 19:54:28 asmecher Exp $
   -->
 
 <topic id="journal/topic/000014" locale="it_IT" title="Inviare email agli utenti" toc="journal/toc/000002" key="journal.users.emailUsers">

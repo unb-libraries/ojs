@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000010.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Administarción de páginas - Explorador de archivos
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Management Pages - Files Browser
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000010" locale="es_ES" title="Explorador de Archivos" toc="journal/toc/000001" key="journal.managementPages.fileBrowser">
+<topic id="journal/topic/000010" locale="es_ES" title="Explorador de archivos" toc="journal/toc/000001" key="journal.managementPages.fileBrowser">
 	<section>
-		<![CDATA[<p>El explorador de archivos permite a los administradores de la revista recorrer y gestionar la jerarquía de los archivos cargados para la revista (incluyendo todos los archivos cargados mediante la administración de entregas). Los archivos pueden ser vistos, borrados, y movidos de la misma manera en que se interactúa con el sistema del archivo local.</p><p>Note que la intención de esto es facilitar la administración y generalmente no será necesario utilizarlos en la administración diaria de la revista. La información de las entregas es conservadas como una combinación de archivos y registros de base de datos; la eliminación de los archivos de entrega en el explorador de archivos no los eliminará de los registros de la base de datos asociada.</p>]]>
+		<![CDATA[<p>El Explorador de archivos permite a los gestores/as de la revista examinar y administrar la estructura jerárquica de los archivos cargados (incluyendo todos aquellos procesados desde la gestión de envíos). Los archivos pueden visualizarse, eliminarse y moverse como si se tratara de un sistema de fichero local.</p><p>Tenga en cuenta que esto sólo pretende ser un servicio administrativo y que, en general, no será necesario en el día a día de la gestión de la revista. La información del envío se mantiene como una combinación de archivos y de un registro de base de datos. De hecho, al eliminar un fichero enviado utilizando el Explorador de archivos no borrará el registro de la base de datos asociado al documento.</p>]]>
 	</section>
 </topic>

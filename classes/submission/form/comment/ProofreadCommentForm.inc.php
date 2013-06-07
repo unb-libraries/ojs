@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/ProofreadCommentForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ProofreadCommentForm
@@ -11,9 +11,6 @@
  *
  * @brief ProofreadComment form.
  */
-
-// $Id$
-
 
 import('classes.submission.form.comment.CommentForm');
 
@@ -37,7 +34,7 @@ class ProofreadCommentForm extends CommentForm {
 		$templateMgr->assign('commentType', 'proofread');
 		$templateMgr->assign('hiddenFormParams', 
 			array(
-				'articleId' => $this->article->getArticleId()
+				'articleId' => $this->article->getId()
 			)
 		);
 
@@ -75,7 +72,7 @@ class ProofreadCommentForm extends CommentForm {
 
 		// Get editors
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
-		$editAssignments =& $editAssignmentDao->getEditAssignmentsByArticleId($this->article->getArticleId());
+		$editAssignments =& $editAssignmentDao->getEditAssignmentsByArticleId($this->article->getId());
 		$editorAddresses = array();
 		while (!$editAssignments->eof()) {
 			$editAssignment =& $editAssignments->next();
@@ -94,7 +91,7 @@ class ProofreadCommentForm extends CommentForm {
 		}
 
 		// Get layout editor
-		$layoutSignoff = $signoffDao->getBySymbolic('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->article->getArticleId());
+		$layoutSignoff = $signoffDao->getBySymbolic('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $this->article->getId());
 		if ($layoutSignoff != null && $layoutSignoff->getUserId() > 0) {
 			$layoutEditor =& $userDao->getUser($layoutSignoff->getUserId());
 		} else {
@@ -102,7 +99,7 @@ class ProofreadCommentForm extends CommentForm {
 		}
 
 		// Get proofreader
-		$proofSignoff = $signoffDao->getBySymbolic('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->article->getArticleId());
+		$proofSignoff = $signoffDao->getBySymbolic('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $this->article->getId());
 		if ($proofSignoff != null && $proofSignoff->getUserId() > 0) {
 			$proofreader =& $userDao->getUser($proofSignoff->getUserId());
 		} else {

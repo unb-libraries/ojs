@@ -1,18 +1,17 @@
 {**
- * atom.tpl
+ * plugins/generic/announcementFeed/templates/atom.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Atom feed template
  *
- * $Id$
  *}
 <?xml version="1.0" encoding="{$defaultCharset|escape}"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 	{* required elements *}
 	<id>{$selfUrl|escape}</id>
-	<title>{$journal->getLocalizedTitle()|escape:"html"|strip}: {translate key="announcement.announcements"}</title>
+	<title>{$journal->getLocalizedTitle()|strip|escape:"html"}: {translate key="announcement.announcements"}</title>
 	<updated>{$dateUpdated|date_format:"%Y-%m-%dT%T%z"|regex_replace:"/00$/":":00"}</updated>
 
 	{* recommended elements *}
@@ -40,7 +39,7 @@
 		<title>{$announcement->getLocalizedTitleFull()|strip|escape:"html"}</title>
 		<updated>{$announcement->getDatetimePosted()|date_format:"%Y-%m-%dT%T%z"|regex_replace:"/00$/":":00"}</updated>
 	  	<author>
-			<name>{$journal->getLocalizedTitle()|escape:"html"|strip}</name>
+			<name>{$journal->getLocalizedTitle()|strip|escape:"html"}</name>
         </author>
 		<link rel="alternate" href="{url page="announcement" op="view" path=$announcement->getId()}" />
         {if $announcement->getLocalizedDescription()}

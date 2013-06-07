@@ -3,7 +3,7 @@
 /**
  * @file classes/cliTool/InstallTool.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class installTool
@@ -11,8 +11,6 @@
  *
  * @brief CLI tool for installing a PKP app.
  */
-
-// $Id$
 
 
 import('classes.install.Install');
@@ -104,7 +102,6 @@ class InstallTool extends CommandLineTool {
 		// File Settings
 		$this->printTitle('installer.fileSettings');
 		$this->readParam('filesDir', 'installer.filesDir');
-		$this->readParamBoolean('skipFilesDir', 'installer.skipFilesDir');
 
 		// Security Settings
 		$this->printTitle('installer.securitySettings');
@@ -117,7 +114,7 @@ class InstallTool extends CommandLineTool {
 		do {
 			$this->readParam('adminPassword', 'user.password');
 			printf("\n");
-			$this->readParam('adminPassword2', 'user.register.repeatPassword');
+			$this->readParam('adminPassword2', 'user.repeatPassword');
 			printf("\n");
 		} while ($this->params['adminPassword'] != $this->params['adminPassword2']);
 		@`/bin/stty echo`;

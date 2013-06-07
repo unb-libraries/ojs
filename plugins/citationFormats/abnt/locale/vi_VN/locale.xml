@@ -2,19 +2,17 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/abnt/locale/vi_VN/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in vi_VN.
   *
-  * $Id$
   -->
  
 <locale name="vi_VN" full_name="Tiếng Việt">
 	<message key="plugins.citationFormats.abnt.displayName">Công cụ định dạng trích dẫn ABNT</message>
 	<message key="plugins.citationFormats.abnt.citationFormatName">ABNT</message>
 	<message key="plugins.citationFormats.abnt.description">Công cụ này áp dụng định dạng trích dẫn ABNT.</message>
-	<message key="plugins.citationFormat.abnt.location">Bắc Mỹ</message>
 </locale>

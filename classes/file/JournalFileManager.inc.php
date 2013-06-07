@@ -3,7 +3,7 @@
 /**
  * @file classes/file/JournalFileManager.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalFileManager
@@ -11,8 +11,6 @@
  *
  * @brief Class defining operations for private journal file management.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.file.FileManager');
@@ -37,6 +35,8 @@ class JournalFileManager extends FileManager {
 		$this->journalId = $journal->getId();
 		$this->journal =& $journal;
 		$this->filesDir = Config::getVar('files', 'files_dir') . '/journals/' . $this->journalId . '/';
+
+		parent::FileManager();
 	}
 
 	function uploadFile($fileName, $destFileName) {

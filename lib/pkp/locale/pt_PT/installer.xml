@@ -4,19 +4,18 @@
 <!--
   * locale/pt_BR/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_PT (Português) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_PT" full_name = "Português">
 	<message key="installer.additionalLocales">Idiomas Adicionais</message>
 	<message key="installer.administratorAccount">Conta de Administrador</message>
 	<message key="installer.administratorAccountInstructions">Este utilizador será o Administrador do Portal e terá acesso total ao sistema. Contas adicionais podem ser criadas após a instalação.</message>
-	<message key="installer.checkNo">Não<![CDATA[<span class="formError">NÃO</span>]]></message>
+	<message key="installer.checkNo">Não<![CDATA[<span class="pkp_form_error formError">NÃO</span>]]></message>
 	<message key="installer.checkYes">Sim</message>
 	<message key="installer.clientCharset">Conjunto de caracteres do Cliente</message>
 	<message key="installer.clientCharsetInstructions">A codificação utilizada para dados enviados e recebidos pelos navegadores.</message>
@@ -60,13 +59,13 @@
 	<message key="installer.installParseDBFileError"><![CDATA[Erro na execução do documento de instalação da base de dados <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Idioma</message>
 	<message key="installer.localeSettings">Configurações de Idioma (Localização)</message>
-	<message key="installer.miscSettings">Configurações Gerais</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[Um identificador único de registos de metadados indexados através do protocolo de Recolha de Metadados do <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a>.]]></message>
 	<message key="installer.oaiRepositoryId">Identificador para repositório OAI</message>
 	<message key="installer.publicFilesDirError">A pasta de documentos públicos não existe ou não possui permissão de escrita.</message>
 	<message key="installer.releaseNotes">Notas de Lançamento</message>
 	<message key="installer.securitySettings">Configurações de Segurança</message>
-	<message key="installer.skipFilesDir">Não criar sub-pastas (útil apenas para instalação manual)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Erro ao tentar analisar o ficheiro de e-mail padrão <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">Traduções marcadas podem estar incompletas.</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Erro ao analisar filtro do ficheiro de configuração <tt>{$file}</tt>.]]></message>
+	<message key="installer.oaiSettings">Configurações OAI</message>
 </locale>

@@ -3,7 +3,7 @@
 /**
  * @file classes/journal/JournalDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalDAO
@@ -13,10 +13,10 @@
  * @brief Operations for retrieving and modifying Journal objects.
  */
 
-// $Id$
-
-
 import ('classes.journal.Journal');
+
+define('JOURNAL_FIELD_TITLE', 1);
+define('JOURNAL_FIELD_SEQUENCE', 2);
 
 class JournalDAO extends DAO {
 	/**
@@ -24,9 +24,10 @@ class JournalDAO extends DAO {
 	 * @param $journalId int
 	 * @return Journal
 	 */
-	function &getJournal($journalId) {
+	function &getById($journalId) {
 		$result =& $this->retrieve(
-			'SELECT * FROM journals WHERE journal_id = ?', $journalId
+			'SELECT * FROM journals WHERE journal_id = ?',
+			(int) $journalId
 		);
 
 		$returner = null;
@@ -35,6 +36,15 @@ class JournalDAO extends DAO {
 		}
 		$result->Close();
 		unset($result);
+		return $returner;
+	}
+
+	/**
+	 * Deprecated. @see JournalDAO::getById
+	 */
+	function &getJournal($journalId) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$returner =& $this->getById($journalId);
 		return $returner;
 	}
 
@@ -156,11 +166,14 @@ class JournalDAO extends DAO {
 		$subscriptionTypeDao =& DAORegistry::getDAO('SubscriptionTypeDAO');
 		$subscriptionTypeDao->deleteSubscriptionTypesByJournal($journalId);
 
+		$giftDao =& DAORegistry::getDAO('GiftDAO');
+		$giftDao->deleteGiftsByAssocId(ASSOC_TYPE_JOURNAL, $journalId);
+
 		$announcementDao =& DAORegistry::getDAO('AnnouncementDAO');
-		$announcementDao->deleteAnnouncementsByAssocId(ASSOC_TYPE_JOURNAL, $journalId);
+		$announcementDao->deleteByAssoc(ASSOC_TYPE_JOURNAL, $journalId);
 
 		$announcementTypeDao =& DAORegistry::getDAO('AnnouncementTypeDAO');
-		$announcementTypeDao->deleteAnnouncementTypesByAssocId(ASSOC_TYPE_JOURNAL, $journalId);
+		$announcementTypeDao->deleteByAssoc(ASSOC_TYPE_JOURNAL, $journalId);
 
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$articleDao->deleteArticlesByJournalId($journalId);
@@ -184,12 +197,80 @@ class JournalDAO extends DAO {
 
 	/**
 	 * Retrieve all journals.
+	 * @param $enabledOnly boolean True iff only enabled jourals wanted
+	 * @param $rangeInfo object optional
+	 * @param $sortBy JOURNAL_FIELD_... optional sorting parameter
+	 * @param $searchField JOURNAL_FIELD_... optional filter parameter
+	 * @param $searchMatch string 'is', 'contains', 'startsWith' optional
+	 * @param $search string optional
 	 * @return DAOResultFactory containing matching journals
 	 */
-	function &getJournals($rangeInfo = null) {
+	function &getJournals($enabledOnly = false, $rangeInfo = null, $sortBy = JOURNAL_FIELD_SEQUENCE, $searchField = null, $searchMatch = null, $search = null) {
+		$joinSql = $whereSql = $orderBySql = '';
+		$params = array();
+		$needTitleJoin = false;
+
+		// Handle sort conditions
+		switch ($sortBy) {
+			case JOURNAL_FIELD_TITLE:
+				$needTitleJoin = true;
+				$orderBySql = 'COALESCE(jsl.setting_value, jsl.setting_name)';
+				break;
+			case JOURNAL_FIELD_SEQUENCE:
+				$orderBySql = 'j.seq';
+				break;
+		}
+
+		// Handle search conditions
+		switch ($searchField) {
+			case JOURNAL_FIELD_TITLE:
+				$needTitleJoin = true;
+				$whereSql .= ($whereSql?' AND ':'') . ' COALESCE(jsl.setting_value, jsl.setting_name) ';
+				switch ($searchMatch) {
+					case 'is':
+						$whereSql .= ' = ?';
+						$params[] = $search;
+						break;
+					case 'contains':
+						$whereSql .= ' LIKE ?';
+						$params[] = "%search%";
+						break;
+					default: // $searchMatch === 'startsWith'
+						$whereSql .= ' LIKE ?';
+						$params[] = "$search%";
+						break;
+				}
+				break;
+		}
+
+		// If we need to join on the journal title (for sort or filter),
+		// include it.
+		if ($needTitleJoin) {
+			$joinSql .= ' LEFT JOIN journal_settings jspl ON (jspl.setting_name = ? AND jspl.locale = ? AND jspl.journal_id = j.journal_id) LEFT JOIN journal_settings jsl ON (jsl.setting_name = ? AND jsl.locale = ? AND jsl.journal_id = j.journal_id)';
+			$params = array_merge(
+				array(
+					'title',
+					AppLocale::getPrimaryLocale(),
+					'title',
+					AppLocale::getLocale()
+				),
+				$params
+			);
+		}
+
+		// Handle filtering conditions
+		if ($enabledOnly) $whereSql .= ($whereSql?'AND ':'') . 'j.enabled=1 ';
+
+		// Clean up SQL strings
+		if ($whereSql) $whereSql = "WHERE $whereSql";
+		if ($orderBySql) $orderBySql = "ORDER BY $orderBySql";
 		$result =& $this->retrieveRange(
-			'SELECT * FROM journals ORDER BY seq',
-			false, $rangeInfo
+			"SELECT	j.*
+			FROM	journals j
+				$joinSql
+				$whereSql
+				$orderBySql",
+			$params, $rangeInfo
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnJournalFromRow');
@@ -200,23 +281,20 @@ class JournalDAO extends DAO {
 	 * Retrieve all enabled journals
 	 * @return array Journals ordered by sequence
 	 */
-	function &getEnabledJournals() {
-		$result =& $this->retrieve(
-			'SELECT * FROM journals WHERE enabled=1 ORDER BY seq'
-		);
-
-		$resultFactory = new DAOResultFactory($result, $this, '_returnJournalFromRow');
-		return $resultFactory;
+	function &getEnabledJournals($rangeInfo = null) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$returner =& $this->getJournals(true, $rangeInfo);
+		return $returner;
 	}
 
 	/**
 	 * Retrieve the IDs and titles of all journals in an associative array.
 	 * @return array
 	 */
-	function &getJournalTitles() {
+	function &getJournalTitles($enabledOnly = false) {
 		$journals = array();
 
-		$journalIterator =& $this->getJournals();
+		$journalIterator =& $this->getJournals($enabledOnly);
 		while ($journal =& $journalIterator->next()) {
 			$journals[$journal->getId()] = $journal->getLocalizedTitle();
 			unset($journal);
@@ -231,16 +309,9 @@ class JournalDAO extends DAO {
 	 * @return array
 	 */
 	function &getEnabledJournalTitles() {
-		$journals = array();
-
-		$journalIterator =& $this->getEnabledJournals();
-		while ($journal =& $journalIterator->next()) {
-			$journals[$journal->getId()] = $journal->getLocalizedTitle();
-			unset($journal);
-		}
-		unset($journalIterator);
-
-		return $journals;
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$titles =& $this->getJournalTitles(true);
+		return $titles;
 	}
 
 	/**
@@ -258,6 +329,57 @@ class JournalDAO extends DAO {
 		unset($result);
 
 		return $returner;
+	}
+
+	/**
+	 * Delete the public IDs of all publishing objects in a journal.
+	 * @param $journalId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 */
+	function deleteAllPubIds($journalId, $pubIdType) {
+		$pubObjectDaos = array('IssueDAO', 'ArticleDAO', 'ArticleGalleyDAO', 'SuppFileDAO');
+		foreach($pubObjectDaos as $daoName) {
+			$dao =& DAORegistry::getDAO($daoName);
+			$dao->deleteAllPubIds($journalId, $pubIdType);
+			unset($dao);
+		}
+	}
+
+	/**
+	 * Check whether the given public ID exists for any publishing
+	 * object in a journal.
+	 * @param $journalId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
+	 * @param $assocType int The object type of an object to be excluded from
+	 *  the search. Identified by one of the ASSOC_TYPE_* constants.
+	 * @param $assocId int The id of an object to be excluded from the search.
+	 * @return boolean
+	 */
+	function anyPubIdExists($journalId, $pubIdType, $pubId,
+			$assocType = ASSOC_TYPE_ANY, $assocId = 0) {
+		$pubObjectDaos = array(
+			ASSOC_TYPE_ISSUE => 'IssueDAO',
+			ASSOC_TYPE_ARTICLE => 'ArticleDAO',
+			ASSOC_TYPE_GALLEY => 'ArticleGalleyDAO',
+			ASSOC_TYPE_ISSUE_GALLEY => 'IssueGalleyDAO',
+			ASSOC_TYPE_SUPP_FILE => 'SuppFileDAO'
+		);
+		foreach($pubObjectDaos as $daoAssocType => $daoName) {
+			$dao =& DAORegistry::getDAO($daoName);
+			if ($assocType == $daoAssocType) {
+				$excludedId = $assocId;
+			} else {
+				$excludedId = 0;
+			}
+			if ($dao->pubIdExists($pubIdType, $pubId, $excludedId, $journalId)) return true;
+			unset($dao);
+		}
+		return false;
 	}
 
 	/**

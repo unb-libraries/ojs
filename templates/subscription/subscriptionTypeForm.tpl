@@ -1,17 +1,16 @@
 {**
- * subscriptionTypeForm.tpl
+ * templates/subscription/subscriptionTypeForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subscription type form under journal management.
  *
- * $Id$
  *}
 {strip}
 {if $typeId}
 {assign var="pageTitle" value="manager.subscriptionTypes.edit"}
-	
+
 {else}
 	{assign var="pageTitle" value="manager.subscriptionTypes.create"}
 {/if}
@@ -27,7 +26,7 @@
 
 <br/>
 
-<form name="subscriptionType" method="post" action="{url op="updateSubscriptionType"}">
+<form id="subscriptionType" method="post" action="{url op="updateSubscriptionType"}">
 {if $typeId}
 <input type="hidden" name="typeId" value="{$typeId|escape}" />
 {/if}

@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/PKPAuthorDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAuthorDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying PKPAuthor objects.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.submission.PKPAuthor');
@@ -29,12 +27,16 @@ class PKPAuthorDAO extends DAO {
 	/**
 	 * Retrieve an author by ID.
 	 * @param $authorId int
+	 * @param $submissionId int optional
 	 * @return Author
 	 */
-	function &getAuthor($authorId) {
+	function &getAuthor($authorId, $submissionId = null) {
+		$params = array((int) $authorId);
+		if ($submissionId !== null) $params[] = (int) $submissionId;
 		$result =& $this->retrieve(
-			'SELECT * FROM authors WHERE author_id = ?',
-			(int) $authorId
+			'SELECT * FROM authors WHERE author_id = ?'
+			. ($submissionId !== null?' AND submission_id = ?':''),
+			$params
 		);
 
 		$returner = null;
@@ -46,6 +48,38 @@ class PKPAuthorDAO extends DAO {
 		unset($result);
 
 		return $returner;
+	}
+
+	/**
+	 * Retrieve all authors for a submission.
+	 * @param $submissionId int
+	 * @param $sortByAuthorId bool Use author Ids as indexes in the array
+	 * @return array Authors ordered by sequence
+	 */
+	function &getAuthorsBySubmissionId($submissionId, $sortByAuthorId = false) {
+		$authors = array();
+
+		$result =& $this->retrieve(
+			'SELECT * FROM authors WHERE submission_id = ? ORDER BY seq',
+			(int) $submissionId
+		);
+
+		while (!$result->EOF) {
+			$row =& $result->getRowAssoc(false);
+			if ($sortByAuthorId) {
+				$authorId = $row['author_id'];
+				$authors[$authorId] =& $this->_returnAuthorFromRow($row);
+			} else {
+				$authors[] =& $this->_returnAuthorFromRow($row);
+			}
+			unset($row);
+			$result->MoveNext();
+		}
+
+		$result->Close();
+		unset($result);
+
+		return $authors;
 	}
 
 	/**
@@ -93,6 +127,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setFirstName($row['first_name']);
 		$author->setMiddleName($row['middle_name']);
 		$author->setLastName($row['last_name']);
+		$author->setSuffix($row['suffix']);
 		$author->setCountry($row['country']);
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
@@ -119,6 +154,7 @@ class PKPAuthorDAO extends DAO {
 		$author->setFirstName($row['first_name']);
 		$author->setMiddleName($row['middle_name']);
 		$author->setLastName($row['last_name']);
+		$author->setSuffix($row['suffix']);
 		$author->setCountry($row['country']);
 		$author->setEmail($row['email']);
 		$author->setUrl($row['url']);
@@ -170,7 +206,7 @@ class PKPAuthorDAO extends DAO {
 			($submissionId?' AND submission_id = ?':''),
 			$params
 		);
-		if ($returner) $this->update('DELETE FROM author_settings WHERE author_id = ?', array($authorId));
+		if ($returner) $this->update('DELETE FROM author_settings WHERE author_id = ?', array((int) $authorId));
 
 		return $returner;
 	}
@@ -195,11 +231,30 @@ class PKPAuthorDAO extends DAO {
 				)
 			);
 
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
-		$result->close();
+		$result->Close();
 		unset($result);
+	}
+
+	/**
+	 * Retrieve the primary author for a submission.
+	 * @param $submissionId int
+	 * @return Author
+	 */
+	function &getPrimaryContact($submissionId) {
+		$result =& $this->retrieve(
+			'SELECT * FROM authors WHERE submission_id = ? AND primary_contact = 1',
+			(int) $submissionId
+		);
+
+		$returner = null;
+		if ($result->RecordCount() != 0) {
+			$returner = $this->_returnAuthorFromRow($result->GetRowAssoc(false));
+		}
+		$result->Close();
+		return $returner;
 	}
 
 	/**

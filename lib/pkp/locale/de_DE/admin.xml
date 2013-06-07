@@ -4,12 +4,11 @@
 <!--
   * locale/de_DE/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   *
-  * $Id$
   -->
 
 <locale name="de_DE" full_name = "Deutsch (Deutschland)">
@@ -46,6 +45,7 @@
 	<message key="admin.serverInformation">Serverinformationen</message>
 	<message key="admin.server.phpVersion">PHP-Version</message>
 	<message key="admin.server.platform">OS-Plattform</message>
+	<message key="admin.settings">Einstellungen</message>
 	<message key="admin.settings.aboutDescription">Über die Website</message>
 	<message key="admin.settings.contactEmail">E-Mail-Adresse des Hauptkontaktes</message>
 	<message key="admin.settings.contactName">Name des Hauptkontaktes</message>
@@ -62,10 +62,12 @@
 	<message key="admin.settings.siteLanguage">Sprache der Website</message>
 	<message key="admin.settings.siteStyleSheetInvalid">Ungültiges Format für die Formatvorlage der Website. Gültiges Format ist .css.</message>
 	<message key="admin.settings.siteStyleSheet">Formatvorlage der Website</message>
+	<message key="admin.settings.siteTheme">Thema der Website</message>
 	<message key="admin.settings.siteTitle">Titel der Website</message>
 	<message key="admin.siteAdmin">Website-Administrator/in</message>
 	<message key="admin.siteManagement">Website-Administration</message>
 	<message key="admin.siteSettings">Einstellungen der Website</message>
+	<message key="admin.siteSetup">Einrichtung der Website</message>
 	<message key="admin.systemConfigFileReadError"><![CDATA[Die Konfigurationsdatei <tt>config.inc.php</tt> ist nicht vorhanden, nicht lesbar oder ungültig.]]></message>
 	<message key="admin.systemInformation">Systeminformation </message>
 	<message key="admin.versionBuild">Build</message>

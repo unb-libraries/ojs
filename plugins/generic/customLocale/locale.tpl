@@ -1,12 +1,11 @@
 {**
- * locale.tpl
+ * plugins/generic/customLocale/locale.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of component locales to edit for a particular locale
  *
- * $Id$
  *}
 {strip}
 {translate|assign:"pageTitleTranslated" key="plugins.generic.customLocale.locale" locale=$locale}

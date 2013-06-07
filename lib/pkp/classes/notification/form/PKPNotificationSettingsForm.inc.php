@@ -6,7 +6,7 @@
 /**
  * @file classes/notification/form/NotificationSettingsForm.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPNotificationSettingsForm
@@ -14,8 +14,6 @@
  *
  * @brief Form to edit notification settings.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.form.Form');
@@ -34,16 +32,17 @@ class PKPNotificationSettingsForm extends Form {
 	/**
 	 * Display the form.
 	 */
-	function display() {
-		$user = Request::getUser();
+	function display(&$request) {
+		$context =& $request->getContext();
+		$user = $request->getUser();
 		$userId = $user->getId();
 
-		$notificationSettingsDao =& DAORegistry::getDAO('NotificationSettingsDAO');
-		$notificationSettings = $notificationSettingsDao->getNotificationSettings($userId);
-		$emailSettings = $notificationSettingsDao->getNotificationEmailSettings($userId);
+		$notificationSubscriptionSettingsDao =& DAORegistry::getDAO('NotificationSubscriptionSettingsDAO');
+		$blockedNotifications = $notificationSubscriptionSettingsDao->getNotificationSubscriptionSettings('blocked_notification', $userId, $context->getId());
+		$emailSettings = $notificationSubscriptionSettingsDao->getNotificationSubscriptionSettings('emailed_notification', $userId, $context->getId());
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->assign('notificationSettings', $notificationSettings);
+		$templateMgr->assign('blockedNotifications', $blockedNotifications);
 		$templateMgr->assign('emailSettings', $emailSettings);
 		$templateMgr->assign('titleVar', __('common.title'));
 		$templateMgr->assign('userVar', __('common.user'));

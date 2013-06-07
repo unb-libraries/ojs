@@ -4,13 +4,12 @@
 <!--
   * currencies.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
   * Provided by Constantinescu Nicolaie. 
   *
-  * $Id: currencies.xml,v 1.0 2:20 PM 8/10/2010 kosson Exp $
   -->
 
 <currencies locale="ro_RO">

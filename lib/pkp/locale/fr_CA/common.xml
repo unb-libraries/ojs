@@ -4,12 +4,11 @@
 <!--
   * locale/fr_CA/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
   *
-  * $Id$
   -->
 
 <locale name="fr_CA" full_name = "Français (Canada)">
@@ -270,16 +269,16 @@
 	<message key="search.title">Titre</message>
 	<message key="search.typeMethodApproach">Type (méthode/approche)</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		Ce travail est autorisé sous licence avec la <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Licence de paternité Creative Commons 3.0</a>.]]></message>
+		Ce travail est autorisé sous licence avec la <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Licence de paternité Creative Commons 3.0</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Ce travail est autorisé sous licence avec la <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Licence de paternité Creative Commons 3.0</a>.
+		Ce travail est autorisé sous licence avec la <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Licence de paternité Creative Commons 3.0</a>.
 	</div>]]></message>
 	<message key="common.re">Re:</message>
 	<message key="common.manage">Gérer</message>
@@ -310,7 +309,6 @@
 	<message key="notification.reminderError">Il s'est produit une erreur lors de l'envoi de votre mot de passe. Veuillez vous assurer que vous avez saisi votre adresse de courriel correctement.</message>
 	<message key="notification.reminderSent">Votre nouveau mot de passe a été envoyé à l'adresse de courriel fournie.</message>
 	<message key="notification.unsubscribe">Se désabonner</message>
-	<message key="notification.unsubscribeDescription">Saisir votre adresse de courriel et mot de passe ci-dessous pour vous désabonner des avis par courriel. Si vous ne souvenez pas de votre mot de passe, laisser le champ vide et un nouveau mot de passe vous sera envoyé par courriel à l'adresse de courriel indiquée.</message>
 	<message key="notification.unsubscribeError">Il s'est produit une erreur lors de votre désabonnement. Veuillez vous assurer que votre adresse de courriel et votre mot de passe sont corrects.</message>
 	<message key="notification.unsubscribeSuccess">Vous avez été désabonné avec succès.</message>
 	<message key="common.uploadFailed">Le fichier n'a pu être téléchargé. Veuillez essayer de nouveau ou communiquer avec l'administrateur si le problème persiste.</message>
@@ -318,7 +316,6 @@
 	<message key="common.false">Faux</message>
 	<message key="common.ok">OK</message>
 	<message key="common.true">Vrai</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Vous ne faites pas partie de ce groupe d'utilisateurs</message>
 	<message key="common.disable">Désactiver</message>
 	<message key="common.enable">Activer</message>
 	<message key="common.fullscreen">Plein écran</message>
@@ -327,4 +324,53 @@
 	<message key="common.pluginDisabled">Le plugiciel "{$pluginName}" a été désactivé.</message>
 	<message key="common.refresh">Rafraîchir</message>
 	<message key="common.loading">Chargement ...</message>
+	<message key="common.accepted">Accepté</message>
+	<message key="announcement.postedOn">Publié le {$postDate}</message>
+	<message key="common.acknowledged">Vu/Reçu</message>
+	<message key="common.titleSmallWords">de un le et un ou ni mais est si alors autre quand à de par marche arrêt dans hors sur vers dans avec</message>
+	<message key="common.warning">Avertissement/Attention</message>
+	<message key="common.confirm">Confirmer</message>
+	<message key="common.content">Contenu</message>
+	<message key="common.considered">Retenu/Présélectionné</message>
+	<message key="common.declined">Refusé</message>
+	<message key="common.finish">Terminer</message>
+	<message key="common.go">Aller</message>
+	<message key="common.less">Moins</message>
+	<message key="common.billingAddress">Adresse de facturation (si autre)</message>
+	<message key="common.more">Plus</message>
+	<message key="common.notified">Avisé</message>
+	<message key="common.noMatches">Pas de résultats</message>
+	<message key="common.overdue">En retard</message>
+	<message key="common.reminder">Rappel</message>
+	<message key="common.remote">À distance</message>
+	<message key="common.remoteURL">URL distante</message>
+	<message key="common.reset">Réinitialiser</message>
+	<message key="common.signoff">Fermeture de session</message>
+	<message key="common.element">Élément</message>
+	<message key="common.unread">Non lu</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[La taille maximale des fichiers téléchargeables sur ce serveur est de {$fileSize}. Pour obtenir de l'aide, contactez <a href="mailto:{$supportEmail}">{$supportName}</a>.]]></message>
+	<message key="common.invalidFileType">Aucun fichier téléchargé ou type de fichier invalide!</message>
+	<message key="common.plugins">Plugiciels</message>
+	<message key="email.subjectRequired">Veuillez entrer l'objet du courriel.</message>
+	<message key="email.bodyRequired">Veuillez entrer le corps de texte du courriel.</message>
+	<message key="form.confirmSubmit">Voulez-vous vraiment envoyer ce formulaire?</message>
+	<message key="form.confirmSubmit.title">Confirmer</message>
+	<message key="form.emailRequired">Une adresse courriel est requise.</message>
+	<message key="form.dataHasChanged">Les données de ce formulaire ont changé. Voulez-vous continuer?</message>
+	<message key="form.invalidImage">L'image téléchargée est invalide. Seuls les formats .png, .gif et .jpg sont acceptés.</message>
+	<message key="help.toggleInlineHelpOn">Aide activée</message>
+	<message key="help.toggleInlineHelpOff">Aide désactivée</message>
+	<message key="navigation.website">Site Web</message>
+	<message key="navigation.access"><![CDATA[Utilisateurs &amp; rôles??]]></message>
+	<message key="navigation.admin">Administration/Gestion</message>
+	<message key="navigation.browseByAuthor">Par auteur</message>
+	<message key="navigation.data">Données</message>
+	<message key="navigation.publicMenu">Menu public</message>
+	<message key="navigation.settings">Paramètres</message>
+	<message key="navigation.setup">Configuration</message>
+	<message key="navigation.sitemap">Plan du site</message>
+	<message key="navigation.submissions">Soumissions</message>
+	<message key="navigation.system">Système</message>
+	<message key="navigation.userManagement">Gestion des utilisateurs</message>
+	<message key="grid.action.downloadFile">Télécharger ce fichier</message>
 </locale>

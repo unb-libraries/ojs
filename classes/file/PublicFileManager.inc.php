@@ -3,7 +3,7 @@
 /**
  * @file classes/file/PublicFileManager.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PublicFileManager
@@ -12,12 +12,17 @@
  * @brief Wrapper class for uploading files to a site/journal's public directory.
  */
 
-// $Id$
-
 
 import('lib.pkp.classes.file.PKPPublicFileManager');
 
 class PublicFileManager extends PKPPublicFileManager {
+	/**
+	 * Constructor
+	 */
+	function PublicFileManager() {
+		parent::PKPPublicFileManager();
+	}
+
 	/**
 	 * Get the path to a journal's public files directory.
 	 * @param $journalId int

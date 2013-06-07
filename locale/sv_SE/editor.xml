@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel//locale/sv_SE/editor.xml
+  * locale/sv_SE/editor.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the sv_SE (Swedish) locale.
   *
-  * $Id$
   -->
 
 <locale name="sv_SE" full_name = "Swedish">

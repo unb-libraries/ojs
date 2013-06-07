@@ -4,12 +4,11 @@
 <!--
   * locale/ja_JP/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
   *
-  * $Id$
   -->
 
 <locale name="ja_JP" full_name = "日本語">
@@ -39,7 +38,6 @@
 	<message key="user.login.forgotPassword">パスワードを忘れた方はこちらで手続きをしてください。</message>
 	<message key="user.login.loginError">ユーザ名またはパスワードが正しくありません。もう一度入力してください。</message>
 	<message key="user.login">ログイン</message>
-	<message key="user.logIn">ログイン</message>
 	<message key="user.login.lostPassword.confirmationSent">確認メールを入力されたメールアドレスに送信しました。メールに書かれている指示に従って、パスワードをリセットしてください。</message>
 	<message key="user.login.lostPassword.invalidHash">このリンクは有効期限切れ、または正しくありません。申し訳ありませんが、もう一度、パスワードのリセット処理を行ってください。</message>
 	<message key="user.login.lostPassword.invalidUser">指定されたメールアドレスにユーザが存在しません。</message>
@@ -54,6 +52,7 @@
 	<message key="user.myAccount">マイ・アカウント</message>
 	<message key="user.name">名前</message>
 	<message key="user.password">パスワード</message>
+  	<message key="user.repeatPassword">もう一度パスワードを入力してください</message>
 	<message key="user.phone">電話</message>
 	<message key="user.profile.changePasswordInstructions">パスワードの変更を行う場合は、現在のパスワードと新しいパスワードを以下の該当欄に入力してください。</message>
 	<message key="user.profile.editProfile">ユーザ情報の編集</message>

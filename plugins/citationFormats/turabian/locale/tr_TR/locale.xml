@@ -2,18 +2,17 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/turabian/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in en_US.
   *
-  * $Id$
   -->
  
 <locale name="tr_TR" full_name="Türkiye Türkçesi">
-	<message key="plugins.citationFormats.turabian.displayName">Turabian citation format plugin</message>
+	<message key="plugins.citationFormats.turabian.displayName">Turabian atıf biçim eklentisi</message>
 	<message key="plugins.citationFormats.turabian.citationFormatName">Turabian</message>
-	<message key="plugins.citationFormats.turabian.description">This plugin implements the Turabian citation format.</message>
+	<message key="plugins.citationFormats.turabian.description">Bu eklenti Turabian atıf biçimini uygular.</message>
 </locale>

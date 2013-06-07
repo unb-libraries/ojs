@@ -2,16 +2,15 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/thesisFeed/locale/nl_NL/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
   *
   * Translated by Martin van Luijt, m.van.luijt 'at' hccnet.nl
   *
-  * $Id$
   -->
  
 <locale name="nl_NL" full_name="Nederlands">
@@ -20,7 +19,7 @@
 
 	<message key="plugins.generic.thesisfeed.settings">Instellingen</message>
 	<message key="plugins.generic.thesisfeed.settings.all">Toon feed links op alle tijdschriftpagina's.</message>
-	<message key="plugins.generic.thesisfeed.settings.homepage">Toon feed links alleen op de home-pagina en de pagina met samenvattingen.</message>
+	<message key="plugins.generic.thesisfeed.settings.homepage">Toon feed links alleen op de homepage en de pagina met samenvattingen.</message>
 	<message key="plugins.generic.thesisfeed.settings.thesis">Toon feed links alleen op de pagina met samenvattingen.</message>
 	<message key="plugins.generic.thesisfeed.settings.recentThesis1">Beperk feed tot</message>
 	<message key="plugins.generic.thesisfeed.settings.recentThesis2">Meest recent ingezonden thesis-samenvattingen.</message>

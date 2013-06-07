@@ -1,12 +1,11 @@
 {**
- * comment.tpl
+ * templates/comment/comment.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article reader comment editing
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="comments.enterComment"}
@@ -17,18 +16,19 @@
 <!--
 {literal}
 function handleAnonymousCheckbox(theBox) {
+	var submitForm = document.getElementById('submit');
 	if (theBox.checked) {
-		document.submit.posterName.disabled = false;
-		document.submit.posterEmail.disabled = false;
-		document.submit.posterName.value = "";
-		document.submit.posterEmail.value = "";
-		document.submit.posterName.focus();
+		submitForm.posterName.disabled = false;
+		submitForm.posterEmail.disabled = false;
+		submitForm.posterName.value = "";
+		submitForm.posterEmail.value = "";
+		submitForm.posterName.focus();
 	} else {
-		document.submit.posterName.disabled = true;
-		document.submit.posterEmail.disabled = true;
+		submitForm.posterName.disabled = true;
+		submitForm.posterEmail.disabled = true;
 		{/literal}{if $isUserLoggedIn && ($enableComments == COMMENTS_ANONYMOUS || $enableComments == COMMENTS_UNAUTHENTICATED)}
-		document.submit.posterName.value = "{$userName|escape}";
-		document.submit.posterEmail.value = "{$userEmail|escape}";
+		submitForm.posterName.value = "{$userName|escape}";
+		submitForm.posterEmail.value = "{$userEmail|escape}";
 		{/if}{literal}
 	}
 }
@@ -39,7 +39,7 @@ function handleAnonymousCheckbox(theBox) {
 {include file="common/formErrors.tpl"}
 {assign var=parentId value=$parentId|default:"0"}
 <div id="commentForm">
-<form name="submit" action="{if $commentId}{url op="edit" path=$articleId|to_array:$galleyId:$commentId}{else}{url op="add" path=$articleId|to_array:$galleyId:$parentId:"save"}{/if}" method="post">
+<form id="submit" action="{if $commentId}{url op="edit" path=$articleId|to_array:$galleyId:$commentId}{else}{url op="add" path=$articleId|to_array:$galleyId:$parentId:"save"}{/if}" method="post">
 <table class="data" width="100%">
 	<tr valign="top">
 		<td class="label" width="20%"><label for="posterName">{translate key="comments.name"}</label></td>
@@ -71,6 +71,12 @@ function handleAnonymousCheckbox(theBox) {
 
 {if $captchaEnabled}
 	<tr valign="top">
+		{if $reCaptchaEnabled}
+		<td class="label" valign="top">{fieldLabel name="recaptcha_challenge_field" required="true" key="common.captchaField"}</td>
+		<td class="value">
+			{$reCaptchaHtml}
+		</td>
+		{else}
 		<td class="label" valign="top">{fieldLabel name="captcha" required="true" key="common.captchaField"}</td>
 		<td class="value">
 			<img src="{url page="user" op="viewCaptcha" path=$captchaId}" alt="{translate key="common.captchaField.altText"}" /><br />
@@ -78,6 +84,7 @@ function handleAnonymousCheckbox(theBox) {
 			<input name="captcha" id="captcha" value="" size="20" maxlength="32" class="textField" />
 			<input type="hidden" name="captchaId" value="{$captchaId|escape:"quoted"}" />
 		</td>
+		{/if}
 	</tr>
 {/if}
 

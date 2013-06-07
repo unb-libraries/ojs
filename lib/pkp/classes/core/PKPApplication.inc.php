@@ -3,7 +3,7 @@
 /**
  * @file classes/core/PKPApplication.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPApplication
@@ -13,19 +13,27 @@
  *
  */
 
-
-define('REALLY_BIG_NUMBER', 10000);
+define_exposed('REALLY_BIG_NUMBER', 10000);
 
 define('ROUTE_COMPONENT', 'component');
 define('ROUTE_PAGE', 'page');
 
-define('ASSOC_TYPE_USER',	0x00001000); // This value used because of bug #6068
+define('CONTEXT_SITE', 0);
+define('CONTEXT_ID_NONE', 0);
+define('REVIEW_ROUND_NONE', 0);
+
+define('ASSOC_TYPE_USER', 0x00001000); // This value used because of bug #6068
 define('ASSOC_TYPE_USER_GROUP', 0x0100002);
 
 define('ASSOC_TYPE_CITATION', 0x0100003);
 
 define('ASSOC_TYPE_AUTHOR', 0x0100004);
 define('ASSOC_TYPE_EDITOR', 0x0100005);
+
+define('ASSOC_TYPE_SIGNOFF', 0x0100006);
+define('ASSOC_TYPE_USER_ROLES', 0x0100007);
+define('ASSOC_TYPE_ACCESSIBLE_WORKFLOW_STAGES', 0x0100008);
+define('ASSOC_TYPE_PLUGIN', 0x0000211);
 
 class PKPApplication {
 	var $enabledProducts;
@@ -62,7 +70,7 @@ class PKPApplication {
 
 		if (Config::getVar('debug', 'display_errors')) {
 			// Try to switch off normal error display when error display
-			// is being managed by OJS.
+			// is being managed by us.
 			@ini_set('display_errors', false);
 		}
 
@@ -88,6 +96,7 @@ class PKPApplication {
 		import('classes.security.Validation');
 		import('lib.pkp.classes.session.SessionManager');
 		import('classes.template.TemplateManager');
+		import('classes.notification.NotificationManager');
 
 		import('lib.pkp.classes.plugins.PluginRegistry');
 		import('lib.pkp.classes.plugins.HookRegistry');
@@ -160,7 +169,7 @@ class PKPApplication {
 			$dispatcher = new Dispatcher();
 
 			// Inject dependency
-			$dispatcher->setApplication($this->getApplication());
+			$dispatcher->setApplication(PKPApplication::getApplication());
 
 			// Inject router configuration
 			$dispatcher->addRouterName('lib.pkp.classes.core.PKPComponentRouter', ROUTE_COMPONENT);
@@ -236,10 +245,12 @@ class PKPApplication {
 	 * access.
 	 *
 	 * @param $category string
+	 * @param $mainContextId integer Optional ID of the top-level context
+	 * (e.g. Journal, Conference, Press) to query for enabled products
 	 * @return array
 	 */
-	function &getEnabledProducts($category = null) {
-		if (is_null($this->enabledProducts)) {
+	function &getEnabledProducts($category = null, $mainContextId = null) {
+		if (is_null($this->enabledProducts) || !is_null($mainContextId)) {
 			$contextDepth = $this->getContextDepth();
 
 			$settingContext = array();
@@ -247,18 +258,21 @@ class PKPApplication {
 				$request =& $this->getRequest();
 				$router =& $request->getRouter();
 
-				// Try to identify the main context (e.g. journal, conference, press),
-				// will be null if none found.
-				$mainContext =& $router->getContext($request, 1);
+				if (is_null($mainContextId)) {
+					// Try to identify the main context (e.g. journal, conference, press),
+					// will be null if none found.
+					$mainContext =& $router->getContext($request, 1);
+					if ($mainContext) $mainContextId = $mainContext->getId();
+				}
 
 				// Create the context for the setting if found
-				if ($mainContext) $settingContext[] = $mainContext->getId();
+				if (!is_null($mainContextId)) $settingContext[] = $mainContextId;
 				$settingContext = array_pad($settingContext, $contextDepth, 0);
 				$settingContext = array_combine($this->getContextList(), $settingContext);
 			}
 
-			$versionDAO =& DAORegistry::getDAO('VersionDAO');
-			$this->enabledProducts =& $versionDAO->getCurrentProducts($settingContext);
+			$versionDao =& DAORegistry::getDAO('VersionDAO'); /* @var $versionDao VersionDAO */
+			$this->enabledProducts =& $versionDao->getCurrentProducts($settingContext);
 		}
 
 		if (is_null($category)) {
@@ -298,10 +312,15 @@ class PKPApplication {
 			'AccessKeyDAO' => 'lib.pkp.classes.security.AccessKeyDAO',
 			'AuthSourceDAO' => 'lib.pkp.classes.security.AuthSourceDAO',
 			'CaptchaDAO' => 'lib.pkp.classes.captcha.CaptchaDAO',
+			'CitationDAO' => 'lib.pkp.classes.citation.CitationDAO',
 			'ControlledVocabDAO' => 'lib.pkp.classes.controlledVocab.ControlledVocabDAO',
 			'ControlledVocabEntryDAO' => 'lib.pkp.classes.controlledVocab.ControlledVocabEntryDAO',
 			'CountryDAO' => 'lib.pkp.classes.i18n.CountryDAO',
 			'CurrencyDAO' => 'lib.pkp.classes.currency.CurrencyDAO',
+			'DataObjectTombstoneDAO' => 'lib.pkp.classes.tombstone.DataObjectTombstoneDAO',
+			'DataObjectTombstoneSettingsDAO' => 'lib.pkp.classes.tombstone.DataObjectTombstoneSettingsDAO',
+			'FilterDAO' => 'lib.pkp.classes.filter.FilterDAO',
+			'FilterGroupDAO' => 'lib.pkp.classes.filter.FilterGroupDAO',
 			'GroupDAO' => 'lib.pkp.classes.group.GroupDAO',
 			'GroupMembershipDAO' => 'lib.pkp.classes.group.GroupMembershipDAO',
 			'HelpTocDAO' => 'lib.pkp.classes.help.HelpTocDAO',
@@ -309,14 +328,19 @@ class PKPApplication {
 			'InterestDAO' => 'lib.pkp.classes.user.InterestDAO',
 			'InterestEntryDAO' => 'lib.pkp.classes.user.InterestEntryDAO',
 			'LanguageDAO' => 'lib.pkp.classes.language.LanguageDAO',
+			'MetadataDescriptionDAO' => 'lib.pkp.classes.metadata.MetadataDescriptionDAO',
 			'NotificationDAO' => 'lib.pkp.classes.notification.NotificationDAO',
+			'NotificationMailListDAO' => 'lib.pkp.classes.notification.NotificationMailListDAO',
 			'NotificationSettingsDAO' => 'lib.pkp.classes.notification.NotificationSettingsDAO',
+			'NotificationSubscriptionSettingsDAO' => 'lib.pkp.classes.notification.NotificationSubscriptionSettingsDAO',
+			'ONIXCodelistItemDAO' => 'lib.pkp.classes.codelist.ONIXCodelistItemDAO',
 			'ProcessDAO' => 'lib.pkp.classes.process.ProcessDAO',
+			'QualifierDAO' => 'lib.pkp.classes.codelist.QualifierDAO',
 			'ScheduledTaskDAO' => 'lib.pkp.classes.scheduledTask.ScheduledTaskDAO',
 			'SessionDAO' => 'lib.pkp.classes.session.SessionDAO',
-			'SignoffDAO' => 'lib.pkp.classes.signoff.SignoffDAO',
 			'SiteDAO' => 'lib.pkp.classes.site.SiteDAO',
 			'SiteSettingsDAO' => 'lib.pkp.classes.site.SiteSettingsDAO',
+			'SubjectDAO' => 'lib.pkp.classes.codelist.SubjectDAO',
 			'TimeZoneDAO' => 'lib.pkp.classes.i18n.TimeZoneDAO',
 			'TemporaryFileDAO' => 'lib.pkp.classes.file.TemporaryFileDAO',
 			'VersionDAO' => 'lib.pkp.classes.site.VersionDAO',
@@ -379,7 +403,7 @@ class PKPApplication {
 	 * @param $errstr string
 	 * @param $errfile string
 	 * @param $errline string
- 	 * @return $message string
+	 * @return $message string
 	 */
 	function buildErrorMessage($errorno, $errstr, $errfile, $errline) {
 		$message = array();
@@ -488,6 +512,49 @@ class PKPApplication {
 
 		return implode("\n", $message);
 	}
+
+	/**
+	 * Define a constant so that it can be exposed to the JS front-end.
+	 * @param $name string
+	 * @param $value mixed
+	 */
+	function defineExposedConstant($name, $value) {
+		define($name, $value);
+		assert(preg_match('/^[a-zA-Z_]+$/', $name));
+		$constants =& PKPApplication::getExposedConstants();
+		$constants[$name] = $value;
+	}
+
+	/**
+	 * Get an associative array of defined constants that should be exposed
+	 * to the JS front-end.
+	 * @return array
+	 */
+	function &getExposedConstants() {
+		static $exposedConstants = array();
+		return $exposedConstants;
+	}
+
+	/**
+	 * Get an array of locale keys that define strings that should be made available to
+	 * JavaScript classes in the JS front-end.
+	 * @return array
+	 */
+	function getJSLocaleKeys() {
+		$keys = array('form.dataHasChanged');
+		return $keys;
+	}
+}
+
+/**
+ * @see PKPApplication::defineExposed
+ */
+function define_exposed($name, $value) {
+	$errorReportingLevel = E_ALL;
+	if (defined('E_STRICT')) $errorReportingLevel &= ~E_STRICT;
+	@error_reporting($errorReportingLevel);
+	PKPApplication::defineExposedConstant($name, $value);
+	@error_reporting(E_ALL);
 }
 
 ?>

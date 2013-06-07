@@ -4,12 +4,11 @@
 <!--
   * locale/fr_CA/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
   *
-  * $Id$
   -->
 
 <locale name="fr_CA" full_name = "Français (Canada)">
@@ -40,7 +39,6 @@
 	<message key="user.login.forgotPassword">Vous avez oublié votre mot de passe?</message>
 	<message key="user.login.loginError">Nom d'usager ou mot de passe non valide. Veuillez essayer de nouveau.</message>
 	<message key="user.login">Se connecter</message>
-	<message key="user.logIn">Se connecter</message>
 	<message key="user.login.lostPassword.confirmationSent">Une confirmation a été envoyée à votre adresse de courriel. Veuillez suivre les instructions dans le courriel pour réinitialiser votre mot de passe.</message>
 	<message key="user.login.lostPassword.invalidHash">Malheureusement, le lien sur lequel vous avez cliqué est expiré ou n'est pas valide. Veuillez essayer de réinitialiser votre mot de passe encore une fois.</message>
 	<message key="user.login.lostPassword.invalidUser">Aucun utilisateur n'existe avec l'adresse de courriel indiquée.</message>
@@ -55,6 +53,7 @@
 	<message key="user.myAccount">Mon compte</message>
 	<message key="user.name">Nom</message>
 	<message key="user.password">Mot de passe</message>
+	<message key="user.repeatPassword">Répéter le mot de passe</message>
 	<message key="user.phone">Téléphone</message>
 	<message key="user.profile.changePasswordInstructions">Saisir votre mot de passe actuel et votre nouveau mot de passe ci-dessous pour modifier le mot de passe de votre compte.</message>
 	<message key="user.profile.editProfile">Modifier le profil</message>
@@ -108,4 +107,22 @@
 	<message key="user.confirmEmail">Confirmer le courriel</message>
 	<message key="user.repeatPassword">Répéter le mot de passe</message>
 	<message key="user.register.form.emailsDoNotMatch">Les champs du courriel ne correspondent pas.</message>
+	<message key="user.accountInformation">Renseignements sur le compte</message>
+	<message key="user.authorization.accessDenied">Accès refusé.</message>
+	<message key="user.authorization.processAuthenticationTokenRequired">Le jeton d'authentification est manquant ou invalide.</message>
+	<message key="user.authorization.contextRequired">Opération impossible sans contexte (presse, revue, conférence, etc.).</message>
+	<message key="user.authorization.loginRequired">Connexion requise/Entrez votre nom d'utilisateur.</message>
+	<message key="user.authorization.privateOperation">Cette opération ne vous est pas permise ou n'existe pas.</message>
+	<message key="user.authorization.restrictedSiteAccess">Accès refusé. L'accès au site est actuellement limité.</message>
+	<message key="user.authorization.roleBasedAccessDenied">Le rôle activé ne peut effectuer cette opération.</message>
+	<message key="user.authorization.userGroupRequired">Vous devez entrer un groupe d'utilisateurs valide pour effectuer cette opération.</message>
+	<message key="user.authorization.pressManagerRequired">Pour poursuivre, vous devez assigner à cette tâche un utilisateur ayant un rôle de directeur (d'édition ou de production).</message>
+	<message key="user.interests.description">(Énumérer les champs d'intérêt en les séparant d'un retour de chariot ou d'une virgule.)</message>
+	<message key="user.group">Groupe d'utilisateurs</message>
+	<message key="user.hello">Bonjour,</message>
+	<message key="user.profile.form.countryRequired">Préciser le pays d'origine.</message>
+	<message key="user.profile.form.mailingAddressRequired">Une adresse postale est requise.</message>
+	<message key="user.profile.form.passwordSameAsOld">Votre nouveau mot de passe est identique à l'ancien.</message>
+	<message key="user.profile.form.usergroupRequired">Groupe d'utilisateurs requis.</message>
+	<message key="user.suffix">Suffixe</message>
 </locale>

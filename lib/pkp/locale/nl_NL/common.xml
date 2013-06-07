@@ -4,12 +4,11 @@
 <!--
   * locale/nl_NL/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
   *
-  * $Id$
   -->
 
 <locale name="nl_NL" full_name = "Nederlands">
@@ -24,13 +23,13 @@
 	<message key="about.people">Contact</message>
 	<message key="about.policies">Beleid</message>
 	<message key="about.siteMap">Sitemap</message>
-	<message key="announcement.announcements">Aankondigingen</message>
-	<message key="announcement.announcementsHome">Aankondigingen</message>
-	<message key="announcement.moreAnnouncements">Meer aankondigingen...</message>
-	<message key="announcement.noneExist">Er zijn geen aankondigingen gepubliceerd.</message>
+	<message key="announcement.announcements">Nieuwsberichten</message>
+	<message key="announcement.announcementsHome">Nieuwsberichten</message>
+	<message key="announcement.moreAnnouncements">Meer nieuwsberichten...</message>
+	<message key="announcement.noneExist">Er zijn geen nieuwsberichten gepubliceerd.</message>
 	<message key="announcement.posted">Geplaatst</message>
 	<message key="announcement.viewLink">Meer...</message>
-	<message key="announcement.view">Bekijk aankondiging</message>
+	<message key="announcement.view">Bekijk nieuwsbericht</message>
 	<message key="common.copy">Kopieer</message>
 	<message key="common.preview">Voorvertoning</message>
 	<message key="common.activate">Activeer</message>
@@ -113,7 +112,6 @@
 	<message key="common.notAvailable">Niet beschikbaar</message>
 	<message key="common.note">Opmerking</message>
 	<message key="common.notes">Opmerkingen</message>
-	<message key="common.notify">Bericht</message>
 	<message key="common.off">Uit</message>
 	<message key="common.on">Aan</message>
 	<message key="common.options">Opties</message>
@@ -124,7 +122,7 @@
 	<message key="common.pageHeaderLogo.altText">Paginakop logo</message>
 	<message key="common.plugin">Plugin</message>
 	<message key="common.publisher">Uitgever</message>
-	<message key="common.record">Registreren</message>
+	<message key="common.record">Vastleggen</message>
 	<message key="common.related">Verwant</message>
 	<message key="common.remove">Verwijder</message>
 	<message key="common.removeSelection">Selectie weghalen</message>
@@ -199,7 +197,7 @@
 	<message key="form.postRequired">Het formulier is niet op de juiste manier afgesloten.</message>
 	<message key="form.required">(* Verplicht)</message>
 	<message key="form.resubmit">Zend opnieuw in</message>
-	<message key="form.saveToUpload">Gebruik Opslaan om het bestand te laden.</message>
+	<message key="form.saveToUpload">Gebruik Bewaar om het bestand te laden.</message>
 	<message key="form.send">Zend</message>
 	<message key="form.submit">Zend in</message>
 	<message key="help.contents">Inhoud</message>
@@ -265,7 +263,7 @@
 	<message key="search.searchAllCategories">Doorzoek alle categorieën op</message>
 	<message key="search.searchCategories">Doorzoek categorieën</message>
 	<message key="search.searchResults">Zoekresultaten</message>
-	<message key="search.subject">Sleutelwoord(en)</message>
+	<message key="search.subject">Trefwoord(en</message>
 	<message key="search.titleIndex">Blader door de titelindex</message>
 	<message key="search.title">Titel</message>
 	<message key="search.typeMethodApproach">Type (methode/benadering)</message>
@@ -292,16 +290,16 @@
 	<message key="notification.reminderSent">Uw nieuwe wachtwoord is verstuurd naar het opgegeven e-mail adres.</message>
 	<message key="notification.unsubscribe">Abonnement opzeggen.</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		 Dit werk wordt gepubliceerd onder een <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  licentie</a>.]]></message>
+		 Dit werk wordt gepubliceerd onder een <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  licentie</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Dit werk wordt gepubliceerd onder een <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0 licentie</a>.
+		Dit werk wordt gepubliceerd onder een <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 licentie</a>.
 	</div>]]></message>
 	<message key="notification.mailList.protectedContent"><![CDATA[<a href="{$subscribeUrl}">Abonneer</a> op beschermd materiaal.]]></message>
 	<message key="notification.mailList.submit"><![CDATA[<a href="{$submitUrl}">Stuur</a> een artikel in.]]></message>
@@ -310,10 +308,8 @@
 	<message key="notification.notificationsDescription"><![CDATA[U heeft {$unreadCount} ongelezen attenderingen en {$readCount} gelezen attenderingen.  <a href="{$settingsUrl}">Klik hier</a> om uw addenderingsinstellingen te veranderen.]]></message>
 	<message key="notification.settingsDescription">Kies de gebeurtenissen waarop u geattendeerd wilt worden.  Niet aanvinken van een onderdeel voorkomt attenderingen daarop.</message>
 	<message key="notification.subscribeSuccess">Er is een e-mail verstuurd naar het opgegeven adres. Klik op de bevestigings-link in de e-mail om uzelf aan de maillijst toe te voegen.</message>
-	<message key="notification.unsubscribeDescription">Geef uw e-mail adres en wachtwoord hieronder om u af te melden voor e-mail attenderingen. Als u uw wachtword niet meer weet, laat dan het wachtwoordveld leeg. Er wordt dan een nieuw wachtwoord verstuurd naar het opgegeven e-mail adres.</message>
 	<message key="notification.unsubscribeError">Er is iets misgegaan bij het afmelden. Vergewis u ervan dat uw e-mail adres en wachtwoord correct zijn</message>
 	<message key="notification.unsubscribeSuccess">U bent met succes afgemeld</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">U behoort niet tot deze gebruikersgroep.</message>
 	<message key="common.disable">Uitschakelen</message>
 	<message key="common.enable">Inschakelen</message>
 	<message key="common.fullscreen">Schermvullend</message>
@@ -327,4 +323,52 @@
 	<message key="common.uploadFailed">Het bestand kon niet geladen worden. Probeer het opnieuw of neem contact op met de beheerder als het probleem niet verdwijnt.</message>
 	<message key="common.loading">Laden...</message>
 	<message key="navigation.dashboard">Dashboard</message>
+	<message key="announcement.postedOn">Geplaatst op {$postDate}</message>
+	<message key="common.accepted">Geaccepteerd</message>
+	<message key="common.warning">Waarschuwing</message>
+	<message key="common.confirm">Bevestig</message>
+	<message key="common.content">Inhoud</message>
+	<message key="common.declined">Geweigerd</message>
+	<message key="common.finish">Voltooi</message>
+	<message key="common.go">Ga</message>
+	<message key="common.less">Minder</message>
+	<message key="common.more">Meer</message>
+	<message key="common.overdue">Te laat</message>
+	<message key="common.reminder">Herinnering</message>
+	<message key="common.element">Element</message>
+	<message key="common.unread">Ongelezen</message>
+	<message key="common.invalidFileType">Geen bestand geladen of onbekend bestandstype!</message>
+	<message key="common.plugins">Plugins</message>
+	<message key="form.confirmSubmit">Weet u zeker dat u dit formulier wilt insturen?</message>
+	<message key="form.emailRequired">een e-mail adres is verplicht</message>
+	<message key="help.toggleInlineHelpOn">Help uit</message>
+	<message key="help.toggleInlineHelpOff">Help aan</message>
+	<message key="navigation.website">Website</message>
+	<message key="navigation.access">Gebruikersrollen</message>
+	<message key="navigation.admin">Beheer</message>
+	<message key="navigation.settings">Instellingen</message>
+	<message key="common.billingAddress">Factuuradres (indien verschillend)</message>
+	<message key="common.noMatches">Niet gevonden</message>
+	<message key="email.subjectRequired">Geef een onderwerp voor de e-mail</message>
+	<message key="email.bodyRequired">Geef de tekst voor de e-mail</message>
+	<message key="form.confirmSubmit.title">Bevestig</message>
+	<message key="form.dataHasChanged">De gegevens op dit formulier zijn veranderd. toch doorgaan?</message>
+	<message key="form.invalidImage">Er is een ongeldige afbeelding geladen. Toegestaan zijn .png, .gif en .jpg.</message>
+	<message key="navigation.browseByAuthor">Op auteur</message>
+	<message key="navigation.system">Systeem</message>
+	<message key="navigation.userManagement">Gebruikersbeheer</message>
+	<message key="common.titleSmallWords">van een de en of noch maar is als dan anders als om van bij op uit voor in over tot in met</message>
+	<message key="common.remote">Remote</message>
+	<message key="common.remoteURL">RemoteURL</message>
+	<message key="common.signoff">Uitloggen</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Deze server kent een maximumgrootte voor het laden van bestanden van {$fileSize}. Neem desgewenst contact op met <a href="mailto:{$supportEmail}">{$supportName}</a>voor assistentie.]]></message>
+	<message key="navigation.data">Gegevens</message>
+	<message key="navigation.submissions">Inzendingen</message>
+	<message key="navigation.publicMenu">Publiek menu</message>
+	<message key="navigation.setup">Instellen</message>
+	<message key="navigation.sitemap">Site Map</message>
+	<message key="common.acknowledged">Erkend</message>
+	<message key="common.considered">Overwogen</message>
+	<message key="common.notified">Bericht gegeven</message>
+	<message key="common.reset">Herstel</message>
 </locale>

@@ -7,16 +7,13 @@
 /**
  * @file pages/layoutEditor/index.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_layoutEditor
  * @brief Handle requests for layout editor functions. 
  *
  */
-
-// $Id$
-
 
 switch ($op) {
 	//
@@ -82,6 +79,7 @@ switch ($op) {
 	case 'futureIssues':
 	case 'backIssues':
 	case 'instructions':
+	case 'completeProofreader':
 		define('HANDLER_CLASS', 'LayoutEditorHandler');
 		import('pages.layoutEditor.LayoutEditorHandler');
 		break;

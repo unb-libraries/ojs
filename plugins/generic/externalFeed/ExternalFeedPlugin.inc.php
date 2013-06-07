@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ExternalFeedPlugin.inc.php
+ * @file plugins/generic/externalFeed/ExternalFeedPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ExternalFeedPlugin
@@ -11,9 +11,6 @@
  *
  * @brief ExternalFeed plugin class
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -261,18 +258,17 @@ class ExternalFeedPlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
  	 * @return boolean
  	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
 		AppLocale::requireComponents(
-			array(
-				LOCALE_COMPONENT_APPLICATION_COMMON,
-				LOCALE_COMPONENT_PKP_MANAGER,
-				LOCALE_COMPONENT_PKP_USER
-			)
+			LOCALE_COMPONENT_APPLICATION_COMMON,
+			LOCALE_COMPONENT_PKP_MANAGER,
+			LOCALE_COMPONENT_PKP_USER
 		);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));

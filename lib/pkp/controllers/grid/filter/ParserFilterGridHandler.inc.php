@@ -3,7 +3,7 @@
 /**
  * @file lib/pkp/controllers/grid/filter/ParserFilterGridHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ParserFilterGridHandler
@@ -26,14 +26,9 @@ class ParserFilterGridHandler extends FilterGridHandler {
 	 * @see PKPHandler::initialize()
 	 */
 	function initialize($request) {
-		// Set the input and output sample which
-		// define the filters configured in this
-		// grid.
-		$inputSample = 'arbitrary strings';
-		$this->setInputSample($inputSample);
-
-		$outputSample = new MetadataDescription('lib.pkp.classes.metadata.nlm.NlmCitationSchema', ASSOC_TYPE_CITATION);
-		$this->setOutputSample($outputSample);
+		// Set the filter group defining the filters
+		// configured in this grid.
+		$this->setFilterGroupSymbolic(CITATION_PARSER_FILTER_GROUP);
 
 		// Set the title of this grid
 		$this->setTitle('manager.setup.filter.parser.grid.title');
@@ -42,3 +37,5 @@ class ParserFilterGridHandler extends FilterGridHandler {
 		parent::initialize($request);
 	}
 }
+
+?>

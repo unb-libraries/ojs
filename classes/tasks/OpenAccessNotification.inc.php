@@ -7,7 +7,7 @@
 /**
  * @file classes/tasks/OpenAccessNotification.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OpenAccessNotification
@@ -15,9 +15,6 @@
  *
  * @brief Class to perform automated email notifications when an issue becomes open access.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 
@@ -101,15 +98,14 @@ class OpenAccessNotification extends ScheduledTask {
 	}
 
 	function execute() {
-
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$journals =& $journalDao->getEnabledJournals();
+		$journals =& $journalDao->getJournals(true);
 
 		$todayDate = array(
-						'year' => date('Y'),
-						'month' => date('n'),
-						'day' => date('j')
-					);
+			'year' => date('Y'),
+			'month' => date('n'),
+			'day' => date('j')
+		);
 
 		while (!$journals->eof()) {
 			$journal =& $journals->next();
@@ -135,7 +131,7 @@ class OpenAccessNotification extends ScheduledTask {
 				$curDate['year'] = $todayDate['year'];
 			}
 
-			$journals =& $journalDao->getEnabledJournals();
+			$journals =& $journalDao->getJournals(true);
 
 			while (!$journals->eof()) {
 				$journal =& $journals->next();
@@ -154,7 +150,7 @@ class OpenAccessNotification extends ScheduledTask {
 			$curDate['month'] = 2;
 			$curDate['year'] = $todayDate['year'];
 
-			$journals =& $journalDao->getEnabledJournals();
+			$journals =& $journalDao->getJournals(true);
 
 			while (!$journals->eof()) {
 				$journal =& $journals->next();
@@ -169,7 +165,7 @@ class OpenAccessNotification extends ScheduledTask {
 
 				$curDate['day'] = 29;
 
-				$journals =& $journalDao->getEnabledJournals();
+				$journals =& $journalDao->getJournals(true);
 
 				while (!$journals->eof()) {
 					$journal =& $journals->next();

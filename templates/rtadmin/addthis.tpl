@@ -1,19 +1,18 @@
 {**
- * settings.tpl
+ * temlates/rtadmin/addthis.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RT Administration settings.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="rt.admin.sharing"}
 {include file="common/header.tpl"}
 {/strip}
 
-<form method="post" action='{url op="saveConfigureSharing"}'>
+<form method="post" action='{url op="saveSharingSettings"}'>
 
 <p>{translate key="rt.admin.sharing.description"}</p>
 

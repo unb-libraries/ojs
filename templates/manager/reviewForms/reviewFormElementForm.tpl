@@ -1,7 +1,7 @@
 {**
- * reviewFormElementForm.tpl
+ * templates/manager/reviewForms/reviewFormElementForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form to create/modify a review form element.
@@ -18,12 +18,12 @@
 <!--
 function togglePossibleResponses(newValue, multipleResponsesElementTypesString) {
 	if (multipleResponsesElementTypesString.indexOf(';'+newValue+';') != -1) {
-		document.reviewFormElementForm.addResponse.disabled=false;
+		document.getElementById('reviewFormElementForm').addResponse.disabled=false;
 	} else {
-		if (document.reviewFormElementForm.addResponse.disabled == false) {
+		if (document.getElementById('reviewFormElementForm').addResponse.disabled == false) {
 			alert({/literal}'{translate|escape:"jsparam" key="manager.reviewFormElement.changeType"}'{literal});
 		}
-		document.reviewFormElementForm.addResponse.disabled=true;
+		document.getElementById('reviewFormElementForm').addResponse.disabled=true;
 	}
 }
 // -->
@@ -31,7 +31,7 @@ function togglePossibleResponses(newValue, multipleResponsesElementTypesString) 
 </script>
 
 <br/>
-<form name="reviewFormElementForm" method="post" action="{url op="updateReviewFormElement" anchor="possibleResponses"}">
+<form id="reviewFormElementForm" method="post" action="{url op="updateReviewFormElement" anchor="possibleResponses"}">
 	<input type="hidden" name="reviewFormId" value="{$reviewFormId}"/>
 	<input type="hidden" name="reviewFormElementId" value="{$reviewFormElementId}"/>
 

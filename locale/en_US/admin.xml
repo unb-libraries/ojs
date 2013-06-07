@@ -2,21 +2,27 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/en_US/admin.xml
+  * locale/en_US/admin.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (English) locale.
-  *
-  * $Id$
+  * Localization strings.
   -->
 
-<locale name="en_US" full_name = "English">
+<locale name="en_US" full_name="U.S. English">
 	<message key="admin.hostedJournals">Hosted Journals</message>
 	<message key="admin.settings.journalRedirect">Journal redirect</message>
+	<message key="admin.settings.options">Options</message>
+	<message key="admin.settings.useAlphalist">For sites with many journals, show an alphalist on the homepage allowing for quick alphabetical navigation between journals.</message>
+	<message key="admin.settings.usePaging">For sites with many journals, break the list of journals up into several pages.</message>
 	<message key="admin.settings.journalRedirectInstructions">Requests to the main site will be redirected to this journal. This may be useful if the site is hosting only a single journal, for example.</message>
 	<message key="admin.settings.noJournalRedirect">Do not redirect</message>
+    <message key="admin.settings.journalsList">Journal elements</message>
+    <message key="admin.settings.journalsList.description">Please choose the journal elements that will be displayed for each journal at the site page.</message>
+    <message key="admin.settings.journalsList.showThumbnail">Journal thumbnail</message>
+    <message key="admin.settings.journalsList.showTitle">Journal title</message>
+    <message key="admin.settings.journalsList.showDescription">Journal description</message>
 	<message key="admin.languages.primaryLocaleInstructions">This will be the default language for the site and any hosted journals.</message>
 	<message key="admin.languages.supportedLocalesInstructions">Select all locales to support on the site. The selected locales will be available for use by all journals hosted on the site, and also appear in a language select menu to appear on each site page (which can be overridden on journal-specific pages). If multiple locales are not selected, the language toggle menu will not appear and extended language settings will not be available to journals.</message>
 	<message key="admin.locale.maybeIncomplete">Marked locales may be incomplete.</message>
@@ -60,4 +66,17 @@
 	<message key="admin.mergeUsers.allUsers">All Enrolled Users</message>
 	<message key="admin.mergeUsers.confirm">Are you sure you wish to merge the selected {$oldAccountCount} account(s) into the account with the username "{$newUsername}"? The selected {$oldAccountCount} accounts will not exist afterwards. This action is not reversible.</message>
 	<message key="admin.mergerUsers.noneEnrolled">No enrolled users.</message>
+
+	<!-- Categories -->
+	<message key="admin.categories">Categories</message>
+	<message key="admin.categories.enable.description">The Site Administrator may choose to define a set of categories here to help organize large sets of journals. Journal Managers may then choose several of these categories for each journal, and readers can browse journal collections by category.</message>
+	<message key="admin.categories.disableCategories">Do not organise journals into categories.</message>
+	<message key="admin.categories.enableCategories">Permit Journal Managers to organize journals into categories.</message>
+	<message key="admin.categories.editTitle">Edit Category</message>
+	<message key="admin.categories.createTitle">Create Category</message>
+	<message key="admin.categories.create">Create a new Category</message>
+	<message key="admin.categories.noneCreated">No categories have been created.</message>
+	<message key="admin.categories.confirmDelete">Are you sure you wish to delete this category?</message>
+	<message key="admin.categories.name">Name</message>
+	<message key="admin.categories.nameRequired">A category name is required.</message>
 </locale>

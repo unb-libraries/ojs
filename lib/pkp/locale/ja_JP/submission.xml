@@ -4,12 +4,11 @@
 <!--
   * locale/ja_JP/submission.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
   *
-  * $Id$
   -->
 
 <locale name="ja_JP" full_name = "日本語">
@@ -160,7 +159,6 @@
 	<message key="submission.submitter">投稿者</message>
 	<message key="submission.summary">概要</message>
 	<message key="submission.supplementaryFiles">補足ファイル</message>
-	<message key="submission.supportingAgencies">支援機関</message>
 	<message key="submission.titleAndAbstract">タイトルと要旨</message>
 	<message key="submission.underway">作業中</message>
 	<message key="submission.uploadFileTo">ファイルのアップロード</message>

@@ -7,7 +7,7 @@
 /**
  * @file classes/plugins/PKPPlugin.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPPlugin
@@ -40,6 +40,9 @@
  *  <lazy-load>1</lazy-load>
  */
 
+
+// Define the well-known file name for filter configuration data.
+define('PLUGIN_FILTER_DATAFILE', 'filterConfig.xml');
 
 class PKPPlugin {
 	/** @var $pluginPath string Path name to files for this plugin */
@@ -94,6 +97,7 @@ class PKPPlugin {
 		if ($this->getContextSpecificPluginSettingsFile()) {
 			HookRegistry::register ($this->_getContextSpecificInstallationHook(), array(&$this, 'installContextSpecificSettings'));
 		}
+		HookRegistry::register ('Installer::postInstall', array(&$this, 'installFilters'));
 		return true;
 	}
 
@@ -177,10 +181,12 @@ class PKPPlugin {
 	 * @param $message string If a message is returned from this by-ref argument then
 	 *  it will be displayed as a notification if (and only if) the method returns
 	 *  false.
+	 * @param $messageParams array additional notification settings
+	 * @param $request Request
 	 * @return boolean will redirect to the plugin category page if false, otherwise
 	 *  will remain on the same page
 	 */
-	function manage($verb, $args, &$message) {
+	function manage($verb, $args, &$message, &$messageParams, $request = null) {
 		return false;
 	}
 
@@ -213,7 +219,7 @@ class PKPPlugin {
 	 * Get the filename of the install data for this plugin.
 	 * Subclasses using SQL tables should override this.
 	 *
-	 * @return string
+	 * @return string|array|null one or more data files to be installed.
 	 */
 	function getInstallDataFile() {
 		return null;
@@ -263,6 +269,26 @@ class PKPPlugin {
 		return null;
 	}
 
+	/**
+	 * Get the filename(s) of the filter configuration data for
+	 * this plugin. Subclasses using filters can override this.
+	 *
+	 * The default implementation establishes "well known" locations
+	 * for the filter configuration. If you keep your files in these
+	 * locations then there's no need to override this method.
+	 *
+	 * @return string|array one or more file locations.
+	 */
+	function getInstallFilterConfigFiles() {
+		// Construct the well-known filter configuration file names.
+		$filterConfigFile = $this->getPluginPath().'/filter/'.PLUGIN_FILTER_DATAFILE;
+		$filterConfigFiles = array(
+			'./lib/pkp/'.$filterConfigFile,
+			'./'.$filterConfigFile
+		);
+		return $filterConfigFiles;
+	}
+
 	/*
 	 * Protected helper methods (can be used by custom plugins but
 	 * should not be overridden by custom plugins)
@@ -301,9 +327,12 @@ class PKPPlugin {
 	 */
 	function addLocaleData($locale = null) {
 		if ($locale == '') $locale = AppLocale::getLocale();
-		$localeFilename = $this->getLocaleFilename($locale);
-		if ($localeFilename) {
-			AppLocale::registerLocaleFile($locale, $this->getLocaleFilename($locale));
+		$localeFilenames = $this->getLocaleFilename($locale);
+		if ($localeFilenames) {
+			if (is_scalar($localeFilenames)) $localeFilenames = array($localeFilenames);
+			foreach($localeFilenames as $localeFilename) {
+				AppLocale::registerLocaleFile($locale, $localeFilename);
+			}
 			return true;
 		}
 		return false;
@@ -386,7 +415,7 @@ class PKPPlugin {
 	 */
 	/**
 	 * Generate the context for this plug-in's generic
-	 * settings. This is array with the id of the main context
+	 * settings. This is an array with the id of the main context
 	 * (e.g. journal, conference or press) as the first entry
 	 * and all remaining entries set to 0. If the calling
 	 * application doesn't support context then the this will
@@ -414,7 +443,7 @@ class PKPPlugin {
 
 			// Create the context for the setting if found
 			if ($mainContext) $settingContext[] = $mainContext->getId();
-			$settingContext = array_pad($settingContext, $contextDepth, 0);
+			$settingContext = array_pad($settingContext, $contextDepth, CONTEXT_ID_NONE);
 		}
 		return $settingContext;
 	}
@@ -423,10 +452,19 @@ class PKPPlugin {
 	 * Get the filename for the locale data for this plugin.
 	 *
 	 * @param $locale string
-	 * @return string
+	 * @return string|array the locale file names (the scalar return value is supported for
+	 *  backwards compatibility only).
 	 */
 	function getLocaleFilename($locale) {
-		return $this->getPluginPath() . DIRECTORY_SEPARATOR . 'locale' . DIRECTORY_SEPARATOR . $locale . DIRECTORY_SEPARATOR . 'locale.xml';
+		$masterLocale = MASTER_LOCALE;
+		$baseLocaleFilename = $this->getPluginPath() . "/locale/$locale/locale.xml";
+		$baseMasterLocaleFilename = $this->getPluginPath() . "/locale/$masterLocale/locale.xml";
+		$libPkpFilename = "lib/pkp/$baseLocaleFilename";
+		$masterLibPkpFilename = "lib/pkp/$baseMasterLocaleFilename";
+		$filenames = array();
+		if (file_exists($baseMasterLocaleFilename)) $filenames[] = $baseLocaleFilename;
+		if (file_exists($masterLibPkpFilename)) $filenames[] = $libPkpFilename;
+		return $filenames;
 	}
 
 	/**
@@ -450,13 +488,21 @@ class PKPPlugin {
 		$installer =& $args[0];
 		$result =& $args[1];
 
-		$sql = $installer->dataXMLParser->parseData($this->getInstallDataFile());
-		if ($sql) {
-			$result = $installer->executeSQL($sql);
-		} else {
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_INSTALLER));
-			$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $this->getInstallDataFile(), __('installer.installParseDBFileError')));
-			$result = false;
+		// Treat single and multiple data files uniformly.
+		$dataFiles = $this->getInstallDataFile();
+		if (is_scalar($dataFiles)) $dataFiles = array($dataFiles);
+
+		// Install all data files.
+		foreach($dataFiles as $dataFile) {
+			$sql = $installer->dataXMLParser->parseData($dataFile);
+			if ($sql) {
+				$result = $installer->executeSQL($sql);
+			} else {
+				AppLocale::requireComponents(LOCALE_COMPONENT_PKP_INSTALLER);
+				$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $this->getInstallDataFile(), __('installer.installParseDBFileError')));
+				$result = false;
+			}
+			if (!$result) return false;
 		}
 		return false;
 	}
@@ -535,10 +581,10 @@ class PKPPlugin {
 	 * @return boolean
 	 */
 	function installEmailTemplates($hookName, $args) {
-		$installer =& $args[0];
+		$installer =& $args[0]; /* @var $installer Installer */
 		$result =& $args[1];
 
-		$emailTemplateDao =& DAORegistry::getDAO('EmailTemplateDAO');
+		$emailTemplateDao =& DAORegistry::getDAO('EmailTemplateDAO'); /* @var $emailTemplateDao EmailTemplateDAO */
 		$sql = $emailTemplateDao->installEmailTemplates($this->getInstallEmailTemplatesFile(), true, null, true);
 
 		if ($sql === false) {
@@ -598,6 +644,37 @@ class PKPPlugin {
 	}
 
 	/**
+	 * Callback used to install filters.
+	 * @param $hookName string
+	 * @param $args array
+	 */
+	function installFilters($hookName, $args) {
+		$installer =& $args[0]; /* @var $installer Installer */
+		$result =& $args[1]; /* @var $result boolean */
+
+		// Get the filter configuration file name(s).
+		$filterConfigFiles = $this->getInstallFilterConfigFiles();
+		if (is_scalar($filterConfigFiles)) $filterConfigFiles = array($filterConfigFiles);
+
+		// Run through the config file positions and see
+		// whether one of these exists and needs to be installed.
+		foreach($filterConfigFiles as $filterConfigFile) {
+			// Is there a filter configuration?
+			if (!file_exists($filterConfigFile)) continue;
+
+			// Install the filter configuration.
+			$result = $installer->installFilterConfig($filterConfigFile);
+			if (!$result) {
+				// The filter configuration file seems to be invalid.
+				$installer->setError(INSTALLER_ERROR_DB, str_replace('{$file}', $filterConfigFile, __('installer.installParseFilterConfigFileError')));
+			}
+		}
+
+		// Do not stop installation.
+		return false;
+	}
+
+	/**
 	 * Called during the install process to install the plugin schema,
 	 * if applicable.
 	 *
@@ -648,8 +725,10 @@ class PKPPlugin {
 	 */
 	function getCurrentVersion() {
 		$versionDao =& DAORegistry::getDAO('VersionDAO');
-		$product = basename($this->getPluginPath());
-		$installedPlugin = $versionDao->getCurrentVersion($product, true);
+		$pluginPath = $this->getPluginPath();
+		$product = basename($pluginPath);
+		$category = basename(dirname($pluginPath));
+		$installedPlugin = $versionDao->getCurrentVersion('plugins.'.$category, $product, true);
 
 		if ($installedPlugin) {
 			return $installedPlugin;

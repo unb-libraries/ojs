@@ -3,13 +3,14 @@
 <!--
   * upgrade.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Upgrade descriptor file.
+  *
   -->
 
-<install version="2.3.8.0">
+<install version="2.4.2.0">
 	<upgrade minversion="2.0.0.0" maxversion="2.2.0.0">
 		<!-- Correct null public issue IDs; this caused problems with
 		     2.x -> 2.2.0 upgrades using public issue IDs.-->
@@ -116,7 +117,7 @@
 		<data file="dbscripts/xml/upgrade/2.3.3_preupdate3.xml" /><!-- review_forms -->
 	</upgrade>
 
-	<upgrade minversion="2.2.0.0" maxversion="2.3.5.9">
+	<upgrade minversion="2.2.0.0" maxversion="2.3.3.9">
 		<!--
 		  - Not including 2.1.1, where user_settings first became available, because the 2.2.0_usersettings migration process
 		  - has renamed it to user_settings_old by this point.
@@ -124,13 +125,31 @@
 		<data file="dbscripts/xml/upgrade/2.3.3_preaffiliations1.xml" condition="return $installer->columnExists('users', 'affiliation');" />
 	</upgrade>
 
-	<upgrade minversion="2.2.0.0" maxversion="2.3.5.9">
+	<upgrade minversion="2.2.0.0" maxversion="2.3.3.9">
 		<data file="dbscripts/xml/upgrade/2.3.3_preaffiliations2.xml" condition="return $installer->columnExists('authors', 'affiliation');" />
+	</upgrade>
+
+	<upgrade minversion="2.0.0.0" maxversion="2.3.9.9">
+		<!-- 2.x to 2.4 -->
+		<data file="dbscripts/xml/upgrade/2.4.0_preupdate_article_files.xml" condition="return $installer->columnExists('article_files', 'type');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_preupdate_emaillog.xml" condition="return $installer->columnExists('article_email_log', 'log_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_preupdate_reviewrounds.xml" condition="return !$installer->columnExists('review_rounds', 'review_round_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_issues.xml" condition="return $installer->columnExists('issues', 'public_issue_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_articles.xml" condition="return $installer->columnExists('articles', 'doi');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_published_articles.xml" condition="return $installer->columnExists('published_articles', 'public_article_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_issue_galleys.xml" condition="return $installer->columnExists('issue_galleys', 'public_galley_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_article_galleys.xml" condition="return $installer->columnExists('article_galleys', 'public_galley_id');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_supp_files.xml" condition="return $installer->columnExists('article_supplementary_files', 'public_supp_file_id');" />
+	</upgrade>
+	
+	<upgrade minversion="2.2.9.0" maxversion="2.3.9.9">
+		<data file="dbscripts/xml/upgrade/2.4.0_notifications.xml" condition="return $installer->columnExists('notification_settings', 'setting_id');" />	
 	</upgrade>
 
 	<!-- PKP schema components -->
 	<schema file="lib/pkp/xml/schema/common.xml" />
 	<schema file="lib/pkp/xml/schema/groups.xml" />
+	<schema file="lib/pkp/xml/schema/log.xml" />
 	<schema file="lib/pkp/xml/schema/announcements.xml" />
 	<schema file="lib/pkp/xml/schema/scheduledTasks.xml" />
 	<schema file="lib/pkp/xml/schema/temporaryFiles.xml" />
@@ -141,9 +160,15 @@
 	<schema file="lib/pkp/xml/schema/submissions.xml" />
 	<schema file="lib/pkp/xml/schema/comments.xml" />
 	<schema file="lib/pkp/xml/schema/notes.xml" />
+	<schema file="lib/pkp/xml/schema/gifts.xml" />
+	<schema file="lib/pkp/xml/schema/mutex.xml" />
+	<schema file="lib/pkp/xml/schema/tombstone.xml" />
 
 	<!-- OJS schema -->
 	<schema file="dbscripts/xml/ojs_schema.xml" />
+
+	<!-- CLOB/Text indexes handled differently for MySQL and PostgreSQL -->
+	<data file="dbscripts/xml/indexes.xml" />
 
 	<!--
 	  - The following tasks from older versions use DAO-level queries
@@ -233,8 +258,6 @@
 	</upgrade>
 
 	<upgrade minversion="2.0.0.0" maxversion="2.3.2.9">
-		<code function="addPluginVersions" />
-		<code function="installFilterTemplates" />
 		<code function="installEmailTemplate" key="CITATION_EDITOR_AUTHOR_QUERY" locales="en_US" />
 		<code function="migrateReviewingInterests" />
 		<data file="dbscripts/xml/upgrade/2.3.3_update.xml" />
@@ -242,16 +265,13 @@
 	</upgrade>
 
 	<upgrade minversion="2.0.0.0" maxversion="2.3.3.9">
+		<!-- 2.x to 2.3.4 -->
 		<data file="dbscripts/xml/upgrade/2.3.4_update.xml" />
 		<note file="docs/release-notes/README-2.3.4" />
 	</upgrade>
 
-	<upgrade minversion="2.2.3.0" maxversion="2.3.2.0">
-		<!-- COUNTER - counter_monthly_log update.-->
-		<data file="plugins/generic/counter/counter_monthly_log_1_1.xml" />
-	</upgrade>
-
 	<upgrade minversion="2.0.0.0" maxversion="2.3.4.9">
+		<!-- 2.x to 2.3.5 -->
 		<data file="dbscripts/xml/upgrade/2.3.5_update.xml" />
 		<note file="docs/release-notes/README-2.3.5" />
 	</upgrade>
@@ -263,13 +283,61 @@
 	<upgrade minversion="2.0.0.0" maxversion="2.3.6.9">
 		<code function="migrateReviewingInterests2" />
 		<data file="dbscripts/xml/upgrade/2.3.7_update.xml" />
-		<data file="registry/citationAssistantData.xml" />
 		<code function="removeAuthorRevisedFilesFromSignoffs" />
 		<note file="docs/release-notes/README-2.3.7" />
 	</upgrade>
 
-	<upgrade minversion="2.0.0.0" maxversion="2.3.7.9">
-		<note file="docs/release-notes/README-2.3.8" />
+	<upgrade minversion="2.2.3.0" maxversion="2.3.2.0">
+		<!-- COUNTER - counter_monthly_log update.-->
+		<data file="plugins/generic/counter/counter_monthly_log_1_1.xml" />
+	</upgrade>
+
+	<upgrade minversion="2.0.0.0" maxversion="2.3.9.9">
+		<!-- 2.x to 2.4 -->
+
+		<!-- Newly introduced email templates -->
+		<code function="installEmailTemplate" key="GIFT_AVAILABLE" locales="en_US,de_DE,eu_ES,fa_IR,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="GIFT_USER_REGISTER" locales="en_US,de_DE,eu_ES,fa_IR,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="GIFT_USER_LOGIN" locales="en_US,de_DE,eu_ES,fa_IR,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="REVISED_VERSION_NOTIFY" locales="en_US,de_DE,eu_ES,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="REVIEW_REQUEST_ONECLICK_SUBSEQUENT" locales="en_US,de_DE,eu_ES,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="REVIEW_REQUEST_ATTACHED_SUBSEQUENT" locales="en_US,de_DE,eu_ES,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+		<code function="installEmailTemplate" key="REVIEW_REQUEST_SUBSEQUENT" locales="en_US,de_DE,eu_ES,it_IT,nl_NL,pt_BR,tr_TR,uk_UA,zh_CN" />
+
+		<!-- ID upgrade -->
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_issues2.xml" condition="return $installer->tableExists('issues_old');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_articles2.xml" condition="return $installer->tableExists('articles_old');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_published_articles2.xml" condition="return $installer->tableExists('published_articles_old');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_issue_galleys2.xml" condition="return $installer->tableExists('issue_galleys_old');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_article_galleys2.xml" condition="return $installer->tableExists('article_galleys_old');" />
+		<data file="dbscripts/xml/upgrade/2.4.0_idupgrade_supp_files2.xml" condition="return $installer->tableExists('article_supp_files_old');" />
+
+		<!-- Mutex helper table. -->
+		<data file="lib/pkp/xml/mutexData.xml" />
+
+		<!-- Misc. 2.4.0 updates -->
+		<data file="dbscripts/xml/upgrade/2.4.0_update.xml" />
+		<note file="docs/release-notes/README-2.4.0" />
+	</upgrade>
+
+	<upgrade minversion="2.2.9.0" maxversion="2.3.9.9">
+		<code function="migrateNotifications" condition="return $installer->tableExists('notifications_old');" />
+		<!-- Delete the notification*_old tables now that they have been migrated. -->
+		<data file="dbscripts/xml/upgrade/2.4.0_notifications2.xml" condition="return $installer->tableExists('notification_settings_old');" />
+		<!-- Update the notification emails (we have removed references to mailing list passwords) -->
+	</upgrade>
+
+	<upgrade minversion="2.0.0.0" maxversion="2.4.0.0">
+		<note file="docs/release-notes/README-2.4.1" />
+	</upgrade>
+
+	<upgrade minversion="2.0.0.0" maxversion="2.4.1.0">
+		<data file="dbscripts/xml/upgrade/2.4.2_update.xml" />
+		<note file="docs/release-notes/README-2.4.2" />
+	</upgrade>
+	
+	<upgrade minversion="2.4.0.0" maxversion="2.4.1.0">
+		<data file="dbscripts/xml/upgrade/2.4.2_remove_submission_tombstones.xml" condition="return $installer->tableExists('submission_tombstones');" />
 	</upgrade>
 
 	<!-- update plugin configuration - should be done as the final upgrade task -->

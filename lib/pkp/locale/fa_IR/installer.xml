@@ -4,19 +4,18 @@
 <!--
   * locale/fa_IR/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
 
 <locale name="fa_IR" full_name = "Persian">
 	<message key="installer.additionalLocales">زبانهای اضافی</message>
 	<message key="installer.administratorAccount">حساب مدیر</message>
 	<message key="installer.administratorAccountInstructions">این حساب کاربری مدیر سایت خواهد شد و دسترسی کامل به  سیستم خواهد داشت. حسابهای اضافی کاربران را میتئان پس از نصب برنامه ایجاد کرد.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">خیر</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">خیر</span>]]></message>
 	<message key="installer.checkYes">بلی</message>
 	<message key="installer.clientCharset">مجموعه کاراکترهای مشتری</message>
 	<message key="installer.clientCharsetInstructions">سیستم کد گذاری مورد استفاده برای برای ارسال به و دریافت داده ها از مرورگر</message>
@@ -65,10 +64,7 @@
 	<message key="installer.publicFilesDirError">پوشه public وجود ندارد ویا قابل نوشتن نیست</message>
 	<message key="installer.releaseNotes">یاداشت های منتشره</message>
 	<message key="installer.securitySettings">تنظیمات امنیتی</message>
-	<message key="installer.skipFilesDir">زیر پوشه های لازم را ایجاد نکن. این گزینه فقط هنگام نصب  دستی بدرد میخورد.</message>
 	<message key="installer.installationWrongPhp"><![CDATA[<br/><strong>هشدار: نسخه PHP شما فاقد خداقل های مورد نیاز برای نصب برنامه است. توصیه میشود به نسخه های جدید ارتفا دهید.</strong>]]></message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[بروز خطا هنگام پردازش فایل تمپلیت ایمیل <tt>{$file}</tt>.]]></message>
-	<message key="installer.locale.maybeIncomplete">زبانهای مشخص شده ممکن است ناکامل باشند.
-'php tools/upgrade.php upgrade'
-را اجرا کنید</message>
+	<message key="installer.locale.maybeIncomplete">زبانهای مشخص شده ممکن است ناکامل باشند.</message>
 </locale>

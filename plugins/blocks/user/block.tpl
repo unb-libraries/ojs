@@ -1,18 +1,17 @@
 {**
- * block.tpl
+ * plugins/blocks/user/block.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common site sidebar menu -- user tools.
  *
- * $Id$
  *}
 <div class="block" id="sidebarUser">
 	{if !$implicitAuth}
 		<span class="blockTitle">{translate key="navigation.user"}</span>
 	{/if}
-	
+
 	{if $isUserLoggedIn}
 		{translate key="plugins.block.user.loggedInAs"}<br />
 		<strong>{$loggedInUsername|escape}</strong>
@@ -27,8 +26,8 @@
 			{/if}
 		</ul>
 	{else}
-		{if $implicitAuth}	
-			<a href="{url page="login" op="implicitAuthLogin"}">Journals Login</a>		
+		{if $implicitAuth}
+			<a href="{url page="login" op="implicitAuthLogin"}">Journals Login</a>
 		{else}
 			<form method="post" action="{$userBlockLoginUrl}">
 				<table>

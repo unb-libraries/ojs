@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file IssueManagementHandler.inc.php
+ * @file pages/editor/IssueManagementHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueManagementHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for issue management in publishing.
  */
-
-// $Id$
 
 import('pages.editor.EditorHandler');
 
@@ -22,21 +20,23 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Constructor
-	 **/
+	 */
 	function IssueManagementHandler() {
 		parent::EditorHandler();
 	}
 
 	/**
 	 * Displays the listings of future (unpublished) issues
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function futureIssues() {
+	function futureIssues($args, $request) {
 		$this->validate(null, true);
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
-		$rangeInfo = Handler::getRangeInfo('issues');
+		$rangeInfo = $this->getRangeInfo('issues');
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign_by_ref('issues', $issueDao->getUnpublishedIssues($journal->getId(), $rangeInfo));
 		$templateMgr->assign('helpTopicId', 'publishing.index');
@@ -45,20 +45,22 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Displays the listings of back (published) issues
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function backIssues() {
+	function backIssues($args, $request) {
 		$this->validate();
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 
-		$rangeInfo = Handler::getRangeInfo('issues');
+		$rangeInfo = $this->getRangeInfo('issues');
 
 		$templateMgr =& TemplateManager::getManager();
 
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 
 		$templateMgr->assign_by_ref('issues', $issueDao->getPublishedIssues($journal->getId(), $rangeInfo));
 
@@ -82,28 +84,37 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Removes an issue
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function removeIssue($args) {
-		$issueId = isset($args[0]) ? (int) $args[0] : 0;
+	function removeIssue($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId);
 		$issue =& $this->issue;
 		$isBackIssue = $issue->getPublished() > 0 ? true: false;
+
+		$journal =& $request->getJournal();
 
 		// remove all published articles and return original articles to editing queue
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
 		$publishedArticles = $publishedArticleDao->getPublishedArticles($issueId);
 		if (isset($publishedArticles) && !empty($publishedArticles)) {
+			// Insert article tombstone if the issue is published
+			import('classes.article.ArticleTombstoneManager');
+			$articleTombstoneManager = new ArticleTombstoneManager();
 			foreach ($publishedArticles as $article) {
+				if ($isBackIssue) {
+					$articleTombstoneManager->insertArticleTombstone($article, $journal);
+				}
 				$articleDao->changeArticleStatus($article->getId(),STATUS_QUEUED);
-				$publishedArticleDao->deletePublishedArticleById($article->getPubId());
+				$publishedArticleDao->deletePublishedArticleById($article->getPublishedArticleId());
 			}
 		}
 
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->deleteIssue($issue);
 		if ($issue->getCurrent()) {
-			$journal =& Request::getJournal();
 			$issues = $issueDao->getPublishedIssues($journal->getId());
 			if (!$issues->eof()) {
 				$issue =& $issues->next();
@@ -113,16 +124,18 @@ class IssueManagementHandler extends EditorHandler {
 		}
 
 		if ($isBackIssue) {
-			Request::redirect(null, null, 'backIssues');
+			$request->redirect(null, null, 'backIssues');
 		} else {
-			Request::redirect(null, null, 'futureIssues');
+			$request->redirect(null, null, 'futureIssues');
 		}
 	}
 
 	/**
 	 * Displays the create issue form
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function createIssue() {
+	function createIssue($args, $request) {
 		$this->validate();
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
@@ -149,8 +162,10 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Saves the new issue form
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function saveIssue() {
+	function saveIssue($args, $request) {
 		$this->validate();
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
@@ -165,7 +180,7 @@ class IssueManagementHandler extends EditorHandler {
 
 		if ($issueForm->validate()) {
 			$issueForm->execute();
-			$this->futureIssues();
+			$this->futureIssues($args, $request);
 		} else {
 			$templateMgr =& TemplateManager::getManager();
 			import('classes.issue.IssueAction');
@@ -177,9 +192,11 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Displays the issue data page
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function issueData($args) {
-		$issueId = isset($args[0]) ? $args[0] : 0;
+	function issueData($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
@@ -211,9 +228,11 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Edit the current issue form
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function editIssue($args) {
-		$issueId = isset($args[0]) ? (int) $args[0] : 0;
+	function editIssue($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
@@ -221,7 +240,7 @@ class IssueManagementHandler extends EditorHandler {
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('issueId', $issueId);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
 
 		import('classes.issue.IssueAction');
@@ -235,7 +254,7 @@ class IssueManagementHandler extends EditorHandler {
 		}
 		$issueForm->readInputData();
 
-		if ($issueForm->validate($issueId)) {
+		if ($issueForm->validate($issue)) {
 			$issueForm->execute($issueId);
 			$issueForm->initData($issueId);
 		}
@@ -248,19 +267,22 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Remove cover page from issue
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function removeIssueCoverPage($args) {
-		$issueId = isset($args[0]) ? (int)$args[0] : 0;
+	function removeIssueCoverPage($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 
-		$formLocale = $args[1];
+		$formLocale = array_shift($args);
 		if (!AppLocale::isLocaleValid($formLocale)) {
-			Request::redirect(null, null, 'issueData', $issueId);
+			$request->redirect(null, null, 'issueData', $issueId);
 		}
 
-		import('classes.file.PublicFileManager');
+		$journal =& $request->getJournal();
 		$issue =& $this->issue;
-		$journal =& Request::getJournal();
+
+		import('classes.file.PublicFileManager');
 		$publicFileManager = new PublicFileManager();
 		$publicFileManager->removeJournalFile($journal->getId(),$issue->getFileName($formLocale));
 		$issue->setFileName('', $formLocale);
@@ -271,19 +293,21 @@ class IssueManagementHandler extends EditorHandler {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->updateIssue($issue);
 
-		Request::redirect(null, null, 'issueData', $issueId);
+		$request->redirect(null, null, 'issueData', $issueId);
 	}
 
 	/**
 	 * Remove style file from issue
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function removeStyleFile($args) {
-		$issueId = isset($args[0]) ? (int)$args[0] : 0;
+	function removeStyleFile($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
 
 		import('classes.file.PublicFileManager');
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$publicFileManager = new PublicFileManager();
 		$publicFileManager->removeJournalFile($journal->getId(),$issue->getStyleFileName());
 		$issue->setStyleFileName('');
@@ -292,21 +316,251 @@ class IssueManagementHandler extends EditorHandler {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->updateIssue($issue);
 
-		Request::redirect(null, null, 'issueData', $issueId);
+		$request->redirect(null, null, 'issueData', $issueId);
+	}
+
+	/**
+	 * Displays the issue galleys page.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function issueGalleys($args, $request) {
+		$issueId = (int) array_shift($args);
+		$this->validate($issueId, true);
+		$issue =& $this->issue;
+		$this->setupTemplate(EDITOR_SECTION_ISSUES);
+
+		$templateMgr =& TemplateManager::getManager();
+		import('classes.issue.IssueAction');
+		$templateMgr->assign('issueOptions', IssueAction::getIssueOptions());
+
+		$templateMgr->assign('issueId', $issueId);
+		$templateMgr->assign('unpublished',!$issue->getPublished());
+		$templateMgr->assign('helpTopicId', 'publishing.index');
+		$templateMgr->assign_by_ref('issue', $issue);
+
+		$issueGalleyDao =& DAORegistry::getDAO('IssueGalleyDAO');
+		$templateMgr->assign_by_ref('issueGalleys', $issueGalleyDao->getGalleysByIssue($issue->getId()));
+
+		$templateMgr->display('editor/issues/issueGalleys.tpl');
+	}
+
+	/**
+	 * Create a new issue galley with the uploaded file.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function uploadIssueGalley($args, $request) {
+		$issueId = (int) array_shift($args);
+		$this->validate($issueId, true);
+
+		import('classes.issue.form.IssueGalleyForm');
+		if (checkPhpVersion('5.0.0')) { // WARNING: This form needs $this in constructor
+			$galleyForm = new IssueGalleyForm($issueId);
+		} else {
+			$galleyForm =& new IssueGalleyForm($issueId);
+		}
+
+		$galleyId = $galleyForm->execute();
+		$request->redirect(null, null, 'editIssueGalley', array($issueId, $galleyId));
+	}
+
+	/**
+	 * Edit an issue galley.
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function editIssueGalley($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+		$this->setupTemplate(EDITOR_SECTION_ISSUES);
+
+		import('classes.issue.form.IssueGalleyForm');
+		if (checkPhpVersion('5.0.0')) { // WARNING: This form needs $this in constructor
+			$submitForm = new IssueGalleyForm($issueId, $galleyId);
+		} else {
+			$submitForm =& new IssueGalleyForm($issueId, $galleyId);
+		}
+
+		if ($submitForm->isLocaleResubmit()) {
+			$submitForm->readInputData();
+		} else {
+			$submitForm->initData();
+		}
+		$submitForm->display();
+	}
+
+	/**
+	 * Save changes to an issue galley.
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function saveIssueGalley($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+		$this->setupTemplate(EDITOR_SECTION_ISSUES);
+
+		import('classes.issue.form.IssueGalleyForm');
+		if (checkPhpVersion('5.0.0')) { // WARNING: This form needs $this in constructor
+			$submitForm = new IssueGalleyForm($issueId, $galleyId);
+		} else {
+			$submitForm =& new IssueGalleyForm($issueId, $galleyId);
+		}
+
+		$submitForm->readInputData();
+		if ($submitForm->validate()) {
+			$submitForm->execute();
+			$request->redirect(null, null, 'issueGalleys', $issueId);
+		} else {
+			$submitForm->display();
+		}
+	}
+
+	/**
+	 * Change the sequence order of an issue galley.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function orderIssueGalley($args, $request) {
+		$issueId = (int) $request->getUserVar('issueId');
+		$galleyId = (int) $request->getUserVar('galleyId');
+		$direction = $request->getUserVar('d');
+
+		$this->validate($issueId, true);
+
+		$galleyDao =& DAORegistry::getDAO('IssueGalleyDAO');
+		$galley =& $galleyDao->getGalley($galleyId, $issueId);
+
+		if (isset($galley)) {
+			$galley->setSequence($galley->getSequence() + ($direction == 'u' ? -1.5 : 1.5));
+			$galleyDao->updateGalley($galley);
+			$galleyDao->resequenceGalleys($issueId);
+		}
+		$request->redirect(null, null, 'issueGalleys', $issueId);
+	}
+
+	/**
+	 * Delete an issue galley.
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function deleteIssueGalley($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+
+		$galleyDao =& DAORegistry::getDAO('IssueGalleyDAO');
+		$galley =& $galleyDao->getGalley($galleyId, $issueId);
+
+		if (isset($galley)) {
+			import('classes.file.IssueFileManager');
+			$issueFileManager = new IssueFileManager($issueId);
+
+			if ($galley->getFileId()) {
+				$issueFileManager->deleteFile($galley->getFileId());
+			}
+			$galleyDao->deleteGalley($galley);
+		}
+		$request->redirect(null, null, 'issueGalleys', $issueId);
+	}
+
+	/**
+	 * Preview an issue galley.
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function proofIssueGalley($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+		$this->setupTemplate(EDITOR_SECTION_ISSUES);
+
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->assign('issueId', $issueId);
+		$templateMgr->assign('galleyId', $galleyId);
+		$templateMgr->display('editor/issues/proofIssueGalley.tpl');
+	}
+
+	/**
+	 * Proof issue galley (shows frame header).
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function proofIssueGalleyTop($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+		$this->setupTemplate(EDITOR_SECTION_ISSUES);
+
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->assign('issueId', $issueId);
+		$templateMgr->assign('galleyId', $galleyId);
+		$templateMgr->display('editor/issues/proofIssueGalleyTop.tpl');
+	}
+
+	/**
+	 * Preview an issue galley (outputs file contents).
+	 * @param $args array ($issueId, $galleyId)
+	 * @param $request PKPRequest
+	 */
+	function proofIssueGalleyFile($args, $request) {
+		$issueId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+
+		$galleyDao =& DAORegistry::getDAO('IssueGalleyDAO');
+		$galley =& $galleyDao->getGalley($galleyId, $issueId);
+
+		if (isset($galley)) {
+			if ($galley->getFileId()) {
+				import('classes.file.IssueFileManager');
+				$issueFileManager = new IssueFileManager($issueId);
+				return $issueFileManager->downloadFile($galley->getFileId());
+			}
+		}
+		$request->redirect(null, null, 'issueGalleys', $issueId);
+	}
+
+	/**
+	 * Download an issue file.
+	 * @param $args array ($issueId, $fileId)
+	 * @param $request PKPRequest
+	 */
+	function downloadIssueFile($args, $request) {
+		$issueId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+
+		$this->validate($issueId, true);
+
+		if ($fileId) {
+			import('classes.file.IssueFileManager');
+			$issueFileManager = new IssueFileManager($issueId);
+			return $issueFileManager->downloadFile($fileId);
+		}
+		$request->redirect(null, null, 'issueGalleys', $issueId);
 	}
 
 	/**
 	 * Display the table of contents
+	 * @param $request PKPRequest
 	 */
-	function issueToc($args) {
-		$issueId = isset($args[0]) ? $args[0] : 0;
+	function issueToc($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
 		$templateMgr =& TemplateManager::getManager();
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
 
 		$journalSettingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
@@ -369,27 +623,29 @@ class IssueManagementHandler extends EditorHandler {
 		$templateMgr->assign('issueOptions', IssueAction::getIssueOptions());
 		$templateMgr->assign('helpTopicId', 'publishing.tableOfContents');
 
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 
 		$templateMgr->display('editor/issues/issueToc.tpl');
 	}
 
 	/**
 	 * Updates issue table of contents with selected changes and article removals.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function updateIssueToc($args) {
-		$issueId = isset($args[0]) ? $args[0] : 0;
+	function updateIssueToc($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$removedPublishedArticles = array();
 
-		$publishedArticles = Request::getUserVar('publishedArticles');
-		$removedArticles = Request::getUserVar('remove');
-		$accessStatus = Request::getUserVar('accessStatus');
-		$pages = Request::getUserVar('pages');
+		$publishedArticles = $request->getUserVar('publishedArticles');
+		$removedArticles = $request->getUserVar('remove');
+		$accessStatus = $request->getUserVar('accessStatus');
+		$pages = $request->getUserVar('pages');
 
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
@@ -397,23 +653,46 @@ class IssueManagementHandler extends EditorHandler {
 
 		$articles = $publishedArticleDao->getPublishedArticles($issueId);
 
+		// insert article tombstone, if an article is removed from a published issue
+		import('classes.article.ArticleTombstoneManager');
+		$articleTombstoneManager = new ArticleTombstoneManager();
+		$issueDao =& DAORegistry::getDAO('IssueDAO');
+		$issue =& $issueDao->getIssueById($issueId, $journal->getId());
 		foreach($articles as $article) {
 			$articleId = $article->getId();
-			$pubId = $article->getPubId();
+			$pubId = $article->getPublishedArticleId();
 			if (!isset($removedArticles[$articleId])) {
 				if (isset($pages[$articleId])) {
 					$article->setPages($pages[$articleId]);
 				}
 				if (isset($publishedArticles[$articleId])) {
+					$journalDao =& DAORegistry::getDAO('JournalDAO'); /* @var $journalDao JournalDAO */
 					$publicArticleId = $publishedArticles[$articleId];
-					if (!$publicArticleId || !$publishedArticleDao->publicArticleIdExists($publicArticleId, $articleId, $journal->getId())) {
-						$publishedArticleDao->updatePublishedArticleField($pubId, 'public_article_id', $publicArticleId);
+					if ($publicArticleId && $journalDao->anyPubIdExists($journal->getId(), 'publisher-id', $publicArticleId, ASSOC_TYPE_ARTICLE, $articleId)) {
+						// We are not in a form so we cannot send form errors.
+						// Let's at least send a notification to give some feedback
+						// to the user.
+						import('classes.notification.NotificationManager');
+						$notificationManager = new NotificationManager();
+						AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_EDITOR));
+						$message = 'editor.publicIdentificationExists';
+						$params = array('publicIdentifier' => $publicArticleId);
+						$user =& $request->getUser();
+						$notificationManager->createTrivialNotification(
+							$user->getId(), NOTIFICATION_TYPE_ERROR,
+							array('contents' => __($message, $params))
+						);
+						$publicArticleId = '';
 					}
+					$article->setStoredPubId('publisher-id', $publicArticleId);
 				}
 				if (isset($accessStatus[$pubId])) {
 					$publishedArticleDao->updatePublishedArticleField($pubId, 'access_status', $accessStatus[$pubId]);
 				}
 			} else {
+				if ($issue->getPublished()) {
+					$articleTombstoneManager->insertArticleTombstone($article, $journal);
+				}
 				$article->setStatus(STATUS_QUEUED);
 				$article->stampStatusModified();
 
@@ -430,15 +709,17 @@ class IssueManagementHandler extends EditorHandler {
 			$articleDao->updateArticle($article);
 		}
 
-		Request::redirect(null, null, 'issueToc', $issueId);
+		$request->redirect(null, null, 'issueToc', $issueId);
 	}
 
 	/**
 	 * Change the sequence of an issue.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function setCurrentIssue($args) {
-		$issueId = Request::getUserVar('issueId');
-		$journal =& Request::getJournal();
+	function setCurrentIssue($args, $request) {
+		$issueId = $request->getUserVar('issueId');
+		$journal =& $request->getJournal();
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		if ($issueId) {
 			$this->validate($issueId);
@@ -449,19 +730,21 @@ class IssueManagementHandler extends EditorHandler {
 			$this->validate();
 			$issueDao->updateCurrentIssue($journal->getId());
 		}
-		Request::redirect(null, null, 'backIssues');
+		$request->redirect(null, null, 'backIssues');
 	}
 
 	/**
 	 * Change the sequence of an issue.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function moveIssue($args) {
-		$issueId = Request::getUserVar('id');
+	function moveIssue($args, $request) {
+		$issueId = (int) $request->getUserVar('id');
 		$this->validate($issueId);
-		$prevId = Request::getUserVar('prevId');
-		$nextId = Request::getUserVar('nextId');
+		$prevId = (int) $request->getUserVar('prevId');
+		$nextId = (int) $request->getUserVar('nextId');
 		$issue =& $this->issue;
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
 
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
@@ -471,7 +754,7 @@ class IssueManagementHandler extends EditorHandler {
 			$issueDao->setDefaultCustomIssueOrders($journalId);
 		}
 
-		$direction = Request::getUserVar('d');
+		$direction = $request->getUserVar('d');
 		if ($direction) {
 			// Moved using up or down arrow
 			$newPos = $issueDao->getCustomIssueOrder($journalId, $issueId) + ($direction == 'u' ? -1.5 : +1.5);
@@ -488,35 +771,39 @@ class IssueManagementHandler extends EditorHandler {
 
 		if ($direction) {
 			// Only redirect the nonajax call
-			Request::redirect(null, null, 'backIssues', null, array("issuesPage" => Request::getUserVar('issuesPage')));
+			$request->redirect(null, null, 'backIssues', null, array("issuesPage" => $request->getUserVar('issuesPage')));
 		}
 	}
 
 	/**
 	 * Reset issue ordering to defaults.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function resetIssueOrder($args) {
+	function resetIssueOrder($args, $request) {
 		$this->validate();
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->deleteCustomIssueOrdering($journal->getId());
 
-		Request::redirect(null, null, 'backIssues');
+		$request->redirect(null, null, 'backIssues');
 	}
 
 	/**
 	 * Change the sequence of a section.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function moveSectionToc($args) {
-		$issueId = isset($args[0]) ? $args[0] : 0;
+	function moveSectionToc($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
-		$section =& $sectionDao->getSection(Request::getUserVar('sectionId'), $journal->getId());
+		$section =& $sectionDao->getSection($request->getUserVar('sectionId'), $journal->getId());
 
 		if ($section != null) {
 			// If issue-specific section ordering isn't yet in place, bring it in.
@@ -524,28 +811,32 @@ class IssueManagementHandler extends EditorHandler {
 				$sectionDao->setDefaultCustomSectionOrders($issueId);
 			}
 
-			$sectionDao->moveCustomSectionOrder($issueId, $section->getId(), Request::getUserVar('newPos'), Request::getUserVar('d') == 'u');
+			$sectionDao->moveCustomSectionOrder($issueId, $section->getId(), $request->getUserVar('newPos'), $request->getUserVar('d') == 'u');
 		}
 
-		Request::redirect(null, null, 'issueToc', $issueId);
+		$request->redirect(null, null, 'issueToc', $issueId);
 	}
 
 	/**
 	 * Reset section ordering to section defaults.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function resetSectionOrder($args) {
-		$issueId = isset($args[0]) ? $args[0] : 0;
+	function resetSectionOrder($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId, true);
 		$issue =& $this->issue;
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$sectionDao->deleteCustomSectionOrdering($issueId);
 
-		Request::redirect(null, null, 'issueToc', $issue->getId());
+		$request->redirect(null, null, 'issueToc', $issue->getId());
 	}
 
 	/**
 	 * Change the sequence of the articles.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function moveArticleToc($args, $request) {
 		$this->validate(null, true);
@@ -575,9 +866,9 @@ class IssueManagementHandler extends EditorHandler {
 			);
 		} else {
 			// Moving by drag 'n' drop
-			$prevId = $request->getUserVar('prevId');
-			if ($prevId == null) {
-				$nextId = $request->getUserVar('nextId');
+			$prevId = (int) $request->getUserVar('prevId');
+			if (!$prevId) {
+				$nextId = (int) $request->getUserVar('nextId');
 				$nextArticle = $publishedArticleDao->getPublishedArticleById($nextId);
 				$publishedArticle->setSeq($nextArticle->getSeq() - .5);
 			} else {
@@ -586,7 +877,7 @@ class IssueManagementHandler extends EditorHandler {
 			}
 		}
 		$publishedArticleDao->updatePublishedArticle($publishedArticle);
-		$publishedArticleDao->resequencePublishedArticles($article->getSectionId(), $issue->getIssueId());
+		$publishedArticleDao->resequencePublishedArticles($article->getSectionId(), $issue->getId());
 
 		// Only redirect if we're not doing drag and drop
 		if ($d) {
@@ -596,15 +887,18 @@ class IssueManagementHandler extends EditorHandler {
 
 	/**
 	 * Publish issue
+	 * @param $args array
+	 * @param $request Request
 	 */
-	function publishIssue($args) {
-		$issueId = isset($args[0]) ? (int) $args[0] : 0;
+	function publishIssue($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId);
 		$issue =& $this->issue;
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$journalId = $journal->getId();
 
+		$articleSearchIndex = null;
 		if (!$issue->getPublished()) {
 			// Set the status of any attendant queued articles to STATUS_PUBLISHED.
 			$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
@@ -616,7 +910,15 @@ class IssueManagementHandler extends EditorHandler {
 					$article->setStatus(STATUS_PUBLISHED);
 					$article->stampStatusModified();
 					$articleDao->updateArticle($article);
+					if (!$articleSearchIndex) {
+						import('classes.search.ArticleSearchIndex');
+						$articleSearchIndex = new ArticleSearchIndex();
+					}
+					$articleSearchIndex->articleMetadataChanged($publishedArticle);
 				}
+				// delete article tombstone
+				$tombstoneDao =& DAORegistry::getDAO('DataObjectTombstoneDAO');
+				$tombstoneDao->deleteByDataObjectId($article->getId());
 				unset($article);
 			}
 		}
@@ -647,8 +949,10 @@ class IssueManagementHandler extends EditorHandler {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->updateCurrentIssue($journalId,$issue);
 
+		if ($articleSearchIndex) $articleSearchIndex->articleChangesFinished();
+
 		// Send a notification to associated users
-		import('lib.pkp.classes.notification.NotificationManager');
+		import('classes.notification.NotificationManager');
 		$notificationManager = new NotificationManager();
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$notificationUsers = array();
@@ -658,33 +962,33 @@ class IssueManagementHandler extends EditorHandler {
 			$notificationUsers[] = array('id' => $user->getId());
 			unset($user);
 		}
-		$url = Request::url(null, 'issue', 'current');
 		foreach ($notificationUsers as $userRole) {
 			$notificationManager->createNotification(
-				$userRole['id'], 'notification.type.issuePublished',
-				null, $url, 1, NOTIFICATION_TYPE_PUBLISHED_ISSUE
+				$request, $userRole['id'], NOTIFICATION_TYPE_PUBLISHED_ISSUE,
+				$journalId
 			);
 		}
-		$notificationManager->sendToMailingList(
+		$notificationManager->sendToMailingList($request,
 			$notificationManager->createNotification(
-				0, 'notification.type.issuePublished',
-				null, $url, 1, NOTIFICATION_TYPE_PUBLISHED_ISSUE
+				$request, UNSUBSCRIBED_USER_NOTIFICATION, NOTIFICATION_TYPE_PUBLISHED_ISSUE,
+				$journalId
 			)
 		);
 
-		Request::redirect(null, null, 'issueToc', $issue->getId());
+		$request->redirect(null, null, 'issueToc', $issue->getId());
 	}
 
 	/**
 	 * Unpublish a previously-published issue
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function unpublishIssue($args) {
-		$issueId = isset($args[0]) ? (int) $args[0] : 0;
+	function unpublishIssue($args, $request) {
+		$issueId = (int) array_shift($args);
 		$this->validate($issueId);
 		$issue =& $this->issue;
 
-		$journal =& Request::getJournal();
-		$journalId = $journal->getId();
+		$journal =& $request->getJournal();
 
 		$issue->setCurrent(0);
 		$issue->setPublished(0);
@@ -693,14 +997,24 @@ class IssueManagementHandler extends EditorHandler {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issueDao->updateIssue($issue);
 
-		Request::redirect(null, null, 'futureIssues');
+		// insert article tombstones for all articles
+		import('classes.article.ArticleTombstoneManager');
+		$articleTombstoneManager = new ArticleTombstoneManager();
+		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
+		$publishedArticles =& $publishedArticleDao->getPublishedArticles($issueId);
+		foreach ($publishedArticles as $article) {
+			$articleTombstoneManager->insertArticleTombstone($article, $journal);
+		}
+		$request->redirect(null, null, 'futureIssues');
 	}
 
 	/**
 	 * Allows editors to write emails to users associated with the journal.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function notifyUsers($args) {
-		$this->validate(Request::getUserVar('issue'));
+	function notifyUsers($args, $request) {
+		$this->validate((int) $request->getUserVar('issue'));
 		$issue =& $this->issue;
 		$this->setupTemplate(EDITOR_SECTION_ISSUES);
 
@@ -711,19 +1025,19 @@ class IssueManagementHandler extends EditorHandler {
 		$individualSubscriptionDao =& DAORegistry::getDAO('IndividualSubscriptionDAO');
 		$institutionalSubscriptionDao =& DAORegistry::getDAO('InstitutionalSubscriptionDAO');
 
-		$journal =& Request::getJournal();
-		$user =& Request::getUser();
+		$journal =& $request->getJournal();
+		$user =& $request->getUser();
 		$templateMgr =& TemplateManager::getManager();
 
 		import('lib.pkp.classes.mail.MassMail');
 		$email = new MassMail('PUBLISH_NOTIFY');
 
-		if (Request::getUserVar('send') && !$email->hasErrors()) {
-			if(Request::getUserVar('ccSelf')) {
+		if ($request->getUserVar('send') && !$email->hasErrors()) {
+			if($request->getUserVar('ccSelf')) {
 				$email->addRecipient($user->getEmail(), $user->getFullName());
 			}
 
-			switch (Request::getUserVar('whichUsers')) {
+			switch ($request->getUserVar('whichUsers')) {
 				case 'allIndividualSubscribers':
 					$recipients =& $individualSubscriptionDao->getSubscribedUsers($journal->getId());
 					break;
@@ -745,14 +1059,19 @@ class IssueManagementHandler extends EditorHandler {
 					break;
 			}
 
+			import('lib.pkp.classes.validation.ValidatorEmail');
 			while (!$recipients->eof()) {
 				$recipient =& $recipients->next();
-				$email->addRecipient($recipient->getEmail(), $recipient->getFullName());
+				if (preg_match(ValidatorEmail::getRegexp(), $recipient->getEmail())) {
+					$email->addRecipient($recipient->getEmail(), $recipient->getFullName());
+				} else {
+					error_log("Invalid email address: " . $recipient->getEmail());
+				}
 				unset($recipient);
 			}
 
-			if (Request::getUserVar('includeToc')=='1' && isset($issue)) {
-				$issue = $issueDao->getIssueById(Request::getUserVar('issue'));
+			if ($request->getUserVar('includeToc')=='1' && isset($issue)) {
+				$issue = $issueDao->getIssueById($request->getUserVar('issue'));
 
 				$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
 				$publishedArticles =& $publishedArticleDao->getPublishedArticlesInSections($issue->getId());
@@ -780,9 +1099,9 @@ class IssueManagementHandler extends EditorHandler {
 
 			$templateMgr->assign('message', 'editor.notifyUsers.inProgress');
 			$templateMgr->display('common/progress.tpl');
-			echo '<script type="text/javascript">window.location = "' . Request::url(null, 'editor') . '";</script>';
+			echo '<script type="text/javascript">window.location = "' . $request->url(null, 'editor') . '";</script>';
 		} else {
-			if (!Request::getUserVar('continued')) {
+			if (!$request->getUserVar('continued')) {
 				$email->assignParams(array(
 					'editorialContactSignature' => $user->getContactSignature()
 				));
@@ -798,7 +1117,7 @@ class IssueManagementHandler extends EditorHandler {
 
 
 			$email->displayEditForm(
-				Request::url(null, null, 'notifyUsers'),
+				$request->url(null, null, 'notifyUsers'),
 				array(),
 				'editor/notifyUsers.tpl',
 				array(
@@ -824,7 +1143,7 @@ class IssueManagementHandler extends EditorHandler {
 
 		if (!isset($journal)) Validation::redirectLogin();
 
-		if ($issueId) {
+		if (!empty($issueId)) {
 			$issueDao =& DAORegistry::getDAO('IssueDAO');
 			$issue = $issueDao->getIssueById($issueId, $journal->getId());
 
@@ -832,6 +1151,7 @@ class IssueManagementHandler extends EditorHandler {
 				Request::redirect(null, null, 'createIssue');
 			}
 		}
+
 
 		if (!Validation::isEditor($journal->getId())) {
 			if (isset($journal) && $allowLayoutEditor && Validation::isLayoutEditor($journal->getId())) {

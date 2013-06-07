@@ -7,7 +7,7 @@
 /**
  * @file classes/cache/FileCache.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileCache
@@ -15,8 +15,6 @@
  *
  * @brief Provides caching based on machine-generated PHP code on the filesystem.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.cache.GenericCache');
@@ -83,7 +81,13 @@ class FileCache extends GenericCache {
 	 * Set the entire contents of the cache.
 	 */
 	function setEntireCache(&$contents) {
-		$fp = @fopen($this->filename, 'wb');
+		$newFile = !file_exists($this->filename);
+		$fp = fopen($this->filename, 'wb');
+		if ($newFile) {
+			$umask = Config::getVar('files', 'umask');
+			if ($umask) chmod($this->filename, FILE_MODE_MASK & ~$umask);
+		}
+
 		// If the cache can be written, write it. If not, fall
 		// back on NO CACHING AT ALL.
 		if ($fp) {

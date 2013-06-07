@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/pt_PT/editor.xml
+  * locale/pt_PT/editor.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_PT (Português) locale.
   *
-  * $Id$
   -->
 
 <locale name="pt_PT" full_name = "Português">
@@ -57,7 +56,6 @@
 	<message key="editor.issues.accessStatus">Tipo de Acesso</message>
 	<message key="editor.issues.accessDate">Data para Acesso Livre</message>
 	<message key="editor.issues.invalidAccessDate">A data para acesso é inválida.</message>
-	<message key="editor.issues.issuePublicIdentificationExists">O Identificador Público de edição já existe.</message>
 	<message key="editor.issues.coverPage">Capa</message>
 	<message key="editor.issues.coverPageInstructions">(Formatos aceitáveis: .gif, .jpg ou .png )</message>
 	<message key="editor.issues.uploaded">Enviado</message>

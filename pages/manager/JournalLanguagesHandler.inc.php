@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file JournalLanguagesHandler.inc.php
+ * @file pages/manager/JournalLanguagesHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalLanguagesHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for changing journal language settings.
  */
-
-// $Id$
 
 import('pages.manager.ManagerHandler');
 
@@ -54,9 +52,10 @@ class JournalLanguagesHandler extends ManagerHandler {
 
 		if ($settingsForm->validate()) {
 			$settingsForm->execute();
-			import('lib.pkp.classes.notification.NotificationManager');
+			$user =& $request->getUser();
+			import('classes.notification.NotificationManager');
 			$notificationManager = new NotificationManager();
-			$notificationManager->createTrivialNotification('notification.notification', 'common.changesSaved');
+			$notificationManager->createTrivialNotification($user->getId());
 			$request->redirect(null, null, 'index');
 		} else {
 			$settingsForm->display();
@@ -91,10 +90,12 @@ class JournalLanguagesHandler extends ManagerHandler {
 			$locale
 		);
 
+		$user =& $request->getUser();
+
 		// Display a notification
-		import('lib.pkp.classes.notification.NotificationManager');
+		import('classes.notification.NotificationManager');
 		$notificationManager = new NotificationManager();
-		$notificationManager->createTrivialNotification('notification.notification', 'common.changesSaved');
+		$notificationManager->createTrivialNotification($user->getId());
 		$request->redirect(null, null, 'languages');
 	}
 }

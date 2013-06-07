@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/en_US/author.xml
+  * locale/zh_CN/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (English) locale.
+  * Localization strings.
   *
-  * $Id: author.xml,v 1.9 2009/06/30 16:13:43 asmecher Exp $
   -->
 
 <locale name="zh_CN" full_name = "China .PR">
@@ -34,7 +33,7 @@
 	<message key="author.submit.cancelSubmission">您可以在以后的时间通过选择在作者首页的处理中投稿来完成本次投稿.</message>
 	<message key="author.submit.notAccepting">这个杂志是在这个时候不接受投稿.</message>
 	<message key="author.submit.requestWaiver">申请免费</message>
-	<message key="author.submit.qualityForWaiver">请考虑免除这个文章的投稿费</message>
+	<message key="author.submit.qualifyForWaiver">请考虑免除这个文章的投稿费</message>
 	<message key="author.submit.addReasonsForWaiver">请使用下面的评论中表示，为何要免除费用..</message>
 	<message key="author.submit.mustEnterWaiverReason">如果需要申请赦免费用，您必须在提供的空间里输入您的理由.</message>
 	<message key="author.submissions.queuedReviewSubsequent">审稿回合： {$round}</message>
@@ -66,8 +65,6 @@
 	<message key="author.submit.addAuthor">添加作者</message>
 	<message key="author.submit.deleteAuthor">删除作者</message>
 	<message key="author.submit.submissionIndexingDescription">依照本期刊所使用的领域类别以及编辑提供的范例，来选择能够最佳地说明此份稿件内容的词汇。以分号(;)来分隔多个词汇（如，词汇1; 词汇2; 词汇3）。</message>
-	<message key="author.submit.submissionSupportingAgencies">支持机构</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">指明为本文之工作提供经费或者协助的机构</message>
 	<message key="author.submit.coverageInstructions">地理空间位置、年代或历史涵盖范围，以及＼或者研究样本的特色.</message>
 	<message key="author.submit.subjectClassInstructions">使用有超链接的分类系统来选择分类词汇以及（如果适合的话）数字.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[English=en; French=fr; 中文=zh<a href="http://www.loc.gov/standards/iso639-2/langcodes.html" target="_blank">其他代码</a>.]]></message>
@@ -127,4 +124,6 @@
 	<message key="author.submit.submissionLocale">投稿语言</message>
 	<message key="author.submit.submissionLocaleDescription">本期刊支持多语言投稿。请从下面的下拉菜单中选择投稿的主语言。</message>
 	<message key="author.submit.form.localeRequired">请选择一种提交语言</message>
+	<message key="author.submit.submissionSupportingAgencies">合著者和赞助机构</message>
+	<message key="author.submit.submissionSupportingAgenciesDescription">确认对文章内容作出贡献或为提交草稿中的工作提供资金或支持的机构（个人、组织或服务团体）。用分号将其隔开（如John Doe, 地铁大学；硕士大学，计算机科学系）。</message>
 </locale>

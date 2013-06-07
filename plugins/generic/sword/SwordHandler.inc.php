@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SwordHandler.inc.php
+ * @file plugins/generic/sword/SwordHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SwordHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle requests for author SWORD deposits
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -55,7 +52,7 @@ class SwordHandler extends Handler {
 		if ($save) {
 			$authorDepositForm->readInputData();
 			if ($authorDepositForm->validate()) {
-				$authorDepositForm->execute();
+				$authorDepositForm->execute($request);
 				$request->redirect(null, 'author');
 			} else {
 				$authorDepositForm->display();

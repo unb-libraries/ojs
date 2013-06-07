@@ -4,14 +4,13 @@
 <!--
   * 000000.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. Para completar a información  cómpre ver o arquivo docs/COPYING.
   *
   * Táboa de Contidos da Páxina de Administración. 
   *
   * Translated by Gabriel Beceiro: gbeceiro@gmail.com
   *
-  * $Id$
   -->
 
 <toc id="site/toc/000000" locale="gl_ES" title="Administración do Sitio" parent_topic="site/topic/000000">

@@ -1,12 +1,11 @@
 {**
- * articles.tpl
+ * plugins/importexport/pubmed/articles.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of articles to potentially export
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.pubmed.export.selectArticle"}
@@ -18,7 +17,7 @@
 {literal}
 <!--
 function toggleChecked() {
-	var elements = document.articles.elements;
+	var elements = document.getElementById('articles').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'articleId[]') {
 			elements[i].checked = !elements[i].checked;
@@ -32,7 +31,7 @@ function toggleChecked() {
 <br/>
 
 <div id="articles">
-<form action="{plugin_url path="exportArticles"}" method="post" name="articles">
+<form action="{plugin_url path="exportArticles"}" method="post" id="articles">
 <table width="100%" class="listing">
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
@@ -47,7 +46,7 @@ function toggleChecked() {
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
 	</tr>
-	
+
 	{iterate from=articles item=articleData}
 	{assign var=article value=$articleData.article}
 	{assign var=issue value=$articleData.issue}

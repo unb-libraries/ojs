@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file PKPAnnouncementDAO.inc.php
+ * @file classes/announcement/PKPAnnouncementDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAnnouncementDAO
@@ -17,13 +17,21 @@ import('lib.pkp.classes.announcement.PKPAnnouncement');
 
 class PKPAnnouncementDAO extends DAO {
 	/**
+	 * Constructor
+	 */
+	function PKPAnnouncementDAO() {
+		parent::DAO();
+	}
+
+	/**
 	 * Retrieve an announcement by announcement ID.
 	 * @param $announcementId int
 	 * @return Announcement
 	 */
-	function &getAnnouncement($announcementId) {
+	function &getById($announcementId) {
 		$result =& $this->retrieve(
-			'SELECT * FROM announcements WHERE announcement_id = ?', $announcementId
+			'SELECT * FROM announcements WHERE announcement_id = ?',
+			(int) $announcementId
 		);
 
 		$returner = null;
@@ -35,13 +43,22 @@ class PKPAnnouncementDAO extends DAO {
 	}
 
 	/**
+	 * @see getById
+	 */
+	function &getAnnouncement($announcementId) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->getById($announcementId);
+	}
+
+	/**
 	 * Retrieve announcement Assoc ID by announcement ID.
 	 * @param $announcementId int
 	 * @return int
 	 */
 	function getAnnouncementAssocId($announcementId) {
 		$result =& $this->retrieve(
-			'SELECT assoc_id FROM announcements WHERE announcement_id = ?', $announcementId
+			'SELECT assoc_id FROM announcements WHERE announcement_id = ?',
+			(int) $announcementId
 		);
 
 		return isset($result->fields[0]) ? $result->fields[0] : 0;
@@ -54,7 +71,8 @@ class PKPAnnouncementDAO extends DAO {
 	 */
 	function getAnnouncementAssocType($announcementId) {
 		$result =& $this->retrieve(
-			'SELECT assoc_type FROM announcements WHERE announcement_id = ?', $announcementId
+			'SELECT assoc_type FROM announcements WHERE announcement_id = ?',
+			(int) $announcementId
 		);
 
 		return isset($result->fields[0]) ? $result->fields[0] : 0;
@@ -69,17 +87,25 @@ class PKPAnnouncementDAO extends DAO {
 	}
 
 	/**
+	 * Get a new data object.
+	 * @return DataObject
+	 */
+	function newDataObject() {
+		assert(false); // Should be implemented by subclasses
+	}
+
+	/**
 	 * Internal function to return an Announcement object from a row.
 	 * @param $row array
 	 * @return Announcement
 	 */
 	function &_returnAnnouncementFromRow(&$row) {
-		$announcement = new Announcement();
+		$announcement = $this->newDataObject();
 		$announcement->setId($row['announcement_id']);
 		$announcement->setAssocType($row['assoc_type']);
 		$announcement->setAssocId($row['assoc_id']);
 		$announcement->setTypeId($row['type_id']);
-		$announcement->setDateExpire($this->dateFromDB($row['date_expire']));
+		$announcement->setDateExpire($this->datetimeFromDB($row['date_expire']));
 		$announcement->setDatePosted($this->datetimeFromDB($row['date_posted']));
 
 		$this->getDataObjectSettings('announcement_settings', 'announcement_id', $row['announcement_id'], $announcement);
@@ -110,9 +136,9 @@ class PKPAnnouncementDAO extends DAO {
 				(?, ?, ?, %s, %s)',
 				$this->datetimeToDB($announcement->getDateExpire()), $this->datetimeToDB($announcement->getDatetimePosted())),
 			array(
-				$announcement->getAssocType(),
-				$announcement->getAssocId(),
-				$announcement->getTypeId()
+				(int) $announcement->getAssocType(),
+				(int) $announcement->getAssocId(),
+				(int) $announcement->getTypeId()
 			)
 		);
 		$announcement->setId($this->getInsertAnnouncementId());
@@ -136,16 +162,19 @@ class PKPAnnouncementDAO extends DAO {
 				WHERE announcement_id = ?',
 				$this->datetimeToDB($announcement->getDateExpire())),
 			array(
-				$announcement->getAssocType(),
-				$announcement->getAssocId(),
-				$announcement->getTypeId(),
-				$announcement->getId()
+				(int) $announcement->getAssocType(),
+				(int) $announcement->getAssocId(),
+				(int) $announcement->getTypeId(),
+				(int) $announcement->getId()
 			)
 		);
 		$this->updateLocaleFields($announcement);
 		return $returner;
 	}
 
+	/**
+	 * @see updateObject
+	 */
 	function updateAnnouncement(&$announcement) {
 		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
 		return $this->updateObject($announcement);
@@ -157,9 +186,12 @@ class PKPAnnouncementDAO extends DAO {
 	 * @return boolean
 	 */
 	function deleteObject($announcement) {
-		return $this->deleteAnnouncementById($announcement->getId());
+		return $this->deleteById($announcement->getId());
 	}
 
+	/**
+	 * @see deleteObject
+	 */
 	function deleteAnnouncement($announcement) {
 		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
 		return $this->deleteObject($announcement);
@@ -170,9 +202,17 @@ class PKPAnnouncementDAO extends DAO {
 	 * @param $announcementId int
 	 * @return boolean
 	 */
+	function deleteById($announcementId) {
+		$this->update('DELETE FROM announcement_settings WHERE announcement_id = ?', (int) $announcementId);
+		return $this->update('DELETE FROM announcements WHERE announcement_id = ?', (int) $announcementId);
+	}
+
+	/**
+	 * @see deleteById
+	 */
 	function deleteAnnouncementById($announcementId) {
-		$this->update('DELETE FROM announcement_settings WHERE announcement_id = ?', $announcementId);
-		return $this->update('DELETE FROM announcements WHERE announcement_id = ?', $announcementId);
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->deleteById($announcementId);
 	}
 
 	/**
@@ -180,8 +220,8 @@ class PKPAnnouncementDAO extends DAO {
 	 * @param $typeId int
 	 * @return boolean
 	 */
-	function deleteAnnouncementByTypeId($typeId) {
-		$announcements =& $this->getAnnouncementsByTypeId($typeId);
+	function deleteByTypeId($typeId) {
+		$announcements =& $this->getByTypeId($typeId);
 		while (($announcement =& $announcements->next())) {
 			$this->deleteObject($announcement);
 			unset($announcement);
@@ -193,27 +233,35 @@ class PKPAnnouncementDAO extends DAO {
 	 * @param $assocType int
 	 * @param $assocId int
 	 */
-	 function deleteAnnouncementsByAssocId($assocType, $assocId) {
-		$announcements =& $this->getAnnouncementsByAssocId($assocType, $assocId);
+	function deleteByAssoc($assocType, $assocId) {
+		$announcements =& $this->getByAssocId($assocType, $assocId);
 		while (($announcement =& $announcements->next())) {
-			$this->deleteAnnouncementById($announcement->getId());
+			$this->deleteById($announcement->getId());
 			unset($announcement);
 		}
 		return true;
-	 }
+	}
+
+	/**
+	 * @see deleteByAssocId
+	 */
+	function deleteAnnouncementsByAssocId($assocType, $assocId) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->deleteByAssocId($assocType, $assocId);
+	}
 
 	/**
 	 * Retrieve an array of announcements matching a particular assoc ID.
 	 * @param $assocType int
 	 * @return object DAOResultFactory containing matching Announcements
 	 */
-	function &getAnnouncementsByAssocId($assocType, $assocId, $rangeInfo = null) {
+	function &getByAssocId($assocType, $assocId, $rangeInfo = null) {
 		$result =& $this->retrieveRange(
 			'SELECT *
 			FROM announcements
 			WHERE assoc_type = ? AND assoc_id = ?
 			ORDER BY announcement_id DESC',
-			array($assocType, $assocId),
+			array((int) $assocType, (int) $assocId),
 			$rangeInfo
 		);
 
@@ -222,17 +270,35 @@ class PKPAnnouncementDAO extends DAO {
 	}
 
 	/**
+	 * @see getByAssocId
+	 */
+	function &getAnnouncementsByAssocId($assocType, $assocId, $rangeInfo = null) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->getByAssocId($assocType, $assocId, $rangeInfo);
+	}
+
+	/**
 	 * Retrieve an array of announcements matching a particular type ID.
 	 * @param $typeId int
 	 * @return object DAOResultFactory containing matching Announcements
 	 */
-	function &getAnnouncementsByTypeId($typeId, $rangeInfo = null) {
+	function &getByTypeId($typeId, $rangeInfo = null) {
 		$result =& $this->retrieveRange(
-			'SELECT * FROM announcements WHERE type_id = ? ORDER BY announcement_id DESC', $typeId, $rangeInfo
+			'SELECT * FROM announcements WHERE type_id = ? ORDER BY announcement_id DESC',
+			(int) $typeId,
+			$rangeInfo
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnAnnouncementFromRow');
 		return $returner;
+	}
+
+	/**
+	 * @see getByTypeId
+	 */
+	function &getAnnouncementsByTypeId($typeId, $rangeInfo = null) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->getByTypeId($typeId, $rangeInfo);
 	}
 
 	/**
@@ -247,7 +313,7 @@ class PKPAnnouncementDAO extends DAO {
 			WHERE assoc_type = ?
 				AND assoc_id = ?
 			ORDER BY announcement_id DESC LIMIT ?',
-			array($assocType, $assocId, $numAnnouncements),
+			array((int) $assocType, (int) $assocId, (int) $numAnnouncements),
 			$rangeInfo
 		);
 
@@ -270,7 +336,7 @@ class PKPAnnouncementDAO extends DAO {
 				AND assoc_id = ?
 				AND (date_expire IS NULL OR date_expire > CURRENT_DATE)
 			ORDER BY announcement_id DESC',
-			array($assocType, $assocId),
+			array((int) $assocType, (int) $assocId),
 			$rangeInfo
 		);
 
@@ -291,7 +357,8 @@ class PKPAnnouncementDAO extends DAO {
 				AND assoc_id = ?
 				AND (date_expire IS NULL OR date_expire > CURRENT_DATE)
 			ORDER BY announcement_id DESC LIMIT ?',
-			array($assocType, $assocId, $numAnnouncements), $rangeInfo
+			array((int) $assocType, (int) $assocId, (int) $numAnnouncements),
+			$rangeInfo
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnAnnouncementFromRow');
@@ -310,7 +377,7 @@ class PKPAnnouncementDAO extends DAO {
 			WHERE assoc_type = ?
 				AND assoc_id = ?
 			ORDER BY announcement_id DESC LIMIT 1',
-			array($assocType, $assocId)
+			array((int) $assocType, (int) $assocId)
 		);
 
 		$returner = null;

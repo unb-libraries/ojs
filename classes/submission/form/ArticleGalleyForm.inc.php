@@ -7,7 +7,7 @@
 /**
  * @file classes/submission/form/ArticleGalleyForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleGalleyForm
@@ -16,9 +16,6 @@
  *
  * @brief Article galley editing form.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -53,6 +50,7 @@ class ArticleGalleyForm extends Form {
 		// Validation checks for this form
 		$this->addCheck(new FormValidator($this, 'label', 'required', 'submission.layout.galleyLabelRequired'));
 		$this->addCheck(new FormValidator($this, 'galleyLocale', 'required', 'submission.layout.galleyLocaleRequired'), create_function('$galleyLocale,$availableLocales', 'return in_array($galleyLocale,$availableLocales);'), array_keys($journal->getSupportedSubmissionLocaleNames()));
+		$this->addCheck(new FormValidatorURL($this, 'remoteURL', 'optional', 'submission.layout.galleyRemoteURLValid'));
 		$this->addCheck(new FormValidatorPost($this));
 	}
 
@@ -72,6 +70,9 @@ class ArticleGalleyForm extends Form {
 			$templateMgr->assign_by_ref('galley', $this->galley);
 		}
 		$templateMgr->assign('helpTopicId', 'editorial.layoutEditorsRole.layout');
+		// consider public identifiers
+		$pubIdPlugins =& PluginRegistry::loadCategory('pubIds', true);
+		$templateMgr->assign('pubIdPlugins', $pubIdPlugins);
 		parent::display();
 	}
 
@@ -79,15 +80,20 @@ class ArticleGalleyForm extends Form {
 	 * Validate the form
 	 */
 	function validate() {
-		// check if public galley ID has already used
+		// check if public galley ID has already been used
 		$journal =& Request::getJournal();
-		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
+		$journalDao =& DAORegistry::getDAO('JournalDAO'); /* @var $journalDao JournalDAO */
 
 		$publicGalleyId = $this->getData('publicGalleyId');
-		if ($publicGalleyId && $galleyDao->publicGalleyIdExists($publicGalleyId, $this->galleyId, $this->articleId)) {
-			$this->addError('publicGalleyId', __('submission.layout.galleyPublicIdentificationExists'));
-			$this->addErrorField('publicIssueId');
+		if ($publicGalleyId && $journalDao->anyPubIdExists($journal->getId(), 'publisher-id', $publicGalleyId, ASSOC_TYPE_GALLEY, $this->galleyId)) {
+			$this->addError('publicGalleyId', __('editor.publicIdentificationExists', array('publicIdentifier' => $publicGalleyId)));
+			$this->addErrorField('publicGalleyId');
 		}
+
+		// Verify additional fields from public identifer plug-ins.
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->validate($journal->getId(), $this, $this->galley);
 
 		return parent::validate();
 	}
@@ -100,14 +106,19 @@ class ArticleGalleyForm extends Form {
 			$galley =& $this->galley;
 			$this->_data = array(
 				'label' => $galley->getLabel(),
-				'publicGalleyId' => $galley->getPublicGalleyId(),
+				'publicGalleyId' => $galley->getPubId('publisher-id'),
 				'galleyLocale' => $galley->getLocale()
 			);
 
 		} else {
 			$this->_data = array();
 		}
+		// consider the additional field names from the public identifer plugins
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->init($this, $galley);
 
+		parent::initData();
 	}
 
 	/**
@@ -119,16 +130,22 @@ class ArticleGalleyForm extends Form {
 				'label',
 				'publicGalleyId',
 				'deleteStyleFile',
-				'galleyLocale'
+				'galleyLocale',
+				'remoteURL'
 			)
 		);
+		// consider the additional field names from the public identifer plugins
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->readInputData($this);
+
 	}
 
 	/**
 	 * Save changes to the galley.
 	 * @return int the galley ID
 	 */
-	function execute($fileName = null) {
+	function execute($fileName = null, $createRemote = false) {
 		import('classes.file.ArticleFileManager');
 		$articleFileManager = new ArticleFileManager($this->articleId);
 		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
@@ -152,7 +169,9 @@ class ArticleGalleyForm extends Form {
 
 				// Update file search index
 				import('classes.search.ArticleSearchIndex');
-				ArticleSearchIndex::updateFileIndex($this->articleId, ARTICLE_SEARCH_GALLEY_FILE, $galley->getFileId());
+				$articleSearchIndex = new ArticleSearchIndex();
+				$articleSearchIndex->articleFileChanged($this->articleId, ARTICLE_SEARCH_GALLEY_FILE, $galley->getFileId());
+				$articleSearchIndex->articleChangesFinished();
 			}
 
 			if ($articleFileManager->uploadedFileExists('styleFile')) {
@@ -171,9 +190,19 @@ class ArticleGalleyForm extends Form {
 			// Update existing galley
 			$galley->setLabel($this->getData('label'));
 			if ($journal->getSetting('enablePublicGalleyId')) {
-				$galley->setPublicGalleyId($this->getData('publicGalleyId'));
+				$galley->setStoredPubId('publisher-id', $this->getData('publicGalleyId'));
 			}
 			$galley->setLocale($this->getData('galleyLocale'));
+			if ($this->getData('remoteURL')) {
+				$galley->setRemoteURL($this->getData('remoteURL'));
+			}
+
+			// consider the additional field names from the public identifer plugins
+			import('classes.plugins.PubIdPluginHelper');
+			$pubIdPluginHelper = new PubIdPluginHelper();
+			$pubIdPluginHelper->execute($this, $galley);
+
+			parent::execute();
 			$galleyDao->updateGalley($galley);
 
 		} else {
@@ -198,17 +227,21 @@ class ArticleGalleyForm extends Form {
 				$enablePublicGalleyId = $journal->getSetting('enablePublicGalleyId');
 				if ($galley->isHTMLGalley()) {
 					$galley->setLabel('HTML');
-					if ($enablePublicGalleyId) $galley->setPublicGalleyId('html');
+					if ($enablePublicGalleyId) $galley->setStoredPubId('publisher-id', 'html');
+				} else if ($createRemote) {
+					$galley->setLabel(__('common.remote'));
+					$galley->setRemoteURL(__('common.remoteURL'));
+					if ($enablePublicGalleyId) $galley->setPublicGalleyId(strtolower(__('common.remote')));
 				} else if (isset($fileType)) {
 					if(strstr($fileType, 'pdf')) {
 						$galley->setLabel('PDF');
-						if ($enablePublicGalleyId) $galley->setPublicgalleyId('pdf');
+						if ($enablePublicGalleyId) $galley->setStoredPubId('publisher-id', 'pdf');
 					} else if (strstr($fileType, 'postscript')) {
 						$galley->setLabel('PostScript');
-						if ($enablePublicGalleyId) $galley->setPublicgalleyId('ps');
+						if ($enablePublicGalleyId) $galley->setStoredPubId('publisher-id', 'ps');
 					} else if (strstr($fileType, 'xml')) {
 						$galley->setLabel('XML');
-						if ($enablePublicGalleyId) $galley->setPublicgalleyId('xml');
+						if ($enablePublicGalleyId) $galley->setStoredPubId('publisher-id', 'xml');
 					}
 				}
 
@@ -219,19 +252,24 @@ class ArticleGalleyForm extends Form {
 			} else {
 				$galley->setLabel($this->getData('label'));
 			}
-			$galley->setLocale($this->getData('galleyLocale'));
+			$articleDao =& DAORegistry::getDAO('ArticleDAO');
+			$article =& $articleDao->getArticle($this->articleId, $journal->getId());
+			$galley->setLocale($article->getLocale());
 
 			if ($enablePublicGalleyId) {
 				// check to make sure the assigned public id doesn't already exist
-				$publicGalleyId = $galley->getPublicgalleyId();
+				$journalDao =& DAORegistry::getDAO('JournalDAO'); /* @var $journalDao JournalDAO */
+				$publicGalleyId = $galley->getPubId('publisher-id');
 				$suffix = '';
 				$i = 1;
-				while ($galleyDao->publicGalleyIdExists($publicGalleyId . $suffix, 0, $galley->getArticleId())) {
+				while ($journalDao->anyPubIdExists($journal->getId(), 'publisher-id', $publicGalleyId . $suffix)) {
 					$suffix = '_'.$i++;
 				}
 
-				$galley->setPublicgalleyId($publicGalleyId . $suffix);
+				$galley->setStoredPubId('publisher-id', $publicGalleyId . $suffix);
 			}
+
+			parent::execute();
 
 			// Insert new galley
 			$galleyDao->insertGalley($galley);
@@ -241,7 +279,9 @@ class ArticleGalleyForm extends Form {
 		if ($fileId) {
 			// Update file search index
 			import('classes.search.ArticleSearchIndex');
-			ArticleSearchIndex::updateFileIndex($this->articleId, ARTICLE_SEARCH_GALLEY_FILE, $fileId);
+			$articleSearchIndex = new ArticleSearchIndex();
+			$articleSearchIndex->articleFileChanged($this->articleId, ARTICLE_SEARCH_GALLEY_FILE, $fileId);
+			$articleSearchIndex->articleChangesFinished();
 		}
 
 		return $this->galleyId;

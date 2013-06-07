@@ -4,12 +4,11 @@
 <!--
   * locale/ru_RU/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name = "Russian">
@@ -41,7 +40,6 @@
 	<message key="user.login.forgotPassword">Забыли Ваш пароль?</message>
 	<message key="user.login.loginError">Неправильный логин.</message>
 	<message key="user.login">Вход</message>
-	<message key="user.logIn">Войти</message>
 	<message key="user.login.lostPassword.confirmationSent">На Ваш адрес отправлено требование о верификации. Следуйте инструкциям, чтобы получить новый пароль.</message>
 	<message key="user.login.lostPassword.invalidHash">Недействительный линк. Пожалуйста, затребуйте снова Ваш пароль.</message>
 	<message key="user.login.lostPassword.invalidUser">Нет пользователя с таким адресом.</message>
@@ -57,6 +55,7 @@
 	<message key="user.name">Фамилия</message>
 	<message key="user.other">Иное</message>
 	<message key="user.password">Пароль</message>
+	<message key="user.repeatPassword">Повторить пароль</message>
 	<message key="user.phone">Телефон</message>
 	<message key="user.profile.changePasswordInstructions">Введите Ваш старый и новый пароли.</message>
 	<message key="user.profile.editProfile">Профиль</message>
@@ -104,4 +103,14 @@
 	<message key="user.register.completeForm">Заполните, пожалуйста, форму регистрации в этом журнале.</message>
 	<message key="user.affiliations">Организации</message>
 	<message key="user.profile.form.openAccessNotifications">Уведомлять по электронной почте об открытии доступа</message>
+	<message key="user.affiliation.description">(Ваше место работы, например, Московский государственный университет имени М.В. Ломоносова)</message>
+	<message key="user.authorization.accessDenied">Доступ запрещен.</message>
+	<message key="user.authorization.loginRequired">Необходимо указать имя пользователя.</message>
+	<message key="user.confirmEmail">Подтвердите Email</message>
+	<message key="user.gossip">Личные примечания</message>
+	<message key="user.hello">Приветствуем,</message>
+	<message key="user.profile.form.countryRequired">Необходимо указать страну.</message>
+	<message key="user.profile.form.affiliationRequired">Необходимо указать место работы.</message>
+	<message key="user.profile.form.mailingAddressRequired">Необходимо указать почтовый адрес.</message>
+	<message key="user.profile.form.passwordSameAsOld">Новый пароль совпадает со старым.</message>
 </locale>

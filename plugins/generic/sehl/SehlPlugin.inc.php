@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SehlPlugin.inc.php
+ * @file plugins/generic/sehl/SehlPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SehlPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Search Engine HighLighting plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -79,7 +76,7 @@ class SehlPlugin extends GenericPlugin {
 		$queryArray = explode('&', $urlParts['query']);
 		foreach ($queryArray as $var) {
 			$varArray = explode('=', $var);
-			if (in_array($varArray[0], $queryVariableNames)) {
+			if (in_array($varArray[0], $queryVariableNames) && !empty($varArray[1])) {
 				$this->queryTerms += $this->parse_quote_string($varArray[1]);
 			}
 		}
@@ -99,7 +96,7 @@ class SehlPlugin extends GenericPlugin {
 		if ($fromDiv === false) return $output;
 
 		$endOfBodyTagOffset = strpos($fromDiv, '>');
-		$startIndex = strlen($output) - strlen($fromDiv) + $endOfBodyTagOffset;
+		$startIndex = strlen($output) - strlen($fromDiv) + $endOfBodyTagOffset + 1;
 		$scanPart = substr($output, $startIndex);
 
 		foreach ($this->queryTerms as $q) {

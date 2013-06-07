@@ -7,7 +7,7 @@
 /**
  * @file classes/security/form/AuthSourceSettingsForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthSourceSettingsForm
@@ -16,9 +16,6 @@
  *
  * @brief Form for editing authentication source settings.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -86,7 +83,7 @@ class AuthSourceSettingsForm extends Form {
 	function execute() {
 		$authDao =& DAORegistry::getDAO('AuthSourceDAO');
 
-		$auth = new AuthSource();
+		$auth = $authDao->newDataObject();
 		$auth->setAuthId($this->authId);
 		$auth->setTitle($this->getData('title'));
 		$auth->setSettings($this->getData('settings'));

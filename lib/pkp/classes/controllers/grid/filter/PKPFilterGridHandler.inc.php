@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/filter/PKPFilterGridHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPFilterGridHandler
@@ -30,16 +30,18 @@ class PKPFilterGridHandler extends GridHandler {
 	/** @var string the description text to be displayed in the filter form */
 	var $_formDescription;
 
-	/** @var mixed sample input object required to identify compatible filters */
-	var $_inputSample;
-
-	/** @var mixed sample output object required to identify compatible filters */
-	var $_outputSample;
+	/** @var mixed the symbolic name of the filter group to be configured in this grid */
+	var $_filterGroupSymbolic;
 
 	/**
 	 * Constructor
 	 */
 	function PKPFilterGridHandler() {
+		// Instantiate the citation DAO which will implicitly
+		// define the filter groups for parsers and lookup
+		// database connectors.
+		DAORegistry::getDAO('CitationDAO');
+
 		parent::GridHandler();
 	}
 
@@ -85,35 +87,19 @@ class PKPFilterGridHandler extends GridHandler {
 	}
 
 	/**
-	 * Set the input sample object
-	 * @param $inputSample mixed
+	 * Set the filter group symbol
+	 * @param $filterGroupSymbolic string
 	 */
-	function setInputSample(&$inputSample) {
-		$this->_inputSample =& $inputSample;
+	function setFilterGroupSymbolic($filterGroupSymbolic) {
+		$this->_filterGroupSymbolic = $filterGroupSymbolic;
 	}
 
 	/**
-	 * Get the input sample object
-	 * @return mixed
+	 * Get the filter group symbol
+	 * @return string
 	 */
-	function &getInputSample() {
-		return $this->_inputSample;
-	}
-
-	/**
-	 * Set the output sample object
-	 * @param $outputSample mixed
-	 */
-	function setOutputSample(&$outputSample) {
-		$this->_outputSample =& $outputSample;
-	}
-
-	/**
-	 * Get the output sample object
-	 * @return mixed
-	 */
-	function &getOutputSample() {
-		return $this->_outputSample;
+	function getFilterGroupSymbolic() {
+		return $this->_filterGroupSymbolic;
 	}
 
 
@@ -130,20 +116,20 @@ class PKPFilterGridHandler extends GridHandler {
 		// Load manager-specific translations
 		// FIXME: the submission translation component can be removed
 		// once all filters have been moved to plug-ins (see submission.xml).
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_PKP_SUBMISSION));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_PKP_SUBMISSION);
 
 		// Retrieve the filters to be displayed in the grid
 		$router =& $request->getRouter();
 		$context =& $router->getContext($request);
-		$contextId = (is_null($context)?0:$context->getId());
-		$filterDao =& DAORegistry::getDAO('FilterDAO');
-		$data =& $filterDao->getCompatibleObjects($this->getInputSample(), $this->getOutputSample(), $contextId);
-		$this->setData($data);
+		$contextId = (is_null($context)?CONTEXT_ID_NONE:$context->getId());
+		$filterDao =& DAORegistry::getDAO('FilterDAO'); /* @var $filterDao FilterDAO */
+		$data =& $filterDao->getObjectsByGroup($this->getFilterGroupSymbolic(), $contextId);
+		$this->setGridDataElements($data);
 
 		// Grid action
 		$router =& $request->getRouter();
 		$this->addAction(
-			new LinkAction(
+			new LegacyLinkAction(
 				'addFilter',
 				LINK_ACTION_MODE_MODAL,
 				LINK_ACTION_TYPE_APPEND,
@@ -211,17 +197,17 @@ class PKPFilterGridHandler extends GridHandler {
 		if ($newFilter) {
 			$filter = null;
 		} else {
-			$filter =& $this->getFilterFromArgs($args, true);
+			$filter =& $this->getFilterFromArgs($request, $args, true);
 		}
 
 		// Form handling
 		import('lib.pkp.classes.controllers.grid.filter.form.FilterForm');
 		$filterForm = new FilterForm($filter, $this->getTitle(), $this->getFormDescription(),
-				$this->getInputSample(), $this->getOutputSample());
+				$this->getFilterGroupSymbolic());
 
-		$filterForm->initData($this->getData());
+		$filterForm->initData($this->getGridDataElements($request));
 
-		$json = new JSON('true', $filterForm->fetch($request));
+		$json = new JSONMessage(true, $filterForm->fetch($request));
 		return $json->getString();
 	}
 
@@ -235,13 +221,13 @@ class PKPFilterGridHandler extends GridHandler {
 		if(!$request->isPost()) fatalError('Cannot update filter via GET request!');
 
 		// Identify the citation to be updated
-		$filter =& $this->getFilterFromArgs($args, true);
+		$filter =& $this->getFilterFromArgs($request, $args, true);
 
 		// Form initialization
 		import('lib.pkp.classes.controllers.grid.filter.form.FilterForm');
 		$nullVar = null;
 		$filterForm = new FilterForm($filter, $this->getTitle(), $this->getFormDescription(),
-				$nullVar, $nullVar); // No input/output samples required here.
+				$nullVar); // No filter group required here.
 		$filterForm->readInputData();
 
 		// Form validation
@@ -256,11 +242,11 @@ class PKPFilterGridHandler extends GridHandler {
 			$row->setId($filter->getId());
 			$row->setData($filter);
 			$row->initialize($request);
-			$json = new JSON('true', $this->_renderRowInternally($request, $row));
+			$json = new JSONMessage(true, $this->renderRowInternally($request, $row));
 		} else {
 			// Re-display the filter form with error messages
 			// so that the user can fix it.
-			$json = new JSON('false', $filterForm->fetch($request));
+			$json = new JSONMessage(false, $filterForm->fetch($request));
 		}
 
 		// Return the serialized JSON response
@@ -275,15 +261,15 @@ class PKPFilterGridHandler extends GridHandler {
 	 */
 	function deleteFilter(&$args, &$request) {
 		// Identify the filter to be deleted
-		$filter =& $this->getFilterFromArgs($args);
+		$filter =& $this->getFilterFromArgs($request, $args);
 
-		$filterDAO = DAORegistry::getDAO('FilterDAO');
-		$result = $filterDAO->deleteObject($filter);
+		$filterDao = DAORegistry::getDAO('FilterDAO');
+		$result = $filterDao->deleteObject($filter);
 
 		if ($result) {
-			$json = new JSON('true');
+			$json = new JSONMessage(true);
 		} else {
-			$json = new JSON('false', __('manager.setup.filter.grid.errorDeletingFilter'));
+			$json = new JSONMessage(false, __('manager.setup.filter.grid.errorDeletingFilter'));
 		}
 		return $json->getString();
 	}
@@ -302,11 +288,11 @@ class PKPFilterGridHandler extends GridHandler {
 	 *  should be considered.
 	 * @return Filter
 	 */
-	function &getFilterFromArgs(&$args, $mayBeTemplate = false) {
+	function &getFilterFromArgs($request, &$args, $mayBeTemplate = false) {
 		if (isset($args['filterId'])) {
 			// Identify the filter id and retrieve the
 			// corresponding element from the grid's data source.
-			$filter =& $this->getRowDataElement($args['filterId']);
+			$filter =& $this->getRowDataElement($request, $args['filterId']);
 			if (!is_a($filter, 'Filter')) fatalError('Invalid filter id!');
 		} elseif ($mayBeTemplate && isset($args['filterTemplateId'])) {
 			// We need to instantiate a new filter from a
@@ -326,3 +312,5 @@ class PKPFilterGridHandler extends GridHandler {
 		return $filter;
 	}
 }
+
+?>

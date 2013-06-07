@@ -7,7 +7,7 @@
 /**
  * @file @file classes/subscription/Subscription.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Subscription
@@ -16,9 +16,6 @@
  *
  * @brief Basic class describing a subscription.
  */
-
-// $Id$
-
 
 define('SUBSCRIPTION_STATUS_ACTIVE', 					0x01);
 define('SUBSCRIPTION_STATUS_NEEDS_INFORMATION', 		0x02);

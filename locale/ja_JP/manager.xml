@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/ja_JP/manager.xml
+  * locale/ja_JP/manager.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
   *
-  * $Id$
   -->
 
 <locale name="ja_JP" full_name = "日本語">
@@ -83,7 +82,6 @@
 	<message key="manager.people.syncUserDescription">登録ユーザの同期機能は、指定した雑誌において指定した役割で登録されているすべてのユーザを、この雑誌においても同じ役割で登録します。この機能は、複数の雑誌で共通のユーザグループ（査読者など）を指定することを可能にします。</message>
 	<message key="manager.plugins.description">このページでは、雑誌管理者が現在インストールされているプラグインを評価したり、場合によっては設定したりすることができます。</message>
 	<message key="manager.sections.assigned">このセクションの編集者</message>
-	<message key="manager.sections.confirmDelete">このセクションを削除してもよいですか。これを実行すると、このセクションのすべての論文･記事を再出版しなければならなくなります。</message>
 	<message key="manager.sections.create">セクションの作成</message>
 	<message key="manager.section.sectionEditorInstructions">任命可能なセクションエディタの中からこのセクションの「セクションエディタを選択」してください。</message>
 	<message key="manager.sections.editorRestriction">編集者とセクションエディタのみ投稿可能。</message>
@@ -591,7 +589,7 @@
 	<message key="manager.setup.doiSuffixPattern">下記に入力されたパターンを使用してDOIサフィックスを生成します。%jは雑誌の略称，%vは巻，%iは号，%aはOJSの論文ID，%pはページ数を意味します。</message>
 	<message key="manager.setup.doiSuffixPattern.example">例えば，vol%viss%ipp%p は 10.1234/vol3iss2pp230 という DOI を生成します。</message>
 	<message key="manager.setup.doiSuffixDescription">DOI サフィックスはどのような形式でも構いませんが，出版アイテムごとにユニークなものでなければなりません。</message>
-	<message key="manager.setup.doiSuffixCustomIdentifier">出版アイテムに対してDOI サフィックスのような「カスタム識別子」を使用することができます（Step 4で有効にする必要があります）。</message>
+	<message key="manager.setup.doiSuffixPublisherId">出版アイテムに対してDOI サフィックスのような「カスタム識別子」を使用することができます（Step 4で有効にする必要があります）。</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[LOCKSS を有効にする。LOCKSS の<a href="{$lockssUrl}" target="_blank">出版者マニュフェスト</a>ページを通じてLOCKSSを有効にし、参加図書館にある雑誌コンテンツを保管・配布します。LOCKSSライセンスはアーカイブの「この雑誌について」ページに表示されます。]]></message>
 	<message key="manager.setup.lockssLicenses"><![CDATA[<a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">LOCKSS ライセンスのその他のバージョンはここ</a>を参照してください。]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[雑誌を登録･キャッシュする図書館を6館から10館見つけます。例えば、編集者や雑誌委員会委員が勤務する機関や既にLOCKSSに参加している機関に問い合わせてください。<a href="http://lockss.org/lockss/Libraries" target="_blank">参加図書館はここ</a>を参照してください。あらかじめ用意されている(1) <a href="{$lockssExistingArchiveUrl}" target="_blank">LOCKSS参加図書館向け</a>、または、(2) <a href="{$lockssNewArchiveUrl}" target="_blank">LOCKSS未参加図書館向け</a> の招待状を使用してください。]]></message>

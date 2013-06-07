@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file poToCurrencies.php
+ * @file tools/poToCurrencies.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class poToCurrencies
@@ -12,9 +12,6 @@
  * @brief CLI tool to convert a .PO file for ISO4217 into the currencies.xml format
  * supported by the PKP suite.
  */
-
-// $Id$
-
 
 require(dirname(__FILE__) . '/bootstrap.inc.php');
 
@@ -100,12 +97,10 @@ class poToCurrencies extends CommandLineTool {
 <!--
   * currencies.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized list of currencies.
-  *
-  * $Id$
   -->
 
 <!DOCTYPE currencies [

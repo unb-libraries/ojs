@@ -1,18 +1,17 @@
 {**
- * atom.tpl
+ * plugins/generic/thesisFeed/templates/atom.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Atom feed template
  *
- * $Id$
  *}
 <?xml version="1.0" encoding="{$defaultCharset|escape}"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 	{* required elements *}
 	<id>{$selfUrl|escape}</id>
-	<title>{$journal->getLocalizedTitle()|escape:"html"|strip}: {translate key="plugins.generic.thesis.manager.theses"}</title>
+	<title>{$journal->getLocalizedTitle()|strip|escape:"html"}: {translate key="plugins.generic.thesis.manager.theses"}</title>
 	<updated>{$dateUpdated|date_format:"%Y-%m-%dT%T%z"|regex_replace:"/00$/":":00"}</updated>
 
 	{* recommended elements *}
@@ -44,7 +43,7 @@
 		<title>{$thesis->getTitle()|strip|escape:"html"}</title>
 		<updated>{$thesis->getDateSubmitted()|date_format:"%Y-%m-%dT%T%z"|regex_replace:"/00$/":":00"}</updated>
 	  	<author>
-			<name>{$thesis->getStudentFullName()|escape:"html"|strip}</name>
+			<name>{$thesis->getStudentFullName()|strip|escape:"html"}</name>
         </author>
 		<link rel="alternate" href="{url page="thesis" op="view" path=$thesis->getId()}" />
 

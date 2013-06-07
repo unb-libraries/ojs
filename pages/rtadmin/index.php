@@ -3,25 +3,27 @@
 /**
  * @defgroup pages_rtadmin
  */
- 
+
 /**
  * @file pages/rtadmin/index.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_rtadmin
- * @brief Handle requests for RT admin functions. 
+ * @brief Handle requests for RT admin functions.
  *
  */
-
-// $Id$
-
 
 switch ($op) {
 	//
 	// General
 	//
+	case 'index':
+	case 'validateUrls':
+		define('HANDLER_CLASS', 'RTAdminHandler');
+		import('pages.rtadmin.RTAdminHandler');
+		break;
 	case 'settings':
 	case 'saveSettings':
 		define('HANDLER_CLASS', 'RTSetupHandler');
@@ -38,7 +40,7 @@ switch ($op) {
 	case 'editVersion':
 	case 'deleteVersion':
 	case 'saveVersion':
-		define('HANDLER_CLASS', 'RTVersionHandler');		
+		define('HANDLER_CLASS', 'RTVersionHandler');
 		import('pages.rtadmin.RTVersionHandler');
 		break;
 	//
@@ -62,15 +64,16 @@ switch ($op) {
 	case 'saveSearch':
 	case 'deleteSearch':
 	case 'moveSearch':
-		define('HANDLER_CLASS', 'RTSearchHandler');		
+		define('HANDLER_CLASS', 'RTSearchHandler');
 		import('pages.rtadmin.RTSearchHandler');
 		break;
-	case 'index':
-	case 'configureSharing':
-	case 'saveConfigureSharing':
-	case 'validateUrls':
-		define('HANDLER_CLASS', 'RTAdminHandler');
-		import('pages.rtadmin.RTAdminHandler');
+	//
+	// Sharing
+	//
+	case 'sharingSettings':
+	case 'saveSharingSettings':
+		define('HANDLER_CLASS', 'RTSharingHandler');
+		import('pages.rtadmin.RTSharingHandler');
 		break;
 }
 

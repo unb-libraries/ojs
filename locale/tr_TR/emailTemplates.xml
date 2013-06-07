@@ -1,19 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE email_texts SYSTEM "../../lib/pkp/dtd/emailTemplateData.dtd">
+
 <!--
-  * emailTemplateData.xml
+  * locale/tr_TR/emailTemplateData.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
   *
-  * $Id$
   -->
+
 <email_texts locale="tr_TR">
 	<email_text key="PASSWORD_RESET_CONFIRM">
 		<subject>Şifre Değiştirme Onayı</subject>
-		<body>{$siteTitle} sitesindeki şifrenizi değiştirmek istemişsiniz.
+		<body>{$siteTitle} sitesindeki şifrenizi değiştirme isteğinizi aldık.
 
 Bu istek sizin dışınızda oluştu ise, lütfen bu mesajı dikkate almayınız; eski şifrenizi kullanabilirsiniz.
 Eğer şifrenizi değiştirmek istiyorsanız aşağıdaki bağlantıyı tıklayınız.
@@ -34,7 +35,7 @@ Yeni şifreniz: {$password}
 		<description>Bu e-posta PASSWORD_RESET_CONFIRM mesajında aktarılan süreç doğrultusunda şifre değişikliği yapmış kayıtlı kullanıcılara gönderilmektedir.</description>
 	</email_text>
 	<email_text key="USER_REGISTER">
-		<subject>Yeni kullanıcı kaydı</subject>
+		<subject>Yeni Kullanıcı Kaydı</subject>
 		<body>{$journalName} dergisine kayıt yaptırdığınız için teşekkür ederiz. Kullanıcı adı ve şifre dergi ile yapacağınız tüm çalışmalarda gerekli olduğundan güvenli bir yere not ediniz.
 
 Kullanıcı adı: {$username}
@@ -45,15 +46,14 @@ Teşekkür ederiz,
 		<description>Bu e-posta yeni kaydolmuş kullanıcıya sisteme kabul edildiğini belirtmek ve kullanıcı adı ile şifresini bildirmek amacı ile gönderilmektedir.</description>
 	</email_text>
 	<email_text key="PUBLISH_NOTIFY">
-		<subject>Yeni sayı yayınlandı</subject>
-		<body>Sayın Okuyucumuz:
+		<subject>Yeni Sayı Yayınlandı</subject>
+		<body>Kıymetli Okuyucumuz,
 
-{$journalName} yeni saysını yayınladı. Yeni sayımıza {$journalUrl} adresinden ulaşabilirsiniz.
+{$journalName} adlı derginin yeni saysını yayınladı. Yeni sayıya {$journalUrl} adresinden ulaşabilirsiniz.
+
 Sizi dergimizin içindekiler sayfasını incelemeye, beğendiğiniz makaleleri okumaya ve değerli görüşlerinizi diğer okuyucularımız ile paylaşmaya çağırıyoruz.
 
 Dergimize gösterdiğiniz ilgi için teşekkür ederiz.
-Saygılarımızla,
-
 {$editorialContactSignature}</body>
 		<description>Bu e-posta “Bana Haber Ver” seçeneğini işaretlemiş okuyuculara yeni sayıyı haber vermek ve son sayının adresini vererek okumaya çağrı için kullanılır.</description>
 	</email_text>
@@ -77,7 +77,7 @@ Herhangi bir sorunuz olursa lütfen çekinmeden benimle irtibat kurun.
 		<description>Bu mesaj kayıtlı kullanıcıya yönetici tarafından abonelik işleminin yapıldığını bildirir. Derginin internet adresi ve giriş bilgileri sunulmaktadır.</description>
 	</email_text>
 	<email_text key="OPEN_ACCESS_NOTIFY">
-		<subject>Sayı açık erişime açıldı</subject>
+		<subject>Sayı Açık Erişime Açıldı</subject>
 		<body>Sayın Okuyucu,
 
 {$journalName} aşağıdaki sayıyı açık erişime açmıştır. Sizi sayının içindekiler bölümünü incelemeye ve dilediğiniz yazıları okumak üzere web sitemize davet ediyoruz ({$journalUrl}).
@@ -87,48 +87,47 @@ Herhangi bir sorunuz olursa lütfen çekinmeden benimle irtibat kurun.
 		<description>Bu mesaj sayı açık erişime açıldığında haberdar olmak isteyen okuyuculara gönderilir.</description>
 	</email_text>
 	<email_text key="LOCKSS_EXISTING_ARCHIVE">
-		<subject>{$journalName}dergisi arşivleme talebi </subject>
-		<body>Değerli [University Librarian]
+		<subject>{$journalName} İçin Arşivleme Talebi</subject>
+		<body><![CDATA[Kıymetli [University Librarian]
 
-{$journalName} &lt;{$journalUrl}&gt; dergisi için fakültenizin üyesi [name of member] [title of position] görevini üstlenmiştir. Dergi bu ve diğer üniversite kütüphaneleri ile LOCKSS (Lots of Copies Keep Stuff Safe – çok sayıda kopya güvenliğini koruma) uyumlu arşiv oluşturmayı hedeflemektedir. 
+{$journalName} <{$journalUrl}> adlı yayın için fakülteniz üyesi [name of member] [title of position] görevini üstlenmiştir. Dergi, bu ve diğer üniversite kütüphaneleri ile LOCKSS (Lots of Copies Keep Stuff Safe – çok sayıda kopya güvenliğini koruma) uyumlu arşiv oluşturmayı hedeflemektedir. 
 
 [Brief description of journal]
 
 Dergimizin LOCKSS yayınevi bildirgesi internet adresi: {$journalUrl}/gateway/lockss
 
-LOCKSS sistemini kullandığınızı tespit etmiş bulunuyoruz. Dergimizin sizin kullandığınız LOCKSS sürümüne kaydedilebilmesi için gerekli her türlü meta veriyi sağlamaktan mutluluk duyarız.
+LOCKSS sistemini kullandığınızı tespit etmiş bulunuyoruz. Dergimizin kullandığınız LOCKSS sürümüne kaydedilebilmesi için gerekli her türlü üst veriyi sağlamaktan mutluluk duyarız.
 
 Teşekkür ederiz,
-{$principalContactSignature}</body>
+{$principalContactSignature}]]></body>
 		<description>Bu e-posta LOCKSS arşiv yöneticisine bu dergiyi arşivlerine ekleme olanağını hatırlatmayı amaçlar ve derginin LOCKSS yayımcı bildirgesi internet adresini içermektedir.</description>
 	</email_text>
 	<email_text key="LOCKSS_NEW_ARCHIVE">
-		<subject>{$journalName} dergisi arşivleme talebi </subject>
-		<body>Değerli [University Librarian]
+		<subject>{$journalName} İçin Arşivleme Talebi</subject>
+		<body><![CDATA[Değerli [University Librarian]
 
-{$journalName} &lt;{$journalUrl}&gt; dergisi için fakültenizin üyesi [name of member] [title of position] görevini üstlenmiştir. Dergi bu ve diğer üniversite kütüphaneleri ile LOCKSS (Lots of Copies Keep Stuff Safe – çok sayıda kopya güvenliğini koruma) uyumlu arşiv oluşturmayı hedeflemektedir. 
-
+{$journalName} <{$journalUrl}> dergisi için fakültenizin üyesi [name of member] [title of position] görevini üstlenmiştir. Dergi, bu ve diğer üniversite kütüphaneleri ile LOCKSS (Lots of Copies Keep Stuff Safe – çok sayıda kopya güvenliğini koruma) ile uyumlu arşiv oluşturmayı hedeflemektedir. 
 
 [Brief description of journal]
 
-LOCKSS programı &lt;http://lockss.org/&gt;, uluslararası bir kütüphane/yayımcı organizasyonu olup bir arşivin yaygın ve güvenilir olarak kullanılmasını sağlayan etkin bir örnektir. Diğer detaylar aşağıda belirtilmiştir. Standart kişisel bilgisayarlarda kullanılabilen yazılım ücretsizdir, sistem kolaylıkla aktif olabilmekte ve çok az bakım gerektirmektedir. 
+LOCKSS programı <http://lockss.org/>, uluslararası bir kütüphane/yayımcı organizasyonu olup bir arşivin yaygın ve güvenilir olarak kullanılmasını sağlayan etkin bir örnektir. Diğer detaylar aşağıda belirtilmiştir. Standart kişisel bilgisayarlarda kullanılabilen yazılım ücretsizdir, sistem kolaylıkla aktif olabilmekte ve çok az bakım gerektirmektedir. 
 
-Derginizin arşivlenebilmesi için sizi LOCKSS topluluğunun üyesi olmaya davet ediyoruz. Böylelikle gerek fakültenizden gerek dünya çapında diğer araştırma birimlerinden çalışmaları toplayabilir ve güvenle saklayabilirsiniz. Bu amaçla bir çalışanınızı görevlendirerek LOCKSS sitesini ziyaret etmesini ve sistem çalışması ile ilgili bilgileri edinmesini sağlayınız. Sizden bu derginin arşiv desteğinin fizibilitesi ile ilgili haber bekliyor olacağım.
+Derginizin arşivlenebilmesi için sizi LOCKSS topluluğunun üyesi olmaya davet ediyoruz. Böylelikle gerek fakültenizden gerek dünya çapında diğer araştırma birimlerinden çalışmaları toplayabilir ve güvenle saklayabilirsiniz. Bu amaçla bir çalışanınızı görevlendirerek LOCKSS sitesini ziyaret etmesini ve sistem çalışması ile ilgili bilgileri edinmesini sağlayınız. Sizden bu derginin arşiv desteğinin fizibilitesi ile ilgili haber bekliyoruz.
 
 Teşekkür ederim
-{$principalContactSignature}</body>
+{$principalContactSignature}]]></body>
 		<description>Bu e-posta alıcının dergisini LOCKSS arşiv sistemine dahil etmeye yönelik önerme içermektedir. LOCKSS çalşıma biçimi ve katılımcı olma ile ilgili bilgiler sağlamaktadır.</description>
 	</email_text>
 	<email_text key="SUBMISSION_ACK">
 		<subject>Başvuru Kayıt Onayı</subject>
 		<body>Sayın {$authorName},
 
-{$journalName} dergisine gönderdiğiniz "{$articleTitle}" yazısı için teşekkür ederiz. Kullanmakta olduğumuz internet erişimli dergi yönetim sistemiile, dergi web sitesine aşağıdaki bilgilerle giriş yaparak yazınızı bütün yayın işlemleri boyunca takip edebileceksiniz:
+{$journalName} dergisine gönderdiğiniz "{$articleTitle}" adlı gönderi için teşekkür ederiz. Kullanmakta olduğumuz internet erişimli dergi yönetim sistemi ile, dergi web sitesine aşağıdaki bilgilerle giriş yaparak çalışmanızı yayın işlemleri boyunca takip edebilirsiniz:
 
-Bu başvurunuz için ulaşım: {$submissionUrl}
+Erişim adresi: {$submissionUrl}
 Kullanıcı Adı: {$authorUsername}
 
-Eğer herhangi bir soru veya sorununuz olursa lütfen bizimle iletişime geçin. Bu dergiyi mesleğinizle ilgili bir buluşma yeri olarak gördüğünüz için teşekkür ederiz.
+Eğer herhangi bir soru veya sorununuz olursa lütfen bizimle iletişime geçiniz. Bu dergiyi mesleğinizle ilgili bir buluşma yeri olarak gördüğünüz için teşekkür ederiz.
 
 {$editorialContactSignature}</body>
 		<description>Bu eposta, etkinleştirilmişse, bir yazar dergiye yazı gönderme işlemini tamamladığında otomatik olarak gönderilir. Bu posta yazara gönderisi için teşekkür mesajını ve gönderisinin durumunu takip edebilmesi için gerekli olan bilgileri iletir.</description>
@@ -177,14 +176,14 @@ Teşekkürler,
 		<description>Bu eposta, bir Bölüm Editörüne bir gönderinin yayınlanma sürecinde supervizörlük görevi verildiğini bildirir. Gönderi hakkındaki bilgileri ve dergi internet sitesine girişte gerekli olan bilgileri içerir.</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST">
-		<subject>Makale Değerlendirme Talebi</subject>
+		<subject>Makale Değerlendirme İsteği</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için gönderilen "{$articleTitle}" başlıklı çalışmanın sizin ilgi alanlarınız ile uyuştuğunu ve dergimizde yayınlanabilirliği açısından inceleyebileceğinize inanoyoruz. Başvurunun içeriği aşağıya eklenmiştir. Bu görevin bizim için ne kadar önemli olduğunu gözönünde bulunduracağınızı umuyorum.
+{$journalName} için gönderilen "{$articleTitle}" başlıklı çalışmanın sizin ilgi alanlarınız ile uyuştuğunu ve dergimizde yayınlanabilirliği açısından inceleyebileceğinize inanoyoruz. Başvurunun içeriği aşağıya eklenmiştir. Bu görevin bizim için ne kadar önemli olduğunu göz önünde bulunduracağınızı umuyoruz.
 
-{$weekLaterDate} tarihine kadar, bu çalışmanın hakemliğini kabul edip etmediğinizi belirtmek, ilgili çalışmaya ulaşmak, eleştiri ve önerilerinizi kaydetmek için dergi internet sitesine giriş yapabilirsiniz. Dergi sitesi adresi: {$journalUrl} 
+{$weekLaterDate} tarihine kadar, bu çalışmanın hakemliğini kabul edip etmediğinizi belirtmek, ilgili çalışmaya ulaşmak, eleştiri ve önerilerinizi kaydetmek için dergi internet sitesine giriş yapabilirsiniz. Dergi adresi: {$journalUrl} 
 
-Değerlendirmenizi tamamlamanız gereken tarih: {$reviewDueDate}.
+Değerlendirme için son tarih: {$reviewDueDate}.
 
 Eğer derginin web sitesine giriş için kullanıcı adı ve şifreniz yoksa veya unuttunuz ise, şifrenizi yenilemek için bu bağlantıyı kullanabilirsiniz (Kullanıcı adınızla birlikte şifreniz size postalanacaktır). {$passwordResetUrl}
 
@@ -203,10 +202,10 @@ Bu dileğimizi değerlendirdiğiniz için teşekkür ederiz.
 		<description>Bu eposta Bölüm Editöründen bir hakeme bir çalışmanın hakemlik görevine cavet amacı ile iletir. Gönderiyle ilgili başlık ve özet gibi bilgileri, değerlendirme sona erme tarihini ve kendisinin başvuruya nasıl erişilebileceği ile ilgili bilgileri içerir.	Bu mesaj Dergi Ayarları Adım 2'de seçilen Standart Değerlendirme Sürecinde kullanılır. (Ayrıca bkz.: REVIEW_REQ_MULTI_ATTACHED ve REVIEW_REQUEST_ATTACHED.)</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST_ONECLICK">
-		<subject>Makaleyi değerlendirmenizi rica ederiz</subject>
+		<subject>Makale Değerlendirme İsteği</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı makaleyi değerlendiremek için en uygun hakemlerden birisi olarak, yazı hakkındaki değerli görüşlerinizi bize ileteceğinizi umuyoruz. Başvurunun önemli özellikleri aşağıda iletilmiştir. Dergimiz için çok değerli olan görüşlerinizden bizi mahrum etmeyeceğinizi umuyorum.
+{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı makaleyi değerlendiremek için en uygun hakemlerden birisi olarak, yazı hakkındaki değerli görüşlerinizi bize ileteceğinizi umuyoruz. Başvurunun önemli özellikleri aşağıda iletilmiştir. Dergimiz için çok değerli olan görüşlerinizden bizi mahrum etmeyeceğinizi umuyoruz.
 
 Dergimiz web sitesine girerek, {$weekLaterDate} süresinde gözden geçirme isteğimizi kabul ettiğinizi bildiriniz. İlgili sayfadan yazının tam metnine ulaşabileceksiniz.
 
@@ -227,23 +226,21 @@ Başvuruya ulaşım için adres: {$submissionReviewUrl}
 		<description>Yazının hakemlere önerilmesi için kullanılan mesajdır. Ayarlarda "tek tıklama özelliği" etkinleştirildi ise kullanılır..</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST_ATTACHED">
-		<subject>Ekteki makaleyi değerlendirmenizi rica ederiz</subject>
+		<subject>Makale Değerlendirme İsteği</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı makaleyi değerlendiremek için en uygun hakemlerden birisi olarak, yazı hakkındaki değerli görüşlerinizi bize ileteceğinizi umuyoruz. Yazı e-posta ekinde gönderilmiştir ve dergimizin hakemlerimizden beklentileri aşağıda verilmektedir. Dergimiz için çok değerli olan görüşlerinizden bizi mahrum etmeyeceğinizi umuyorum. Değerlendirme raporunuzun {$reviewDueDate} tarihinde bana gönderilmiş olması gerekmektedir.
+Dergimizde yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı makaleyi değerlendiremek için uygun hakemlerden birisi olarak, yazı hakkındaki değerli görüşlerinizi bize ileteceğinizi umuyoruz. Yazı e-posta ekinde gönderilmiştir ve dergimizin hakemlerimizden beklentileri aşağıda verilmiştir. Dergimiz için çok değerli olan görüşlerinizi bizimle paylaşacağınızı umuyoruz. Değerlendirme raporunuzun {$reviewDueDate} tarihine kadar gönderilmiş olması gerekmektedir.
 
-Lütfen değerlendirmeyi kabul edip, etmediğinizi {$weekLaterDate} süresinde e-posta mesajı ile bana bildiriniz.
+Lütfen değerlendirmeyi kabul edip, etmediğinizi {$weekLaterDate} tarihine kadar e-posta mesajı ile bildiriniz.
 
-
-İsteğimize olumlu yaklaşımınız için şimdiden teşekkür ederiz.
+Katkılarınız için şimdiden teşekkür ederiz.
 
 {$editorialContactSignature}
 
 
 Değerlendirme Rehberi:
 
-{$reviewGuidelines}
-</body>
+{$reviewGuidelines}</body>
 		<description>Yazının hakemlere önerilmesi için kullanılan mesajdır. Ayarlarda e-posta eki ile değerlendirme seçeneği seçili ise kullanılacaktır.</description>
 	</email_text>
 	<email_text key="REVIEW_CANCEL">
@@ -257,99 +254,97 @@ Değerlendirme Rehberi:
 		<description>Değerlendirme süreci sona ermeden editörün değerlendirmeyi iptal için hakeme gönderdiği mesaj.</description>
 	</email_text>
 	<email_text key="REVIEW_CONFIRM">
-		<subject>Değerlendirmeyi yapabileceğim</subject>
+		<subject>Değerlendirmeyi Yapacağım</subject>
 		<body>Sayın {$editorialContactName},
 
-{$journalName}'nde yayımlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı makalenin değerlendiremesini kabul ediyorum. Değerlendirme raporumu en geç {$reviewDueDate} tarihinde ileteceğim.
+{$journalName} adlı dergide yayımlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı makalenin değerlendirme talebini kabul ediyorum. Değerlendirme raporunu en geç {$reviewDueDate} tarihine kadar göndereceğim.
 
-Bu çalışmayı değerlendirmek üzere tarafıma gönderdiğiniz için teşekkür ederim.
+Çalışmayı değerlendirmek üzere tarafıma gönderdiğiniz için teşekkür ederim.
 
 {$reviewerName}</body>
 		<description>Hakemin değerlendirmeyi kabul ettiğini editöre bildirmek üzere kullandığı mesaj</description>
 	</email_text>
 	<email_text key="REVIEW_DECLINE">
-		<subject>DEĞERLENDİREMEYECEĞİM...</subject>
+		<subject>Değerlendirmeyeceğim</subject>
 		<body>Sayın {$editorialContactName},
-{$journalName}'nde yayımlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı makaleyi şu anda değerlendiremeyeceğim. Beni düşündüğünüz için teşekkür ederim, başka bir zaman beni rahatlıkla arayabilirsiniz.
+
+{$journalName} adlı dergide yayımlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı makaleyi şu anda değerlendiremeyeceğim. Beni düşündüğünüz için teşekkür ederim. Başka bir çalışmanın değerlendirmesinde katkı sunmaya çalışacağım.
 
 {$reviewerName}</body>
 		<description>Bu elektronik posta gözden geçirme talebine cevap olarak, gözden geçirmenin red edildiğini bildirmek amacıyla Bölüm Editörüne gözden geçirmeyi yapan kişi tarafından gönderilir.</description>
 	</email_text>
 	<email_text key="REVIEW_COMPLETE">
-		<subject>Makalenin Değerlendirme İşlemi Tamamlandı</subject>
+		<subject>Değerlendirme İşlemi Tamamlandı</subject>
 		<body>Sayın {$editorialContactName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirme işlemini tamamladım. Önerim: "{$recommendation}" biçimine kaydedildi.
+{$journalName} adlı dergide yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirme işlemini tamamladım. Önerim; "{$recommendation}" biçimindedir.
 
 {$reviewerName}</body>
 		<description>Bu elektronik posta gözden geçirme işleminin tamamlanarak öneri ve yorumların derginin web sitesine kayıt edildiğini bildirmek için gözden geçirmeyi yapan kişi tarafından Bölüm Editörüne gönderilmiştir.</description>
 	</email_text>
 	<email_text key="REVIEW_ACK">
-		<subject>Çalışmayı değerlendirdiğiniz için teşekkürler</subject>
+		<subject>Değerlendirme İçin Teşekkür</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirme işlemini tamamladığınız için teşekkür ederiz. Yayınlarımızın kalitesine yaptığınız katkıyı takdirle anıyoruz.
+{$journalName} adlı dergide yayınlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirme işlemini tamamladığınız için teşekkür ederiz. Yayınımıza yaptığınız katkıyı takdirle anıyoruz.
 
 {$editorialContactSignature}</body>
 		<description>Bu elektronik posta gözden geçirme işlemi bitirilen makalenin alındığını haber vermek ve gözden geçirmeyi yapan kişiye katkılarından dolayı teşekkür etmek için Bölüm Editörü tarafından gönderilmiştir.</description>
 	</email_text>
 	<email_text key="REVIEW_REMIND">
-		<subject>Yazı değerlendirilmesi konusunda anımsatma</subject>
+		<subject>Değerlendirme Konusunda Hatırlatma</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyoruz, yoğun işleriniz arasında değerlendirme raporunuzu tamamlayıp, bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
+{$journalName} adlı dergide yayınlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyoruz. Yoğun işleriniz arasında değerlendirme raporunuzu tamamlayıp, bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
 
 Eğer derginin web sitesine giriş için kullanıcı adı ve şifreniz yoksa veya unuttunuz ise, şifrenizi yenilemek için bu bağlantıyı kullanabilirsiniz (Kullanıcı adınızla birlikte şifreniz size postalanacaktır). {$passwordResetUrl}
 
 Makale Erişim Adresi: {$submissionReviewUrl}
 
-Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız. Bunu sizden duymayı dört gözle bekliyorum.
+Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız. 
 
 {$editorialContactSignature}</body>
 		<description>Bu elektronik posta gözden geçirmeyi yapan kişiye işlemin zamanının dolmakta olduğunu hatırlatmak için Bölüm Editörü tarafından gönderilir.</description>
 	</email_text>
 	<email_text key="REVIEW_REMIND_ONECLICK">
-		<subject>Yazı değerlendirilmesi konusunda anımsatma</subject>
+		<subject>Değerlendirilme Konusunda Hatırlatma</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyoruz, yoğun işleriniz arasında değerlendirme raporunuzu tamamlayıp, bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
+{$journalName} adlı dergide yayınlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyoruz. Yoğun işleriniz arasında değerlendirme raporunuzu tamamlayıp, bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
 
 Makale Erişim Adresi: {$submissionReviewUrl}
 
-Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız. Bunu sizden duymayı dört gözle bekliyorum.
+Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız.
 
 {$editorialContactSignature}</body>
 		<description>Bu elektronik posta hakemler için tek tıklama özelliği açık ise, gözden geçirmeyi yapan kişiye işlemin zamanının dolmakta olduğunu hatırlatmak için Bölüm Editörü tarafından gönderilir.</description>
 	</email_text>
 	<email_text key="REVIEW_REMIND_AUTO">
-		<subject>Yazı değerlendirilmesi konusunda otomatik anımsatma</subject>
+		<subject>Değerlendirilme Konusunda Otomatik Hatırlatma</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyorduk, yoğun işleriniz nedeni ile oluşan minik gecikme nedeni ile sistemimiz tarafından bu mesaj tarafınıza otomatik olarak gönderilmişitir. 
+{$journalName} adlı dergide yayınlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyorduk. Yoğun işleriniz nedeni ile oluşan gecikme nedeni ile sistemimiz tarafından bu mesaj tarafınıza otomatik olarak gönderilmişitir. 
+
 Değerlendirme raporunuzu bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
 
 Eğer derginin web sitesine giriş için kullanıcı adı ve şifreniz yoksa veya unuttunuz ise, şifrenizi yenilemek için bu bağlantıyı kullanabilirsiniz (Kullanıcı adınızla birlikte şifreniz size postalanacaktır). {$passwordResetUrl}
 
 Makale Erişim Adresi: {$submissionReviewUrl}
 
-Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız. Raporunuzun tamamlanacağı günü sizden duymayı dört gözle bekliyorum.
+Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız.
 
 {$editorialContactSignature}</body>
 		<description>Gözden geçirme işlemi için verilen süre geçtiğinde bu elektronik posta otomatik olarak gönderilir(Derginin Kurulum Bölümü altındaki Gözden Geçirme seçeneklerine bakınız, Adım 2). Zamanlanmış görevler aktif hale getirilmeli ve düzenlenmelidir(alan düzenleme dosyasına bakınız).</description>
 	</email_text>
 	<email_text key="REVIEW_REMIND_AUTO_ONECLICK">
-		<subject>Automated Submission Review Reminder</subject>
+		<subject>Değerlendirilme Konusunda Otomatik Hatırlatma</subject>
 		<body>Sayın {$reviewerName},
 
-{$journalName} için yayınlanmak üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyorduk, yoğun işleriniz nedeni ile oluşan minik gecikme nedeni ile sistemimiz tarafından bu mesaj tarafınıza otomatik olarak gönderilmişitir. 
-Değerlendirme raporunuzu bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
-
-Eğer derginin web sitesine giriş için kullanıcı adı ve şifreniz yoksa veya unuttunuz ise, şifrenizi yenilemek için bu bağlantıyı kullanabilirsiniz (Kullanıcı adınızla birlikte şifreniz size postalanacaktır). {$passwordResetUrl}
+{$journalName} adlı dergide yayınlanması için değerlendirilmek üzere gönderilen "{$articleTitle}" başlıklı çalışmanın değerlendirmesini {$reviewDueDate} tarihinden önce tamamlayacağınızı ümit ediyorduk. Yoğun işleriniz nedeni ile oluşan gecikme nedeni ile sistemimiz tarafından bu mesaj tarafınıza otomatik olarak gönderilmişitir. 
 
 Makale Erişim Adresi: {$submissionReviewUrl}
 
-Derginin kalitesini arttıracak bu önemli katkıyı yapabileceğinizi lütfen onaylayınız. Raporunuzun tamamlanacağı günü sizden duymayı dört gözle bekliyorum.
-
+Değerlendirme raporunuzu bize bir an önce ileteceğiniz inancı ile dergimiz sitesindeki ulaşım bilgilerini size iletmeyi istedik.
 
 {$editorialContactSignature}</body>
 		<description>Gözden geçirme işlemi için verilen süre geçtiğinde ve hakemler için tek tıklama özelliği açıldığında bu elektronik posta otomatik olarak gönderilir(Derginin Kurulum Bölümü altındaki Gözden Geçirme seçeneklerine bakınız, Adım 2). Zamanlanmış görevler aktif hale getirilmeli ve düzenlenmelidir(alan düzenleme dosyasına bakınız).</description>
@@ -637,20 +632,377 @@ Eğer bir sorununuz olur ise, bana bildirebilirsiniz.
 		<description>Bu mesaj aboneliği biten abonelere gönderilir.</description>
 	</email_text>
 	<email_text key="SUBSCRIPTION_AFTER_EXPIRY_LAST">
-		<subject>Aboneliğiniz sona erdi - Son anımsatma</subject>
+		<subject>Aboneliğiniz Sona Erdi - Son Hatırlatma</subject>
 		<body>{$subscriberName}:
 
-{$journalName} dergisi abonelik süreniz doldu.
-Bu size gönderdiğimiz son anımsatma olacaktır.
+{$journalName} adlı yayındaki abonelik süreniz dolmuştur.
+
+Bu size gönderdiğimiz son hatırlatmadır.
 
 {$subscriptionType}
 Bitiş tarihi: {$expiryDate}
 
-Aboneliğinizi yenilemek için dergi sitesine giriniz. Sisteme "{$username}" olan kullanıcı adınızı kullanarak girebilirsiniz.
+Aboneliğinizi yenilemek için dergi sitesine giriniz. Sisteme "{$username}" kullanıcı adıyla girebilirsiniz.
 
-Eğer bir sorununuz olur ise, bana bildirebilirsiniz.
+Eğer bir sorununuz olur ise, lütfen bildirebilirsiniz.
 
 {$subscriptionContactSignature}</body>
 		<description>Bu mesaj aboneliği biten abonelere gönderilir. Son mesajdır...</description>
+	</email_text>
+	<email_text key="NOTIFICATION">
+		<subject>{$siteTitle} Adlı Siteden Yeni Bildirim</subject>
+		<body>{$siteTitle} adlı site size yeni bir bildirim gönderdi: 
+
+{$notificationContents}
+
+Bağlantı: {$url}
+
+{$principalContactSignature}</body>
+		<description></description>
+	</email_text>
+	<email_text key="NOTIFICATION_MAILLIST">
+		<subject>{$siteTitle} Adlı  Siteden Yeni Bildirim</subject>
+		<body>{$siteTitle} adlı siteden yeni bir bir bildiriminiz var:
+--
+{$notificationContents}
+
+Bağlantı: {$url}
+--
+
+Eğer bu bildirimi almak istemiyorsanız, lütfen tıklayınız {$unsubscribeLink}.
+
+{$principalContactSignature}</body>
+		<description>Bu e-posta bildirim listesindeki kayıtsız kullanıcılar tarafından gönderilir.</description>
+	</email_text>
+	<email_text key="NOTIFICATION_MAILLIST_WELCOME">
+		<subject>Welcome to the the {$siteTitle} mailing list!</subject>
+		<body>You have signed up to receive notifications from {$siteTitle}.
+
+Please click on this link to confirm your request and add your email address to the mailing list: {$confirmLink}
+
+If you wish to stop receiving notification emails, please go to {$unsubscribeLink}.
+
+{$principalContactSignature}</body>
+		<description>This email is sent to an unregistered user who just registered with the notification mailing list.</description>
+	</email_text>
+	<email_text key="USER_VALIDATE">
+		<subject>Validate Your Account</subject>
+		<body>{$userFullName}
+
+You have created an account with {$journalName}, but before you can start using it, you need to validate your email account. To do this, simply follow the link below:
+
+{$activateUrl}
+
+Thank you,
+{$principalContactSignature}</body>
+		<description>This email is sent to a newly registered user to welcome them to the system and provide them with a record of their username and password.</description>
+	</email_text>
+	<email_text key="REVIEWER_REGISTER">
+		<subject>Registration as Reviewer with {$journalName}</subject>
+		<body>In light of your expertise, we have taken the liberty of registering your name in the reviewer database for {$journalName}. This does not entail any form of commitment on your part, but simply enables us to approach you with a submission to possibly review. On being invited to review, you will have an opportunity to see the title and abstract of the paper in question, and you'll always be in a position to accept or decline the invitation. You can also ask at any point to have your name removed from this reviewer list.
+
+We are providing you with a username and password, which is used in all interactions with the journal through its website. You may wish, for example, to update your profile, including your reviewing interests.
+
+Username: {$username}
+Password: {$password}
+
+Thank you,
+{$principalContactSignature}</body>
+		<description>This email is sent to a newly registered reviewer to welcome them to the system and provide them with a record of their username and password.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_SUBSEQUENT">
+		<subject>Article Review Request</subject>
+		<body>{$reviewerName}:
+
+This regards the manuscript "{$articleTitle}," which is under consideration by {$journalName}.
+
+Following the review of the previous version of the manuscript, the authors have now submitted a revised version of their paper. We would appreciate it if you could help evaluate it.
+
+Please log into the journal web site by {$weekLaterDate} to indicate whether you will undertake the review or not, as well as to access the submission and to record your review and recommendation. The web site is {$journalUrl}
+
+The review itself is due {$reviewDueDate}.
+
+If you do not have your username and password for the journal's web site, you can use this link to reset your password (which will then be emailed to you along with your username). {$passwordResetUrl}
+
+Submission URL: {$submissionReviewUrl}
+
+Thank you for considering this request.
+
+{$editorialContactSignature}
+
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>This email from the Section Editor to a Reviewer requests that the reviewer accept or decline the task of reviewing a submission for a second or greater round of review. It provides information about the submission such as the title and abstract, a review due date, and how to access the submission itself. This message is used when the Standard Review Process is selected in Journal Setup, Step 2. (Otherwise see REVIEW_REQUEST_ATTACHED_SUBSEQUENT.)</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_ONECLICK_SUBSEQUENT">
+		<subject>Article Review Request</subject>
+		<body>{$reviewerName}:
+
+This regards the manuscript "{$articleTitle}," which is under consideration by {$journalName}.
+
+Following the review of the previous version of the manuscript, the authors have now submitted a revised version of their paper. We would appreciate it if you could help evaluate it.
+
+Please log into the journal web site by {$weekLaterDate} to indicate whether you will undertake the review or not, as well as to access the submission and to record your review and recommendation.
+
+The review itself is due {$reviewDueDate}.
+
+Submission URL: {$submissionReviewUrl}
+
+Thank you for considering this request.
+
+{$editorialContactSignature}
+
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>This email from the Section Editor to a Reviewer requests that the reviewer accept or decline the task of reviewing a submission for a second or greater round of review. It provides information about the submission such as the title and abstract, a review due date, and how to access the submission itself. This message is used when the Standard Review Process is selected in Journal Setup, Step 2, and one-click reviewer access is enabled.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_ATTACHED_SUBSEQUENT">
+		<subject>Article Review Request</subject>
+		<body>{$reviewerName}:
+
+This regards the manuscript "{$articleTitle}," which is under consideration by {$journalName}.
+
+Following the review of the previous version of the manuscript, the authors have now submitted a revised version of their paper. We would appreciate it if you could help evaluate it.
+
+The Review Guidelines for this journal are appended below, and the submission is attached to this email. Your review of the submission, along with your recommendation, should be emailed to me by {$reviewDueDate}.
+
+Please indicate in a return email by {$weekLaterDate} whether you are able and willing to do the review.
+
+Thank you for considering this request.
+
+{$editorialContactSignature}
+
+
+Review Guidelines
+
+{$reviewGuidelines}</body>
+		<description>This email is sent by the Section Editor to a Reviewer to request that they accept or decline the task of reviewing a submission for a second or greater round of review. It includes the submission as an attachment. This message is used when the Email-Attachment Review Process is selected in Journal Setup, Step 2. (Otherwise see REVIEW_REQUEST_SUBSEQUENT.)</description>
+	</email_text>
+	<email_text key="EDITOR_DECISION_ACCEPT">
+		<subject>Editör Kararı</subject>
+		<body>{$authorName}:
+
+{$journalTitle} adlı dergiye yayımlanması için değerlendirilmek üzere gönderdiğiniz "{$articleTitle}" başlıklı çalışmanız için bir karara varılmıştır.
+
+Kararımız:
+
+{$editorialContactSignature}</body>
+		<description>This email from the Editor or Section Editor to an Author notifies them of a final decision regarding their submission.</description>
+	</email_text>
+	<email_text key="EDITOR_DECISION_REVISIONS">
+		<subject>Editör Kararı</subject>
+		<body>{$authorName}:
+
+{$journalTitle} adlı dergiye yayımlanması için değerlendirilmek üzere gönderdiğiniz "{$articleTitle}" başlıklı çalışmanız için bir karara varılmıştır.
+
+Kararımız:
+
+{$editorialContactSignature}</body>
+		<description>This email from the Editor or Section Editor to an Author notifies them of a final decision regarding their submission.</description>
+	</email_text>
+	<email_text key="EDITOR_DECISION_RESUBMIT">
+		<subject>Editör Kararı</subject>
+		<body>{$authorName}:
+
+{$journalTitle} adlı dergiye yayımlanması için değerlendirilmek üzere gönderdiğiniz "{$articleTitle}" başlıklı çalışmanız için bir karara varılmıştır.
+
+Kararımız:
+
+{$editorialContactSignature}</body>
+		<description>This email from the Editor or Section Editor to an Author notifies them of a final decision regarding their submission.</description>
+	</email_text>
+	<email_text key="EDITOR_DECISION_DECLINE">
+		<subject>Editör Kararı</subject>
+		<body>{$authorName}:
+
+{$journalTitle} adlı dergiye yayımlanması için değerlendirilmek üzere gönderdiğiniz "{$articleTitle}" başlıklı çalışmanız için bir karara varılmıştır.
+
+Kararımız:
+
+{$editorialContactSignature}</body>
+		<description>This email from the Editor or Section Editor to an Author notifies them of a final decision regarding their submission.</description>
+	</email_text>
+	<email_text key="SUBSCRIPTION_PURCHASE_INDL">
+		<subject>Subscription Purchase: Individual</subject>
+		<body>An individual subscription has been purchased online for {$journalName} with the following details.
+
+Subscription Type:
+{$subscriptionType}
+
+User:
+{$userDetails}
+
+Membership Information (if provided):
+{$membership}
+
+To view or edit this subscription, please use the following URL.
+
+Subscription URL: {$subscriptionUrl}</body>
+		<description>This email notifies the Subscription Manager that an individual subscription has been purchased online. It provides summary information about the subscription and a quick access link to the purchased subscription.</description>
+	</email_text>
+	<email_text key="SUBSCRIPTION_PURCHASE_INSTL">
+		<subject>Subscription Purchase: Institutional</subject>
+		<body>An institutional subscription has been purchased online for {$journalName} with the following details. To activate this subscription, please use the provided Subscription URL and set the subscription status to 'Active'.
+
+Subscription Type:
+{$subscriptionType}
+
+Institution:
+{$institutionName}
+{$institutionMailingAddress}
+
+Domain (if provided):
+{$domain}
+
+IP Ranges (if provided):
+{$ipRanges}
+
+Contact Person:
+{$userDetails}
+
+Membership Information (if provided):
+{$membership}
+
+To view or edit this subscription, please use the following URL.
+
+Subscription URL: {$subscriptionUrl}</body>
+		<description>This email notifies the Subscription Manager that an institutional subscription has been purchased online. It provides summary information about the subscription and a quick access link to the purchased subscription.</description>
+	</email_text>
+	<email_text key="SUBSCRIPTION_RENEW_INDL">
+		<subject>Subscription Renewal: Individual</subject>
+		<body>An individual subscription has been renewed online for {$journalName} with the following details.
+
+Subscription Type:
+{$subscriptionType}
+
+User:
+{$userDetails}
+
+Membership Information (if provided):
+{$membership}
+
+To view or edit this subscription, please use the following URL.
+
+Subscription URL: {$subscriptionUrl}</body>
+		<description>This email notifies the Subscription Manager that an individual subscription has been renewed online. It provides summary information about the subscription and a quick access link to the renewed subscription.</description>
+	</email_text>
+	<email_text key="SUBSCRIPTION_RENEW_INSTL">
+		<subject>Subscription Renewal: Institutional</subject>
+		<body>An institutional subscription has been renewed online for {$journalName} with the following details.
+
+Subscription Type:
+{$subscriptionType}
+
+Institution:
+{$institutionName}
+{$institutionMailingAddress}
+
+Domain (if provided):
+{$domain}
+
+IP Ranges (if provided):
+{$ipRanges}
+
+Contact Person:
+{$userDetails}
+
+Membership Information (if provided):
+{$membership}
+
+To view or edit this subscription, please use the following URL.
+
+Subscription URL: {$subscriptionUrl}</body>
+		<description>This email notifies the Subscription Manager that an institutional subscription has been renewed online. It provides summary information about the subscription and a quick access link to the renewed subscription.</description>
+	</email_text>
+	<email_text key="CITATION_EDITOR_AUTHOR_QUERY">
+		<subject>Atıf Düzenleme</subject>
+		<body>{$authorFirstName},
+
+Could you please verify or provide us with the proper citation for the following reference from your article, {$articleTitle}:
+
+{$rawCitation}
+
+Thanks!
+
+{$userFirstName}
+Copy-Editor, {$journalName}</body>
+		<description>This email allows copyeditors to request additional information about references from authors.</description>
+	</email_text>
+	<email_text key="GIFT_AVAILABLE">
+		<subject>{$giftNoteTitle}</subject>
+		<body>Dear {$recipientFirstName},
+
+{$buyerFullName} would like to share a gift with you at {$giftJournalName}:
+
+{$giftDetails}
+
+
+{$giftNote}
+
+
+You will receive a follow-up email that includes login details and instructions for redeeming your gift.
+
+We hope that you enjoy your gift!
+
+{$giftContactSignature}</body>
+		<description>This email notifies a gift recipient that a gift has been purchased and is available for redemption.</description>
+	</email_text>
+	<email_text key="GIFT_USER_REGISTER">
+		<subject>Redeem Your Gift: Login Details</subject>
+		<body>Dear {$recipientFirstName},
+
+{$buyerFullName} would like to share a gift with you at {$giftJournalName}:
+
+{$giftDetails}
+
+
+To redeem your gift, please login to the journal website at {$giftUrl}
+
+Your username: {$username}
+Your password: {$password}
+
+Once logged in, you can change your password at any time.
+
+We hope that you enjoy your gift!
+
+{$giftContactSignature}</body>
+		<description>This email notifies a gift recipient of their login details for a new account.</description>
+	</email_text>
+	<email_text key="GIFT_USER_LOGIN">
+		<subject>Redeem Your Gift: Login Details</subject>
+		<body>Dear {$recipientFirstName},
+
+{$buyerFullName} would like to share a gift with you at {$giftJournalName}:
+
+{$giftDetails}
+
+
+To redeem your gift, please login to the journal website at {$giftUrl}
+
+Your username: {$username}
+
+We hope that you enjoy your gift!
+
+{$giftContactSignature}</body>
+		<description>This email notifies a gift recipient of their login details.</description>
+	</email_text>
+	<email_text key="REVISED_VERSION_NOTIFY">
+		<subject>Revised Version Uploaded</subject>
+		<body>{$editorialContactName}:
+
+A revised version of "{$articleTitle}" has been uploaded by the author {$authorName}.
+
+Submission URL: {$submissionUrl}
+
+{$editorialContactSignature}</body>
+		<description>This email is automatically sent to the assigned editor when author uploads a revised version of an article.</description>
 	</email_text>
 </email_texts>

@@ -1,12 +1,11 @@
 {**
- * index.tpl
+ * plugins/generic/sword/authorDepositForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * Display list of deposit points. 
+ * Display list of deposit points.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.generic.sword.displayName"}

@@ -3,7 +3,7 @@
 /**
  * @file lib/pkp/controllers/grid/filter/LookupFilterGridHandler.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LookupFilterGridHandler
@@ -26,12 +26,9 @@ class LookupFilterGridHandler extends FilterGridHandler {
 	 * @see PKPHandler::initialize()
 	 */
 	function initialize($request) {
-		// Set the input and output sample which
-		// define the filters configured in this
-		// grid.
-		$inputSample = $outputSample = new MetadataDescription('lib.pkp.classes.metadata.nlm.NlmCitationSchema', ASSOC_TYPE_CITATION);
-		$this->setInputSample($inputSample);
-		$this->setOutputSample($outputSample);
+		// Set the filter group defining the filters
+		// configured in this grid.
+		$this->setFilterGroupSymbolic(CITATION_LOOKUP_FILTER_GROUP);
 
 		// Set the title and form description of this grid
 		$this->setTitle('manager.setup.filter.lookup.grid.title');
@@ -40,3 +37,5 @@ class LookupFilterGridHandler extends FilterGridHandler {
 		parent::initialize($request);
 	}
 }
+
+?>

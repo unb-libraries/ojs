@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file NavigationBlockPlugin.inc.php
+ * @file plugins/blocks/navigation/NavigationBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NavigationBlockPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Class for navigation block plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.BlockPlugin');
 
@@ -56,12 +53,12 @@ class NavigationBlockPlugin extends BlockPlugin {
 	 */
 	function getContents(&$templateMgr) {
 		$templateMgr->assign('articleSearchByOptions', array(
-			'' => 'search.allFields',
-			ARTICLE_SEARCH_AUTHOR => 'search.author',
-			ARTICLE_SEARCH_TITLE => 'article.title',
-			ARTICLE_SEARCH_ABSTRACT => 'search.abstract',
-			ARTICLE_SEARCH_INDEX_TERMS => 'search.indexTerms',
-			ARTICLE_SEARCH_GALLEY_FILE => 'search.fullText'
+			'query' => 'search.allFields',
+			'authors' => 'search.author',
+			'title' => 'article.title',
+			'abstract' => 'search.abstract',
+			'indexTerms' => 'search.indexTerms',
+			'galleyFullText' => 'search.fullText'
 		));
 		return parent::getContents($templateMgr);
 	}

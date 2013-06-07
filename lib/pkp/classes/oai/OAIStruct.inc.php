@@ -3,7 +3,7 @@
 /**
  * @file classes/oai/OAIStruct.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIConfig
@@ -13,7 +13,8 @@
  * @brief Data structures associated with the OAI request handler.
  */
 
-
+define('OAIRECORD_STATUS_DELETED', 0);
+define('OAIRECORD_STATUS_ALIVE', 1);
 
 /**
  * OAI repository configuration.
@@ -74,13 +75,13 @@ class OAIRepository {
 
 	/** @var $sampleIdentifier string example identifier */
 	var $sampleIdentifier;
-	
+
 	/** @var $toolkitTitle string toolkit/software title (e.g. Open Journal Systems) */
 	var $toolkitTitle;
-	
+
 	/** @var $toolkitVersion string toolkit/software version */
 	var $toolkitVersion;
-	
+
 	/** @var $toolkitURL string toolkit/software URL */
 	var $toolkitURL;
 }
@@ -158,11 +159,13 @@ class OAIMetadataFormat {
 		return '';
 	}
 
+	/**
+	 * Recursively strip HTML from a (multidimensional) array.
+	 * @param $values array
+	 * @return array the cleansed array
+	 */
 	function stripAssocArray($values) {
-		foreach (array_keys($values) as $key) {
-			$values[$key] = strip_tags($values[$key]);
-		}
-		return $values;
+		return stripAssocArray($values);
 	}
 }
 
@@ -206,6 +209,9 @@ class OAIIdentifier {
 
 	/** @var $sets array sets this record belongs to */
 	var $sets;
+
+	/** @var $status string if this record is deleted */
+	var $status;
 
 	function OAIIdentifier() {
 	}

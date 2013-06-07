@@ -1,12 +1,11 @@
 {**
- * index.tpl
+ * plugins/importexport/quickSubmit/index.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Template for one-page submission form
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.quickSubmit.displayName"}
@@ -18,7 +17,7 @@
 <!--
 // Move author up/down
 function moveAuthor(dir, authorIndex) {
-	var form = document.submit;
+	var form = document.getElementById('submit');
 	form.moveAuthor.value = 1;
 	form.moveAuthorDir.value = dir;
 	form.moveAuthorIndex.value = authorIndex;
@@ -28,8 +27,8 @@ function moveAuthor(dir, authorIndex) {
 // Update the required attribute of the abstract field
 function updateAbstractRequired() {
 	var a = {{/literal}{foreach from=$sectionAbstractsRequired key=rSectionId item=rAbstractRequired}{$rSectionId|escape}: {$rAbstractRequired|escape}, {/foreach}{literal}};
-	var selectedIndex = document.submit.sectionId.selectedIndex;
-	var sectionId = document.submit.sectionId.options[selectedIndex].value;
+	var selectedIndex = document.getElementById('submit').sectionId.selectedIndex;
+	var sectionId = document.getElementById('submit').sectionId.options[selectedIndex].value;
 	var abstractRequired = a[sectionId];
 	var e = document.getElementById("abstractRequiredAsterisk");
 	e.style.visibility = abstractRequired?"visible":"hidden";
@@ -40,7 +39,7 @@ function updateAbstractRequired() {
 
 <p>{translate key="plugins.importexport.quickSubmit.descriptionLong"}</p>
 
-<form enctype="multipart/form-data" name="submit" method="post" action="{plugin_url path="saveSubmit"}">
+<form enctype="multipart/form-data" id="submit" method="post" action="{plugin_url path="saveSubmit"}">
 
 {include file="common/formErrors.tpl"}
 
@@ -81,13 +80,13 @@ function updateAbstractRequired() {
 	<table class="data" width="100%">
 		<tr valign="top">
 			<td class="label" width="5%">
-				<input type="radio" name="destination" id="destinationUnpublished" value="queue" {if not $publishToIssue} checked="checked"{/if}{if $enablePageNumber} onclick="document.submit.pages.disabled = true;document.submit.pagesHidden.value = document.submit.pages.value; document.submit.pages.value = '';"{/if}/>
+				<input type="radio" name="destination" id="destinationUnpublished" value="queue" {if not $publishToIssue} checked="checked"{/if}{if $enablePageNumber} onclick="document.getElementById('submit').pages.disabled = true;document.getElementById('submit').pagesHidden.value = document.getElementById('submit').pages.value; document.getElementById('submit').pages.value = '';"{/if}/>
 			</td>
 			<td colspan="2" class="value" width="95%">{fieldLabel name="destinationUnpublished" key="plugins.importexport.quickSubmit.leaveUnpublished"}</td>
 		</tr>
 		<tr valign="top">
 			<td rowspan="2" class="label">
-				<input type="radio" id="destinationIssue" name="destination" value="issue" {if $publishToIssue} checked="checked"{/if}{if $enablePageNumber} onclick="document.submit.pages.disabled = false;document.submit.pages.value = document.submit.pagesHidden.value;"{/if}/>
+				<input type="radio" id="destinationIssue" name="destination" value="issue" {if $publishToIssue} checked="checked"{/if}{if $enablePageNumber} onclick="document.getElementById('submit').pages.disabled = false;document.getElementById('submit').pages.value = document.getElementById('submit').pagesHidden.value;"{/if}/>
 			</td>
 			<td width="20%" class="value">
 				{fieldLabel name="destinationIssue" key="plugins.importexport.quickSubmit.addToExisting"}
@@ -127,7 +126,7 @@ function updateAbstractRequired() {
 		{/if}{* $enablePageNumber *}
 	</table>
 </div> <!-- /chooseDestination -->
-	 
+
 <div class="separator"></div>
 
 <br />
@@ -145,20 +144,20 @@ function updateAbstractRequired() {
 			{/foreach}
 		{else}{* if count($sectionOptions) == 2 *}
 		<h4>{translate key="author.submit.journalSection"}</h4>
-		
+
 		{url|assign:"url" page="about"}
 		<p>{translate key="author.submit.journalSectionDescription" aboutUrl=$url}</p>
 
 		<table class="data" width="100%">
-			<tr valign="top">	
+			<tr valign="top">
 				<td width="30%" class="label">{fieldLabel name="sectionId" required="true" key="section.section"}</td>
 				<td width="70%" class="value"><select name="sectionId" id="sectionId" size="1" class="selectMenu" onchange="updateAbstractRequired()">{html_options options=$sectionOptions selected=$sectionId}</select></td>
 			</tr>
 		</table>
-		
+
 		{/if}{* if count($sectionOptions) == 2 *}
 	</div> <!-- /section -->
-	
+
 	<div id="submissionFile">
 		<h4>{translate key="author.submit.submissionFile"}</h4>
 		<table class="data" width="100%">
@@ -182,7 +181,7 @@ function updateAbstractRequired() {
 		{/if}
 		</table>
 	</div> <!-- /submissionFile -->
-	
+
 	<div id="addSubmissionFile">
 		<input type="hidden" name="tempFileId[{$formLocale|escape}]" id="tempFileId" value="{$tempFileId[$formLocale]|escape}" />
 		<table class="data" width="100%">
@@ -200,7 +199,7 @@ function updateAbstractRequired() {
 		</tr>
 		</table>
 	</div>  <!-- /addSubmissionFile -->
-	
+
 	<div id="authors">
 		<h4>{translate key="article.authors"}</h4>
 		<input type="hidden" name="moveAuthor" value="0" />
@@ -213,7 +212,7 @@ function updateAbstractRequired() {
 			{if $smarty.foreach.authors.total <= 1}
 			<input type="hidden" name="primaryContact" value="{$authorIndex|escape}" />
 			{/if}
-			
+
 			<table width="100%" class="data">
 			<tr valign="top">
 				<td width="30%" class="label">{fieldLabel name="authors-$authorIndex-firstName" required="true" key="user.firstName"}</td>
@@ -233,7 +232,7 @@ function updateAbstractRequired() {
 			</tr>
 			<tr valign="top">
 				<td class="label">{fieldLabel name="authors-$authorIndex-url" key="user.url"}</td>
-				<td class="value"><input type="text" name="authors[{$authorIndex|escape}][url]" id="authors-{$authorIndex|escape}-url" value="{$author.url|escape}" size="30" maxlength="90" class="textField" /></td>
+				<td class="value"><input type="text" name="authors[{$authorIndex|escape}][url]" id="authors-{$authorIndex|escape}-url" value="{$author.url|escape}" size="30" maxlength="255" class="textField" /></td>
 			</tr>
 			<tr valign="top">
 				<td width="30%" class="label">{fieldLabel name="authors-$authorIndex-affiliation" key="user.affiliation"}</td>
@@ -273,7 +272,7 @@ function updateAbstractRequired() {
 			</tr>
 			{/if}
 			</table>
-			
+
 			{if !$smarty.foreach.authors.last}<div class="separator" style="width:70%"></div>{/if}
 		{foreachelse}
 			<input type="hidden" name="authors[0][authorId]" value="0" />
@@ -311,7 +310,7 @@ function updateAbstractRequired() {
 			</tr>
 			<tr valign="top">
 				<td width="30%" class="label">{fieldLabel name="authors-0-url" key="user.url"}</td>
-				<td width="70%" class="value"><input type="text" class="textField" name="authors[0][url]" id="authors-0-url" size="30" maxlength="90" /></td>
+				<td width="70%" class="value"><input type="text" class="textField" name="authors[0][url]" id="authors-0-url" size="30" maxlength="255" /></td>
 			</tr>
 			{if $journal->getSetting('requireAuthorCompetingInterests')}
 			<tr valign="top">
@@ -325,20 +324,20 @@ function updateAbstractRequired() {
 			</tr>
 			</table>
 		{/foreach}
-		
+
 		<p><input type="submit" class="button" name="addAuthor" value="{translate key="author.submit.addAuthor"}" /></p>
 	</div> <!-- /authors -->
-	
+
 	<div id="titleAndAbstract">
 		<h4>{translate key="submission.titleAndAbstract"}</h4>
-		
+
 		<table width="100%" class="data">
-		
+
 		<tr valign="top">
 			<td width="30%" class="label">{fieldLabel name="title" required="true" key="article.title"}</td>
 			<td width="70%" class="value"><input type="text" class="textField" name="title[{$formLocale|escape}]" id="title" value="{$title[$formLocale]|escape}" size="60" maxlength="255" /></td>
 		</tr>
-		
+
 		<tr valign="top">
 			{if $sectionAbstractsRequired[$sectionId]}
 				{* If a section is already chosen, respect the "required" flag *}
@@ -349,7 +348,7 @@ function updateAbstractRequired() {
 		</tr>
 		</table>
 	</div> <!-- /titleAndAbstract -->
-	
+
 	<div id="indexing">
 		<h4>{translate key="submission.indexing"}</h4>
 		{if $journal->getSetting('metaDiscipline') || $journal->getSetting('metaSubjectClass') || $journal->getSetting('metaSubject') || $journal->getSetting('metaCoverage') || $journal->getSetting('metaType')}<p>{translate key="author.submit.submissionIndexingDescription"}</p>{/if}
@@ -369,7 +368,7 @@ function updateAbstractRequired() {
 			<td>&nbsp;</td>
 		</tr>
 		{/if}
-		
+
 		{if $journal->getSetting('metaSubjectClass')}
 		<tr valign="top">
 			<td rowspan="2" width="30%" class="label">{fieldLabel name="subjectClass" key="article.subjectClassification"}</td>
@@ -383,7 +382,7 @@ function updateAbstractRequired() {
 			<td>&nbsp;</td>
 		</tr>
 		{/if}
-		
+
 		{if $journal->getSetting('metaSubject')}
 		<tr valign="top">
 			<td{if $journal->getLocalizedSetting('metaSubjectExamples') != ''} rowspan="2"{/if} width="30%" class="label">{fieldLabel name="subject" key="article.subject"}</td>
@@ -399,7 +398,7 @@ function updateAbstractRequired() {
 			<td>&nbsp;</td>
 		</tr>
 		{/if}
-		
+
 		{if $journal->getSetting('metaCoverage')}
 		<tr valign="top">
 			<td{if $journal->getLocalizedSetting('metaCoverageGeoExamples') != ''} rowspan="2"{/if} width="30%" class="label">{fieldLabel name="coverageGeo" key="article.coverageGeo"}</td>
@@ -441,13 +440,13 @@ function updateAbstractRequired() {
 			<td>&nbsp;</td>
 		</tr>
 		{/if}
-		
+
 		{if $journal->getSetting('metaType')}
 		<tr valign="top">
 			<td width="30%" {if $journal->getLocalizedSetting('metaTypeExamples') != ''}rowspan="2" {/if}class="label">{fieldLabel name="type" key="article.type"}</td>
 			<td width="70%" class="value"><input type="text" class="textField" name="type[{$formLocale|escape}]" id="type" value="{$type[$formLocale]|escape}" size="40" maxlength="255" /></td>
 		</tr>
-	
+
 		{if $journal->getLocalizedSetting('metaTypeExamples') != ''}
 		<tr valign="top">
 			<td><span class="instruct">{$journal->getLocalizedSetting('metaTypeExamples')|escape}</span></td>
@@ -458,7 +457,7 @@ function updateAbstractRequired() {
 			<td>&nbsp;</td>
 		</tr>
 		{/if}
-		
+
 		<tr valign="top">
 			<td rowspan="2" width="30%" class="label">{fieldLabel name="language" key="article.language"}</td>
 			<td width="70%" class="value"><input type="text" class="textField" name="language" id="language" value="{$language|escape}" size="5" maxlength="10" /></td>
@@ -468,11 +467,11 @@ function updateAbstractRequired() {
 		</tr>
 		</table>
 	</div> <!-- /indexing -->
-	
+
 	<div id="submissionSupportingAgencies">
 	<h3>{translate key="author.submit.submissionSupportingAgencies"}</h3>
 	<p>{translate key="author.submit.submissionSupportingAgenciesDescription"}</p>
-	
+
 	<table width="100%" class="data">
 	<tr valign="top">
 		<td width="30%" class="label">{fieldLabel name="sponsor" key="submission.agencies"}</td>
@@ -480,13 +479,13 @@ function updateAbstractRequired() {
 	</tr>
 	</table>
 	</div> <!-- /submissionSupportingAgencies -->
-	
+
 	{if $journal->getSetting('metaCitations')}
 	<div id="metaCitations">
 	<h4>{translate key="submission.citations"}</h4>
-	
+
 	<p>{translate key="author.submit.submissionCitations"}</p>
-	
+
 	<table width="100%" class="data">
 		<tr valign="top">
 			<td width="30%" class="label">{fieldLabel name="citations" key="submission.citations"}</td>
@@ -499,8 +498,8 @@ function updateAbstractRequired() {
 
 <div class="separator"></div>
 
-<p><input type="submit" value="{translate key="common.saveAndContinue"}" class="button defaultButton" />   
-<input type="submit" class="button" name="createAnother" value="{translate key="plugins.importexport.quickSubmit.saveAndCreateAnother"}" />    
+<p><input type="submit" value="{translate key="common.saveAndContinue"}" class="button defaultButton" />
+<input type="submit" class="button" name="createAnother" value="{translate key="plugins.importexport.quickSubmit.saveAndCreateAnother"}" />
 <input type="button" value="{translate key="common.cancel"}" class="button" onclick="confirmAction('{url page="author"}', '{translate|escape:"jsparam" key="author.submit.cancelSubmission"}')" /></p>
 
 <p><span class="formRequired">{translate key="common.requiredField"}</span></p>

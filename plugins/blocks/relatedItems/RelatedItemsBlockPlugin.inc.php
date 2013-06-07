@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RelatedItemsBlockPlugin.inc.php
+ * @file plugins/blocks/relatedItems/RelatedItemsBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RelatedItemsBlockPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Class for related items block plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.BlockPlugin');
 

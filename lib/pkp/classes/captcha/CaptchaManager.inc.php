@@ -3,7 +3,7 @@
 /**
  * @file classes/captcha/CaptchaManager.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CaptchaManager
@@ -12,8 +12,6 @@
  *
  * @brief Class providing captcha services.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.file.FileManager');
@@ -36,7 +34,7 @@ class CaptchaManager {
 		$captchaDao =& DAORegistry::getDAO('CaptchaDAO');
 		$session =& Request::getSession();
 		if ($session && $this->isEnabled()) {
-			$captcha = new Captcha();
+			$captcha = $captchaDao->newDataObject();
 			$captcha->setSessionId($session->getId());
 			$captcha->setValue(Validation::generatePassword($length));
 			$captchaDao->insertCaptcha($captcha);

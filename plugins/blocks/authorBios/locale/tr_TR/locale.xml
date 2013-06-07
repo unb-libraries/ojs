@@ -2,19 +2,18 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/blocks/authorBios/locale/tr_TR/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the tr_TR (Turkish) locale.
   *
-  * $Id$
   -->
 
 <locale name="tr_TR" full_name="Türkiye Türkçesi">
 	<message key="plugins.block.authorBios.displayName">Yazar Biyografi Bloğu</message>
-	<message key="plugins.block.authorBios.description">Bu eklenti yantaraf okuma araçlarında yazar biyografisinin görüntülenmesini sağlar.</message>
+	<message key="plugins.block.authorBios.description">Bu eklenti yan taraf okuma araçlarında yazar biyografisinin görüntülenmesini sağlar.</message>
 	<message key="plugins.block.authorBios.title">Yazarlar Hakkında</message>
 	<message key="plugins.block.authorBios.aboutTheAuthor">Yazar Hakkında</message>
 	<message key="plugins.block.authorBios.aboutTheAuthors">Yazarlar Hakkında</message>

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file DOAJExportDom.inc.php
+ * @file plugins/importexport/doaj/DOAJExportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DOAJExportDom
@@ -11,9 +11,6 @@
  *
  * @brief DOAJ import/export plugin DOM functions for export
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -94,10 +91,10 @@ class DOAJExportDom {
 			XMLCustomWriter::createChildWithText($doc, $root, 'endPage', $matches[1]);
 		}
 
-		XMLCustomWriter::createChildWithText($doc, $root, 'doi',  $article->getDoi(), false);
+		XMLCustomWriter::createChildWithText($doc, $root, 'doi',  $article->getPubId('doi'), false);
 
 		/* --- Article's publication date, volume, issue, DOI --- */
-		XMLCustomWriter::createChildWithText($doc, $root, 'publisherRecordId',  $article->getPubId(), false);
+		XMLCustomWriter::createChildWithText($doc, $root, 'publisherRecordId',  $article->getPublishedArticleId(), false);
 
 		XMLCustomWriter::createChildWithText($doc, $root, 'documentType',  $article->getLocalizedType(), false);
 
@@ -203,7 +200,7 @@ class DOAJExportDom {
 	 * @return string
 	 */
 	function file_ext($filename) {
-		return strtolower(str_replace(".", "", strrchr($filename, ".")));
+		return strtolower_codesafe(str_replace('.', '', strrchr($filename, '.')));
 	}
 
 	/**

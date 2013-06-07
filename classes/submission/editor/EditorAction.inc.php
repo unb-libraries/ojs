@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/editor/EditorAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorAction
@@ -11,9 +11,6 @@
  *
  * @brief EditorAction class.
  */
-
-// $Id$
-
 
 import('classes.submission.sectionEditor.SectionEditorAction');
 
@@ -25,18 +22,22 @@ class EditorAction extends SectionEditorAction {
 	/**
 	 * Assigns a section editor to a submission.
 	 * @param $articleId int
+	 * @param $sectionEditorId int
+	 * @param $isEditor boolean
+	 * @param $send boolean
+	 * @param $request object
 	 * @return boolean true iff ready for redirect
 	 */
-	function assignEditor($articleId, $sectionEditorId, $isEditor = false, $send = false) {
+	function assignEditor($articleId, $sectionEditorId, $isEditor, $send, $request) {
 		$editorSubmissionDao =& DAORegistry::getDAO('EditorSubmissionDAO');
 		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
 		$userDao =& DAORegistry::getDAO('UserDAO');
 
-		$user =& Request::getUser();
-		$journal =& Request::getJournal();
+		$user =& $request->getUser();
+		$journal =& $request->getJournal();
 
 		$editorSubmission =& $editorSubmissionDao->getEditorSubmission($articleId);
-		$sectionEditor =& $userDao->getUser($sectionEditorId);
+		$sectionEditor =& $userDao->getById($sectionEditorId);
 		if (!isset($sectionEditor)) return true;
 
 		import('classes.mail.ArticleMailTemplate');
@@ -45,8 +46,7 @@ class EditorAction extends SectionEditorAction {
 		if ($user->getId() === $sectionEditorId || !$email->isEnabled() || ($send && !$email->hasErrors())) {
 			HookRegistry::call('EditorAction::assignEditor', array(&$editorSubmission, &$sectionEditor, &$isEditor, &$email));
 			if ($email->isEnabled() && $user->getId() !== $sectionEditorId) {
-				$email->setAssoc(ARTICLE_EMAIL_EDITOR_ASSIGN, ARTICLE_EMAIL_TYPE_EDITOR, $sectionEditor->getId());
-				$email->send();
+				$email->send($request);
 			}
 
 			$editAssignment = new EditAssignment();
@@ -67,23 +67,22 @@ class EditorAction extends SectionEditorAction {
 
 			// Add log
 			import('classes.article.log.ArticleLog');
-			import('classes.article.log.ArticleEventLogEntry');
-			ArticleLog::logEvent($articleId, ARTICLE_LOG_EDITOR_ASSIGN, ARTICLE_LOG_TYPE_EDITOR, $sectionEditorId, 'log.editor.editorAssigned', array('editorName' => $sectionEditor->getFullName(), 'articleId' => $articleId));
+			ArticleLog::logEvent($request, $editorSubmission, ARTICLE_LOG_EDITOR_ASSIGN, 'log.editor.editorAssigned', array('editorName' => $sectionEditor->getFullName(), 'editorId' => $sectionEditorId));
 			return true;
 		} else {
-			if (!Request::getUserVar('continued')) {
+			if (!$request->getUserVar('continued')) {
 				$email->addRecipient($sectionEditor->getEmail(), $sectionEditor->getFullName());
 				$paramArray = array(
 					'editorialContactName' => $sectionEditor->getFullName(),
 					'editorUsername' => $sectionEditor->getUsername(),
 					'editorPassword' => $sectionEditor->getPassword(),
 					'editorialContactSignature' => $user->getContactSignature(),
-					'submissionUrl' => Request::url(null, $isEditor?'editor':'sectionEditor', 'submissionReview', $articleId),
-					'submissionEditingUrl' => Request::url(null, $isEditor?'editor':'sectionEditor', 'submissionReview', $articleId)
+					'submissionUrl' => $request->url(null, $isEditor?'editor':'sectionEditor', 'submissionReview', $articleId),
+					'submissionEditingUrl' => $request->url(null, $isEditor?'editor':'sectionEditor', 'submissionReview', $articleId)
 				);
 				$email->assignParams($paramArray);
 			}
-			$email->displayEditForm(Request::url(null, null, 'assignEditor', 'send'), array('articleId' => $articleId, 'editorId' => $sectionEditorId));
+			$email->displayEditForm($request->url(null, null, 'assignEditor', 'send'), array('articleId' => $articleId, 'editorId' => $sectionEditorId));
 			return false;
 		}
 	}
@@ -92,8 +91,8 @@ class EditorAction extends SectionEditorAction {
 	 * Rush a new submission into the end of the editing queue.
 	 * @param $article object
 	 */
-	function expediteSubmission($article) {
-		$user =& Request::getUser();
+	function expediteSubmission($article, $request) {
+		$user =& $request->getUser();
 
 		import('classes.submission.editor.EditorAction');
 		import('classes.submission.sectionEditor.SectionEditorAction');
@@ -104,29 +103,30 @@ class EditorAction extends SectionEditorAction {
 
 		$submissionFile = $sectionEditorSubmission->getSubmissionFile();
 
-		// Add a long entry before doing anything.
+		// Add a log entry before doing anything.
 		import('classes.article.log.ArticleLog');
 		import('classes.article.log.ArticleEventLogEntry');
-		ArticleLog::logEvent($article->getId(), ARTICLE_LOG_EDITOR_EXPEDITE, ARTICLE_LOG_TYPE_EDITOR, $user->getId(), 'log.editor.submissionExpedited', array('editorName' => $user->getFullName(), 'articleId' => $article->getId()));
+		ArticleLog::logEvent($request, $article, ARTICLE_LOG_EDITOR_EXPEDITE, 'log.editor.submissionExpedited', array('editorName' => $user->getFullName()));
 
 		// 1. Ensure that an editor is assigned.
 		$editAssignments =& $sectionEditorSubmission->getEditAssignments();
 		if (empty($editAssignments)) {
 			// No editors are currently assigned; assign self.
-			EditorAction::assignEditor($article->getId(), $user->getId(), true);
+			EditorAction::assignEditor($article->getId(), $user->getId(), true, false, $request);
 		}
 
 		// 2. Accept the submission and send to copyediting.
 		$sectionEditorSubmission =& $sectionEditorSubmissionDao->getSectionEditorSubmission($article->getId());
 		if (!$sectionEditorSubmission->getFileBySignoffType('SIGNOFF_COPYEDITING_INITIAL', true)) {
-			SectionEditorAction::recordDecision($sectionEditorSubmission, SUBMISSION_EDITOR_DECISION_ACCEPT);
+			SectionEditorAction::recordDecision($sectionEditorSubmission, SUBMISSION_EDITOR_DECISION_ACCEPT, $request);
 			$reviewFile = $sectionEditorSubmission->getReviewFile();
-			SectionEditorAction::setCopyeditFile($sectionEditorSubmission, $reviewFile->getFileId(), $reviewFile->getRevision());
+			SectionEditorAction::setCopyeditFile($sectionEditorSubmission, $reviewFile->getFileId(), $reviewFile->getRevision(), $request);
 		}
 
 		// 3. Add a galley.
 		$sectionEditorSubmission =& $sectionEditorSubmissionDao->getSectionEditorSubmission($article->getId());
 		$galleys =& $sectionEditorSubmission->getGalleys();
+		$articleSearchIndex = null;
 		if (empty($galleys)) {
 			// No galley present -- use copyediting file.
 			import('classes.file.ArticleFileManager');
@@ -163,11 +163,13 @@ class EditorAction extends SectionEditorAction {
 
 			// Update file search index
 			import('classes.search.ArticleSearchIndex');
-			ArticleSearchIndex::updateFileIndex($article->getId(), ARTICLE_SEARCH_GALLEY_FILE, $fileId);
+			$articleSearchIndex = new ArticleSearchIndex();
+			$articleSearchIndex->articleFileChanged($article->getId(), ARTICLE_SEARCH_GALLEY_FILE, $fileId);
 		}
 
 		$sectionEditorSubmission->setStatus(STATUS_QUEUED);
 		$sectionEditorSubmissionDao->updateSectionEditorSubmission($sectionEditorSubmission);
+		if ($articleSearchIndex) $articleSearchIndex->articleChangesFinished();
 	}
 }
 

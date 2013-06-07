@@ -1,12 +1,11 @@
 {**
- * issues.tpl
+ * plugins/importexport/pubmed/issues.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of issues to potentially export
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.pubmed.export.selectIssue"}
@@ -18,7 +17,7 @@
 {literal}
 <!--
 function toggleChecked() {
-	var elements = document.issues.elements;
+	var elements = document.getElementById('issues').elements;
 	for (var i=0; i < elements.length; i++) {
 		if (elements[i].name == 'issueId[]') {
 			elements[i].checked = !elements[i].checked;
@@ -32,7 +31,7 @@ function toggleChecked() {
 <br/>
 
 <div id="issues">
-<form action="{plugin_url path="exportIssues"}" method="post" name="issues">
+<form action="{plugin_url path="exportIssues"}" method="post" id="issues">
 <table width="100%" class="listing">
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
@@ -47,7 +46,7 @@ function toggleChecked() {
 	<tr>
 		<td colspan="5" class="headseparator">&nbsp;</td>
 	</tr>
-	
+
 	{iterate from=issues item=issue}
 	<tr valign="top">
 		<td><input type="checkbox" name="issueId[]" value="{$issue->getId()}"/></td>

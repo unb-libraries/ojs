@@ -1,12 +1,11 @@
 {**
- * subscriptionPolicyForm.tpl
+ * templates/subscription/subscriptionPolicyForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Setup subscription policies.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="manager.subscriptionPolicies"}
@@ -28,7 +27,7 @@
 {translate key="manager.subscriptionPolicies.subscriptionPoliciesSaved"}<br />
 {/if}
 
-<form name="subscriptionPolicies" method="post" action="{url op="saveSubscriptionPolicies"}">
+<form id="subscriptionPolicies" method="post" action="{url op="saveSubscriptionPolicies"}">
 {include file="common/formErrors.tpl"}
 
 	<script type="text/javascript">

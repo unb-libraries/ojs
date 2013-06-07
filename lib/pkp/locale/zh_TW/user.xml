@@ -4,12 +4,11 @@
 <!--
   * locale/zh_TW/user.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the zh_TW (繁體中文) locale.
   *
-  * $Id$
   -->
 
 <locale name="zh_TW" full_name = "繁體中文">
@@ -35,7 +34,6 @@
 	<message key="user.login.forgotPassword">忘了您的密碼？</message>
 	<message key="user.login.loginError">無效的使用者名稱或密碼。請再試一次。</message>
 	<message key="user.login">登入</message>
-	<message key="user.logIn">登入</message>
 	<message key="user.login.lostPassword.confirmationSent">一封確認信已經寄發到您的電子郵件地址去了。請按照郵件中的指引來重新設定您的密碼。</message>
 	<message key="user.login.lostPassword.invalidHash">抱歉，您點擊的連結已經過了有效期限，或者是無效連結。請試著再次重設您的密碼。</message>
 	<message key="user.login.lostPassword.invalidUser">不存在具有以下電子郵件地址的使用者。</message>
@@ -49,6 +47,7 @@
 	<message key="user.myAccount">我的帳戶</message>
 	<message key="user.name">姓名</message>
 	<message key="user.password">密碼</message>
+	<message key="user.repeatPassword">重複密碼</message>
 	<message key="user.phone">電話號碼</message>
 	<message key="user.profile.changePasswordInstructions">在下面鍵入您現在使用以及新的密碼以更改您的使用者密碼。</message>
 	<message key="user.profile.editProfile">編輯個人帳號</message>

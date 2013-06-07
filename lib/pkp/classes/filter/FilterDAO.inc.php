@@ -1,14 +1,14 @@
 <?php
 
 /**
- * @file FilterDAO.inc.php
+ * @file classes/filter/FilterDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FilterDAO
  * @ingroup filter
- * @see Filter
+ * @see PersistableFilter
  *
  * @brief Operations for retrieving and modifying Filter objects.
  *
@@ -16,18 +16,26 @@
  * register transformations and filter consumers to identify available
  * transformations that convert a given input type into a required output type.
  *
- * Transformations are defined as a combination of a filter class and a pair of
- * input/output type specifications supported by that filter implementation.
+ * Transformations are defined as a combination of a filter class, a pair of
+ * input/output type specifications supported by that filter implementation
+ * and a set of configuration parameters that customize the filter.
+ *
+ * Transformations can be based on filter templates. A template is defined as
+ * a filter instance without parameterization. A flag is used to distinguish
+ * filter templates from fully parameterized filter instances.
+ *
+ * Different filters that perform semantically related transformations (e.g.
+ * all citation parsers or all citation output filters) are clustered into
+ * filter groups (@see FilterGroup).
  *
  * The following additional conditions apply:
- * 1) A single filter may implement several transformations, i.e. distinct
- *    combinations of input and output types. Therefore the filter DAO
- *    must be able to check all available transformations against a given input
- *    type and an expected output type and select those filters instances that
- *    support compatible transformations.
+ * 1) A single filter class may support several transformations, i.e. distinct
+ *    combinations of input and output types or distinct parameterizations.
+ *    Therefore the filter DAO must be able to handle several registry entries
+ *    per filter class.
  * 2) The DAO must take care to only select such transformations that are
  *    supported by the current runtime environment.
- * 3) The DAO implementation must be fast and memory efficient.
+ * 3) The DAO implementation must be scalable, fast and memory efficient.
  */
 
 import('lib.pkp.classes.filter.Filter');
@@ -40,34 +48,96 @@ class FilterDAO extends DAO {
 	var $localeFieldNames;
 
 	/**
+	 * Constructor
+	 */
+	function FilterDAO() {
+		parent::DAO();
+	}
+
+	/**
+	 * Instantiates a new filter from configuration data and then
+	 * installs it.
+	 *
+	 * @param $filterClassName string
+	 * @param $filterGroupSymbolic string
+	 * @param $settings array key-value pairs that can be directly written
+	 *  via DataObject::setData().
+	 * @param $asTemplate boolean
+	 * @param $contextId integer the context the filter should be installed into
+	 * @param $subFilters array sub-filters (only allowed when the filter is a CompositeFilter)
+	 * @param $persist boolean whether to actually persist the filter
+	 * @return PersistableFilter|boolean the new filter if installation successful, otherwise 'false'.
+	 */
+	function &configureObject($filterClassName, $filterGroupSymbolic, $settings = array(), $asTemplate = false, $contextId = 0, $subFilters = array(), $persist = true) {
+		$falseVar = false;
+
+		// Retrieve the filter group from the database.
+		$filterGroupDao =& DAORegistry::getDAO('FilterGroupDAO'); /* @var $filterGroupDao FilterGroupDAO */
+		$filterGroup =& $filterGroupDao->getObjectBySymbolic($filterGroupSymbolic);
+		if (!is_a($filterGroup, 'FilterGroup')) return $falseVar;
+
+		// Instantiate the filter.
+		$filter =& instantiate($filterClassName, 'PersistableFilter', null, 'execute', $filterGroup); /* @var $filter PersistableFilter */
+		if (!is_object($filter)) return $falseVar;
+
+		// Is this a template?
+		$filter->setIsTemplate((boolean)$asTemplate);
+
+		// Add sub-filters (if any).
+		if (!empty($subFilters)) {
+			assert(is_a($filter, 'CompositeFilter'));
+			assert(is_array($subFilters));
+			foreach($subFilters as $subFilter) {
+				$filter->addFilter($subFilter);
+				unset($subFilter);
+			}
+		}
+
+		// Parameterize the filter.
+		assert(is_array($settings));
+		foreach($settings as $key => $value) {
+			$filter->setData($key, $value);
+		}
+
+		// Persist the filter.
+		if ($persist) {
+			$filterId = $this->insertObject($filter, $contextId);
+			if (!is_integer($filterId) || $filterId == 0) return $falseVar;
+		}
+
+		return $filter;
+	}
+
+	/**
 	 * Insert a new filter instance (transformation).
 	 *
-	 * @param $filter Filter The configured filter instance to be persisted
+	 * @param $filter PersistableFilter The configured filter instance to be persisted
 	 * @param $contextId integer
 	 * @return integer the new filter id
 	 */
-	function insertObject(&$filter, $contextId = 0) {
-		$inputType = $filter->getInputType();
-		$outputType = $filter->getOutputType();
+	function insertObject(&$filter, $contextId = CONTEXT_ID_NONE) {
+		$filterGroup =& $filter->getFilterGroup();
+		assert($filterGroup->getSymbolic() != FILTER_GROUP_TEMPORARY_ONLY);
 
 		$this->update(
 			sprintf('INSERT INTO filters
-				(context_id, display_name, class_name, input_type, output_type, is_template, parent_filter_id, seq)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?)'),
+				(filter_group_id, context_id, display_name, class_name, is_template, parent_filter_id, seq)
+				VALUES (?, ?, ?, ?, ?, ?, ?)'),
 			array(
-				(integer)$contextId,
+				(int) $filterGroup->getId(),
+				(int) $contextId,
 				$filter->getDisplayName(),
 				$filter->getClassName(),
-				$inputType->getTypeDescription(),
-				$outputType->getTypeDescription(),
 				$filter->getIsTemplate()?1:0,
-				(integer)$filter->getParentFilterId(),
-				(integer)$filter->getSeq()
+				(int) $filter->getParentFilterId(),
+				(int) $filter->getSeq()
 			)
 		);
 		$filter->setId((int)$this->getInsertId());
-		$this->updateDataObjectSettings('filter_settings', $filter,
-				array('filter_id' => $filter->getId()));
+		$this->updateDataObjectSettings(
+			'filter_settings', $filter,
+			array('filter_id' => $filter->getId())
+		);
 
 		// Recursively insert sub-filters.
 		$this->_insertSubFilters($filter);
@@ -77,8 +147,8 @@ class FilterDAO extends DAO {
 
 	/**
 	 * Retrieve a configured filter instance (transformation)
-	 * @param $filter Filter
-	 * @return Filter
+	 * @param $filter PersistableFilter
+	 * @return PersistableFilter
 	 */
 	function &getObject(&$filter) {
 		return $this->getObjectById($filter->getId());
@@ -88,13 +158,15 @@ class FilterDAO extends DAO {
 	 * Retrieve a configured filter instance (transformation) by id.
 	 * @param $filterId integer
 	 * @param $allowSubfilter boolean
-	 * @return Filter
+	 * @return PersistableFilter
 	 */
 	function &getObjectById($filterId, $allowSubfilter = false) {
 		$result =& $this->retrieve(
-				'SELECT * FROM filters'.
-				' WHERE '.($allowSubfilter ? '' : 'parent_filter_id = 0 AND').
-				' filter_id = ?', $filterId);
+			'SELECT * FROM filters
+			 WHERE '.($allowSubfilter ? '' : 'parent_filter_id = 0 AND '). '
+			 filter_id = ?',
+			(int) $filterId
+		);
 
 		$filter = null;
 		if ($result->RecordCount() != 0) {
@@ -117,119 +189,145 @@ class FilterDAO extends DAO {
 	 * @param $allowSubfilters boolean
 	 * @return DAOResultFactory
 	 */
-	function &getObjectsByClass($className, $contextId = 0, $getTemplates = false, $allowSubfilters = false) {
+	function &getObjectsByClass($className, $contextId = CONTEXT_ID_NONE, $getTemplates = false, $allowSubfilters = false) {
 		$result =& $this->retrieve(
-				'SELECT * FROM filters WHERE context_id = ? AND class_name = ?'.
-				' '.($allowSubfilters ? '' : 'AND parent_filter_id = 0').
-				' AND '.($getTemplates ? 'is_template = 1' : 'is_template = 0'),
-				array((integer)$contextId, $className));
+			'SELECT	* FROM filters
+			 WHERE	context_id = ? AND
+				class_name = ? AND
+			' . ($allowSubfilters ? '' : ' parent_filter_id = 0 AND ') . '
+			' . ($getTemplates ? ' is_template = 1' : ' is_template = 0'),
+			array((int) $contextId, $className)
+		);
 
 		$daoResultFactory = new DAOResultFactory($result, $this, '_fromRow', array('filter_id'));
 		return $daoResultFactory;
 	}
 
 	/**
-	 * Retrieve filter instances that support a given input and
-	 * output sample object.
-	 *
-	 * The selection of filters that are compatible with the
-	 * given input and output samples is based on their type
-	 * description.
-	 *
-	 * @param $inputSample mixed
-	 * @param $outputSample mixed
+	 * Retrieve a result set with all filter instances
+	 * (transformations) within a given group that are
+	 * based on the given class.
+	 * @param $groupSymbolic string
+	 * @param $className string
 	 * @param $contextId integer
 	 * @param $getTemplates boolean set true if you want filter templates
 	 *  rather than actual transformations
-	 * @param $rehash boolean if true then the (costly) filter
-	 *  hash operation will be repeated even if the filters have
-	 *  been hashed before.
-	 * @return array all compatible filter instances (transformations).
+	 * @param $allowSubfilters boolean
+	 * @return DAOResultFactory
 	 */
-	function &getCompatibleObjects($inputSample, $outputSample, $contextId = 0, $getTemplates = false, $rehash = false) {
-		static $filterHash = array();
-		static $typeDescriptionFactory = null;
-		static $typeDescriptionCache = array();
-		static $filterInstanceCache = array();
+	function &getObjectsByGroupAndClass($groupSymbolic, $className, $contextId = CONTEXT_ID_NONE, $getTemplates = false, $allowSubfilters = false) {
+		$result =& $this->retrieve(
+			'SELECT f.* FROM filters f'.
+			' INNER JOIN filter_groups fg ON f.filter_group_id = fg.filter_group_id'.
+			' WHERE fg.symbolic = ? AND f.context_id = ? AND f.class_name = ?'.
+			' '.($allowSubfilters ? '' : 'AND f.parent_filter_id = 0').
+			' AND '.($getTemplates ? 'f.is_template = 1' : 'f.is_template = 0'),
+			array($groupSymbolic, (int) $contextId, $className)
+		);
 
-		// Instantiate the type description factory
-		if (is_null($typeDescriptionFactory)) {
-			$typeDescriptionFactory =& TypeDescriptionFactory::getInstance();
-		}
+		$daoResultFactory = new DAOResultFactory($result, $this, '_fromRow', array('filter_id'));
+		return $daoResultFactory;
+	}
 
-		// 1) Hash all available transformations by input
-		//    and output type.
-		$hashId = $contextId.'-'.($getTemplates?'1':'0');
-		if (!isset($filterHash[$hashId]) || $rehash) {
+	/**
+	 * Retrieve filters based on the supported input/output type.
+	 *
+	 * @param $inputTypeDescription a type description that has to match the input type
+	 * @param $outputTypeDescription a type description that has to match the output type
+	 *  NB: input and output type description can contain wildcards.
+	 * @param $data mixed the data to be matched by the filter. If no data is given then
+	 *  all filters will be matched.
+	 * @param $dataIsInput boolean true if the given data object is to be checked as
+	 *  input type, false to check against the output type.
+	 * @return array a list of matched filters.
+	 */
+	function &getObjectsByTypeDescription($inputTypeDescription, $outputTypeDescription, $data = null, $dataIsInput = true) {
+		static $filterCache = array();
+		static $objectFilterCache = array();
+
+		// We do not yet support array data types. Implement when required.
+		assert(!is_array($data));
+
+		// Build the adapter cache.
+		$filterCacheKey = md5($inputTypeDescription.'=>'.$outputTypeDescription);
+		if (!isset($filterCache[$filterCacheKey])) {
+			// Get all adapter filters.
 			$result =& $this->retrieve(
-				'SELECT * FROM filters'.
-				' WHERE '.($getTemplates ? 'is_template = 1' : 'is_template = 0').
-				' AND context_id in (0, ?) AND parent_filter_id = 0', (integer)$contextId);
-			foreach($result->GetAssoc() as $filterRow) {
-				$filterHash[$hashId][$filterRow['input_type']][$filterRow['output_type']][] = $filterRow;
-			}
+				'SELECT f.*'.
+				' FROM filters f'.
+				'  INNER JOIN filter_groups fg ON f.filter_group_id = fg.filter_group_id'.
+				' WHERE fg.input_type like ?'.
+				'  AND fg.output_type like ?'.
+				'  AND f.parent_filter_id = 0 AND f.is_template = 0',
+				array($inputTypeDescription, $outputTypeDescription)
+			);
 
-			// Set an empty array if no filters were found at all.
-			if (!isset($filterHash[$hashId])) $filterHash[$hashId] = array();
+			// Instantiate all filters.
+			$filterFactory = new DAOResultFactory($result, $this, '_fromRow', array('filter_id'));
+			$filterCache[$filterCacheKey] =& $filterFactory->toAssociativeArray();
 		}
 
-		// 2) Check the input sample against all input types.
-		$intermediateCandidates = array();
-		foreach($filterHash[$hashId] as $inputType => $outputHash) {
-			// Instantiate the type description if not yet done
-			// before.
-			if (!isset($typeDescriptionCache[$inputType])) {
-				$typeDescriptionCache[$inputType] =& $typeDescriptionFactory->instantiateTypeDescription($inputType);
-			}
+		// Return all filter candidates if no data is given to check against.
+		if (is_null($data)) return $filterCache[$filterCacheKey];
 
-			// 3) Whenever an input type matches, hash all filters
-			//    with this input type by output type.
-			if ($typeDescriptionCache[$inputType]->checkType($inputSample)) {
-				foreach($outputHash as $outputType => $filterRows) {
-					if (!isset($intermediateCandidates[$outputType])) {
-						$intermediateCandidates[$outputType] = $filterRows;
-					} else {
-						$intermediateCandidates[$outputType] = array_merge($intermediateCandidates[$outputType], $filterRows);
-					}
+		// Build the object-specific adapter cache.
+		$objectFilterCacheKey = md5($filterCacheKey.(is_object($data)?get_class($data):"'$data'").($dataIsInput?'in':'out'));
+		if (!isset($objectFilterCache[$objectFilterCacheKey])) {
+			$objectFilterCache[$objectFilterCacheKey] = array();
+			foreach($filterCache[$filterCacheKey] as $filterCandidateId => $filterCandidate) { /* @var $filterCandidate PersistableFilter */
+				// Check whether the given object can be transformed
+				// with this filter.
+				if ($dataIsInput) {
+					$filterDataType =& $filterCandidate->getInputType();
+				} else {
+					$filterDataType =& $filterCandidate->getOutputType();
 				}
+				if ($filterDataType->checkType($data)) $objectFilterCache[$objectFilterCacheKey][$filterCandidateId] =& $filterCandidate;
+				unset($filterCandidate);
 			}
 		}
 
-		// 4) Check the output sample against all hashed output
-		//    types.
-		$matchingFilterRows = array();
-		foreach ($intermediateCandidates as $outputType => $filterRows) {
-			// Instantiate the type description if not yet done
-			// before.
-			if (!isset($typeDescriptionCache[$outputType])) {
-				$typeDescriptionCache[$outputType] =& $typeDescriptionFactory->instantiateTypeDescription($outputType);
-			}
+		return $objectFilterCache[$objectFilterCacheKey];
+	}
 
-			// 5) Whenever an output type matches, add all filters
-			//    with this output type to the result set.
-			if ($typeDescriptionCache[$outputType]->checkType($outputSample)) {
-				$matchingFilterRows = array_merge($matchingFilterRows, $filterRows);
-			}
-		}
+	/**
+	 * Retrieve filter instances configured for a given context
+	 * that belong to a given filter group.
+	 *
+	 * Only filters supported by the current run-time environment
+	 * will be returned when $checkRuntimeEnvironment is set to 'true'.
+	 *
+	 * @param $groupSymbolic string
+	 * @param $contextId integer returns filters from context 0 and
+	 *  the given filters of all contexts if set to null
+	 * @param $getTemplates boolean set true if you want filter templates
+	 *  rather than actual transformations
+	 * @param $checkRuntimeEnvironment boolean whether to remove filters
+	 *  from the result set that do not match the current run-time environment.
+	 * @return array filter instances (transformations) in the given group
+	 */
+	function &getObjectsByGroup($groupSymbolic, $contextId = CONTEXT_ID_NONE, $getTemplates = false, $checkRuntimeEnvironment = true) {
+		// 1) Get all available transformations in the group.
+		$result =& $this->retrieve(
+			'SELECT f.* FROM filters f'.
+			' INNER JOIN filter_groups fg ON f.filter_group_id = fg.filter_group_id'.
+			' WHERE fg.symbolic = ? AND '.($getTemplates ? 'f.is_template = 1' : 'f.is_template = 0').
+			'  '.(is_null($contextId) ? '' : 'AND f.context_id in (0, '.(int)$contextId.')').
+			'  AND f.parent_filter_id = 0',
+			$groupSymbolic
+		);
 
-		// 6) Instantiate and return all transformations in the
+
+		// 2) Instantiate and return all transformations in the
 		//    result set that comply with the current runtime
 		//    environment.
 		$matchingFilters = array();
-		$runTimeRequirementNotMet = -1;
-		foreach($matchingFilterRows as $matchingFilterRow) {
-			if (!isset($filterInstanceCache[$matchingFilterRow['filter_id']])) {
-				$filterInstance =& $this->_fromRow($matchingFilterRow);
-				if ($filterInstance->isCompatibleWithRuntimeEnvironment()) {
-					$filterInstanceCache[$matchingFilterRow['filter_id']] =& $filterInstance;
-				} else {
-					$filterInstanceCache[$matchingFilterRow['filter_id']] = $runTimeRequirementNotMet;
-				}
-				unset($filterInstance);
+		foreach($result->GetAssoc() as $filterRow) {
+			$filterInstance =& $this->_fromRow($filterRow);
+			if (!$checkRuntimeEnvironment || $filterInstance->isCompatibleWithRuntimeEnvironment()) {
+				$matchingFilters[$filterInstance->getId()] =& $filterInstance;
 			}
-			if ($filterInstanceCache[$matchingFilterRow['filter_id']] !== $runTimeRequirementNotMet) {
-				$matchingFilters[$matchingFilterRow['filter_id']] = $filterInstanceCache[$matchingFilterRow['filter_id']];
-			}
+			unset($filterInstance);
 		}
 
 		return $matchingFilters;
@@ -237,35 +335,35 @@ class FilterDAO extends DAO {
 
 	/**
 	 * Update an existing filter instance (transformation).
-	 * @param $filter Filter
+	 * @param $filter PersistableFilter
 	 */
 	function updateObject(&$filter) {
-		$inputType = $filter->getInputType();
-		$outputType = $filter->getOutputType();
+		$filterGroup =& $filter->getFilterGroup();
+		assert($filterGroup->getSymbolic() != FILTER_GROUP_TEMPORARY_ONLY);
 
 		$returner = $this->update(
 			'UPDATE	filters
-			SET	display_name = ?,
+			SET	filter_group_id = ?,
+				display_name = ?,
 				class_name = ?,
-				input_type = ?,
-				output_type = ?,
 				is_template = ?,
 				parent_filter_id = ?,
 				seq = ?
 			WHERE filter_id = ?',
 			array(
+				(int) $filterGroup->getId(),
 				$filter->getDisplayName(),
 				$filter->getClassName(),
-				$inputType->getTypeDescription(),
-				$outputType->getTypeDescription(),
 				$filter->getIsTemplate()?1:0,
-				(integer)$filter->getParentFilterId(),
-				(integer)$filter->getSeq(),
-				(integer)$filter->getId()
+				(int) $filter->getParentFilterId(),
+				(int) $filter->getSeq(),
+				(int) $filter->getId()
 			)
 		);
-		$this->updateDataObjectSettings('filter_settings', $filter,
-				array('filter_id' => $filter->getId()));
+		$this->updateDataObjectSettings(
+			'filter_settings', $filter,
+			array('filter_id' => $filter->getId())
+		);
 
 		// Do we update a composite filter?
 		if (is_a($filter, 'CompositeFilter')) {
@@ -279,7 +377,7 @@ class FilterDAO extends DAO {
 
 	/**
 	 * Delete a filter instance (transformation).
-	 * @param $filter Filter
+	 * @param $filter PersistableFilter
 	 * @return boolean
 	 */
 	function deleteObject(&$filter) {
@@ -293,8 +391,8 @@ class FilterDAO extends DAO {
 	 */
 	function deleteObjectById($filterId) {
 		$filterId = (int)$filterId;
-		$this->update('DELETE FROM filters WHERE filter_id = ?', $filterId);
-		$this->update('DELETE FROM filter_settings WHERE filter_id = ?', $filterId);
+		$this->update('DELETE FROM filters WHERE filter_id = ?', (int) $filterId);
+		$this->update('DELETE FROM filter_settings WHERE filter_id = ?', (int) $filterId);
 		$this->_deleteSubFiltersByParentFilterId($filterId);
 		return true;
 	}
@@ -348,7 +446,7 @@ class FilterDAO extends DAO {
 	// Protected helper methods
 	//
 	/**
-	 * Get the ID of the last inserted Source Description.
+	 * Get the ID of the last inserted filter instance (transformation).
 	 * @return int
 	 */
 	function getInsertId() {
@@ -362,19 +460,18 @@ class FilterDAO extends DAO {
 	/**
 	 * Construct a new configured filter instance (transformation).
 	 * @param $filterClassName string a fully qualified class name
-	 * @param $inputType string
-	 * @param $outputType string
-	 * @return Filter
+	 * @param $filterGroupId integer
+	 * @return PersistableFilter
 	 */
-	function &_newDataObject($filterClassName, $inputType, $outputType) {
-		// Instantiate the filter
-		$filter =& instantiate($filterClassName, 'Filter');
-		if (!is_object($filter)) fatalError('Error while instantiating class "'.$filterClassName.'" as filter!');
+	function &_newDataObject($filterClassName, $filterGroupId) {
+		// Instantiate the filter group.
+		$filterGroupDao =& DAORegistry::getDAO('FilterGroupDAO'); /* @var $filterGroupDao FilterGroupDAO */
+		$filterGroup =& $filterGroupDao->getObjectById($filterGroupId);
+		assert(is_a($filterGroup, 'FilterGroup'));
 
-		// Set input/output data types (transformation type).
-		// NB: This will raise a fatal error if the transformation is not
-		// supported by this filter.
- 		$filter->setTransformationType($inputType, $outputType);
+		// Instantiate the filter
+		$filter =& instantiate($filterClassName, 'PersistableFilter', null, 'execute', $filterGroup); /* @var $filter PersistableFilter */
+		if (!is_object($filter)) fatalError('Error while instantiating class "'.$filterClassName.'" as filter!');
 
 		return $filter;
 	}
@@ -384,7 +481,7 @@ class FilterDAO extends DAO {
 	 * object from a row.
 	 *
 	 * @param $row array
-	 * @return Filter
+	 * @return PersistableFilter
 	 */
 	function &_fromRow(&$row) {
 		static $lockedFilters = array();
@@ -400,7 +497,7 @@ class FilterDAO extends DAO {
 		$lockedFilters[$filterId] = true;
 
 		// Instantiate the filter.
-		$filter =& $this->_newDataObject($row['class_name'], $row['input_type'], $row['output_type']);
+		$filter =& $this->_newDataObject($row['class_name'], (integer)$row['filter_group_id']);
 
 		// Configure the filter instance
 		$filter->setId((int)$row['filter_id']);
@@ -422,7 +519,7 @@ class FilterDAO extends DAO {
 	/**
 	 * Populate the sub-filters (if any) for the
 	 * given parent filter.
-	 * @param $parentFilter Filter
+	 * @param $parentFilter PersistableFilter
 	 */
 	function _populateSubFilters(&$parentFilter) {
 		if (!is_a($parentFilter, 'CompositeFilter')) {
@@ -434,7 +531,9 @@ class FilterDAO extends DAO {
 		// Retrieve the sub-filters from the database.
 		$parentFilterId = $parentFilter->getId();
 		$result =& $this->retrieve(
-				'SELECT * FROM filters WHERE parent_filter_id = ? ORDER BY seq', $parentFilterId);
+			'SELECT * FROM filters WHERE parent_filter_id = ? ORDER BY seq',
+			(int) $parentFilterId
+		);
 		$daoResultFactory = new DAOResultFactory($result, $this, '_fromRow', array('filter_id'));
 
 		// Add sub-filters.
@@ -481,7 +580,9 @@ class FilterDAO extends DAO {
 
 		// Identify sub-filters.
 		$result =& $this->retrieve(
-				'SELECT * FROM filters WHERE parent_filter_id = ?', $parentFilterId);
+			'SELECT * FROM filters WHERE parent_filter_id = ?',
+			(int) $parentFilterId
+		);
 
 		$allSubFilterRows = $result->GetArray();
 		foreach($allSubFilterRows as $subFilterRow) {
@@ -489,7 +590,7 @@ class FilterDAO extends DAO {
 			// NB: We need to do this before we delete
 			// sub-sub-filters to avoid loops.
 			$subFilterId = $subFilterRow['filter_id'];
-			$this->deleteObjectById($subFilterId);;
+			$this->deleteObjectById($subFilterId);
 
 			// Recursively delete sub-sub-filters.
 			$this->_deleteSubFiltersByParentFilterId($subFilterId);

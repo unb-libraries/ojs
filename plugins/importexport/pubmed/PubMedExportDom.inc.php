@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file PubMedExportDom.inc.php
+ * @file plugins/importexport/pubmed/PubMedExportDom.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PubMedExportDom
@@ -11,9 +11,6 @@
  *
  * @brief PubMed XML export plugin DOM functions
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.xml.XMLCustomWriter');
 
@@ -115,7 +112,7 @@ class PubMedExportDom {
 		}
 
 		/* --- DOI --- */
-		if ($doi = $article->getDOI()) {
+		if ($doi = $article->getPubId('doi')) {
 			$doiNode =& XMLCustomWriter::createChildWithText($doc, $root, 'ELocationID', $doi, false);
 			XMLCustomWriter::setAttribute($doiNode, 'EIdType', 'doi');
 		}
@@ -127,8 +124,9 @@ class PubMedExportDom {
 		$authorListNode =& XMLCustomWriter::createElement($doc, 'AuthorList');
 		XMLCustomWriter::appendChild($root, $authorListNode);
 
+		$authorIndex = 0;
 		foreach ($article->getAuthors() as $author) {
-			$authorNode =& PubMedExportDom::generateAuthorDom($doc, $author);
+			$authorNode =& PubMedExportDom::generateAuthorDom($doc, $author, $authorIndex++);
 			XMLCustomWriter::appendChild($authorListNode, $authorNode);
 		}
 
@@ -137,11 +135,11 @@ class PubMedExportDom {
 		// how this is handled is journal-specific, and will require either
 		// configuration in the plugin, or an update to the core code.
 		// this is also related to DOI-handling within OJS
-		if ($article->getPublicArticleId()) {
+		if ($article->getPubId('publisher-id')) {
 			$articleIdListNode =& XMLCustomWriter::createElement($doc, 'ArticleIdList');
 			XMLCustomWriter::appendChild($root, $articleIdListNode);
 
-			$articleIdNode =& XMLCustomWriter::createChildWithText($doc, $articleIdListNode, 'ArticleId', $article->getPublicArticleId());
+			$articleIdNode =& XMLCustomWriter::createChildWithText($doc, $articleIdListNode, 'ArticleId', $article->getPubId('publisher-id'));
 			XMLCustomWriter::setAttribute($articleIdNode, 'IdType', 'pii');
 		}
 
@@ -186,14 +184,21 @@ class PubMedExportDom {
 		return $root;
 	}
 
-	function &generateAuthorDom(&$doc, &$author) {
+	/**
+	 * Generate the Author node DOM for the specified author.
+	 * @param $doc DOMDocument
+	 * @param $author PKPAuthor
+	 * @param $authorIndex 0-based index of current author
+	 */
+	function &generateAuthorDom(&$doc, &$author, $authorIndex) {
 		$root =& XMLCustomWriter::createElement($doc, 'Author');
 
 		XMLCustomWriter::createChildWithText($doc, $root, 'FirstName', ucfirst($author->getFirstName()));
 		XMLCustomWriter::createChildWithText($doc, $root, 'MiddleName', ucfirst($author->getMiddleName()), false);
 		XMLCustomWriter::createChildWithText($doc, $root, 'LastName', ucfirst($author->getLastName()));
 
-		if ($author->getPrimaryContact()) {
+		if ($authorIndex == 0) {
+			// See http://pkp.sfu.ca/bugzilla/show_bug.cgi?id=7774
 			XMLCustomWriter::createChildWithText($doc, $root, 'Affiliation', $author->getLocalizedAffiliation() . '. ' . $author->getEmail(), false);
 		}
 

@@ -3,7 +3,7 @@
 /**
  * @file classes/article/SuppFileDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SuppFileDAO
@@ -12,9 +12,6 @@
  *
  * @brief Operations for retrieving and modifying SuppFile objects.
  */
-
-// $Id$
-
 
 import('classes.article.SuppFile');
 
@@ -47,25 +44,68 @@ class SuppFileDAO extends DAO {
 
 	/**
 	 * Retrieve a supplementary file by public supp file ID.
-	 * @param $publicSuppId string
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
 	 * @param $articleId int
 	 * @return SuppFile
 	 */
-	function &getSuppFileByPublicSuppFileId($publicSuppId, $articleId) {
-		$result =& $this->retrieve(
-			'SELECT s.*, a.file_name, a.original_file_name, a.file_type, a.file_size, a.date_uploaded, a.date_modified FROM article_supplementary_files s LEFT JOIN article_files a ON (s.file_id = a.file_id) WHERE s.public_supp_file_id = ? AND s.article_id = ?',
-			array($publicSuppId, $articleId)
-		);
-
-		$returner = null;
-		if ($result->RecordCount() != 0) {
-			$returner =& $this->_returnSuppFileFromRow($result->GetRowAssoc(false));
+	function &getSuppFileByPubId($pubIdType, $pubId, $articleId = null) {
+		$suppFiles =& $this->getSuppFilesBySetting('pub-id::'.$pubIdType, $pubId, $articleId);
+		if (empty($suppFiles)) {
+			$suppFile = null;
+		} else {
+			assert(count($suppFiles) == 1);
+			$suppFile =& $suppFiles[0];
 		}
 
-		$result->Close();
-		unset($result);
+		return $suppFile;
+	}
 
-		return $returner;
+	/**
+	 * Find supp files by querying supp file settings.
+	 * @param $settingName string
+	 * @param $settingValue mixed
+	 * @param $articleId int optional
+	 * @param $journalId int optional
+	 * @return array The supp files identified by setting.
+	 */
+	function &getSuppFilesBySetting($settingName, $settingValue, $articleId = null, $journalId = null) {
+		$params = array($settingName);
+
+		$sql = 'SELECT s.*, af.file_name, af.original_file_name, af.file_type, af.file_size, af.date_uploaded, af.date_modified
+			FROM	article_supplementary_files s
+				LEFT JOIN article_files af ON s.file_id = af.file_id
+				INNER JOIN articles a ON a.article_id = s.article_id
+				LEFT JOIN published_articles pa ON s.article_id = pa.article_id ';
+		if (is_null($settingValue)) {
+			$sql .= 'LEFT JOIN article_supp_file_settings sfs ON s.supp_id = sfs.supp_id AND sfs.setting_name = ?
+				WHERE	(sfs.setting_value IS NULL OR sfs.setting_value = "")';
+		} else {
+			$params[] = $settingValue;
+			$sql .= 'INNER JOIN article_supp_file_settings sfs ON s.supp_id = sfs.supp_id
+				WHERE	sfs.setting_name = ? AND sfs.setting_value = ?';
+		}
+		if ($articleId) {
+			$params[] = (int) $articleId;
+			$sql .= ' AND s.article_id = ?';
+		}
+		if ($journalId) {
+			$params[] = (int) $journalId;
+			$sql .= ' AND a.journal_id = ?';
+		}
+		$sql .= ' ORDER BY a.journal_id, pa.issue_id, s.supp_id';
+		$result =& $this->retrieve($sql, $params);
+
+		$suppFiles = array();
+		while (!$result->EOF) {
+			$suppFiles[] =& $this->_returnSuppFileFromRow($result->GetRowAssoc(false));
+			$result->moveNext();
+		}
+		$result->Close();
+
+		return $suppFiles;
 	}
 
 	/**
@@ -78,7 +118,7 @@ class SuppFileDAO extends DAO {
 
 		$result =& $this->retrieve(
 			'SELECT s.*, a.file_name, a.original_file_name, a.file_type, a.file_size, a.date_uploaded, a.date_modified FROM article_supplementary_files s LEFT JOIN article_files a ON (s.file_id = a.file_id) WHERE s.article_id = ? ORDER BY s.seq',
-			$articleId
+			(int) $articleId
 		);
 
 		while (!$result->EOF) {
@@ -93,11 +133,44 @@ class SuppFileDAO extends DAO {
 	}
 
 	/**
+	 * Retrieve all supplementary files of a journal.
+	 * @param $journalId int
+	 * @return DAOResultFactory
+	 */
+	function &getSuppFilesByJournalId($journalId) {
+		$result =& $this->retrieve(
+			'SELECT
+				s.*,
+				af.file_name, af.original_file_name, af.file_stage, af.file_type, af.file_size, af.date_uploaded, af.date_modified
+			FROM article_supplementary_files s
+			LEFT JOIN article_files af ON (s.file_id = af.file_id)
+			INNER JOIN articles a ON (s.article_id = a.article_id)
+			WHERE a.journal_id = ?',
+			(int) $journalId
+		);
+
+		$returner = new DAOResultFactory($result, $this, '_returnSuppFileFromRow');
+		return $returner;
+	}
+
+	/**
 	 * Get the list of fields for which data is localized.
 	 * @return array
 	 */
 	function getLocaleFieldNames() {
 		return array('title', 'creator', 'subject', 'typeOther', 'description', 'publisher', 'sponsor', 'source');
+	}
+
+	/**
+	 * Get a list of additional fields that do not have
+	 * dedicated accessors.
+	 * @return array
+	 */
+	function getAdditionalFieldNames() {
+		$additionalFields = parent::getAdditionalFieldNames();
+		// FIXME: Move this to a PID plug-in.
+		$additionalFields[] = 'pub-id::publisher-id';
+		return $additionalFields;
 	}
 
 	/**
@@ -118,7 +191,7 @@ class SuppFileDAO extends DAO {
 	function &_returnSuppFileFromRow(&$row) {
 		$suppFile = new SuppFile();
 		$suppFile->setId($row['supp_id']);
-		$suppFile->setPublicSuppFileId($row['public_supp_file_id']);
+		$suppFile->setRemoteURL($row['remote_url']);
 		$suppFile->setFileId($row['file_id']);
 		$suppFile->setArticleId($row['article_id']);
 		$suppFile->setType($row['type']);
@@ -156,12 +229,12 @@ class SuppFileDAO extends DAO {
 		}
 		$this->update(
 			sprintf('INSERT INTO article_supplementary_files
-				(public_supp_file_id, file_id, article_id, type, date_created, language, show_reviewers, date_submitted, seq)
+				(remote_url, file_id, article_id, type, date_created, language, show_reviewers, date_submitted, seq)
 				VALUES
 				(?, ?, ?, ?, %s, ?, ?, %s, ?)',
 				$this->dateToDB($suppFile->getDateCreated()), $this->datetimeToDB($suppFile->getDateSubmitted())),
 			array(
-				$suppFile->getPublicSuppFileId(),
+				$suppFile->getRemoteURL(),
 				$suppFile->getFileId(),
 				$suppFile->getArticleId(),
 				$suppFile->getType(),
@@ -183,7 +256,7 @@ class SuppFileDAO extends DAO {
 		$returner = $this->update(
 			sprintf('UPDATE article_supplementary_files
 				SET
-					public_supp_file_id = ?,
+					remote_url = ?,
 					file_id = ?,
 					type = ?,
 					date_created = %s,
@@ -193,7 +266,7 @@ class SuppFileDAO extends DAO {
 				WHERE supp_id = ?',
 				$this->dateToDB($suppFile->getDateCreated())),
 			array(
-				$suppFile->getPublicSuppFileId(),
+				$suppFile->getRemoteURL(),
 				$suppFile->getFileId(),
 				$suppFile->getType(),
 				$suppFile->getLanguage(),
@@ -317,35 +390,92 @@ class SuppFileDAO extends DAO {
 	/**
 	 * Retrieve supp file by public supp file id or, failing that,
 	 * internal supp file ID; public ID takes precedence.
-	 * @param $articleId int
 	 * @param $suppId string
+	 * @param $articleId int
 	 * @return SuppFile object
 	 */
-	function &getSuppFileByBestSuppFileId($articleId, $suppId) {
-		$suppFile =& $this->getSuppFileByPublicSuppFileId($suppId, $articleId);
-		if (!isset($suppFile) && ctype_digit("$suppId")) {
-			$suppFile =& $this->getSuppFile((int) $suppId, $articleId);
-		}
+	function &getSuppFileByBestSuppFileId($suppId, $articleId) {
+		$suppFile =& $this->getSuppFileByPubId('publisher-id', $suppId, $articleId);
+		if (!isset($suppFile) && ctype_digit("$suppId")) $suppFile =& $this->getSuppFile((int) $suppId, $articleId);
 		return $suppFile;
 	}
 
 	/**
-	 * Checks if public identifier exists
-	 * @param $publicSuppFileId string
-	 * @param $suppId int A supplemental file ID to exempt from the test
+	 * Checks if public identifier exists (other than for the specified
+	 * supplementary file ID, which is treated as an exception).
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
+	 * @param $suppId int An ID to be excluded from the search.
 	 * @param $journalId int
 	 * @return boolean
 	 */
-	function suppFileExistsByPublicId($publicSuppFileId, $suppId, $journalId) {
+	function pubIdExists($pubIdType, $pubId, $suppId, $journalId) {
 		$result =& $this->retrieve(
-			'SELECT COUNT(*) FROM article_supplementary_files f, articles a WHERE f.article_id = a.article_id AND f.public_supp_file_id = ? AND f.supp_id <> ? AND a.journal_id = ?', array($publicSuppFileId, $suppId, $journalId)
+			'SELECT COUNT(*)
+			FROM article_supp_file_settings sfs
+				INNER JOIN article_supplementary_files f ON sfs.supp_id = f.supp_id
+				INNER JOIN articles a ON f.article_id = a.article_id
+			WHERE sfs.setting_name = ? AND sfs.setting_value = ? AND f.supp_id <> ? AND a.journal_id = ?',
+			array(
+				'pub-id::'.$pubIdType,
+				$pubId,
+				(int) $suppId,
+				(int) $journalId
+			)
 		);
 		$returner = $result->fields[0] ? true : false;
-
 		$result->Close();
-		unset($result);
-
 		return $returner;
+	}
+
+	/**
+	 * Change the public ID of a supplementary file.
+	 * @param $suppFileId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 * @param $pubId string
+	 */
+	function changePubId($suppFileId, $pubIdType, $pubId) {
+		$idFields = array(
+			'supp_id', 'locale', 'setting_name'
+		);
+		$updateArray = array(
+			'supp_id' => $suppFileId,
+			'locale' => '',
+			'setting_name' => 'pub-id::'.$pubIdType,
+			'setting_type' => 'string',
+			'setting_value' => (string)$pubId
+		);
+		$this->replace('article_supp_file_settings', $updateArray, $idFields);
+	}
+
+
+	/**
+	 * Delete the public IDs of all supplementary files in a journal.
+	 * @param $journalId int
+	 * @param $pubIdType string One of the NLM pub-id-type values or
+	 * 'other::something' if not part of the official NLM list
+	 * (see <http://dtd.nlm.nih.gov/publishing/tag-library/n-4zh0.html>).
+	 */
+	function deleteAllPubIds($journalId, $pubIdType) {
+		$journalId = (int) $journalId;
+		$settingName = 'pub-id::'.$pubIdType;
+
+		$suppFiles =& $this->getSuppFilesByJournalId($journalId);
+		while ($suppFile =& $suppFiles->next()) {
+			$this->update(
+				'DELETE FROM article_supp_file_settings WHERE setting_name = ? AND supp_id = ?',
+				array(
+					$settingName,
+					(int)$suppFile->getId()
+				)
+			);
+			unset($suppFile);
+		}
+		$this->flushCache();
 	}
 }
 

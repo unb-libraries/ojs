@@ -3,7 +3,7 @@
 /**
  * @file classes/citation/CitationListTokenizerFilter.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CitationListTokenizerFilter
@@ -20,28 +20,14 @@ class CitationListTokenizerFilter extends Filter {
 	 * Constructor
 	 */
 	function CitationListTokenizerFilter() {
-		$this->setDisplayName('Citation Tokenizer');
+		$this->setDisplayName('Split a reference list into separate citations');
 
-		parent::Filter();
+		parent::Filter('primitive::string', 'primitive::string[]');
 	}
 
 	//
 	// Implement template methods from Filter
 	//
-	/**
-	 * @see Filter::getSupportedTransformation()
-	 */
-	function getSupportedTransformation() {
-		return array('primitive::string', 'primitive::string[]');
-	}
-
-	/**
-	 * @see Filter::getClassName()
-	 */
-	function getClassName() {
-		return 'lib.pkp.classes.citation.CitationListTokenizerFilter';
-	}
-
 	/**
 	 * @see Filter::process()
 	 * @param $input string

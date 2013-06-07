@@ -3,7 +3,7 @@
 /**
  * @file classes/mail/PKPEmailTemplateDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPEmailTemplateDAO
@@ -13,10 +13,15 @@
  * @brief Operations for retrieving and modifying Email Template objects.
  */
 
-// $Id$
-
 
 class PKPEmailTemplateDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function PKPEmailTemplateDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve a base email template by key.
 	 * @param $emailKey string
@@ -474,7 +479,7 @@ class PKPEmailTemplateDAO extends DAO {
 
 		while (!$result->EOF) {
 			$emailTemplates[] =& $this->_returnEmailTemplateFromRow($result->GetRowAssoc(false), false);
-			$result->moveNext();
+			$result->MoveNext();
 		}
 		$result->Close();
 		unset($result);
@@ -506,7 +511,7 @@ class PKPEmailTemplateDAO extends DAO {
 		while (!$result->EOF) {
 			$row = $result->getRowAssoc(false);
 			$emailTemplates[] =& $this->_returnEmailTemplateFromRow($result->GetRowAssoc(false), true);
-			$result->moveNext();
+			$result->MoveNext();
 		}
 		$result->Close();
 		unset($result);
@@ -675,11 +680,12 @@ class PKPEmailTemplateDAO extends DAO {
 			$attrs = $entry['attributes'];
 			if ($emailKey && $emailKey != $attrs['key']) continue;
 			if ($skipExisting && $this->templateExistsByKey($attrs['key'])) continue;
+			$dataSource = $this->getDataSource();
 			$sql[] = 'INSERT INTO email_templates_default
 				(email_key, can_disable, can_edit, from_role_id, to_role_id)
 				VALUES
 				(' .
-				$this->_dataSource->qstr($attrs['key']) . ', ' .
+				$dataSource->qstr($attrs['key']) . ', ' .
 				($attrs['can_disable']?1:0) . ', ' .
 				($attrs['can_edit']?1:0) . ', ' .
 				(isset($attrs['from_role_id'])?((int) $attrs['from_role_id']):'null') . ', ' .
@@ -713,7 +719,8 @@ class PKPEmailTemplateDAO extends DAO {
 
 		foreach ($data->getChildren() as $emailNode) {
 			if ($emailKey && $emailKey != $emailNode->getAttribute('key')) continue;
-			$sql[] = 'DELETE FROM email_templates_default_data WHERE email_key = ' . $this->_dataSource->qstr($emailNode->getAttribute('key')) . ' AND locale = ' . $this->_dataSource->qstr($locale);
+			$dataSource = $this->getDataSource();
+			$sql[] = 'DELETE FROM email_templates_default_data WHERE email_key = ' . $dataSource->qstr($emailNode->getAttribute('key')) . ' AND locale = ' . $dataSource->qstr($locale);
 			if (!$returnSql) {
 				$this->update(array_shift($sql));
 			}
@@ -722,11 +729,11 @@ class PKPEmailTemplateDAO extends DAO {
 				(email_key, locale, subject, body, description)
 				VALUES
 				(' .
-				$this->_dataSource->qstr($emailNode->getAttribute('key')) . ', ' .
-				$this->_dataSource->qstr($locale) . ', ' .
-				$this->_dataSource->qstr($emailNode->getChildValue('subject')) . ', ' .
-				$this->_dataSource->qstr($emailNode->getChildValue('body')) . ', ' .
-				$this->_dataSource->qstr($emailNode->getChildValue('description')) .
+				$dataSource->qstr($emailNode->getAttribute('key')) . ', ' .
+				$dataSource->qstr($locale) . ', ' .
+				$dataSource->qstr($emailNode->getChildValue('subject')) . ', ' .
+				$dataSource->qstr($emailNode->getChildValue('body')) . ', ' .
+				$dataSource->qstr($emailNode->getChildValue('description')) .
 				")";
 			if (!$returnSql) {
 				$this->update(array_shift($sql));

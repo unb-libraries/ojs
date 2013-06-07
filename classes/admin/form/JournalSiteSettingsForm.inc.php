@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/JournalSiteSettingsForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSiteSettingsForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for site administrator to edit basic journal settings.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.db.DBDataXMLParser');
 import('lib.pkp.classes.form.Form');
@@ -56,7 +53,7 @@ class JournalSiteSettingsForm extends Form {
 	function initData() {
 		if (isset($this->journalId)) {
 			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($this->journalId);
+			$journal =& $journalDao->getById($this->journalId);
 
 			if ($journal != null) {
 				$this->_data = array(
@@ -86,7 +83,7 @@ class JournalSiteSettingsForm extends Form {
 
 		if (isset($this->journalId)) {
 			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getJournal($this->journalId);
+			$journal =& $journalDao->getById($this->journalId);
 			$this->setData('oldPath', $journal->getPath());
 		}
 	}
@@ -106,7 +103,7 @@ class JournalSiteSettingsForm extends Form {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 
 		if (isset($this->journalId)) {
-			$journal =& $journalDao->getJournal($this->journalId);
+			$journal =& $journalDao->getById($this->journalId);
 		}
 
 		if (!isset($journal)) {
@@ -145,15 +142,16 @@ class JournalSiteSettingsForm extends Form {
 
 			// Make the file directories for the journal
 			import('lib.pkp.classes.file.FileManager');
-			FileManager::mkdir(Config::getVar('files', 'files_dir') . '/journals/' . $journalId);
-			FileManager::mkdir(Config::getVar('files', 'files_dir'). '/journals/' . $journalId . '/articles');
-			FileManager::mkdir(Config::getVar('files', 'files_dir'). '/journals/' . $journalId . '/issues');
-			FileManager::mkdir(Config::getVar('files', 'public_files_dir') . '/journals/' . $journalId);
+			$fileManager = new FileManager();
+			$fileManager->mkdir(Config::getVar('files', 'files_dir') . '/journals/' . $journalId);
+			$fileManager->mkdir(Config::getVar('files', 'files_dir'). '/journals/' . $journalId . '/articles');
+			$fileManager->mkdir(Config::getVar('files', 'files_dir'). '/journals/' . $journalId . '/issues');
+			$fileManager->mkdir(Config::getVar('files', 'public_files_dir') . '/journals/' . $journalId);
 
 			// Install default journal settings
 			$journalSettingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
 			$titles = $this->getData('title');
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_DEFAULT, LOCALE_COMPONENT_APPLICATION_COMMON));
+			AppLocale::requireComponents(LOCALE_COMPONENT_OJS_DEFAULT, LOCALE_COMPONENT_APPLICATION_COMMON);
 			$journalSettingsDao->installSettings($journalId, 'registry/journalSettings.xml', array(
 				'indexUrl' => Request::getIndexUrl(),
 				'journalPath' => $this->getData('journalPath'),

@@ -4,19 +4,18 @@
 <!--
   * locale/no_NO/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
   *
-  * $Id: installer.xml,v 1.3 2009/08/15 00:13:57 asmecher Exp $
   -->
 
 <locale name="no_NO" full_name = "Norwegian">
 	<message key="installer.additionalLocales">Flere lokalinnstillinger</message>
 	<message key="installer.administratorAccount">Administratorkonto</message>
 	<message key="installer.administratorAccountInstructions">Denne brukerkontoen kommer til å bli nettstedsadministrator, vil ha full tilgang til systemet. Flere brukerkontoer kan opprettes etter installasjon.</message>
-	<message key="installer.checkNo"><![CDATA[<span class="formError">NEI</span>]]></message>
+	<message key="installer.checkNo"><![CDATA[<span class="pkp_form_error formError">NEI</span>]]></message>
 	<message key="installer.checkYes">Ja</message>
 	<message key="installer.clientCharset">Tegnsett for klienten</message>
 	<message key="installer.clientCharsetInstructions">Tegnkodingen som skal brukes for data som blir sendt til og mottatt fra nettlesere.</message>
@@ -60,13 +59,13 @@
 	<message key="installer.installParseDBFileError"><![CDATA[Feil ved lesing av databaseinstallasjonsfilen <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale">Lokalinnstilling</message>
 	<message key="installer.localeSettings">Lokalinnstillinger</message>
-	<message key="installer.miscSettings">Diverse innstillinger</message>
 	<message key="installer.oaiRepositoryIdInstructions"><![CDATA[En unik identifikator brukt for å identifisere metadatafiler indeksert fra dette nettstedet ved bruk av <a href="http://www.openarchives.org/" target="_blank">Open Archives Initiative</a> Protocol for Metadata Harvesting.]]></message>
 	<message key="installer.oaiRepositoryId">OAI-arkividentifikator</message>
 	<message key="installer.publicFilesDirError">Mappen for offentlige filer finnes ikke eller er ikke overskrivbar.</message>
 	<message key="installer.releaseNotes">Releasenotater</message>
 	<message key="installer.securitySettings">Sikkerhetsinnstillinger</message>
-	<message key="installer.skipFilesDir">Ikke lag påkrevete undermapper (bare til bruk ved manuell installasjon)</message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Feil ved parsing av e-postmalen <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">Merkede lokaliseringsfiler kan være ukomplette.</message>
+	<message key="installer.oaiSettings">OAI-innstillinger</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Feil ved lesing av filterkonfigureringsfila <tt>{$file}</tt>.]]></message>
 </locale>

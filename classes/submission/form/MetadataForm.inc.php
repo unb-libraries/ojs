@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/MetadataForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataForm
@@ -138,6 +138,10 @@ class MetadataForm extends Form {
 				'citations' => $article->getCitations(),
 				'hideAuthor' => $article->getHideAuthor()
 			);
+			// consider the additional field names from the public identifer plugins
+			import('classes.plugins.PubIdPluginHelper');
+			$pubIdPluginHelper = new PubIdPluginHelper();
+			$pubIdPluginHelper->init($this, $article);
 
 			$authors =& $article->getAuthors();
 			for ($i=0, $count=count($authors); $i < $count; $i++) {
@@ -185,7 +189,7 @@ class MetadataForm extends Form {
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_EDITOR)); // editor.cover.xxx locale keys; FIXME?
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_EDITOR); // editor.cover.xxx locale keys; FIXME?
 
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('articleId', isset($this->article)?$this->article->getId():null);
@@ -211,6 +215,10 @@ class MetadataForm extends Form {
 			$templateMgr->assign('hideAuthorOptions', $hideAuthorOptions);
 			$templateMgr->assign('isEditor', true);
 		}
+		// consider public identifiers
+		$pubIdPlugins =& PluginRegistry::loadCategory('pubIds', true);
+		$templateMgr->assign('pubIdPlugins', $pubIdPlugins);
+		$templateMgr->assign_by_ref('article', $this->article);
 
 		parent::display();
 	}
@@ -249,6 +257,10 @@ class MetadataForm extends Form {
 				'hideAuthor'
 			)
 		);
+		// consider the additional field names from the public identifer plugins
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->readInputData($this);
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$section =& $sectionDao->getSection($this->article->getSectionId());
@@ -275,6 +287,12 @@ class MetadataForm extends Form {
 			}
 		}
 
+		// Verify additional fields from public identifer plug-ins.
+		$journal = Request::getJournal();
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->validate($journal->getId(), $this, $this->article);
+
 		// Fall back on parent validation
 		return parent::validate();
 	}
@@ -289,7 +307,7 @@ class MetadataForm extends Form {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$authorDao =& DAORegistry::getDAO('AuthorDAO');
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
-		$citationDao =& DAORegistry::getDAO('CitationDAO');
+		$citationDao =& DAORegistry::getDAO('CitationDAO'); /* @var $citationDao CitationDAO */
 		$article =& $this->article;
 
 		// Retrieve the previous citation list for comparison.
@@ -356,13 +374,17 @@ class MetadataForm extends Form {
 		if ($this->isEditor) {
 			$article->setHideAuthor($this->getData('hideAuthor') ? $this->getData('hideAuthor') : 0);
 		}
+		// consider the additional field names from the public identifer plugins
+		import('classes.plugins.PubIdPluginHelper');
+		$pubIdPluginHelper = new PubIdPluginHelper();
+		$pubIdPluginHelper->execute($this, $article);
 
 		// Update authors
 		$authors = $this->getData('authors');
 		for ($i=0, $count=count($authors); $i < $count; $i++) {
 			if ($authors[$i]['authorId'] > 0) {
 				// Update an existing author
-				$author =& $article->getAuthor($authors[$i]['authorId']);
+				$author =& $authorDao->getAuthor($authors[$i]['authorId'], $article->getId());
 				$isExistingAuthor = true;
 
 			} else {
@@ -376,6 +398,7 @@ class MetadataForm extends Form {
 			}
 
 			if ($author != null) {
+				$author->setSubmissionId($article->getId());
 				$author->setFirstName($authors[$i]['firstName']);
 				$author->setMiddleName($authors[$i]['middleName']);
 				$author->setLastName($authors[$i]['lastName']);
@@ -390,17 +413,21 @@ class MetadataForm extends Form {
 				$author->setPrimaryContact($this->getData('primaryContact') == $i ? 1 : 0);
 				$author->setSequence($authors[$i]['seq']);
 
-				if ($isExistingAuthor == false) {
-					$article->addAuthor($author);
+				HookRegistry::call('Submission::Form::MetadataForm::Execute', array(&$author, &$authors[$i]));
+
+				if ($isExistingAuthor) {
+					$authorDao->updateAuthor($author);
+				} else {
+					$authorDao->insertAuthor($author);
 				}
 				unset($author);
 			}
 		}
 
 		// Remove deleted authors
-		$deletedAuthors = explode(':', $this->getData('deletedAuthors'));
+		$deletedAuthors = preg_split('/:/', $this->getData('deletedAuthors'), -1, PREG_SPLIT_NO_EMPTY);
 		for ($i=0, $count=count($deletedAuthors); $i < $count; $i++) {
-			$article->removeAuthor($deletedAuthors[$i]);
+			$authorDao->deleteAuthorById($deletedAuthors[$i], $article->getId());
 		}
 
 		parent::execute();
@@ -410,7 +437,9 @@ class MetadataForm extends Form {
 
 		// Update search index
 		import('classes.search.ArticleSearchIndex');
-		ArticleSearchIndex::indexArticleMetadata($article);
+		$articleSearchIndex = new ArticleSearchIndex();
+		$articleSearchIndex->articleMetadataChanged($article);
+		$articleSearchIndex->articleChangesFinished();
 
 		// Update references list if it changed.
 		$rawCitationList = $article->getCitations();

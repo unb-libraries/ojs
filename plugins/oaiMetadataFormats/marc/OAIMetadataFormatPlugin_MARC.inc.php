@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file plugins/oaiMetadata/marc/OAIMetadataFormatPlugin_MARC.inc.php
+ * @file plugins/oaiMetadataFormats/marc/OAIMetadataFormatPlugin_MARC.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormatPlugin_MARC
@@ -13,10 +13,7 @@
  * @brief marc metadata format plugin for OAI.
  */
 
-// $Id$
-
-
-import('classes.plugins.OAIMetadataFormatPlugin');
+import('lib.pkp.classes.plugins.OAIMetadataFormatPlugin');
 
 class OAIMetadataFormatPlugin_MARC extends OAIMetadataFormatPlugin {
 

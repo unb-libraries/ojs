@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/copyeditor/CopyeditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CopyeditorSubmissionDAO
@@ -12,9 +12,6 @@
  *
  * @brief Operations for retrieving and modifying CopyeditorSubmission objects.
  */
-
-// $Id$
-
 
 import('classes.submission.copyeditor.CopyeditorSubmission');
 
@@ -109,7 +106,7 @@ class CopyeditorSubmissionDAO extends DAO {
 		$copyeditorSubmission->setMostRecentLayoutComment($this->articleCommentDao->getMostRecentArticleComment($row['article_id'], COMMENT_TYPE_LAYOUT, $row['article_id']));
 
 		// Files
-		
+
 		// Information for Layout table access
 		$copyeditorSubmission->setSuppFiles($this->suppFileDao->getSuppFilesByArticle($row['article_id']));
 		$copyeditorSubmission->setGalleys($this->galleyDao->getGalleysByArticle($row['article_id']));
@@ -162,6 +159,10 @@ class CopyeditorSubmissionDAO extends DAO {
 		$searchSql = '';
 
 		if (!empty($search)) switch ($searchField) {
+			case SUBMISSION_FIELD_ID:
+				$params[] = (int) $search;
+				$searchSql = ' AND a.article_id = ?';
+				break;
 			case SUBMISSION_FIELD_TITLE:
 				if ($searchMatch === 'is') {
 					$searchSql = ' AND LOWER(atl.setting_value) = LOWER(?)';
@@ -175,37 +176,10 @@ class CopyeditorSubmissionDAO extends DAO {
 				$params[] = $search;
 				break;
 			case SUBMISSION_FIELD_AUTHOR:
-				$first_last = $this->_dataSource->Concat('aa.first_name', '\' \'', 'aa.last_name');
-				$first_middle_last = $this->_dataSource->Concat('aa.first_name', '\' \'', 'aa.middle_name', '\' \'', 'aa.last_name');
-				$last_comma_first = $this->_dataSource->Concat('aa.last_name', '\', \'', 'aa.first_name');
-				$last_comma_first_middle = $this->_dataSource->Concat('aa.last_name', '\', \'', 'aa.first_name', '\' \'', 'aa.middle_name');
-
-				if ($searchMatch === 'is') {
-					$searchSql = " AND (LOWER(aa.last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
-				} elseif ($searchMatch === 'contains') {
-					$searchSql = " AND (LOWER(aa.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = '%' . $search . '%';
-				} else { // $searchMatch === 'startsWith'
-					$searchSql = " AND (LOWER(aa.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = $search . '%';
-				}
-				$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+				$searchSql = $this->_generateUserNameSearchSQL($search, $searchMatch, 'aa.', $params);
 				break;
 			case SUBMISSION_FIELD_EDITOR:
-				$first_last = $this->_dataSource->Concat('ed.first_name', '\' \'', 'ed.last_name');
-				$first_middle_last = $this->_dataSource->Concat('ed.first_name', '\' \'', 'ed.middle_name', '\' \'', 'ed.last_name');
-				$last_comma_first = $this->_dataSource->Concat('ed.last_name', '\', \'', 'ed.first_name');
-				$last_comma_first_middle = $this->_dataSource->Concat('ed.last_name', '\', \'', 'ed.first_name', '\' \'', 'ed.middle_name');
-				if ($searchMatch === 'is') {
-					$searchSql = " AND (LOWER(ed.last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
-				} elseif ($searchMatch === 'contains') {
-					$searchSql = " AND (LOWER(ed.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = '%' . $search . '%';
-				} else { // $searchMatch === 'startsWith'
-					$searchSql = " AND (LOWER(ed.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = $search . '%';
-				}
-				$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+				$searchSql = $this->_generateUserNameSearchSQL($search, $searchMatch, 'ed.', $params);
 				break;
 		}
 
@@ -248,10 +222,10 @@ class CopyeditorSubmissionDAO extends DAO {
 				a.*,
 				scpi.date_notified AS date_assigned,
 				scpf.date_completed AS date_completed,
-				COALESCE(atl.setting_value, atpl.setting_value) AS submission_title,
+				SUBSTRING(COALESCE(atl.setting_value, atpl.setting_value) FROM 1 FOR 255) AS submission_title,
 				aap.last_name AS author_name,
-				COALESCE(stl.setting_value, stpl.setting_value) AS section_title,
-				COALESCE(sal.setting_value, sapl.setting_value) AS section_abbrev
+				SUBSTRING(COALESCE(stl.setting_value, stpl.setting_value) FROM 1 FOR 255) AS section_title,
+				SUBSTRING(COALESCE(sal.setting_value, sapl.setting_value) FROM 1 FOR 255) AS section_abbrev
 			FROM	articles a
 				LEFT JOIN published_articles pa ON (a.article_id = pa.article_id)
 				LEFT JOIN issues i ON (pa.issue_id = i.issue_id)
@@ -273,7 +247,7 @@ class CopyeditorSubmissionDAO extends DAO {
 			WHERE
 				' . (isset($journalId)?'a.journal_id = ? AND':'') . '
 				scpi.user_id = ? AND
-			(' . ($active?'':'NOT ') . ' (i.date_published IS NULL AND ((scpi.date_notified IS NOT NULL AND scpi.date_completed IS NULL) OR (scpf.date_notified IS NOT NULL AND scpf.date_completed IS NULL)))) ';
+			(' . ($active?'': 'NOT ') . ' (i.date_published IS NULL AND a.status = ' . STATUS_QUEUED . ')) ';
 
 		$result =& $this->retrieveRange(
 			$sql . ' ' . $searchSql . ($sortBy?(' ORDER BY ' . $this->getSortMapping($sortBy) . ' ' . $this->getDirectionMapping($sortDirection)) : ''),
@@ -282,6 +256,27 @@ class CopyeditorSubmissionDAO extends DAO {
 
 		$returner = new DAOResultFactory($result, $this, '_returnCopyeditorSubmissionFromRow');
 		return $returner;
+	}
+
+	/**
+	 * FIXME Move this into somewhere common (SubmissionDAO?) as this is used in several classes.
+	 */
+	function _generateUserNameSearchSQL($search, $searchMatch, $prefix, &$params) {
+		$first_last = $this->concat($prefix.'first_name', '\' \'', $prefix.'last_name');
+		$first_middle_last = $this->concat($prefix.'first_name', '\' \'', $prefix.'middle_name', '\' \'', $prefix.'last_name');
+		$last_comma_first = $this->concat($prefix.'last_name', '\', \'', $prefix.'first_name');
+		$last_comma_first_middle = $this->concat($prefix.'last_name', '\', \'', $prefix.'first_name', '\' \'', $prefix.'middle_name');
+		if ($searchMatch === 'is') {
+			$searchSql = " AND (LOWER({$prefix}last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
+		} elseif ($searchMatch === 'contains') {
+			$searchSql = " AND (LOWER({$prefix}last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
+			$search = '%' . $search . '%';
+		} else { // $searchMatch === 'startsWith'
+			$searchSql = " AND (LOWER({$prefix}last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
+			$search = $search . '%';
+		}
+		$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+		return $searchSql;
 	}
 
 	/**
@@ -294,9 +289,9 @@ class CopyeditorSubmissionDAO extends DAO {
 		$submissionsCount[0] = 0;
 		$submissionsCount[1] = 0;
 
-		$sql = 'SELECT	sci.date_notified AS initial_notified, sci.date_completed AS initial_completed,
-				scf.date_notified AS final_notified, scf.date_completed AS final_completed,
-				i.date_published
+		$sql = 'SELECT
+				i.date_published,
+				a.status
 			FROM	articles a
 				LEFT JOIN published_articles pa ON (a.article_id = pa.article_id)
 				LEFT JOIN issues i ON (pa.issue_id = i.issue_id)
@@ -304,17 +299,11 @@ class CopyeditorSubmissionDAO extends DAO {
 				LEFT JOIN signoffs scf ON (a.article_id = scf.assoc_id AND scf.assoc_type = ? AND scf.symbolic = ?)
 				LEFT JOIN signoffs sci ON (a.article_id = sci.assoc_id AND sci.assoc_type = ? AND sci.symbolic = ?)
 			WHERE	a.journal_id = ? AND sci.user_id = ? AND sci.date_notified IS NOT NULL';
-					
+
 		$result =& $this->retrieve($sql, array(ASSOC_TYPE_ARTICLE, 'SIGNOFF_COPYEDITING_FINAL', ASSOC_TYPE_ARTICLE, 'SIGNOFF_COPYEDITING_INITIAL', $journalId, $copyeditorId));
 
 		while (!$result->EOF) {
-			// If an item is not yet published and at least one of the two copyediting phases is in progress, consider it active.
-			if (
-				$result->fields['date_published'] == null && (
-					($result->fields['initial_notified'] != null && $result->fields['initial_completed'] == null) ||
-					($result->fields['final_notified'] != null && $result->fields['final_completed'] == null)
-				)
-			) {
+			if ($result->fields['date_published'] == null && $result->fields['status'] == STATUS_QUEUED) {
 				$submissionsCount[0] += 1;
 			} else {
 				$submissionsCount[1] += 1;
@@ -327,7 +316,7 @@ class CopyeditorSubmissionDAO extends DAO {
 
 		return $submissionsCount;
 	}
-	
+
 	/**
 	 * Map a column heading value to a database value for sorting
 	 * @param string

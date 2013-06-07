@@ -1,8 +1,9 @@
 <?php
+
 /**
- * @file CustomBlockManagerPlugin.inc.php
+ * @file plugins/generic/customBlockManager/CustomBlockManagerPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.customBlockManager
@@ -89,8 +90,8 @@ class CustomBlockManagerPlugin extends GenericPlugin {
 	/**
 	 * Perform management functions
 	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 		switch ($verb) {
 			case 'settings':
 				$journal =& Request::getJournal();

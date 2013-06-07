@@ -7,7 +7,7 @@
 /**
  * @file classes/submission/layoutEditor/LayoutEditorAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LayoutEditorAction
@@ -15,9 +15,6 @@
  *
  * @brief LayoutEditorAction class.
  */
-
-// $Id$
-
 
 import('classes.submission.common.Action');
 
@@ -61,7 +58,9 @@ class LayoutEditorAction extends Action {
 			if ($galley->getFileId()) {
 				$articleFileManager->deleteFile($galley->getFileId());
 				import('classes.search.ArticleSearchIndex');
-				ArticleSearchIndex::deleteTextIndex($article->getId(), ARTICLE_SEARCH_GALLEY_FILE, $galley->getFileId());
+				$articleSearchIndex = new ArticleSearchIndex();
+				$articleSearchIndex->articleFileDeleted($article->getId(), ARTICLE_SEARCH_GALLEY_FILE, $galley->getFileId());
+				$articleSearchIndex->articleChangesFinished();
 			}
 			if ($galley->isHTMLGalley()) {
 				if ($galley->getStyleFileId()) {
@@ -88,8 +87,8 @@ class LayoutEditorAction extends Action {
 		foreach ($submission->getGalleys() as $galley) {
 			$images =& $articleGalleyDao->getGalleyImages($galley->getId());
 			foreach ($images as $imageFile) {
-				if ($imageFile->getArticleId() == $submission->getArticleId() && $fileId == $imageFile->getFileId() && $imageFile->getRevision() == $revision) {
-					$articleFileManager = new ArticleFileManager($submission->getArticleId());
+				if ($imageFile->getArticleId() == $submission->getId() && $fileId == $imageFile->getFileId() && $imageFile->getRevision() == $revision) {
+					$articleFileManager = new ArticleFileManager($submission->getId());
 					$articleFileManager->deleteFile($imageFile->getFileId(), $imageFile->getRevision());
 				}
 			}
@@ -120,19 +119,25 @@ class LayoutEditorAction extends Action {
 	 * @param $suppFileId int
 	 */
 	function deleteSuppFile($article, $suppFileId) {
-		import('classes.file.ArticleFileManager');
-
 		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
-
 		$suppFile =& $suppFileDao->getSuppFile($suppFileId, $article->getId());
 		if (isset($suppFile) && !HookRegistry::call('LayoutEditorAction::deleteSuppFile', array(&$article, &$suppFile))) {
 			if ($suppFile->getFileId()) {
+				import('classes.file.ArticleFileManager');
 				$articleFileManager = new ArticleFileManager($article->getId());
 				$articleFileManager->deleteFile($suppFile->getFileId());
-				import('classes.search.ArticleSearchIndex');
-				ArticleSearchIndex::deleteTextIndex($article->getId(), ARTICLE_SEARCH_SUPPLEMENTARY_FILE, $suppFile->getFileId());
 			}
 			$suppFileDao->deleteSuppFile($suppFile);
+
+			// Update the search index after deleting the
+			// supp file so that idempotent search plug-ins
+			// correctly update supp file meta-data.
+			if ($suppFile->getFileId()) {
+				import('classes.search.ArticleSearchIndex');
+				$articleSearchIndex = new ArticleSearchIndex();
+				$articleSearchIndex->articleFileDeleted($article->getId(), ARTICLE_SEARCH_SUPPLEMENTARY_FILE, $suppFile->getFileId());
+				$articleSearchIndex->articleChangesFinished();
+			}
 		}
 	}
 
@@ -140,13 +145,14 @@ class LayoutEditorAction extends Action {
 	 * Marks layout assignment as completed.
 	 * @param $submission object
 	 * @param $send boolean
+	 * @param $request object
 	 */
-	function completeLayoutEditing($submission, $send = false) {
+	function completeLayoutEditing($submission, $send, $request) {
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 		$userDao =& DAORegistry::getDAO('UserDAO');
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
-		$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $submission->getArticleId());
+		$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $submission->getId());
 		if ($layoutSignoff->getDateCompleted() != null) {
 			return true;
 		}
@@ -160,25 +166,23 @@ class LayoutEditorAction extends Action {
 		if (!$email->isEnabled() || ($send && !$email->hasErrors())) {
 			HookRegistry::call('LayoutEditorAction::completeLayoutEditing', array(&$submission, &$editAssignments, &$email));
 			if ($email->isEnabled()) {
-				$email->setAssoc(ARTICLE_EMAIL_LAYOUT_NOTIFY_COMPLETE, ARTICLE_EMAIL_TYPE_LAYOUT, $layoutSignoff->getId());
-				$email->send();
+				$email->send($request);
 			}
 
 			$layoutSignoff->setDateCompleted(Core::getCurrentDate());
 			$signoffDao->updateObject($layoutSignoff);
 
 			// Add log entry
-			$user =& Request::getUser();
+			$user =& $request->getUser();
 			import('classes.article.log.ArticleLog');
-			import('classes.article.log.ArticleEventLogEntry');
-			ArticleLog::logEvent($submission->getArticleId(), ARTICLE_LOG_LAYOUT_COMPLETE, ARTICLE_LOG_TYPE_LAYOUT, $user->getId(), 'log.layout.layoutEditComplete', Array('editorName' => $user->getFullName(), 'articleId' => $submission->getArticleId()));
+			ArticleLog::logEvent($request, $submission, ARTICLE_LOG_LAYOUT_COMPLETE, 'log.layout.layoutEditComplete', array('editorName' => $user->getFullName()));
 
 			return true;
 		} else {
-			$user =& Request::getUser();
-			if (!Request::getUserVar('continued')) {
-				$assignedSectionEditors = $email->toAssignedEditingSectionEditors($submission->getArticleId());
-				$assignedEditors = $email->ccAssignedEditors($submission->getArticleId());
+			$user =& $request->getUser();
+			if (!$request->getUserVar('continued')) {
+				$assignedSectionEditors = $email->toAssignedEditingSectionEditors($submission->getId());
+				$assignedEditors = $email->ccAssignedEditors($submission->getId());
 				if (empty($assignedSectionEditors) && empty($assignedEditors)) {
 					$email->addRecipient($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 					$editorialContactName = $journal->getSetting('contactName');
@@ -193,7 +197,7 @@ class LayoutEditorAction extends Action {
 				);
 				$email->assignParams($paramArray);
 			}
-			$email->displayEditForm(Request::url(null, 'layoutEditor', 'completeAssignment', 'send'), array('articleId' => $submission->getArticleId()));
+			$email->displayEditForm($request->url(null, 'layoutEditor', 'completeAssignment', 'send'), array('articleId' => $submission->getId()));
 
 			return false;
 		}
@@ -205,11 +209,11 @@ class LayoutEditorAction extends Action {
 	 */
 	function uploadLayoutVersion($submission) {
 		import('classes.file.ArticleFileManager');
-		$articleFileManager = new ArticleFileManager($submission->getArticleId());
+		$articleFileManager = new ArticleFileManager($submission->getId());
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 		$layoutEditorSubmissionDao =& DAORegistry::getDAO('LayoutEditorSubmissionDAO');
 
-		$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $submission->getArticleId());
+		$layoutSignoff = $signoffDao->build('SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, $submission->getId());
 
 		$fileName = 'layoutFile';
 		if ($articleFileManager->uploadedFileExists($fileName) && !HookRegistry::call('LayoutEditorAction::uploadLayoutVersion', array(&$submission))) {
@@ -244,8 +248,10 @@ class LayoutEditorAction extends Action {
 	/**
 	 * Post layout comment.
 	 * @param $article object
+	 * @param $emailComment boolean
+	 * @param $request object
 	 */
-	function postLayoutComment($article, $emailComment) {
+	function postLayoutComment($article, $emailComment, $request) {
 		if (!HookRegistry::call('LayoutEditorAction::postLayoutComment', array(&$article, &$emailComment))) {
 			import('classes.submission.form.comment.LayoutCommentForm');
 
@@ -256,21 +262,19 @@ class LayoutEditorAction extends Action {
 				$commentForm->execute();
 
 				// Send a notification to associated users
-				import('lib.pkp.classes.notification.NotificationManager');
+				import('classes.notification.NotificationManager');
 				$notificationManager = new NotificationManager();
 				$notificationUsers = $article->getAssociatedUserIds(true, false);
 				foreach ($notificationUsers as $userRole) {
-					$url = Request::url(null, $userRole['role'], 'submissionEditing', $article->getId(), null, 'layout');
 					$notificationManager->createNotification(
-						$userRole['id'], 'notification.type.layoutComment',
-						$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_LAYOUT_COMMENT
+						$request, $userRole['id'], NOTIFICATION_TYPE_LAYOUT_COMMENT,
+						$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 					);
 				}
 
 				if ($emailComment) {
-					$commentForm->email();
+					$commentForm->email($request);
 				}
-
 			} else {
 				$commentForm->display();
 				return false;
@@ -296,8 +300,10 @@ class LayoutEditorAction extends Action {
 	/**
 	 * Post proofread comment.
 	 * @param $article object
+	 * @param $emailComment boolean
+	 * @param $request object
 	 */
-	function postProofreadComment($article, $emailComment) {
+	function postProofreadComment($article, $emailComment, $request) {
 		if (!HookRegistry::call('LayoutEditorAction::postProofreadComment', array(&$article, &$emailComment))) {
 			import('classes.submission.form.comment.ProofreadCommentForm');
 
@@ -308,19 +314,18 @@ class LayoutEditorAction extends Action {
 				$commentForm->execute();
 
 				// Send a notification to associated users
-				import('lib.pkp.classes.notification.NotificationManager');
+				import('classes.notification.NotificationManager');
 				$notificationManager = new NotificationManager();
 				$notificationUsers = $article->getAssociatedUserIds(true, false);
 				foreach ($notificationUsers as $userRole) {
-					$url = Request::url(null, $userRole['role'], 'submissionEditing', $article->getId(), null, 'proofread');
 					$notificationManager->createNotification(
-						$userRole['id'], 'notification.type.proofreadComment',
-						$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_PROOFREAD_COMMENT
+						$request, $userRole['id'], NOTIFICATION_TYPE_PROOFREAD_COMMENT,
+						$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 					);
 				}
 
 				if ($emailComment) {
-					$commentForm->email();
+					$commentForm->email($request);
 				}
 
 			} else {

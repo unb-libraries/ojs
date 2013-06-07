@@ -1,12 +1,11 @@
 {**
- * userIndividualSubscriptionForm.tpl
+ * templates/subscription/userIndividualSubscriptionForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User purchase individual subscription form
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="user.subscriptions.purchaseIndividualSubscription"}
@@ -17,9 +16,9 @@
 <br/>
 
 {if $subscriptionId}
-<form method="post" name="subscriptionForm" action="{url op="payPurchaseSubscription" path="individual"|to_array:$subscriptionId}">
+<form method="post" id="subscriptionForm" action="{url op="payPurchaseSubscription" path="individual"|to_array:$subscriptionId}">
 {else}
-<form method="post" name="subscriptionForm" action="{url op="payPurchaseSubscription" path="individual"}">
+<form method="post" id="subscriptionForm" action="{url op="payPurchaseSubscription" path="individual"}">
 {/if}
 
 {include file="common/formErrors.tpl"}

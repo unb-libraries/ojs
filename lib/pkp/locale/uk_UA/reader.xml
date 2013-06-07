@@ -4,14 +4,13 @@
 <!--
   * locale/uk_UA/reader.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the uk_UA (Ukrainian) locale.
   *
   * Translated by Denys Solovianenko, 2011
   * V. I. Vernadsky National Library of Ukraine
-  * $Id$
   -->
 
 <locale name="uk_UA" full_name = "Ukrainian">
@@ -180,4 +179,5 @@
 	<message key="rt.version.title">Назва</message>
 	<message key="rt.version">Версія</message>
 	<message key="rt.viewMetadata">Індексні метадані</message>
+	<message key="rt.admin.settings.viewReviewPolicy">Дивитися політику рецензування</message>
 </locale>

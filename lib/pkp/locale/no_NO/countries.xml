@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE countries SYSTEM "../../dtd/countries.dtd">
+
 <!--
   * locale/no_NO/countries.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized list of countries.
   *
-  * $Id: countries.xml,v 1.6 2009/08/18 23:44:09 asmecher Exp $
   -->
 <countries>
 	<country name="Afghanistan" code="AF"/>

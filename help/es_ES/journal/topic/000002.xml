@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000002.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
-  * Distribuido por GNU GPL v2. Para términos completos vea el archivo docs/COPYING.
+  * Copyright (c) 2003-2013 John Willinsky
+  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Índice de usuarios 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Users Index 
   *
   * $Id$
   -->
 
-<topic id="journal/topic/000002" locale="es_ES" title="Usuarios" toc="journal/toc/000000" subtoc="journal/toc/000002" key="journal.users.index">
+<topic id="journal/topic/000002" locale="es_ES" title="Usuarios/as" toc="journal/toc/000000" subtoc="journal/toc/000002" key="journal.users.index">
 	<section>
-		<![CDATA[<p>Es responsabilidad del Administrador de la Revista gestionar los usuarios en OJS. Esto incluye la creación de usuarios, la desactivación de cuentas,la gestión de funciones, etc. El Administrador de la Revista puede explorar y agregar registros existentes,modificar perfiles, unir cuentas, y contactar grupos de usuarios.</p>]]>	
+		<![CDATA[<p>El gestor/a de la revista es el responsable de la administración de usuarios/as en OJS. Esto incluye crear y desactivar cuentas de usuario/a, gestionar roles, buscar y agregar nuevos registros a los ya existentes, modificar perfiles, unir cuentas y contactar a grupos de usuarios/as, entre otros.</p>]]>	
 	</section>
 </topic>

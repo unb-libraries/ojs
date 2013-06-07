@@ -2,7 +2,7 @@
 /**
  * @file classes/security/authorization/AuthorizationDecisionManager.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorizationDecisionManager
@@ -99,6 +99,14 @@ class AuthorizationDecisionManager {
 		}
 	}
 
+	/**
+	 * Get the authorized context.
+	 * @return array
+	 */
+	function &getAuthorizedContext() {
+		return $this->_authorizedContext;
+	}
+
 
 	//
 	// Public methods
@@ -165,6 +173,9 @@ class AuthorizationDecisionManager {
 		// at least one policy.
 		$decidedByOverriddenEffect = false;
 
+		// Separated from below for bug #6821.
+		$context =& $this->getAuthorizedContext();
+
 		// Go through all policies within the policy set
 		// and combine them with the configured algorithm.
 		foreach($policySet->getPolicies() as $policy) {
@@ -176,7 +187,7 @@ class AuthorizationDecisionManager {
 					// will change globally if changed by the policy which is intended
 					// behavior so that policies can access authorized objects provided
 					// by policies called earlier in the authorization process.
-					$policy->setAuthorizedContext($this->_authorizedContext);
+					$policy->setAuthorizedContext($context);
 
 					// Check whether the policy applies.
 					if ($policy->applies()) {

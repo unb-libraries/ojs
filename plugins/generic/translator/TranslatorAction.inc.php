@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file TranslatorAction.inc.php
+ * @file plugins/generic/translator/TranslatorAction.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TranslatorAction
@@ -12,13 +12,11 @@
  * @brief Perform various tasks related to translation.
  */
 
-// $Id$
-
 
 class TranslatorAction {
 	/**
 	 * Export the locale files to the browser as a tarball.
-	 * Requires /bin/tar for operation.
+	 * Requires tar for operation (configured in config.inc.php).
 	 */
 	function export($locale) {
 		// Construct the tar command
@@ -57,7 +55,10 @@ class TranslatorAction {
 		foreach (array_keys($plugins) as $key) {
 			$plugin =& $plugins[$key];
 			$localeFile = $plugin->getLocaleFilename($locale);
-			if (!empty($localeFile)) $localeFiles[] = $localeFile;
+			if (!empty($localeFile)) {
+				if (is_scalar($localeFile)) $localeFiles[] = $localeFile;
+				if (is_array($localeFile)) $localeFiles = array_merge($localeFiles, $localeFile);
+			}
 			unset($plugin);
 		}
 		return $localeFiles;
@@ -99,7 +100,7 @@ class TranslatorAction {
 		foreach ($files as $templateFile => $templateDataFile) {
 			$xmlParser = new XMLParser();
 			$data = null;
-			if (file_exists($templateDataFile)) $data =& $xmlParser->parse($templateDataFile, array('email'));
+			if (file_exists($templateDataFile)) $data =& $xmlParser->parse($templateDataFile);
 			if ($data) foreach ($data->getChildren() as $emailNode) {
 				$returner[$emailNode->getAttribute('key')] = array(
 					'subject' => $emailNode->getChildValue('subject'),
@@ -150,13 +151,20 @@ class TranslatorAction {
 		$plugins =& PluginRegistry::loadAllPlugins();
 		foreach (array_keys($plugins) as $key) {
 			$plugin =& $plugins[$key];
-			$referenceLocaleFilename = $plugin->getLocaleFilename($referenceLocale);
-			if ($referenceLocaleFilename) {
-				$localeFile = new LocaleFile($locale, $plugin->getLocaleFilename($locale));
-				$referenceLocaleFile = new LocaleFile($referenceLocale, $referenceLocaleFilename);
-				$errors = array_merge_recursive($errors, $localeFile->testLocale($referenceLocaleFile));
-				unset($localeFile);
-				unset($referenceLocaleFile);
+			$referenceLocaleFilenames = $plugin->getLocaleFilename($referenceLocale);
+			if ($referenceLocaleFilenames) {
+				if (is_scalar($referenceLocaleFilenames)) $referenceLocaleFilenames = array($referenceLocaleFilenames);
+				$localeFilenames = $plugin->getLocaleFilename($locale);
+				if (is_scalar($localeFilenames)) $localeFilenames = array($localeFilenames);
+				assert(count($localeFilenames) == count($referenceLocaleFilenames));
+				foreach($referenceLocaleFilenames as $index => $referenceLocaleFilename) {
+					assert(isset($localeFilenames[$index]));
+					$localeFile = new LocaleFile($locale, $localeFilenames[$index]);
+					$referenceLocaleFile = new LocaleFile($referenceLocale, $referenceLocaleFilename);
+					$errors = array_merge_recursive($errors, $localeFile->testLocale($referenceLocaleFile));
+					unset($localeFile);
+					unset($referenceLocaleFile);
+				}
 			}
 			unset($plugin);
 		}

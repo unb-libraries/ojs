@@ -3,7 +3,7 @@
 /**
  * @file classes/install/Upgrade.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Upgrade
@@ -43,7 +43,8 @@ class Upgrade extends Installer {
 	 */
 	function rebuildSearchIndex() {
 		import('classes.search.ArticleSearchIndex');
-		ArticleSearchIndex::rebuildIndex();
+		$articleSearchIndex = new ArticleSearchIndex();
+		$articleSearchIndex->rebuildIndex();
 		return true;
 	}
 
@@ -89,7 +90,7 @@ class Upgrade extends Installer {
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
 			$journalId = $row['journal_id'];
-			$journal =& $journalDao->getJournal($journalId);
+			$journal =& $journalDao->getById($journalId);
 			$rt = new JournalRT($journalId);
 			$rt->setEnabled(true); // No toggle in prior OJS; assume true
 			$rt->setVersion($row['version_id']);
@@ -98,7 +99,6 @@ class Upgrade extends Installer {
 			$rt->setViewMetadata($row['view_metadata']);
 			$rt->setSupplementaryFiles($row['supplementary_files']);
 			$rt->setPrinterFriendly($row['printer_friendly']);
-			$rt->setAuthorBio($row['author_bio']);
 			$rt->setDefineTerms($row['define_terms']);
 
 			$journal->updateSetting('enableComments', $row['add_comment']?COMMENTS_AUTHENTICATED:COMMENTS_DISABLED);
@@ -467,7 +467,7 @@ class Upgrade extends Installer {
 	 */
 	function dropAllIndexes() {
 		$siteDao =& DAORegistry::getDAO('SiteDAO');
-		$dict = NewDataDictionary($siteDao->_dataSource);
+		$dict = NewDataDictionary($siteDao->getDataSource());
 		$dropIndexSql = array();
 
 		// This is a list of tables that were used in 2.1.1 (i.e.
@@ -768,6 +768,160 @@ class Upgrade extends Installer {
 	}
 
 	/**
+	 * For 2.4 Upgrade -- Overhaul notification structure
+	 */
+	function migrateNotifications() {
+		$notificationDao =& DAORegistry::getDAO('NotificationDAO');
+
+		// Retrieve all notifications from pre-2.4 notifications table
+		$result =& $notificationDao->retrieve('SELECT * FROM notifications_old');
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$type = $row['assoc_type'];
+			$url = $row['location'];
+
+			// Get the ID of the associated object from the URL and store in $matches.
+			//  This value will not be set in all cases.
+			preg_match_all('/\d+/', $url, $matches);
+
+			// Set the base data for the notification
+			$notification = $notificationDao->newDataObject();
+			$notification->setId($row['notification_id']);
+			$notification->setUserId($row['user_id']);
+			$notification->setLevel(NOTIFICATION_LEVEL_NORMAL);
+			$notification->setDateCreated($notificationDao->datetimeFromDB($row['date_created']));
+			$notification->setDateRead($notificationDao->datetimeFromDB($row['date_read']));
+			$notification->setContextId($row['context']);
+			$notification->setType($type);
+
+			switch($type) {
+				case NOTIFICATION_TYPE_COPYEDIT_COMMENT:
+				case NOTIFICATION_TYPE_PROOFREAD_COMMENT:
+				case NOTIFICATION_TYPE_METADATA_MODIFIED:
+				case NOTIFICATION_TYPE_SUBMISSION_COMMENT:
+				case NOTIFICATION_TYPE_LAYOUT_COMMENT:
+				case NOTIFICATION_TYPE_ARTICLE_SUBMITTED:
+				case NOTIFICATION_TYPE_SUPP_FILE_MODIFIED:
+				case NOTIFICATION_TYPE_GALLEY_MODIFIED:
+				case NOTIFICATION_TYPE_REVIEWER_COMMENT:
+				case NOTIFICATION_TYPE_REVIEWER_FORM_COMMENT:
+				case NOTIFICATION_TYPE_EDITOR_DECISION_COMMENT:
+					$id = array_pop($matches[0]);
+					$notification->setAssocType(ASSOC_TYPE_ARTICLE);
+					$notification->setAssocId($id);
+					break;
+				case NOTIFICATION_TYPE_USER_COMMENT:
+					// Remove the last two elements of the array.  They refer to the
+					//  galley and parent, which we no longer use
+					$matches = array_slice($matches[0], -3);
+					$id = array_shift($matches);
+					$notification->setAssocType(ASSOC_TYPE_ARTICLE);
+					$notification->setAssocId($id);
+					$notification->setType(NOTIFICATION_TYPE_USER_COMMENT);
+					break;
+				case NOTIFICATION_TYPE_PUBLISHED_ISSUE:
+					// We do nothing here, as our URL points to the current issue
+					break;
+				case NOTIFICATION_TYPE_NEW_ANNOUNCEMENT:
+					$id = array_pop($matches[0]);
+					$notification->setAssocType(ASSOC_TYPE_ANNOUNCEMENT);
+					$notification->setAssocId($id);
+					$notification->setType(NOTIFICATION_TYPE_NEW_ANNOUNCEMENT);
+					break;
+			}
+
+			$notificationDao->update(
+				sprintf('INSERT INTO notifications
+						(user_id, level, date_created, date_read, context_id, type, assoc_type, assoc_id)
+					VALUES
+						(?, ?, %s, %s, ?, ?, ?, ?)',
+					$notificationDao->datetimeToDB($notification->getDateCreated()), $notificationDao->datetimeToDB($notification->getDateRead())),
+				array(
+					(int) $notification->getUserId(),
+					(int) $notification->getLevel(),
+					(int) $notification->getContextId(),
+					(int) $notification->getType(),
+					(int) $notification->getAssocType(),
+					(int) $notification->getAssocId()
+				)
+			);
+			unset($notification);
+			$result->MoveNext();
+		}
+
+		$result->Close();
+		unset($result);
+
+
+		// Retrieve all settings from pre-2.4 notification_settings table
+		$result =& $notificationDao->retrieve('SELECT * FROM notification_settings_old');
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$settingName = $row['setting_name'];
+			$contextId = $row['context'];
+
+			switch ($settingName) {
+				case 'email':
+				case 'notify':
+					$notificationType = $row['setting_value'];
+					$newSettingName = ($settingName == 'email' ? 'emailed_notification' : 'blocked_notification');
+					$userId = $row['user_id'];
+
+					$notificationDao->update(
+						'INSERT INTO notification_subscription_settings
+							(setting_name, setting_value, user_id, context, setting_type)
+							VALUES
+							(?, ?, ?, ?, ?)',
+						array(
+							$newSettingName,
+							(int) $notificationType,
+							(int) $userId,
+							(int) $contextId,
+							'int'
+						)
+					);
+					break;
+				case 'mailList':
+				case 'mailListUnconfirmed':
+					$confirmed = ($settingName == 'mailList') ? 1 : 0;
+					$email = $row['setting_value'];
+					$settingId = $row['setting_id'];
+
+					// Get the token from the access_keys table
+					$accessKeyDao =& DAORegistry::getDAO('AccessKeyDAO'); /* @var $accessKeyDao AccessKeyDAO */
+					$accessKey =& $accessKeyDao->getAccessKeyByUserId('MailListContext', $settingId);
+					if(!$accessKey) continue;
+					$token = $accessKey->getKeyHash();
+
+					// Delete the access key -- we don't need it anymore
+					$accessKeyDao->deleteAccessKey($accessKey);
+
+					$notificationDao->update(
+						'INSERT INTO notification_mail_list
+							(email, context, token, confirmed)
+							VALUES
+							(?, ?, ?, ?)',
+						array(
+							$email,
+							(int) $contextId,
+							$token,
+							$confirmed
+						)
+					);
+					break;
+			}
+
+			$result->MoveNext();
+		}
+
+		$result->Close();
+		unset($result);
+
+		return true;
+	}
+
+
+	/**
 	 * For 2.3.7 Upgrade -- Remove author revised file upload IDs erroneously added to copyedit signoff
 	 */
 	function removeAuthorRevisedFilesFromSignoffs() {
@@ -813,7 +967,7 @@ class Upgrade extends Installer {
 
 		// Get all interests for all users
 		$result =& $interestDao->retrieve(
-			'SELECT	DISTINCT cves.setting_value as interest_keyword,
+			'SELECT DISTINCT cves.setting_value as interest_keyword,
 				cv.assoc_id as user_id
 			FROM	controlled_vocabs cv
 				LEFT JOIN controlled_vocab_entries cve ON (cve.controlled_vocab_id = cv.controlled_vocab_id)
@@ -870,7 +1024,7 @@ class Upgrade extends Installer {
 		unset($result);
 
 		// Remove the obsolete interest data
-		$interestDao->update('DELETE FROM controlled_vocabs WHERE symbolic = ? AND assoc_type > 0', array('interest'));
+		$interestDao->update('DELETE FROM controlled_vocabs WHERE symbolic = ?  AND assoc_type > 0', array('interest'));
 
 		return true;
 	}

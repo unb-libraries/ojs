@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file StudentThesisForm.inc.php
+ * @file plugins/generic/thesis/StudentThesisForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StudentThesisForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for students to submit thesis abstract.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 
@@ -190,7 +187,7 @@ class StudentThesisForm extends Form {
 
 		// If a url is provided, ensure it includes a proper prefix (i.e. http:// or ftp://).
 		if (!empty($this->_data['url'])) {
-			$this->addCheck(new FormValidatorCustom($this, 'url', 'required', 'plugins.generic.thesis.form.urlPrefixIncluded', create_function('$url', 'return strpos(trim(strtolower($url)), \'http://\') === 0 || strpos(trim(strtolower($url)), \'ftp://\') === 0 ? true : false;'), array()));
+			$this->addCheck(new FormValidatorCustom($this, 'url', 'required', 'plugins.generic.thesis.form.urlPrefixIncluded', create_function('$url', 'return strpos(trim(strtolower_codesafe($url)), \'http://\') === 0 || strpos(trim(strtolower_codesafe($url)), \'ftp://\') === 0 ? true : false;'), array()));
 		}
 
 	}
@@ -216,7 +213,7 @@ class StudentThesisForm extends Form {
 		$thesis->setUniversity($this->getData('university'));
 		$thesis->setTitle($this->getData('title'));
 		$thesis->setDateApproved($this->getData('dateApprovedYear') . '-' . $this->getData('dateApprovedMonth') . '-' . $this->getData('dateApprovedDay'));
-		$thesis->setUrl(strtolower($this->getData('url')));
+		$thesis->setUrl($this->getData('url'));
 		$thesis->setAbstract($this->getData('abstract'));
 		$thesis->setComment($this->getData('comment'));
 		$thesis->setStudentFirstName($this->getData('studentFirstName'));

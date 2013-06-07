@@ -2,7 +2,7 @@
 /**
  * @file classes/process/ProcessDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ProcessDAO
@@ -63,6 +63,13 @@ import('lib.pkp.classes.process.Process');
 
 class ProcessDAO extends DAO {
 	/**
+	 * Constructor
+	 */
+	function ProcessDAO() {
+		parent::DAO();
+	}
+
+	/**
 	 * Insert a new process.
 	 * @param $processType integer one of the PROCESS_TYPE_* constants
 	 * @param $maxParallelism integer the max. number
@@ -86,7 +93,7 @@ class ProcessDAO extends DAO {
 		}
 
 		// We create a process instance from the given data.
-		$process = new Process();
+		$process = $this->newDataObject();
 		$process->setProcessType($processType);
 
 		// Generate a new process ID. See classdoc for process ID
@@ -104,8 +111,8 @@ class ProcessDAO extends DAO {
 				(?, ?, ?, 0)'),
 			array(
 				$process->getId(),
-				(integer)$process->getProcessType(),
-				(integer)$process->getTimeStarted(),
+				(int) $process->getProcessType(),
+				(int) $process->getTimeStarted(),
 			)
 		);
 		$process->setObliterated(false);
@@ -145,7 +152,7 @@ class ProcessDAO extends DAO {
 			'SELECT COUNT(*) AS running_processes
 			 FROM processes
 			 WHERE process_type = ?',
-			(integer)$processType
+			(int) $processType
 		);
 
 		$runningProcesses = 0;
@@ -206,7 +213,7 @@ class ProcessDAO extends DAO {
 		return $this->update(
 			'DELETE FROM processes
 			WHERE time_started < ?',
-			(integer)$maxTimestamp
+			(int) $maxTimestamp
 		);
 	}
 
@@ -264,14 +271,14 @@ class ProcessDAO extends DAO {
 			// Make the request including the generated one-time-key.
 			$stream = fsockopen($transport.$urlParts['host'], $port);
 			if (!$stream) break;
-		    $processRequest =
-		    	'GET '.$urlParts['path'].'?authToken='.urlencode($oneTimeKey)." HTTP/1.1\r\n"
-		    	.'Host: '.$urlParts['host']."\r\n"
-		    	."User-Agent: OJS\r\n"
-		    	."Connection: Close\r\n\r\n";
+			$processRequest =
+				'GET '.$urlParts['path'].'?authToken='.urlencode($oneTimeKey)." HTTP/1.1\r\n"
+				.'Host: '.$urlParts['host']."\r\n"
+				."User-Agent: OJS\r\n"
+				."Connection: Close\r\n\r\n";
 			stream_set_blocking($stream, 0);
-		    fwrite($stream, $processRequest);
-		    fclose($stream);
+			fwrite($stream, $processRequest);
+			fclose($stream);
 			unset($stream);
 
 			$currentParallelism++;
@@ -327,7 +334,7 @@ class ProcessDAO extends DAO {
 	 * about once a minute by running processes.
 	 * If this method returns false then the
 	 * process is required to halt immediately.
-	 * @param $processId
+	 * @param $processId string
 	 * @return boolean
 	 */
 	function canContinue($processId) {
@@ -345,6 +352,13 @@ class ProcessDAO extends DAO {
 		return $canContinue;
 	}
 
+	/**
+	 * Instantiate and return a new data object.
+	 * @return DataObject
+	 */
+	function newDataObject() {
+		return new Process();
+	}
 
 	//
 	// Private helper methods
@@ -356,7 +370,7 @@ class ProcessDAO extends DAO {
 	 * @return Process
 	 */
 	function &_fromRow(&$row) {
-		$process =& new Process();
+		$process = $this->newDataObject();
 		$process->setId($row['process_id']);
 		$process->setProcessType((integer)$row['process_type']);
 		$process->setTimeStarted((integer)$row['time_started']);

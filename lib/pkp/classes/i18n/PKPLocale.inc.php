@@ -7,10 +7,10 @@
 /**
  * @file classes/i18n/PKPLocale.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
- * @class Locale
+ * @class PKPLocale
  * @ingroup i18n
  *
  * @brief Provides methods for loading locale data and translating strings identified by unique keys
@@ -83,7 +83,7 @@ class PKPLocale {
 
 		$localeFiles =& AppLocale::getLocaleFiles($locale);
 		$value = '';
-		for ($i = 0; $i < count($localeFiles); $i++) { // By reference
+		for ($i = count($localeFiles) - 1 ; $i >= 0 ; $i --) {
 			$value = $localeFiles[$i]->translate($key, $params);
 			if ($value !== null) return $value;
 		}
@@ -93,7 +93,7 @@ class PKPLocale {
 		$notes[] = array('debug.notes.missingLocaleKey', array('key' => $key));
 
 		// Add some octothorpes to missing keys to make them more obvious
-		return '##' . $key . '##';
+		return '##' . htmlentities($key) . '##';
 	}
 
 	/**
@@ -114,6 +114,12 @@ class PKPLocale {
 		AppLocale::registerLocaleFile($locale, "lib/pkp/locale/$locale/common.xml");
 	}
 
+	/**
+	 * Build an associative array of LOCALE_COMPOMENT_... => filename
+	 * (use getFilenameComponentMap instead)
+	 * @param $locale string
+	 * @return array
+	 */
 	function makeComponentMap($locale) {
 		$baseDir = "lib/pkp/locale/$locale/";
 
@@ -129,6 +135,11 @@ class PKPLocale {
 		);
 	}
 
+	/**
+	 * Get an associative array of LOCALE_COMPOMENT_... => filename
+	 * @param $locale string
+	 * @return array
+	 */
 	function getFilenameComponentMap($locale) {
 		$filenameComponentMap =& Registry::get('localeFilenameComponentMap', true, array());
 		if (!isset($filenameComponentMap[$locale])) {
@@ -137,15 +148,46 @@ class PKPLocale {
 		return $filenameComponentMap[$locale];
 	}
 
-	function requireComponents($components, $locale = null) {
+	/**
+	 * Load a set of locale components. Parameters of mixed length may
+	 * be supplied, each a LOCALE_COMPONENT_... constant. An optional final
+	 * parameter may be supplied to specify the locale (e.g. 'en_US').
+	 */
+	function requireComponents() {
+		$params = func_get_args();
+		$paramCount = count($params);
+		if ($paramCount === 0) return;
+
+		// Get the locale
+		$lastParam = $params[$paramCount-1];
+		if (is_string($lastParam)) {
+			$locale = $lastParam;
+			$paramCount--;
+		} else {
+			$locale = AppLocale::getLocale();
+		}
+
+		// Backwards compatibility: the list used to be supplied
+		// as an array in the first parameter.
+		if (is_array($params[0])) {
+			$params = $params[0];
+			$paramCount = count($params);
+		}
+
+		// Go through and make sure each component is loaded if valid.
 		$loadedComponents =& Registry::get('loadedLocaleComponents', true, array());
-		if ($locale === null) $locale = AppLocale::getLocale();
 		$filenameComponentMap = AppLocale::getFilenameComponentMap($locale);
-		foreach ($components as $component) {
+		for ($i=0; $i<$paramCount; $i++) {
+			$component = $params[$i];
+
 			// Don't load components twice
 			if (isset($loadedComponents[$locale][$component])) continue;
 
-			if (!isset($filenameComponentMap[$component])) fatalError('Unknown locale component ' . $component);
+			// Validate component
+			if (!isset($filenameComponentMap[$component])) {
+				fatalError('Unknown locale component ' . $component);
+			}
+
 			$filename = $filenameComponentMap[$component];
 			AppLocale::registerLocaleFile($locale, $filename);
 			$loadedComponents[$locale][$component] = true;
@@ -177,6 +219,13 @@ class PKPLocale {
 		return $localeFile;
 	}
 
+	/**
+	 * Get the stylesheet filename for a particular locale.
+	 * (These can be optionally specified to deal with things like
+	 * RTL directionality.)
+	 * @param $locale string
+	 * @return string or null if none configured.
+	 */
 	function getLocaleStyleSheet($locale) {
 		$contents =& AppLocale::_getAllLocalesCacheContent();
 		if (isset($contents[$locale]['stylesheet'])) {
@@ -404,13 +453,13 @@ class PKPLocale {
 		// (first) candidate found.
 		return array_shift($localeCandidates);
 	}
-	
+
 	/**
-	* Translate the ISO 2-letter language string (ISO639-1) into ISO639-3.
-	* @param $iso1 string
-	* @return string the translated string or null if we
-	* don't know about the given language.
-	*/
+	 * Translate the ISO 2-letter language string (ISO639-1) into ISO639-3.
+	 * @param $iso1 string
+	 * @return string the translated string or null if we
+	 * don't know about the given language.
+	 */
 	function getIso3FromIso1($iso1) {
 		assert(strlen($iso1) == 2);
 		$locales =& AppLocale::_getAllLocalesCacheContent();
@@ -424,11 +473,11 @@ class PKPLocale {
 	}
 
 	/**
-	* Translate the ISO639-3 into ISO639-1.
-	* @param $iso3 string
-	* @return string the translated string or null if we
-	* don't know about the given language.
-	*/
+	 * Translate the ISO639-3 into ISO639-1.
+	 * @param $iso3 string
+	 * @return string the translated string or null if we
+	 * don't know about the given language.
+	 */
 	function getIso1FromIso3($iso3) {
 		assert(strlen($iso3) == 3);
 		$locales =& AppLocale::_getAllLocalesCacheContent();
@@ -442,11 +491,11 @@ class PKPLocale {
 	}
 
 	/**
-	* Translate the PKP locale identifier into an
-	* ISO639-3 compatible 3-letter string.
-	* @param $locale string
-	* @return string
-	*/
+	 * Translate the PKP locale identifier into an
+	 * ISO639-3 compatible 3-letter string.
+	 * @param $locale string
+	 * @return string
+	 */
 	function getIso3FromLocale($locale) {
 		assert(strlen($locale) == 5);
 		$iso1 = substr($locale, 0, 2);
@@ -454,40 +503,51 @@ class PKPLocale {
 	}
 
 	/**
-	* Translate an ISO639-3 compatible 3-letter string
-	* into the PKP locale identifier.
-	*
-	* This can be ambiguous if several locales are defined
-	* for the same language. In this case we'll use the
-	* primary locale to disambiguate.
-	*
-	* If that still doesn't determine a unique locale then
-	* we'll choose the first locale found.
-	*
-	* @param $iso3 string
+	* Translate the PKP locale identifier into an
+	* ISO639-1 compatible 2-letter string.
+	* @param $locale string
 	* @return string
 	*/
+	function getIso1FromLocale($locale) {
+		assert(strlen($locale) == 5);
+		return substr($locale, 0, 2);
+	}
+
+	/**
+	 * Translate an ISO639-3 compatible 3-letter string
+	 * into the PKP locale identifier.
+	 *
+	 * This can be ambiguous if several locales are defined
+	 * for the same language. In this case we'll use the
+	 * primary locale to disambiguate.
+	 *
+	 * If that still doesn't determine a unique locale then
+	 * we'll choose the first locale found.
+	 *
+	 * @param $iso3 string
+	 * @return string
+	 */
 	function getLocaleFromIso3($iso3) {
 		assert(strlen($iso3) == 3);
 		$primaryLocale = AppLocale::getPrimaryLocale();
-		
+
 		$localeCandidates = array();
 		$locales =& AppLocale::_getAllLocalesCacheContent();
 		foreach($locales as $locale => $localeData) {
 			assert(isset($localeData['iso639-3']));
 			if ($localeData['iso639-3'] == $iso3) {
 				if ($locale == $primaryLocale) {
-				// In case of ambiguity the primary locale
-				// overrides all other options so we're done.
-				return $primaryLocale;
-			}
-			$localeCandidates[] = $locale;
+					// In case of ambiguity the primary locale
+					// overrides all other options so we're done.
+					return $primaryLocale;
+				}
+				$localeCandidates[] = $locale;
 			}
 		}
-		
+
 		// Return null if we found no candidate locale.
 		if (empty($localeCandidates)) return null;
-		
+
 		if (count($localeCandidates) > 1) {
 			// Check whether one of the candidate locales
 			// is a supported locale. If so choose the first
@@ -497,12 +557,12 @@ class PKPLocale {
 				if (in_array($supportedLocale, $localeCandidates)) return $supportedLocale;
 			}
 		}
-		
+
 		// If there is only one candidate (or if we were
 		// unable to disambiguate) then return the unique
 		// (first) candidate found.
 		return array_shift($localeCandidates);
-	}	
+	}
 
 	//
 	// Private helper methods.
@@ -563,6 +623,7 @@ class PKPLocale {
 	}
 }
 
+
 /**
  * Wrapper around PKPLocale::translate().
  *
@@ -581,7 +642,7 @@ class PKPLocale {
  * @return string
  */
 function __($key, $params = array(), $locale = null) {
-	return PKPLocale::translate($key, $params, $locale);
+	return AppLocale::translate($key, $params, $locale);
 }
 
 ?>

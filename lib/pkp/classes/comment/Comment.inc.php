@@ -7,7 +7,7 @@
 /**
  * @file classes/comment/Comment.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Comment
@@ -17,11 +17,7 @@
  * @brief Class for public Comment associated with submission.
  */
 
-// $Id$
-
-
 class Comment extends DataObject {
-
 	/**
 	 * Constructor.
 	 */
@@ -190,7 +186,7 @@ class Comment extends DataObject {
 		return $this->setData('body', $body);
 	}
 
- 	/**
+	/**
 	 * get date posted
 	 * @return date
 	 */
@@ -206,7 +202,7 @@ class Comment extends DataObject {
 		return $this->setData('datePosted', $datePosted);
 	}
 
- 	/**
+	/**
 	 * get date modified
 	 * @return date
 	 */
@@ -238,7 +234,6 @@ class Comment extends DataObject {
 	function setChildren(&$children) {
 		$this->setData('children', $children);
 	}
-
- }
+}
 
 ?>

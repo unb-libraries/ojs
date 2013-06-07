@@ -1,10 +1,11 @@
 /**
  * common.css
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * PKP-wide shared stylesheet.
+ * DEPRECATED. Do not modify.
  */
 
 /**
@@ -243,9 +244,6 @@ span.formRequired {
 	font-size: 0.9em;
 }
 
-span.instruct {
-}
-
 span.heading {
 	font-size: 0.85em;
 	text-transform: uppercase;
@@ -253,6 +251,12 @@ span.heading {
 
 span.highlight {
 	border-bottom: 1px dotted #000;
+}
+
+div.warningMessage {
+	background: url(../templates/images/icons/icon_alert.gif) no-repeat 3px 40%;
+	margin: 5px;
+	padding: 5px 5px 5px 25px;
 }
 
 .nowrap {
@@ -347,19 +351,19 @@ span.nested {
  * Form-specific elements
  */
 
-span.formError {
+span.pkp_form_error { /* Named for compatibility with new lessphp structure */
 	color: #900;
 	font-weight: bold;
 	font-size: 1em;
 }
 
-span.formSuccess {
+span.pkp_form_success { /* Named for compatibility with new lessphp structure */
 	color: #090;
 	font-weight: bold;
 	font-size: 1em;
 }
 
-ul.formErrorList {
+ul.pkp_form_error_list { /* Named for compatibility with new lessphp structure */
 	color: #900;
 }
 

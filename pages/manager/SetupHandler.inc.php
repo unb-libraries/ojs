@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SetupHandler.inc.php
+ * @file pages/manager/SetupHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SetupHandler
@@ -78,12 +78,7 @@ class SetupHandler extends ManagerHandler {
 			// Check for any special cases before trying to save
 			switch ($step) {
 				case 1:
-					if ($request->getUserVar('reassignDOIs')) {
-						$articleDao =& DAORegistry::getDAO('ArticleDAO');
-						$journal =& $request->getJournal();
-						$articleDao->assignDOIs(true, $journal->getId());
-						$editData = true;
-					} else if ($request->getUserVar('addSponsor')) {
+					if ($request->getUserVar('addSponsor')) {
 						// Add a sponsor
 						$editData = true;
 						$sponsors = $setupForm->getData('sponsors');
@@ -223,6 +218,7 @@ class SetupHandler extends ManagerHandler {
 					}
 					$setupForm->setData('templates', $templates);
 					break;
+
 				case 5:
 					if ($request->getUserVar('uploadHomeHeaderTitleImage')) {
 						if ($setupForm->uploadImage('homeHeaderTitleImage', $formLocale)) {
@@ -245,6 +241,17 @@ class SetupHandler extends ManagerHandler {
 					} else if ($request->getUserVar('deleteHomeHeaderLogoImage')) {
 						$editData = true;
 						$setupForm->deleteImage('homeHeaderLogoImage', $formLocale);
+
+					} else if ($request->getUserVar('uploadJournalThumbnail')) {
+						if ($setupForm->uploadImage('journalThumbnail', $formLocale)) {
+							$editData = true;
+						} else {
+							$setupForm->addError('journalThumbnail', __('manager.setup.journalThumbnailInvalid'));
+						}
+
+					} else if ($request->getUserVar('deleteJournalThumbnail')) {
+						$editData = true;
+						$setupForm->deleteImage('journalThumbnail', $formLocale);
 
 					} else if ($request->getUserVar('uploadJournalFavicon')) {
 						if ($setupForm->uploadImage('journalFavicon', $formLocale)) {

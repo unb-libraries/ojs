@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ThesisFeedGatewayPlugin.inc.php
+ * @file plugins/generic/thesisFeed/ThesisFeedGatewayPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ThesisFeedGatewayPlugin
@@ -12,9 +12,6 @@
  * @brief Gateway component of thesis feed plugin
  *
  */
-
-// $Id$
-
 
 import('classes.plugins.GatewayPlugin');
 

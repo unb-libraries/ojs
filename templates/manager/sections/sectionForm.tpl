@@ -1,12 +1,11 @@
 {**
- * sectionForm.tpl
+ * templates/manager/sections/sectionForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form to create/modify a journal section.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="section.section"}
@@ -14,7 +13,7 @@
 {include file="common/header.tpl"}
 {/strip}
 
-<form name="section" method="post" action="{url op="updateSection" path=$sectionId}" onsubmit="return checkEditorAssignments()">
+<form id="section" method="post" action="{url op="updateSection" path=$sectionId}" onsubmit="return checkEditorAssignments()">
 <input type="hidden" name="editorAction" value="" />
 <input type="hidden" name="userId" value="" />
 
@@ -23,15 +22,17 @@
 <!--
 
 function addSectionEditor(editorId) {
-	document.section.editorAction.value = "addSectionEditor";
-	document.section.userId.value = editorId;
-	document.section.submit();
+	var sectionForm = document.getElementById('section');
+	sectionForm.editorAction.value = "addSectionEditor";
+	sectionForm.userId.value = editorId;
+	sectionForm.submit();
 }
 
 function removeSectionEditor(editorId) {
-	document.section.editorAction.value = "removeSectionEditor";
-	document.section.userId.value = editorId;
-	document.section.submit();
+	var sectionForm = document.getElementById('section');
+	sectionForm.editorAction.value = "removeSectionEditor";
+	sectionForm.userId.value = editorId;
+	sectionForm.submit();
 }
 
 function checkEditorAssignments() {
@@ -40,7 +41,7 @@ function checkEditorAssignments() {
 	{foreach from=$assignedEditors item=editorEntry}
 	{assign var=editor value=$editorEntry.user}
 	{literal}
-		if (!document.section.canReview{/literal}{$editor->getId()}{literal}.checked && !document.section.canEdit{/literal}{$editor->getId()}{literal}.checked) {
+		if (!document.getElementById('section').canReview{/literal}{$editor->getId()}{literal}.checked && !document.getElementById('section').canEdit{/literal}{$editor->getId()}{literal}.checked) {
 			isOk = false;
 		}
 	{/literal}{/foreach}{literal}
@@ -91,6 +92,7 @@ function checkEditorAssignments() {
 		</select>
 	</td>
 </tr>
+{call_hook name="Templates::Manager::Sections::SectionForm::AdditionalMetadata" sectionId=$sectionId}
 <tr valign="top">
 	<td rowspan="4" class="label">{fieldLabel suppressId="true" key="submission.indexing"}</td>
 	<td class="value">

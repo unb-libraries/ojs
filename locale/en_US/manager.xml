@@ -2,15 +2,15 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/en_US/manager.xml
+  * locale/en_US/manager.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (English) locale.
+  * Localization strings.
   -->
 
-<locale name="en_US" full_name = "English">
+<locale name="en_US" full_name="U.S. English">
 	<message key="manager.emails.confirmResetAll">Are you sure you want to reset all email templates in this journal? You will lose any customizations you have made.</message>
 	<message key="manager.files.note">Note: The Files Browser is an advanced feature that allows the files and directories associated with a journal to be viewed and manipulated directly.</message>
 	<message key="manager.groups">Masthead</message>
@@ -46,6 +46,8 @@
 	<message key="manager.payment.enable">Enable</message>
 	<message key="manager.payment.feePaymentOptions">Fee Payment Options</message>
 	<message key="manager.payment.form.numeric">All costs must be positive numeric values (decimal points are allowed)</message>
+	<message key="manager.payment.giftFees">Gift Fees</message>
+	<message key="manager.payment.giftFeesDescription">A gift subscriptions link will appear on the Subscriptions page in About the Journal and as part of the subscriptions sidebar block.</message>
 	<message key="manager.payment.generalFees">General Fees</message>
 	<message key="manager.payment.generalFeesDescription">The Association Membership will appear in About the Journal under Policies, and the donations link will appear above the search function in the right-hand frame.</message>
 	<message key="manager.payment.generalOptions">General Options</message>
@@ -53,6 +55,7 @@
 	<message key="manager.payment.notFound">Not Found</message>
 	<message key="manager.payment.options">Options</message>
 	<message key="manager.payment.options.acceptSubscriptionPayments">This will activate payments for Subscriptions, where types, cost, duration and subscriptions are managed by the Journal (Subscription) Manager.</message>
+	<message key="manager.payment.options.acceptGiftSubscriptionPayments">This will activate payments for gift subscriptions, allowing journal readers to buy gift subscriptions for other readers.</message>
 	<message key="manager.payment.options.donationFee">Donations to journal</message>
 	<message key="manager.payment.options.enablePayments">Click here to enable the Payments module.  You must configure payment settings by filling in the form below.  Note Users will be required to log in to make payments.</message>
 	<message key="manager.payment.options.fastTrackFee">Fast-Track Review</message>
@@ -60,9 +63,10 @@
 	<message key="manager.payment.options.feeDescription">Fee Description</message>
 	<message key="manager.payment.options.feeName">Fee Name</message>
 	<message key="manager.payment.options.membershipFee">Association Membership</message>
-	<message key="manager.payment.options.onlypdf">Only Restrict Access to PDF version of articles</message>
+	<message key="manager.payment.options.onlypdf">Only Restrict Access to PDF version of issues and articles</message>
 	<message key="manager.payment.options.publicationFee">Article Publication</message>
 	<message key="manager.payment.options.purchaseArticleFee">Purchase Article</message>
+	<message key="manager.payment.options.purchaseIssueFee">Purchase Issue</message>
 	<message key="manager.payment.options.submissionFee">Article Submission</message>
 	<message key="manager.payment.options.text">Description of Payment Method</message>
 	<message key="manager.payment.options.waiverPolicy">Waiver Policy</message>
@@ -105,8 +109,11 @@
 	<message key="manager.plugins.installFailed">Installation failed</message>
 	<message key="manager.plugins.installSuccessful">Successfully installed version</message>
 	<message key="manager.plugins.invalidPluginArchive">The uploaded plugin archive does not contain a folder that corresponds to the plugin name.</message>
+	<message key="manager.plugins.wrongCategory">The uploaded plugin does not fit the category of the upgraded plugin.</message>
+	<message key="manager.plugins.wrongName">The version.xml in the uploaded plugin contains a plugin name that does not fit the name of the upgraded plugin.</message>
 	<message key="manager.plugins.pleaseInstall">Plugin does not exist.  Please Install instead</message>
 	<message key="manager.plugins.pleaseUpgrade">Plugin already exists, but is newer than installed version.  Please upgrade instead</message>
+	<message key="manager.plugins.settings">Settings</message>
 	<message key="manager.plugins.tarCommandNotFound">The tar command is not available. Please correctly configure it in your "config.inc.php".</message>
 	<message key="manager.plugins.upgrade">Upgrade Plugin</message>
 	<message key="manager.plugins.upgradeDescription">This form allows you to upgrade a plugin.  Please ensure the plugin is compressed as a .tar.gz file.</message>
@@ -153,7 +160,8 @@
 	<message key="manager.reviewForms.title">Title</message>
 	<message key="manager.sections.abstractsNotRequired">Do not require abstracts</message>
 	<message key="manager.sections.assigned">This Section's Editors</message>
-	<message key="manager.sections.confirmDelete">Are you sure you want to permanently delete this section? You will have to re-publish any articles in this section.</message>
+	<message key="manager.sections.confirmDelete">Are you sure you want to permanently delete this section?</message>
+	<message key="manager.sections.alertDelete">Before this section can be deleted, you must move articles published within it into other sections.</message>
 	<message key="manager.sections.create">Create Section</message>
 	<message key="manager.sections.disableComments">Disable reader comments for this section.</message>
 	<message key="manager.section.sectionEditorInstructions">Add a Section Editor to this section to have submissions automatically assigned to the Section Editor. (Otherwise, Section Editors can be assigned manually, after a submission comes in.) If added, a Section Editor can be automatically assigned to oversee the REVIEW (peer review) and/or the EDITING (copyediting, layout and proofreading) of submissions to this section. Section Editors are created by clicking Section Editors under Roles in Journal Management.</message>
@@ -239,16 +247,6 @@
 	<message key="manager.setup.disciplineExamples">(E.g., History; Education; Sociology; Psychology; Cultural Studies; Law)</message>
 	<message key="manager.setup.disciplineProvideExamples">Provide examples of relevant academic disciplines for this journal</message>
 	<message key="manager.setup.displayCurrentIssue">Add the table of contents for the current issue (if available).</message>
-	<message key="manager.setup.doiPrefix">DOI Prefix</message>
-	<message key="manager.setup.doiPrefixDescription"><![CDATA[The DOI (Digital Object Identifier) Prefix is assigned by <a href="http://www.crossref.org" target="_new">CrossRef</a> and is in the format 10.xxxx (e.g. 10.1234).]]></message>
-	<message key="manager.setup.doiSuffix">DOI Suffix</message>
-	<message key="manager.setup.doiSuffixDefault">Use default pattern (%j.v%vi%i.%a).</message>
-	<message key="manager.setup.doiSuffixPattern">Use the pattern entered below to generate DOI suffixes.  Use %j for journal initials, %v for the volume number, %i for the issue number, %a for the OJS article ID, and %p for the page number.</message>
-	<message key="manager.setup.doiSuffixPattern.example">For example, vol%viss%ipp%p could create a DOI such as 10.1234/vol3iss2pp230</message>
-	<message key="manager.setup.doiSuffixDescription">A DOI suffix can take any form, but must be unique for each published item.</message>
-	<message key="manager.setup.doiSuffixCustomIdentifier">Use the "Custom Identifier" for published items as the DOI suffix (must be enabled in Step 4).</message>
-	<message key="manager.setup.doiReassign">Reassign DOIs</message>
-	<message key="manager.setup.doiReassign.description">If you change your DOI configuration, DOIs that have already been assigned will not be affected. Once the DOI configuration is saved, use this button to clear all existing DOIs so that the new settings will take effect with existing articles.</message>
 	<message key="manager.setup.editorDecision">Editor Decision</message>
 	<message key="manager.setup.editorialMembers">Go to Board Members and add Editorial Board and/or Review Board members. This can be done at any point in operating the journal.</message>
 	<message key="manager.setup.editorialProcess1">One or more editors handle the basic steps without designated roles.</message>
@@ -286,7 +284,6 @@
 	<message key="manager.setup.form.journalInitialsRequired">The journal initials are required.</message>
 	<message key="manager.setup.form.journalTitleRequired">The journal title is required.</message>
 	<message key="manager.setup.form.numReviewersPerSubmission">The number of reviewers per submission is required.</message>
-	<message key="manager.setup.form.doiPrefixPattern">The DOI pattern must be in the form 10.xxxx.</message>
 	<message key="manager.setup.form.supportEmailRequired">The support email is required.</message>
 	<message key="manager.setup.form.supportNameRequired">The support name is required.</message>
 	<message key="manager.setup.frequencyOfPublication">Starting Point and Frequency</message>
@@ -337,6 +334,7 @@
 	<message key="manager.setup.journalSetupUpdated">Your journal setup has been updated.</message>
 	<message key="manager.setup.journalStyleSheetInvalid">Invalid journal stylesheet format. Accepted format is .css.</message>
 	<message key="manager.setup.journalTheme">Journal Theme</message>
+	<message key="manager.setup.journalThumbnail">Journal thumbnail</message>
 	<message key="manager.setup.journalTitle">Journal title</message>
 	<message key="manager.setup.labelName">Label name</message>
 	<message key="manager.setup.layoutAndGalleys">Layout Editors</message>
@@ -461,11 +459,10 @@
 	<message key="manager.setup.stepsToJournalSite">Five Steps to a Journal Web Site</message>
 	<message key="manager.setup.subjectClassification">Subject Classification</message>
 	<message key="manager.setup.subjectClassificationExamples">(E.g., Mathematics Subject Classification; Library of Congress Classification)</message>
+	<message key="manager.setup.subjectClassificationURLValid">Please provide a valid remote URL (include http://).</message>
 	<message key="manager.setup.subjectExamples">(E.g., Photosynthesis; Black Holes; Four-Color Map Problem; Bayesian Theory)</message>
 	<message key="manager.setup.subjectKeywordTopic">Keywords</message>
 	<message key="manager.setup.subjectProvideExamples">Provide examples of keywords or topics as a guide for authors</message>
-	<message key="manager.setup.submissionEmailLogging">Maintain a log of all emails sent in relation to a submission on its History page.</message>
-	<message key="manager.setup.submissionEventLogging">Maintain a log of all actions taken with a submission on its History page.</message>
 	<message key="manager.setup.submissionGuidelines">Submission guidelines</message>
 	<message key="manager.setup.submissionPreparationChecklist">Submission Preparation Checklist</message>
 	<message key="manager.setup.submissionPreparationChecklistDescription">On making a submission to the journal, authors are first asked to check each item on the Submission Preparation Checklist as completed, before proceeding. The checklist also appears in the Author Guidelines, under About the Journal. The list can be edited below, but all items on the list will require a checkmark before authors can proceed with their submission.</message>
@@ -484,6 +481,7 @@
 	<message key="manager.setup.useCopyeditors">A Copyeditor will be assigned to work with each submission.</message>
 	<message key="manager.setup.useEditorialReviewBoard">An editorial/review board will be used by the journal.</message>
 	<message key="manager.setup.useImageLogo">Logo image</message>
+	<message key="manager.setup.useThumbnail">Thumbnail</message>
 	<message key="manager.setup.useImageTitle">Title image</message>
 	<message key="manager.setup.useJournalStyleSheet">Journal style sheet</message>
 	<message key="manager.setup.useLayoutEditors">A Layout Editor will be assigned to prepare the HTML, PDF, etc., files for electronic publication.</message>
@@ -685,4 +683,8 @@
 	<message key="manager.subscriptionTypes.name">Subscription type</message>
 	<message key="manager.subscriptionTypes.noneCreated">No subscription types have been created.</message>
 	<message key="manager.subscriptionTypes.subscriptionTypeCreatedSuccessfully">Subscription type created successfully.</message>
+
+	<!-- Categories -->
+	<message key="manager.setup.categories">Categories</message>
+	<message key="manager.setup.categories.description">Choose the most appropriate categories from the set listed above. Readers will be able to browse by category from the complete journal set.</message>
 </locale>

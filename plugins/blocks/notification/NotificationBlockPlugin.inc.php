@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file NotificationBlockPlugin.inc.php
+ * @file plugins/blocks/notification/NotificationBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NotificationBlockPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Class for "notification" block plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.BlockPlugin');
 
@@ -66,7 +63,7 @@ class NotificationBlockPlugin extends BlockPlugin {
 		if ($user && $journal) {
 			$userId = $user->getId();
 			$notificationDao =& DAORegistry::getDAO('NotificationDAO');
-			$templateMgr->assign('unreadNotifications',  $notificationDao->getUnreadNotificationCount($userId));
+			$templateMgr->assign('unreadNotifications',  $notificationDao->getNotificationCount(false, $userId, $journal->getId()));
 		}
 
 		return parent::getContents($templateMgr);

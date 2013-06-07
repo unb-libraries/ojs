@@ -1,12 +1,11 @@
 {**
- * feedForm.tpl
+ * plugins/generic/externalFeed/externalFeedForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * External feed form under plugin management.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageCrumbTitle" value="$feedTitle"}
@@ -20,7 +19,7 @@
 
 <br/>
 
-<form name="externalFeed" method="post" action="{plugin_url path="update"}">
+<form id="externalFeed" method="post" action="{plugin_url path="update"}">
 {if $feedId}
 <input type="hidden" name="feedId" value="{$feedId|escape}" />
 {/if}

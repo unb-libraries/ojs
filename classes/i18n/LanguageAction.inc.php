@@ -7,7 +7,7 @@
  * @file classes/i18n/LanguageAction.inc.php
  * @defgroup admin
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LanguageAction
@@ -16,17 +16,9 @@
  * @brief LanguageAction class.
  */
 
-// $Id$
-
 
 define('LANGUAGE_PACK_DESCRIPTOR_URL', 'http://pkp.sfu.ca/ojs/xml/%s/locales.xml');
 define('LANGUAGE_PACK_TAR_URL', 'http://pkp.sfu.ca/ojs/xml/%s/%s.tar.gz');
-
-if (!function_exists('stream_get_contents')) {
-	function stream_get_contents($fp) {
-		fflush($fp);
-	}
-}
 
 class LanguageAction {
 	/**
@@ -54,13 +46,17 @@ class LanguageAction {
 		if (!checkPhpVersion('4.3.0')) return false;
 
 		// Check to see that tar can be executed
+		$tarExecutable = Config::getVar('cli', 'tar');
+		if (!$tarExecutable) return false;
+
 		$fds = array(
 			0 => array('pipe', 'r'),
 			1 => array('pipe', 'w'),
 			2 => array('pipe', 'w')
 		);
+
 		$pipes = $process = null;
-		@$process = proc_open('tar --version', $fds, $pipes);
+		@$process = proc_open($tarExecutable . ' --version', $fds, $pipes);
 		if (!is_resource($process)) return false;
 		fclose($pipes[0]); // No input necessary
 		stream_get_contents($pipes[1]); // Flush pipes. fflush seems to
@@ -112,7 +108,9 @@ class LanguageAction {
 			2 => array('pipe', 'w')
 		);
 		$pipes = null;
-		$process = proc_open('tar -x -z --wildcards \\*' . $locale . '\\*.xml \\*' . $locale . '\\*.png', $fds, $pipes);
+
+		$tarExecutable = Config::getVar('cli', 'tar');
+		$process = proc_open($tarExecutable . ' -x -z --wildcards \\*' . $locale . '\\*.xml \\*' . $locale . '\\*.png', $fds, $pipes);
 		if (!is_resource($process)) return false;
 
 		// Download and feed the pack to the tar process

@@ -4,13 +4,12 @@
 <!--
   * common.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
-  * Provided by Constantinescu Nicolaie. 
+  * Provided by Constantinescu Nicolaie.
   *
-  * $Id: common.xml,v 1.0 9:45 AM 8/10/2010 kosson Exp $
   -->
 
 <locale name="ro_RO" full_name = "Romanian">
@@ -55,18 +54,18 @@
 	<message key="common.captchaField">Validare</message>
 	<message key="common.ccLicense"><![CDATA[
 		<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		Această operă este licențiată sub <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>.
+		Această operă este licențiată sub <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>.
 	]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[
 	<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Licență Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Licență Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Această operă este licențiată sub <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0</a>.
+		Această operă este licențiată sub <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0</a>.
 	</div>
 	]]></message>
 	<message key="common.changesSaved">Modificările tale au fost salvate.</message>
@@ -293,7 +292,6 @@
 	<message key="notification.reminderError">Există o eroare la trimiterea parolei, asigură-te că ai introdus adresa de email corect.</message>
 	<message key="notification.reminderSent">Noua parolă a fost trimisă la adresa de email menționată.</message>
 	<message key="notification.unsubscribe">Dezabonează-te</message>
-	<message key="notification.unsubscribeDescription">Introdu adresa de email și parola pentru a te dezabona de la emailurile de înștiințare. Dacă nu-ți aduci aminte parola, lasă gol câmpul corespondent și îți va fi trimisă una nouă la adresa de email specificată.</message>
 	<message key="notification.unsubscribeError">S-a înregistrat o eraoare la dezabonare. Asigură-te că adresa și parola sunt corecte.</message>
 	<message key="notification.unsubscribeSuccess">Te-ai dezabonat cu succes.</message>
 	<message key="search.abstract">Abstract</message>
@@ -308,9 +306,9 @@
 	<message key="search.matchAll">Stabilește corespondențe cu toate categoriile</message>
 	<message key="search.noKeywordError">Trebuie să introduci cel puțin un termen de căutare.</message>
 	<message key="search.noResults">Fără rezultate</message>
-	<message key="search.operator.and">și</message>
-	<message key="search.operator.not">nu</message>
-	<message key="search.operator.or">sau</message>
+	<message key="search.operator.and">and</message>
+	<message key="search.operator.not">not</message>
+	<message key="search.operator.or">or</message>
 	<message key="search.reviseSearch">Regândește căutarea</message>
 	<message key="search.searchAllCategories">Caută în toate categoriile după</message>
 	<message key="search.searchCategories">Caută în categorii</message>
@@ -323,7 +321,6 @@
 	<message key="common.preview">Previzualizează</message>
 	<message key="common.activate">Activează</message>
 	<message key="common.deactivate">Dezactivează</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Nu ești în acest grup de utilizatori</message>
 	<message key="common.disable">Dezactivează</message>
 	<message key="common.enable">Activează</message>
 	<message key="common.fullscreen">Tot ecranul</message>

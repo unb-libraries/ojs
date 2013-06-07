@@ -3,7 +3,7 @@
 /**
  * @file classes/group/GroupDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GroupDAO
@@ -13,12 +13,17 @@
  * @brief Operations for retrieving and modifying Group objects.
  */
 
-// $Id$
-
 
 import ('lib.pkp.classes.group.Group');
 
 class GroupDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function GroupDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve a group by ID.
 	 * @param $groupId int
@@ -26,7 +31,7 @@ class GroupDAO extends DAO {
 	 * @param $assocId int optional
 	 * @return Group
 	 */
-	function &getGroup($groupId, $assocType = null, $assocId = null) {
+	function &getById($groupId, $assocType = null, $assocId = null) {
 		$params = array((int) $groupId);
 		if ($assocType !== null) {
 			$params[] = (int) $assocType;
@@ -42,6 +47,12 @@ class GroupDAO extends DAO {
 		}
 		$result->Close();
 		unset($result);
+		return $returner;
+	}
+
+	function getGroup($groupId, $assocType = null, $assocId = null) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$returner =& $this->getById($groupId, $assocType, $assocId);
 		return $returner;
 	}
 
@@ -75,12 +86,20 @@ class GroupDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate a new DataObject.
+	 * @return PKPGroup
+	 */
+	function newDataObject() {
+		return new Group();
+	}
+
+	/**
 	 * Internal function to return a Group object from a row.
 	 * @param $row array
 	 * @return Group
 	 */
 	function &_returnGroupFromRow(&$row) {
-		$group = new Group();
+		$group = $this->newDataObject();
 		$group->setId($row['group_id']);
 		$group->setAboutDisplayed($row['about_displayed']);
 		$group->setPublishEmail($row['publish_email']);
@@ -145,7 +164,7 @@ class GroupDAO extends DAO {
 					publish_email = ?
 				WHERE	group_id = ?',
 			array(
-				(int) $group->getSequence(),
+				(float) $group->getSequence(),
 				(int) $group->getAssocType(),
 				(int) $group->getAssocId(),
 				(int) $group->getAboutDisplayed(),
@@ -225,10 +244,10 @@ class GroupDAO extends DAO {
 				)
 			);
 
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
-		$result->close();
+		$result->Close();
 		unset($result);
 	}
 

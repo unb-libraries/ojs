@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file StaticPagesHandler.inc.php
+ * @file plugins/generic/staticPages/StaticPagesHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.staticPages
@@ -22,16 +22,16 @@ class StaticPagesHandler extends Handler {
 
 	function view ($args) {
 		if (count($args) > 0 ) {
-			AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_COMMON, LOCALE_COMPONENT_APPLICATION_COMMON, LOCALE_COMPONENT_PKP_USER));
+			AppLocale::requireComponents(LOCALE_COMPONENT_PKP_COMMON, LOCALE_COMPONENT_APPLICATION_COMMON, LOCALE_COMPONENT_PKP_USER);
 			$journal =& Request::getJournal();
-			$journalId = $journal->getId();
+			$journalId = $journal?$journal->getId():0;
 			$path = $args[0];
 
 			$staticPagesPlugin =& PluginRegistry::getPlugin('generic', STATIC_PAGES_PLUGIN_NAME);
 			$templateMgr =& TemplateManager::getManager();
 
-			$staticPagesDAO =& DAORegistry::getDAO('StaticPagesDAO');
-			$staticPage = $staticPagesDAO->getStaticPageByPath($journalId, $path);
+			$staticPagesDao =& DAORegistry::getDAO('StaticPagesDAO');
+			$staticPage = $staticPagesDao->getStaticPageByPath($journalId, $path);
 
 			if ( !$staticPage ) {
 				Request::redirect(null, 'index');

@@ -3,7 +3,7 @@
 /**
  * @file classes/comment/CommentDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CommentDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying Comment objects.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.comment.Comment');
@@ -27,6 +25,13 @@ define ('COMMENTS_ANONYMOUS', 2);	// Can be posted anonymously by authenticated 
 define ('COMMENTS_UNAUTHENTICATED', 3);	// Can be posted anonymously by anyone
 
 class CommentDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function CommentDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve Comments by submission id
 	 * @param $submissionId int
@@ -47,7 +52,7 @@ class CommentDAO extends DAO {
 
 		while (!$result->EOF) {
 			$comments[] =& $this->_returnCommentFromRow($result->GetRowAssoc(false), $childLevels);
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -68,7 +73,7 @@ class CommentDAO extends DAO {
 
 		while (!$result->EOF) {
 			$comments[] =& $this->_returnCommentFromRow($result->GetRowAssoc(false), $childLevels);
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -89,7 +94,7 @@ class CommentDAO extends DAO {
 
 		while (!$result->EOF) {
 			$comments[] =& $this->_returnCommentFromRow($result->GetRowAssoc(false));
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();
@@ -135,6 +140,14 @@ class CommentDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate and return a new data object.
+	 * @return DataObject
+	 */
+	function newDataObject() {
+		return new Comment();
+	}
+
+	/**
 	 * Creates and returns a submission comment object from a row
 	 * @param $row array
 	 * @return Comment object
@@ -142,10 +155,10 @@ class CommentDAO extends DAO {
 	function &_returnCommentFromRow($row, $childLevels = 0) {
 		$userDao =& DAORegistry::getDAO('UserDAO');
 
-		$comment = new Comment();
+		$comment = $this->newDataObject();
 		$comment->setId($row['comment_id']);
 		$comment->setSubmissionId($row['submission_id']);
-		$comment->setUser($userDao->getUser($row['user_id']), true);
+		$comment->setUser($userDao->getById($row['user_id']), true);
 		$comment->setPosterIP($row['poster_ip']);
 		$comment->setPosterName($row['poster_name']);
 		$comment->setPosterEmail($row['poster_email']);

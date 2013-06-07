@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <!--
-  * ojs1-to-ojs2.xsl
+  * plugins/importexport/native/ojs1-to-ojs2.xsl
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * This XSL stylesheet transforms OJS 1.x import XML into OJS 2.x import XML.
@@ -11,7 +11,6 @@
   * attention; please feel free to contribute additions and updates by
   * contacting the OJS team at pkp.contact@gmail.com.
   *
-  * $Id$
   -->
 
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/TR/xhtml1/strict">

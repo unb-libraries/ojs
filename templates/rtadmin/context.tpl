@@ -1,12 +1,11 @@
 {**
- * context.tpl
+ * templates/rtadmin/context.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RTAdmin context editing
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="rt.admin.contexts.edit.editContext"}

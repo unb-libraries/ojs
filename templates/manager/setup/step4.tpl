@@ -1,17 +1,16 @@
 {**
- * step4.tpl
+ * templates/manager/setup/step4.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Step 4 of journal setup.
  *
- * $Id$
  *}
 {assign var="pageTitle" value="manager.setup.managingTheJournal"}
 {include file="manager/setup/setupHeader.tpl"}
 
-<form name="setupForm" method="post" action="{url op="saveSetup" path="4"}" enctype="multipart/form-data">
+<form id="setupForm" method="post" action="{url op="saveSetup" path="4"}" enctype="multipart/form-data">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}
@@ -81,7 +80,7 @@
 				<tr>
 					<td width="5%"><input type="checkbox" name="showGalleyLinks" id="showGalleyLinks" {if $showGalleyLinks} checked="checked"{/if} /></td>
 					<td width="95%"><label for="showGalleyLinks">{translate key="manager.setup.showGalleyLinksDescription"}</label></td>
-				</tr>	
+				</tr>
 			</table>
 		</td>
 	</tr>
@@ -165,20 +164,6 @@ function setRegAllowOpts(form) {
 </table>
 </div><!-- userRegistration -->
 
-<div id="loggingAndAuditing">
-<h4>{translate key="manager.setup.loggingAndAuditing"}</h4>
-
-<table width="100%" class="data">
-	<tr valign="top">
-		<td width="5%" class="label"><input type="checkbox" name="articleEventLog" id="articleEventLog" value="1"{if $articleEventLog} checked="checked"{/if} /></td>
-		<td width="95%" class="value"><label for="articleEventLog">{translate key="manager.setup.submissionEventLogging"}</label></td>
-	</tr>
-	<tr valign="top">
-		<td width="5%" class="label"><input type="checkbox" name="articleEmailLog" id="articleEmailLog" value="1"{if $articleEmailLog} checked="checked"{/if} /></td>
-		<td width="95%" class="value"><label for="articleEmailLog">{translate key="manager.setup.submissionEmailLogging"}</label></td>
-	</tr>
-</table>
-</div><!-- loggingAndAuditing -->
 </div><!-- securitySettings -->
 
 <div class="separator"></div>

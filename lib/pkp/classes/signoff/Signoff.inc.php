@@ -5,9 +5,9 @@
  */
 
 /**
- * @file Signoff.inc.php
+ * @file classes/signoff/Signoff.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Signoff
@@ -17,9 +17,15 @@
  * @brief Basic class describing a signoff.
  */
 
-//$Id$
 
 class Signoff extends DataObject {
+	/**
+	 * Constructor
+	 */
+	function Signoff() {
+		parent::DataObject();
+	}
+
 	//
 	// Get/set methods
 	//
@@ -182,22 +188,6 @@ class Signoff extends DataObject {
 	 */
 	function setDateAcknowledged($dateAcknowledged) {
 		return $this->setData('dateAcknowledged', $dateAcknowledged);
-	}
-
-	/**
-	 * Get the publication stage ID.
-	 * @return string
-	 */
-	function getStageId() {
-		return $this->getData('stageId');
-	}
-
-	/**
-	 * Set the publication stage ID..
-	 * @param $stageId string
-	 */
-	function setStageId($stageId) {
-		return $this->setData('stageId', $stageId);
 	}
 
 	/**

@@ -3,7 +3,7 @@
 /**
  * @file classes/db/DBConnection.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DBConnection
@@ -12,8 +12,6 @@
  * @brief Class for accessing the low-level database connection.
  * Currently integrated with ADOdb (from http://adodb.sourceforge.net).
  */
-
-// $Id$
 
 
 class DBConnection {

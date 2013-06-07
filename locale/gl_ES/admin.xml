@@ -2,15 +2,14 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel/locale/gl_ES/admin.xml
+  * locale/gl_ES/admin.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
 	<message
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the gl_ES (Galego (Galiza)) locale.
   *
-  * $Id$
   -->
 
 <locale name="gl_ES" full_name = "Galego">

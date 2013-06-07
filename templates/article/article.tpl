@@ -91,19 +91,6 @@
 		</div>
 	{/if}
 
-	{if $citationFactory->getCount()}
-		<div id="articleCitations">
-		<h4>{translate key="submission.citations"}</h4>
-		<br />
-		<div>
-			{iterate from=citationFactory item=citation}
-				<p>{$citation->getRawCitation()|strip_unsafe_html}</p>
-			{/iterate}
-		</div>
-		<br />
-		</div>
-	{/if}
-
 	{if (!$subscriptionRequired || $article->getAccessStatus() == $smarty.const.ARTICLE_ACCESS_OPEN || $subscribedUser || $subscribedDomain)}
 		{assign var=hasAccess value=1}
 	{else}
@@ -111,7 +98,8 @@
 	{/if}
 
 	{if $galleys}
-		{translate key="reader.fullText"}
+		<div id="articleFullText">
+		<h4>{translate key="reader.fullText"}</h4>
 		{if $hasAccess || ($subscriptionRequired && $showGalleyLinks)}
 			{foreach from=$article->getLocalizedGalleys() item=galley name=galleyList}
 				<a href="{url page="article" op="view" path=$article->getBestArticleId($currentJournal)|to_array:$galley->getBestGalleyId($currentJournal)}" class="file" target="_parent">{$galley->getGalleyLabel()|escape}</a>
@@ -133,8 +121,35 @@
 		{else}
 			&nbsp;<a href="{url page="about" op="subscriptions"}" target="_parent">{translate key="reader.subscribersOnly"}</a>
 		{/if}
+		</div>
+	{/if}
+
+	{if $citationFactory->getCount()}
+		<div id="articleCitations">
+		<h4>{translate key="submission.citations"}</h4>
+		<br />
+		<div>
+			{iterate from=citationFactory item=citation}
+				<p>{$citation->getRawCitation()|strip_unsafe_html}</p>
+			{/iterate}
+		</div>
+		<br />
+		</div>
 	{/if}
 {/if}
+
+{foreach from=$pubIdPlugins item=pubIdPlugin}
+	{if $issue->getPublished()}
+		{assign var=pubId value=$pubIdPlugin->getPubId($pubObject)}
+	{else}
+		{assign var=pubId value=$pubIdPlugin->getPubId($pubObject, true)}{* Preview rather than assign a pubId *}
+	{/if}
+	{if $pubId}
+		<br />
+		<br />
+		{$pubIdPlugin->getPubIdDisplayType()|escape}: {if $pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}<a id="pub-id::{$pubIdPlugin->getPubIdType()|escape}" href="{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}">{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}</a>{else}{$pubId|escape}{/if}
+	{/if}
+{/foreach}
 
 {include file="article/comments.tpl"}
 

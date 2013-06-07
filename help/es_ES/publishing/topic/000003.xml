@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000003.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Proceso de Publicación - Tabla de Contenidos
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Publishing Process - Table of Contents
   *
   * $Id$
   -->
 
-<topic id="publishing/topic/000003" locale="es_ES" title="Tabla de Contenidos" toc="publishing/toc/000000" key="publishing.tableOfContents">
+<topic id="publishing/topic/000003" locale="es_ES" title="Tabla de contenidos" toc="publishing/toc/000000" key="publishing.tableOfContents">
 	<section>
-		<![CDATA[<p>Una vez programado el envío, esté aparecerá en la Tabla de Contenidos de ese número bajo el encabezado de su Sección. Si no existen envíos en una Sección, esa Sección no aparecerá en la Tabla de Contenidos. El Editor puede reordenar las Secciones, y reordenar los envíos dentro de una Sección.</p><p>Además, si el Administrador de una Revista ha habilitado el control de suscripción, el Editor puede cambiar las normas de acceso (de suscripción o de acceso libre) de acuerdo con una política de nivel por artículo.</p>]]>	
+		<![CDATA[<p>En cuanto se programa un envío, aparece en la tabla de contenidos de ese número bajo el título de la sección. Si no hay envíos para una sección, esa sección no aparece en la tabla de contenidos. El editor/a puede volver a ordenar las secciones, del mismo modo que se pueden reorganizar los envíos dentro de una sección.</p><p>Además, si el gestor/a de la revista ha permitido el control de suscripción, el editor/a puede cambiar las reglas de acceso (ya sea de suscripción o de libre acceso) a nivel de artículo.</p>]]>	
 	</section>
 </topic>

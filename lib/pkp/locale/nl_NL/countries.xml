@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE countries SYSTEM "../../dtd/countries.dtd">
+
 <!--
   * locale/nl_NL/countries.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized list of countries.
   *
   * Translated by Martin van Luijt, m.van.luijt 'at' hccnet.nl
   *
-  * $Id$
   -->
 <countries>
 	<country name="Afghanistan" code="AF"/>

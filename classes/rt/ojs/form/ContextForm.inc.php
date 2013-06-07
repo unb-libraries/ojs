@@ -3,7 +3,7 @@
 /**
  * @file classes/rt/ojs/form/ContextForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ContextForm
@@ -11,9 +11,6 @@
  *
  * @brief Form to change metadata information for an RT context.
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 

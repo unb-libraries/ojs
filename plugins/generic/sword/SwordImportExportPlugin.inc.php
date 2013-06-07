@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SwordImportExportPlugin.inc.php
+ * @file plugins/generic/sword/SwordImportExportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SwordPlugin
@@ -12,7 +12,6 @@
  * @brief Sword deposit plugin
  */
 
-// $Id: SwordImportExportPlugin.inc.php,v 1.60 2010/01/27 21:35:04 asmecher Exp $
 
 
 import('classes.plugins.ImportExportPlugin');
@@ -92,9 +91,9 @@ class SwordImportExportPlugin extends ImportExportPlugin {
 		return $response->sac_id;
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
-		parent::display($args);
+		parent::display($args, $request);
 		$this->setBreadcrumbs();
 		$journal =& Request::getJournal();
 		$plugin =& $this->getSwordPlugin();
@@ -202,7 +201,7 @@ class SwordImportExportPlugin extends ImportExportPlugin {
 	/**
 	 * Execute import/export tasks using the command-line interface.
 	 * @param $args Parameters to the plugin
-	 */ 
+	 */
 	function executeCLI($scriptName, &$args) {
 		die('executeCLI unimplemented');
 	}

@@ -1,12 +1,11 @@
 {**
- * rss.tpl
+ * templates/notification/rss.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RSS feed template
  *
- * $Id$
  *}
 <?xml version="1.0" encoding="{$defaultCharset|escape}"?>
 <rdf:RDF
@@ -17,7 +16,7 @@
 
 	<channel rdf:about="{$baseUrl}">
 		<title>{$siteTitle} {translate key="notification.notifications"}</title>
-		<link>{$selfUrl}</link>
+		<link>{$selfUrl|escape}</link>
 		<language>{$locale|replace:'_':'-'|strip|escape:"html"}</language>
 		<items>
 			{foreach from=$notifications item=notification}
@@ -28,27 +27,5 @@
 		</items>
 	</channel>
 
-	{foreach from=$notifications item=notification}
-	<item rdf:about="{url page="notification"}">
-		<title>{translate key="notification.notification"} : {$notification->getDateCreated()|date_format:"%a, %d %b %Y %T %z"}</title>
-		<link>
-			{if $notification->getLocation() != null}
-				{$notification->getLocation()}
-			{else}
-				{url page="notification"}
-			{/if}
-		</link>
-		<description>
-			{if $notification->getIsLocalized()}
-				{translate key=$notification->getContents() param=$notification->getParam()|escape:"html"}
-			{else}
-				{$notification->getContents()|escape:"html"}
-			{/if}
-		</description>
-		<dc:creator>{$siteTitle|strip|escape:"html"}</dc:creator>
-		<dc:date>{$notification->getDateCreated()|date_format:"%Y-%m-%d"}</dc:date>
-	</item>
-	{/foreach}
-
+	{$formattedNotifications}
 </rdf:RDF>
-

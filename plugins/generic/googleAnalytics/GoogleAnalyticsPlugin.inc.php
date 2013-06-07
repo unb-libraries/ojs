@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file GoogleAnalyticsPlugin.inc.php
+ * @file plugins/generic/googleAnalytics/GoogleAnalyticsPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GoogleAnalyticsPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Google Analytics plugin class
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.GenericPlugin');
 
@@ -37,8 +34,8 @@ class GoogleAnalyticsPlugin extends GenericPlugin {
 			HookRegistry::register('authorsubmitstep3form::initdata', array($this, 'metadataInitData'));
 
 			// Hook for execute in two forms
-			HookRegistry::register('authorsubmitstep3form::execute', array($this, 'metadataExecute'));
-			HookRegistry::register('metadataform::execute', array($this, 'metadataExecute'));
+			HookRegistry::register('Author::Form::Submit::AuthorSubmitStep3Form::Execute', array($this, 'metadataExecute'));
+			HookRegistry::register('Submission::Form::MetadataForm::Execute', array($this, 'metadataExecute'));
 
 			// Add element for AuthorDAO for storage
 			HookRegistry::register('authordao::getAdditionalFieldNames', array($this, 'authorSubmitGetFieldNames'));
@@ -146,15 +143,9 @@ class GoogleAnalyticsPlugin extends GenericPlugin {
 	}
 
 	function metadataExecute($hookName, $params) {
-		$form =& $params[0];
-		$article =& $form->article;
-		$formAuthors = $form->getData('authors');
-		$articleAuthors =& $article->getAuthors();
-
-		for ($i=0; $i<count($articleAuthors); $i++) {
-			$articleAuthors[$i]->setData('gs', $formAuthors[$i]['gs']);
-		}
-
+		$author =& $params[0];
+		$formAuthor =& $params[1];
+		$author->setData('gs', $formAuthor['gs']);				
 		return false;
 	}
 
@@ -213,11 +204,12 @@ class GoogleAnalyticsPlugin extends GenericPlugin {
  	 * Execute a management verb on this plugin
  	 * @param $verb string
  	 * @param $args array
-	 * @param $message string Location for the plugin to put a result msg
+	 * @param $message string Result status message
+	 * @param $messageParams array Parameters for the message key
  	 * @return boolean
  	 */
-	function manage($verb, $args, &$message) {
-		if (!parent::manage($verb, $args, $message)) return false;
+	function manage($verb, $args, &$message, &$messageParams) {
+		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 
 		switch ($verb) {
 			case 'settings':

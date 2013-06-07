@@ -3,7 +3,7 @@
 /**
  * @file classes/manager/form/setup/JournalSetupStep1Form.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSetupStep1Form
@@ -11,9 +11,6 @@
  *
  * @brief Form for Step 1 of journal setup.
  */
-
-// $Id$
-
 
 import('classes.manager.form.setup.JournalSetupForm');
 
@@ -30,10 +27,8 @@ class JournalSetupStep1Form extends JournalSetupForm {
 				'abbreviation' => 'string',
 				'printIssn' => 'string',
 				'onlineIssn' => 'string',
-				'doiPrefix' => 'string',
-				'doiSuffix' => 'string',
-				'doiSuffixPattern' => 'string',
 				'mailingAddress' => 'string',
+				'categories' => 'object',
 				'useEditorialBoard' => 'bool',
 				'contactName' => 'string',
 				'contactTitle' => 'string',
@@ -64,7 +59,6 @@ class JournalSetupStep1Form extends JournalSetupForm {
 		// Validation checks for this form
 		$this->addCheck(new FormValidatorLocale($this, 'title', 'required', 'manager.setup.form.journalTitleRequired'));
 		$this->addCheck(new FormValidatorLocale($this, 'initials', 'required', 'manager.setup.form.journalInitialsRequired'));
-		$this->addCheck(new FormValidatorRegExp($this, 'doiPrefix', 'optional', 'manager.setup.form.doiPrefixPattern', '/^10\.[0-9][0-9][0-9][0-9][0-9]?$/'));
 		$this->addCheck(new FormValidator($this, 'contactName', 'required', 'manager.setup.form.contactNameRequired'));
 		$this->addCheck(new FormValidatorEmail($this, 'contactEmail', 'required', 'manager.setup.form.contactEmailRequired'));
 		$this->addCheck(new FormValidator($this, 'supportName', 'required', 'manager.setup.form.supportNameRequired'));
@@ -99,6 +93,10 @@ class JournalSetupStep1Form extends JournalSetupForm {
 			$this->setData($element, $elementValue);
 		}
 
+		// In case the category list changed, flush the cache.
+		$categoryDao =& DAORegistry::getDAO('CategoryDAO');
+		$categoryDao->rebuildCache();
+
 		return parent::execute();
 	}
 
@@ -109,6 +107,17 @@ class JournalSetupStep1Form extends JournalSetupForm {
 		$templateMgr =& TemplateManager::getManager();
 		if (Config::getVar('email', 'allow_envelope_sender'))
 			$templateMgr->assign('envelopeSenderEnabled', true);
+
+		// If Categories are enabled by Site Admin, make selection
+		// tools available to Journal Manager
+		$categoryDao =& DAORegistry::getDAO('CategoryDAO');
+		$categories =& $categoryDao->getCategories();
+		$site =& $request->getSite();
+		if ($site->getSetting('categoriesEnabled') && !empty($categories)) {
+			$templateMgr->assign('categoriesEnabled', true);
+			$templateMgr->assign('allCategories', $categories);
+		}
+
 		parent::display($request, $dispatcher);
 	}
 }

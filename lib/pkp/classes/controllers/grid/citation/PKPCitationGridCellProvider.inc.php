@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/citation/PKPCitationGridCellProvider.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPCitationGridCellProvider
@@ -37,4 +37,16 @@ class PKPCitationGridCellProvider extends DataObjectGridCellProvider {
 		$templateVars['citationSeq'] = $element->getSeq();
 		return $templateVars;
 	}
+
+
+	/**
+	 * @see GridCellProvider::getCellActions()
+	 */
+	function &getCellActions(&$request, &$row, &$column, $position = GRID_ACTION_POSITION_DEFAULT) {
+		// The citation grid retrieves actions from the row.
+		$actions =& $row->getCellActions($request, $column, $position);
+		return $actions;
+	}
 }
+
+?>

@@ -3,7 +3,7 @@
 /**
  * @file classes/user/PKPUserDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPUserDAO
@@ -12,8 +12,6 @@
  *
  * @brief Operations for retrieving and modifying User objects.
  */
-
-// $Id$
 
 
 /* These constants are used user-selectable search fields. */
@@ -25,16 +23,24 @@ define('USER_FIELD_EMAIL', 'email');
 define('USER_FIELD_URL', 'url');
 define('USER_FIELD_INTERESTS', 'interests');
 define('USER_FIELD_INITIAL', 'initial');
+define('USER_FIELD_AFFILIATION', 'affiliation');
 define('USER_FIELD_NONE', null);
 
 class PKPUserDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function PKPUserDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve a user by ID.
 	 * @param $userId int
 	 * @param $allowDisabled boolean
 	 * @return User
 	 */
-	function &getUser($userId, $allowDisabled = true) {
+	function &getById($userId, $allowDisabled = true) {
 		$result =& $this->retrieve(
 			'SELECT * FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
@@ -49,13 +55,19 @@ class PKPUserDAO extends DAO {
 		return $user;
 	}
 
+	function &getUser($userId, $allowDisabled = true) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$user =& $this->getById($userId, $allowDisabled);
+		return $user;
+	}
+
 	/**
 	 * Retrieve a user by username.
 	 * @param $username string
 	 * @param $allowDisabled boolean
 	 * @return User
 	 */
-	function &getUserByUsername($username, $allowDisabled = true) {
+	function &getByUsername($username, $allowDisabled = true) {
 		$result =& $this->retrieve(
 			'SELECT * FROM users WHERE username = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array($username)
@@ -68,6 +80,12 @@ class PKPUserDAO extends DAO {
 		$result->Close();
 		unset($result);
 		return $returner;
+	}
+
+	function &getUserByUsername($username, $allowDisabled = true) {
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		$user =& $this->getByUsername($username, $allowDisabled);
+		return $user;
 	}
 
 	/**
@@ -159,12 +177,14 @@ class PKPUserDAO extends DAO {
 		$user->setMiddleName($row['middle_name']);
 		$user->setInitials($row['initials']);
 		$user->setLastName($row['last_name']);
+		$user->setSuffix($row['suffix']);
 		$user->setGender($row['gender']);
 		$user->setEmail($row['email']);
 		$user->setUrl($row['url']);
 		$user->setPhone($row['phone']);
 		$user->setFax($row['fax']);
 		$user->setMailingAddress($row['mailing_address']);
+		$user->setBillingAddress($row['billing_address']);
 		$user->setCountry($row['country']);
 		$user->setLocales(isset($row['locales']) && !empty($row['locales']) ? explode(':', $row['locales']) : array());
 		$user->setDateLastEmail($this->datetimeFromDB($row['date_last_email']));
@@ -176,6 +196,7 @@ class PKPUserDAO extends DAO {
 		$user->setDisabledReason($row['disabled_reason']);
 		$user->setAuthId($row['auth_id']);
 		$user->setAuthStr($row['auth_str']);
+		$user->setInlineHelp($row['inline_help']);
 
 		if ($callHook) HookRegistry::call('UserDAO::_returnUserFromRow', array(&$user, &$row));
 
@@ -195,9 +216,9 @@ class PKPUserDAO extends DAO {
 		}
 		$this->update(
 			sprintf('INSERT INTO users
-				(username, password, salutation, first_name, middle_name, initials, last_name, gender, email, url, phone, fax, mailing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str)
+				(username, password, salutation, first_name, middle_name, initials, last_name, suffix, gender, email, url, phone, fax, mailing_address, billing_address, country, locales, date_last_email, date_registered, date_validated, date_last_login, must_change_password, disabled, disabled_reason, auth_id, auth_str, inline_help)
 				VALUES
-				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?)',
+				(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, %s, %s, %s, %s, ?, ?, ?, ?, ?, ?)',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateRegistered()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
 				$user->getUsername(),
@@ -207,19 +228,22 @@ class PKPUserDAO extends DAO {
 				$user->getMiddleName(),
 				$user->getInitials(),
 				$user->getLastName(),
+				$user->getSuffix(),
 				$user->getGender(),
 				$user->getEmail(),
 				$user->getUrl(),
 				$user->getPhone(),
 				$user->getFax(),
 				$user->getMailingAddress(),
+				$user->getBillingAddress(),
 				$user->getCountry(),
 				join(':', $user->getLocales()),
 				$user->getMustChangePassword() ? 1 : 0,
 				$user->getDisabled() ? 1 : 0,
 				$user->getDisabledReason(),
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
-				$user->getAuthStr()
+				$user->getAuthStr(),
+				(int) $user->getInlineHelp(),
 			)
 		);
 
@@ -258,12 +282,14 @@ class PKPUserDAO extends DAO {
 					middle_name = ?,
 					initials = ?,
 					last_name = ?,
+					suffix = ?,
 					gender = ?,
 					email = ?,
 					url = ?,
 					phone = ?,
 					fax = ?,
 					mailing_address = ?,
+					billing_address = ?,
 					country = ?,
 					locales = ?,
 					date_last_email = %s,
@@ -273,7 +299,8 @@ class PKPUserDAO extends DAO {
 					disabled = ?,
 					disabled_reason = ?,
 					auth_id = ?,
-					auth_str = ?
+					auth_str = ?,
+					inline_help = ?
 				WHERE	user_id = ?',
 				$this->datetimeToDB($user->getDateLastEmail()), $this->datetimeToDB($user->getDateValidated()), $this->datetimeToDB($user->getDateLastLogin())),
 			array(
@@ -284,12 +311,14 @@ class PKPUserDAO extends DAO {
 				$user->getMiddleName(),
 				$user->getInitials(),
 				$user->getLastName(),
+				$user->getSuffix(),
 				$user->getGender(),
 				$user->getEmail(),
 				$user->getUrl(),
 				$user->getPhone(),
 				$user->getFax(),
 				$user->getMailingAddress(),
+				$user->getBillingAddress(),
 				$user->getCountry(),
 				join(':', $user->getLocales()),
 				$user->getMustChangePassword() ? 1 : 0,
@@ -297,6 +326,7 @@ class PKPUserDAO extends DAO {
 				$user->getDisabledReason(),
 				$user->getAuthId()=='' ? null : (int) $user->getAuthId(),
 				$user->getAuthStr(),
+				(int) $user->getInlineHelp(),
 				(int) $user->getId(),
 			)
 		);
@@ -337,14 +367,14 @@ class PKPUserDAO extends DAO {
 	 */
 	function getUserFullName($userId, $allowDisabled = true) {
 		$result =& $this->retrieve(
-			'SELECT first_name, middle_name, last_name FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
+			'SELECT first_name, middle_name, last_name, suffix FROM users WHERE user_id = ?' . ($allowDisabled?'':' AND disabled = 0'),
 			array((int) $userId)
 		);
 
 		if($result->RecordCount() == 0) {
 			$returner = false;
 		} else {
-			$returner = $result->fields[0] . ' ' . (empty($result->fields[1]) ? '' : $result->fields[1] . ' ') . $result->fields[2];
+			$returner = $result->fields[0] . ' ' . (empty($result->fields[1]) ? '' : $result->fields[1] . ' ') . $result->fields[2] . (empty($result->fields[3]) ? '' : ', ' . $result->fields[3]);
 		}
 
 		$result->Close();
@@ -388,7 +418,7 @@ class PKPUserDAO extends DAO {
 	 */
 
 	function &getUsersByField($field = USER_FIELD_NONE, $match = null, $value = null, $allowDisabled = true, $dbResultRange = null, $sortBy = null, $sortDirection = SORT_DIRECTION_ASC) {
-		$sql = 'SELECT DISTINCT * FROM users u';
+		$sql = 'SELECT DISTINCT u.* FROM users u';
 		switch ($field) {
 			case USER_FIELD_USERID:
 				$sql .= ' WHERE u.user_id = ?';

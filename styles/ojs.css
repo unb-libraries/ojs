@@ -1,7 +1,7 @@
 /**
- * ojs.css
+ * styles/ojs.css
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Temporary file based on omp.css for early introduction of
@@ -18,9 +18,6 @@
 
 /* Theme */
 @import url("../lib/pkp/styles/themes/default/theme.css");
-
-/* FIXME: This is a partial extract from OMP's content.css to support grids in OJS. Needs to be consolidated when migrating OMP->OJS. */ 
-@import url("content.css");
 
 /* FIXME: temporary workaround for #5137 - size attribute for smarty form tags does not work */
 input.large, select.large, textarea.textarea{

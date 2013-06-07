@@ -1,13 +1,12 @@
 {**
- * progress.tpl
+ * templates/common/progress.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Generic progress bar page.
  * Displays a simple message and progress bar.
  *
- * $Id$
  *}
 {strip}
 {include file="common/header.tpl"}

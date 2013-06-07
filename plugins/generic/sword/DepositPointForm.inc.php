@@ -3,7 +3,7 @@
 /**
  * @file plugins/generic/sword/DepositPointForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DepositPointForm
@@ -12,8 +12,7 @@
  * @brief Form for journal managers to modify SWORD deposit points
  */
 
-// $Id$
-
+define('SWORD_PASSWORD_SLUG', '******');
 
 import('lib.pkp.classes.form.Form');
 
@@ -51,7 +50,11 @@ class DepositPointForm extends Form {
 		$plugin =& $this->plugin;
 		$depositPoints = $plugin->getSetting($journalId, 'depositPoints');
 		$depositPoint = null;
-		if (isset($depositPoints[$this->depositPointId])) $depositPoint = $depositPoints[$this->depositPointId];
+		if (isset($depositPoints[$this->depositPointId])) {
+			$depositPoint = $depositPoints[$this->depositPointId];
+			// Don't echo passwords back to the user.
+			$depositPoint['password'] = SWORD_PASSWORD_SLUG;
+		}
 		$this->setData('depositPoint', $depositPoint);
 	}
 
@@ -77,7 +80,14 @@ class DepositPointForm extends Form {
 		$journalId = $this->journalId;
 		$depositPoints = $plugin->getSetting($journalId, 'depositPoints');
 
-		if ($this->depositPointId !== null) $depositPoints[$this->depositPointId] = $this->getData('depositPoint');
+		if ($this->depositPointId !== null) {
+			$depositPoint = $this->getData('depositPoint');
+			if ($depositPoint['password'] == SWORD_PASSWORD_SLUG && isset($depositPoints[$this->depositPointId])) {
+				// The old password was not changed; preserve it
+				$depositPoint['password'] = $depositPoints[$this->depositPointId]['password'];
+			}
+			$depositPoints[$this->depositPointId] = $depositPoint;
+		}
 		else $depositPoints[] = $this->getData('depositPoint');
 
 		$plugin->updateSetting($journalId, 'depositPoints', $depositPoints);

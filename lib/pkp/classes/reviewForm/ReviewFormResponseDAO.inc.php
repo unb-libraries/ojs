@@ -3,7 +3,7 @@
 /**
  * @file classes/reviewForm/ReviewFormResponseDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewFormResponseDAO
@@ -176,7 +176,7 @@ class ReviewFormResponseDAO extends DAO {
 			$row = $result->GetRowAssoc(false);
 			$reviewFormResponse =& $this->_returnReviewFormResponseFromRow($row);
 			$returner[$reviewFormResponse->getReviewFormElementId()] = $reviewFormResponse->getValue();
-			$result->moveNext();
+			$result->MoveNext();
 		}
 
 		$result->Close();

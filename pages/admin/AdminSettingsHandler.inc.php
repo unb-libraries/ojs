@@ -1,17 +1,16 @@
 <?php
 
 /**
- * @file AdminSettingsHandler.inc.php
+ * @file pages/admin/AdminSettingsHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AdminSettingsHandler
  * @ingroup pages_admin
  *
- * @brief Handle requests for changing site admin settings. 
+ * @brief Handle requests for changing site admin settings.
  *
- * $Id$
  */
 
 import('pages.admin.AdminHandler');
@@ -83,9 +82,10 @@ class AdminSettingsHandler extends AdminHandler {
 			}
 		} elseif ($settingsForm->validate()) {
 			$settingsForm->execute();
-			import('lib.pkp.classes.notification.NotificationManager');
+			$user =& $request->getUser();
+			import('classes.notification.NotificationManager');
 			$notificationManager = new NotificationManager();
-			$notificationManager->createTrivialNotification('notification.notification', 'common.changesSaved');
+			$notificationManager->createTrivialNotification($user->getId());
 			$request->redirect(null, null, 'index');
 		}
 		$settingsForm->display();

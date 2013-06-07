@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000004.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Proceso de Envíos del autor - Archivos Suplementarios 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Author Submission Process - Supplementary Files 
   *
   * $Id$
   -->
 
-<topic id="submission/topic/000004" locale="es_ES" title="Archivos suplementarios" toc="submission/toc/000000" key="submission.supplementaryFiles">
+<topic id="submission/topic/000004" locale="es_ES" title="Archivos adicionales" toc="submission/toc/000000" key="submission.supplementaryFiles">
 	<section>
-		<![CDATA[<p>El Autor puede cargar los Archivos Suplementarios en el Paso 4 del Proceso de Envío. La intención de los Archivos Suplementarios es que incluyan conjuntos de datos de investigación, instrumentos de investigación, textos fuentes u otros materiales que en otros contextos conformarían un apéndice del envío pero que aquí pueden ser tratados como documentos separados que tienen valor por sus propios méritos. Además, el Autor indexará Archivos Suplementarios independientemente del envío, habilitando de esta manera los Archivos para que sean parte de un índice más largo y permitir que sean encontrados por aquellas personas que buscan este tipo de artículos.</p><p><i>Formatos de Archivos Suplementarios</i>. Los Archivos Suplementarios también son cargados en su formato original &mdash; para los que no existen restricciones &mdash; y permanecerán en ese formato, a diferencia del resto del envío que debe estar en un formato estándar de manuscrito y que será transformado al formato de publicación estándar. Esto significa que los conjuntos de datos que están disponibles en las hojas de cálculo o en las demostraciones en flash pueden ser cargados y preservados en ese formato; esto puede ocasionar algunas dificultades para los lectores. Los Autores deben tomar esto en cuenta, una manera puede consistir en explicar en la descripción de los Archivos Suplementarios dónde se puede descargar un software libre para abrir y leer el Archivo Suplementario.</p>]]>	
+		<![CDATA[<p>El autor/a puede cargar archivos adicionales en el paso 4 del proceso de envío. Se espera que los archivos adicionales incluyan conjuntos de datos de investigación, herramientas de investigación, textos de origen y otros materiales que puedan formar un apéndice para el envío y dándoles el trato adecuado como documentos independientes que pueden tener valor por sí mismos. Además, el autor/a indexará los archivos adicionales de forma independiente del envío de forma que permita que los archivos formen parte de un índice mayor y que aquellos que busquen este tipo de elementos puedan encontrarlos.</p><p><em>Formatos de archivos adicionales</em>. Los archivos adicionales también se cargan en su formato original &mdash; y en los que no hay restricciones &mdash; y permanecen en ese formato, contrariamente al resto de los envíos que deben estar en formato de manuscrito estándar y que se volcarán al formato de publicación estándar. Esto significa que se pueden cargar y mantener los conjuntos de datos disponibles en hojas de cálculo o presentaciones flash, lo que puede suponer un reto para los lectores/as. Es menester que los autores/as lo tengan en cuenta y consideren la opción de proporcionar en la descripción del archivo adicional dónde encontrar una aplicación de descarga gratuita para abrir y visualizar el archivo adicional.</p>]]>	
 	</section>
 </topic>

@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/sectionEditor/SectionEditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SectionEditorSubmissionDAO
@@ -12,9 +12,6 @@
  *
  * @brief Operations for retrieving and modifying SectionEditorSubmission objects.
  */
-
-// $Id$
-
 
 import('classes.submission.sectionEditor.SectionEditorSubmission');
 
@@ -174,22 +171,24 @@ class SectionEditorSubmissionDAO extends DAO {
 
 		// Update editor decisions
 		for ($i = 1; $i <= $sectionEditorSubmission->getCurrentRound(); $i++) {
-			$editorDecisions = $sectionEditorSubmission->getDecisions($i);
+			$editorDecisions =& $sectionEditorSubmission->getDecisions($i);
 			if (is_array($editorDecisions)) {
-				foreach ($editorDecisions as $editorDecision) {
+				foreach ($editorDecisions as $key => $editorDecision) {
 					if ($editorDecision['editDecisionId'] == null) {
 						$this->update(
 							sprintf('INSERT INTO edit_decisions
 								(article_id, round, editor_id, decision, date_decided)
 								VALUES (?, ?, ?, ?, %s)',
 								$this->datetimeToDB($editorDecision['dateDecided'])),
-							array($sectionEditorSubmission->getArticleId(), $sectionEditorSubmission->getCurrentRound(), $editorDecision['editorId'], $editorDecision['decision'])
+							array($sectionEditorSubmission->getId(), $sectionEditorSubmission->getCurrentRound(), $editorDecision['editorId'], $editorDecision['decision'])
 						);
+						$editorDecisions[$key]['editDecisionId'] = $this->getInsertId('edit_decisions', 'edit_decision_id');
 					}
 				}
 			}
+			unset($editorDecisions);
 		}
-		if ($this->reviewRoundExists($sectionEditorSubmission->getArticleId(), $sectionEditorSubmission->getCurrentRound())) {
+		if ($this->reviewRoundExists($sectionEditorSubmission->getId(), $sectionEditorSubmission->getCurrentRound())) {
 			$this->update(
 				'UPDATE review_rounds
 					SET
@@ -197,28 +196,28 @@ class SectionEditorSubmissionDAO extends DAO {
 					WHERE submission_id = ? AND round = ?',
 				array(
 					$sectionEditorSubmission->getReviewRevision(),
-					$sectionEditorSubmission->getArticleId(),
+					$sectionEditorSubmission->getId(),
 					$sectionEditorSubmission->getCurrentRound()
 				)
 			);
 		} elseif ($sectionEditorSubmission->getReviewRevision()!=null) {
 			$this->createReviewRound(
-				$sectionEditorSubmission->getArticleId(),
+				$sectionEditorSubmission->getId(),
 				$sectionEditorSubmission->getCurrentRound() === null ? 1 : $sectionEditorSubmission->getCurrentRound(),
 				$sectionEditorSubmission->getReviewRevision()
 			);
 		}
 
 		// Update copyeditor assignment
-		$copyeditSignoff = $this->signoffDao->getBySymbolic('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $sectionEditorSubmission->getArticleId());
+		$copyeditSignoff = $this->signoffDao->getBySymbolic('SIGNOFF_COPYEDITING_INITIAL', ASSOC_TYPE_ARTICLE, $sectionEditorSubmission->getId());
 		if ($copyeditSignoff) {
-			$copyeditorSubmission =& $this->copyeditorSubmissionDao->getCopyeditorSubmission($sectionEditorSubmission->getArticleId());
+			$copyeditorSubmission =& $this->copyeditorSubmissionDao->getCopyeditorSubmission($sectionEditorSubmission->getId());
 		} else {
 			$copyeditorSubmission = new CopyeditorSubmission();
 		}
 
 		// Only update the fields that an editor can modify.
-		$copyeditorSubmission->setArticleId($sectionEditorSubmission->getArticleId());
+		$copyeditorSubmission->setId($sectionEditorSubmission->getId());
 		$copyeditorSubmission->setDateStatusModified($sectionEditorSubmission->getDateStatusModified());
 		$copyeditorSubmission->setLastModified($sectionEditorSubmission->getLastModified());
 
@@ -228,7 +227,7 @@ class SectionEditorSubmissionDAO extends DAO {
 				if ($reviewAssignment->getId() > 0) {
 					$this->reviewAssignmentDao->updateReviewAssignment($reviewAssignment);
 				} else {
-					$this->reviewAssignmentDao->insertReviewAssignment($reviewAssignment);
+					$this->reviewAssignmentDao->insertObject($reviewAssignment);
 				}
 			}
 		}
@@ -240,9 +239,9 @@ class SectionEditorSubmissionDAO extends DAO {
 		}
 
 		// Update article
-		if ($sectionEditorSubmission->getArticleId()) {
+		if ($sectionEditorSubmission->getId()) {
 
-			$article =& $this->articleDao->getArticle($sectionEditorSubmission->getArticleId());
+			$article =& $this->articleDao->getArticle($sectionEditorSubmission->getId());
 
 			// Only update fields that can actually be edited.
 			$article->setSectionId($sectionEditorSubmission->getSectionId());
@@ -355,6 +354,10 @@ class SectionEditorSubmissionDAO extends DAO {
 		$searchSql = '';
 
 		if (!empty($search)) switch ($searchField) {
+			case SUBMISSION_FIELD_ID:
+				$params[] = (int) $search;
+				$searchSql = ' AND a.article_id = ?';
+				break;
 			case SUBMISSION_FIELD_TITLE:
 				if ($searchMatch === 'is') {
 					$searchSql = ' AND LOWER(atl.setting_value) = LOWER(?)';
@@ -368,37 +371,10 @@ class SectionEditorSubmissionDAO extends DAO {
 				$params[] = $search;
 				break;
 			case SUBMISSION_FIELD_AUTHOR:
-				$first_last = $this->_dataSource->Concat('aa.first_name', '\' \'', 'aa.last_name');
-				$first_middle_last = $this->_dataSource->Concat('aa.first_name', '\' \'', 'aa.middle_name', '\' \'', 'aa.last_name');
-				$last_comma_first = $this->_dataSource->Concat('aa.last_name', '\', \'', 'aa.first_name');
-				$last_comma_first_middle = $this->_dataSource->Concat('aa.last_name', '\', \'', 'aa.first_name', '\' \'', 'aa.middle_name');
-
-				if ($searchMatch === 'is') {
-					$searchSql = " AND (LOWER(aa.last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
-				} elseif ($searchMatch === 'contains') {
-					$searchSql = " AND (LOWER(aa.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = '%' . $search . '%';
-				} else { // $searchMatch === 'startsWith
-					$searchSql = " AND (LOWER(aa.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = $search . '%';
-				}
-				$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+				$searchSql = $this->_generateUserNameSearchSQL($search, $searchMatch, 'aa.', $params);
 				break;
 			case SUBMISSION_FIELD_EDITOR:
-				$first_last = $this->_dataSource->Concat('ed.first_name', '\' \'', 'ed.last_name');
-				$first_middle_last = $this->_dataSource->Concat('ed.first_name', '\' \'', 'ed.middle_name', '\' \'', 'ed.last_name');
-				$last_comma_first = $this->_dataSource->Concat('ed.last_name', '\', \'', 'ed.first_name');
-				$last_comma_first_middle = $this->_dataSource->Concat('ed.last_name', '\', \'', 'ed.first_name', '\' \'', 'ed.middle_name');
-				if ($searchMatch === 'is') {
-					$searchSql = " AND (LOWER(ed.last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
-				} elseif ($searchMatch === 'contains') {
-					$searchSql = " AND (LOWER(ed.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = '%' . $search . '%';
-				} else { // $searchMatch === 'startsWith'
-					$searchSql = " AND (LOWER(ed.last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
-					$search = $search . '%';
-				}
-				$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+				$searchSql = $this->_generateUserNameSearchSQL($search, $searchMatch, 'ed.', $params);
 				break;
 		}
 
@@ -442,12 +418,12 @@ class SectionEditorSubmissionDAO extends DAO {
 				scf.date_completed as copyedit_completed,
 				spr.date_completed as proofread_completed,
 				sle.date_completed as layout_completed,
-				COALESCE(atl.setting_value, atpl.setting_value) AS submission_title,
+				SUBSTRING(COALESCE(atl.setting_value, atpl.setting_value) FROM 1 FOR 255) AS submission_title,
 				aap.last_name AS author_name,
 				e.can_review AS can_review,
 				e.can_edit AS can_edit,
-				COALESCE(stl.setting_value, stpl.setting_value) AS section_title,
-				COALESCE(sal.setting_value, sapl.setting_value) AS section_abbrev,
+				SUBSTRING(COALESCE(stl.setting_value, stpl.setting_value) FROM 1 FOR 255) AS section_title,
+				SUBSTRING(COALESCE(sal.setting_value, sapl.setting_value) FROM 1 FOR 255) AS section_abbrev,
 				r2.review_revision
 			FROM	articles a
 				LEFT JOIN authors aa ON (aa.submission_id = a.article_id)
@@ -485,6 +461,27 @@ class SectionEditorSubmissionDAO extends DAO {
 		);
 
 		return $result;
+	}
+
+	/**
+	 * FIXME Move this into somewhere common (SubmissionDAO?) as this is used in several classes.
+	 */
+	function _generateUserNameSearchSQL($search, $searchMatch, $prefix, &$params) {
+		$first_last = $this->concat($prefix.'first_name', '\' \'', $prefix.'last_name');
+		$first_middle_last = $this->concat($prefix.'first_name', '\' \'', $prefix.'middle_name', '\' \'', $prefix.'last_name');
+		$last_comma_first = $this->concat($prefix.'last_name', '\', \'', $prefix.'first_name');
+		$last_comma_first_middle = $this->concat($prefix.'last_name', '\', \'', $prefix.'first_name', '\' \'', $prefix.'middle_name');
+		if ($searchMatch === 'is') {
+			$searchSql = " AND (LOWER({$prefix}last_name) = LOWER(?) OR LOWER($first_last) = LOWER(?) OR LOWER($first_middle_last) = LOWER(?) OR LOWER($last_comma_first) = LOWER(?) OR LOWER($last_comma_first_middle) = LOWER(?))";
+		} elseif ($searchMatch === 'contains') {
+			$searchSql = " AND (LOWER({$prefix}last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
+			$search = '%' . $search . '%';
+		} else { // $searchMatch === 'startsWith'
+			$searchSql = " AND (LOWER({$prefix}last_name) LIKE LOWER(?) OR LOWER($first_last) LIKE LOWER(?) OR LOWER($first_middle_last) LIKE LOWER(?) OR LOWER($last_comma_first) LIKE LOWER(?) OR LOWER($last_comma_first_middle) LIKE LOWER(?))";
+			$search = $search . '%';
+		}
+		$params[] = $params[] = $params[] = $params[] = $params[] = $search;
+		return $searchSql;
 	}
 
 	/**
@@ -813,7 +810,8 @@ class SectionEditorSubmissionDAO extends DAO {
 		$sql = 'SELECT DISTINCT
 				u.user_id,
 				u.last_name,
-				ar.review_id ' .
+				ar.review_id,
+				MAX(ar.declined) ' . // MAX needed for PSQL (bug #6007)
 				($selectQuality ? ', AVG(ac.quality) AS average_quality ' : '') .
 				($selectLatest ? ', MAX(ac.date_notified) AS latest ' : '') .
 				($selectComplete ? ', COUNT(ra.review_id) AS completed ' : '') .
@@ -842,6 +840,7 @@ class SectionEditorSubmissionDAO extends DAO {
 	function &_returnReviewerUserFromRow(&$row) { // FIXME
 		$user =& $this->userDao->getUser($row['user_id']);
 		$user->review_id = $row['review_id'];
+		$user->declined = $row['declined'];
 
 		HookRegistry::call('SectionEditorSubmissionDAO::_returnReviewerUserFromRow', array(&$user, &$row));
 

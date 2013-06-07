@@ -1,7 +1,7 @@
 {**
- * authorFees.tpl
+ * templates/author/submit/authorFees.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display of author fees and payment information
@@ -35,6 +35,6 @@
 	<br />{$currentJournal->getLocalizedSetting('publicationFeeDescription')|nl2br}</p>	
 {/if}
 {if $currentJournal->getLocalizedSetting('waiverPolicy') != ''}
-	<p>{$currentJournal->getLocalizedSetting('waiverPolicy')}</p>
+	<p>{$currentJournal->getLocalizedSetting('waiverPolicy')|nl2br}</p>
 {/if}
 </div>

@@ -1,12 +1,11 @@
 {**
- * createIssue.tpl
+ * templates/editor/issues/createIssue.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for creation of an issue
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="editor.issues.createIssue"}
@@ -28,7 +27,7 @@
 {translate key="issue.issue"}: <select name="issue" class="selectMenu" onchange="if(this.options[this.selectedIndex].value > 0) location.href='{url|escape:"javascript" op="issueToc" path="ISSUE_ID" escape=false}'.replace('ISSUE_ID', this.options[this.selectedIndex].value)" size="1">{html_options options=$issueOptions selected=$issueId}</select>
 </form>
 
-<form name="issue" method="post" action="{url op="saveIssue"}" enctype="multipart/form-data">
+<form id="issue" method="post" action="{url op="saveIssue"}" enctype="multipart/form-data">
 
 <div class="separator"></div>
 <div id="identification">
@@ -90,7 +89,7 @@
 	<tr valign="top">
 		<td class="label">{fieldLabel name="openAccessDate" key="editor.issues.accessDate"}</td>
 		<td class="value">
-			<input type="checkbox" id="enableOpenAccessDate" name="enableOpenAccessDate" {if $openAccessDate}checked="checked" {/if}onchange="document.issue.openAccessDateMonth.disabled=this.checked?false:true;document.issue.openAccessDateDay.disabled=this.checked?false:true;document.issue.openAccessDateYear.disabled=this.checked?false:true;" />&nbsp;{fieldLabel name="enableOpenAccessDate" key="editor.issues.enableOpenAccessDate"}<br/>
+			<input type="checkbox" id="enableOpenAccessDate" name="enableOpenAccessDate" {if $openAccessDate}checked="checked" {/if}onchange="document.getElementById('issue').openAccessDateMonth.disabled=this.checked?false:true;document.getElementById('issue').openAccessDateDay.disabled=this.checked?false:true;document.getElementById('issue').openAccessDateYear.disabled=this.checked?false:true;" />&nbsp;{fieldLabel name="enableOpenAccessDate" key="editor.issues.enableOpenAccessDate"}<br/>
 			{if $openAccessDate}
 				{html_select_date prefix=openAccessDate time=$openAccessDate end_year="+20" all_extra="class=\"selectMenu\""}
 			{else}

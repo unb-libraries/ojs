@@ -4,12 +4,11 @@
 <!--
   * locale/nl_NL/admin.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
   *
-  * $Id$
   -->
 
 <locale name="nl_NL" full_name = "Nederlands">
@@ -81,4 +80,7 @@
 	<message key="admin.version.updateAvailable">Er is een bijgewerkte versie beschikbaar</message>
 	<message key="admin.version.upToDate">Uw systeem is up-to-date</message>
 	<message key="admin.version">Versie</message>
+	<message key="admin.settings">Instelligen</message>
+	<message key="admin.settings.siteTheme">Site thema</message>
+	<message key="admin.siteSetup">Site instellingen</message>
 </locale>

@@ -3,7 +3,7 @@
 /**
  * @file classes/security/AccessKeyDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AccessKeyDAO
@@ -13,12 +13,17 @@
  * @brief Operations for retrieving and modifying AccessKey objects.
  */
 
-// $Id$
-
 
 import('lib.pkp.classes.security.AccessKey');
 
 class AccessKeyDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function AccessKeyDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Retrieve an accessKey by ID.
 	 * @param $accessKeyId int
@@ -95,12 +100,20 @@ class AccessKeyDAO extends DAO {
 	}
 
 	/**
+	 * Instantiate and return a new data object.
+	 * @return AccessKey
+	 */
+	function newDataObject() {
+		return new AccessKey();
+	}
+
+	/**
 	 * Internal function to return an AccessKey object from a row.
 	 * @param $row array
 	 * @return AccessKey
 	 */
 	function &_returnAccessKeyFromRow(&$row) {
-		$accessKey = new AccessKey();
+		$accessKey = $this->newDataObject();
 		$accessKey->setId($row['access_key_id']);
 		$accessKey->setKeyHash($row['key_hash']);
 		$accessKey->setExpiryDate($this->datetimeFromDB($row['expiry_date']));

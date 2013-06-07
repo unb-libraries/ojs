@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SubscriptionManagerHandler.inc.php
+ * @file pages/subscriptionManager/SubscriptionManagerHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionManagerHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle requests for subscription management functions.
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -216,8 +213,8 @@ class SubscriptionManagerHandler extends Handler {
 		$this->setupTemplate();
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->addJavaScript('lib/pkp/js/jquery.tablednd_0_5.js');
-		$templateMgr->addJavaScript('lib/pkp/js/tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/lib/jquery/plugins/jquery.tablednd.js');
+		$templateMgr->addJavaScript('lib/pkp/js/functions/tablednd.js');
 
 		import('classes.subscription.SubscriptionAction');
 		SubscriptionAction::subscriptionTypes();
@@ -298,24 +295,28 @@ class SubscriptionManagerHandler extends Handler {
 
 	/**
 	 * Display subscription policies for the current journal.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function subscriptionPolicies() {
+	function subscriptionPolicies($args, &$request) {
 		$this->validate();
 		$this->setupTemplate();
 
 		import('classes.subscription.SubscriptionAction');
-		SubscriptionAction::subscriptionPolicies();
+		SubscriptionAction::subscriptionPolicies($args, $request);
 	}
 
 	/**
 	 * Save subscription policies for the current journal.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function saveSubscriptionPolicies($args = array()) {
+	function saveSubscriptionPolicies($args, &$request) {
 		$this->validate();
 		$this->setupTemplate();
 
 		import('classes.subscription.SubscriptionAction');
-		SubscriptionAction::saveSubscriptionPolicies($args);
+		SubscriptionAction::saveSubscriptionPolicies($args, $request);
 	}
 
 	/**
@@ -502,7 +503,7 @@ class SubscriptionManagerHandler extends Handler {
 	 */
 	function setupTemplate($subclass = false, $institutional = false) {
 		parent::setupTemplate(true);
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_OJS_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER, LOCALE_COMPONENT_OJS_MANAGER);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('pageHierarchy', array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'subscriptionManager'), 'subscriptionManager.subscriptionManagement')));
 		if ($subclass) {

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file SubmissionEditHandler.inc.php
+ * @file pages/sectionEditor/SubmissionEditHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionEditHandler
@@ -19,41 +19,49 @@ define('SECTION_EDITOR_ACCESS_REVIEW', 0x00002);
 import('pages.sectionEditor.SectionEditorHandler');
 
 class SubmissionEditHandler extends SectionEditorHandler {
-	/** submission associated with the request **/
-	var $submission;
-
 	/**
 	 * Constructor
-	 **/
+	 */
 	function SubmissionEditHandler() {
 		parent::SectionEditorHandler();
 	}
 
-	function getFrom($default = 'submissionEditing') {
+	/**
+	 * Get the operation name for the page the user is coming from
+	 * (persisted via URL parameters for some operations)
+	 * @param $default The default value to use if none specified via URL
+	 * @return string
+	 */
+	function _getFrom($default = 'submissionEditing') {
 		$from = Request::getUserVar('from');
 		if (!in_array($from, array('submission', 'submissionEditing'))) return $default;
 		return $from;
 	}
 
-	function submission($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * View the submission page.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function submission($args, &$request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		// FIXME? For comments.readerComments under Status and
 		// author.submit.selectPrincipalContact under Metadata
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_READER, LOCALE_COMPONENT_OJS_AUTHOR));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_READER, LOCALE_COMPONENT_OJS_AUTHOR);
 
 		$this->setupTemplate(true, $articleId);
 
-		$user =& Request::getUser();
+		$user =& $request->getUser();
 
 		$journalSettingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
 		$journalSettings = $journalSettingsDao->getJournalSettings($journal->getId());
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
-		$isEditor = $roleDao->roleExists($journal->getId(), $user->getId(), ROLE_ID_EDITOR);
+		$isEditor = $roleDao->userHasRole($journal->getId(), $user->getId(), ROLE_ID_EDITOR);
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$section =& $sectionDao->getSection($submission->getSectionId());
@@ -95,21 +103,21 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		// Set up required Payment Related Information
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 		if ( $paymentManager->submissionEnabled() || $paymentManager->fastTrackEnabled() || $paymentManager->publicationEnabled()) {
 			$templateMgr->assign('authorFees', true);
-			$completedPaymentDAO =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
+			$completedPaymentDao =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
 
 			if ( $paymentManager->submissionEnabled() ) {
-				$templateMgr->assign_by_ref('submissionPayment', $completedPaymentDAO->getSubmissionCompletedPayment ( $journal->getId(), $articleId ));
+				$templateMgr->assign_by_ref('submissionPayment', $completedPaymentDao->getSubmissionCompletedPayment ( $journal->getId(), $articleId ));
 			}
 
 			if ( $paymentManager->fastTrackEnabled()  ) {
-				$templateMgr->assign_by_ref('fastTrackPayment', $completedPaymentDAO->getFastTrackCompletedPayment ( $journal->getId(), $articleId ));
+				$templateMgr->assign_by_ref('fastTrackPayment', $completedPaymentDao->getFastTrackCompletedPayment ( $journal->getId(), $articleId ));
 			}
 
 			if ( $paymentManager->publicationEnabled()  ) {
-				$templateMgr->assign_by_ref('publicationPayment', $completedPaymentDAO->getPublicationCompletedPayment ( $journal->getId(), $articleId ));
+				$templateMgr->assign_by_ref('publicationPayment', $completedPaymentDao->getPublicationCompletedPayment ( $journal->getId(), $articleId ));
 			}
 		}
 
@@ -118,10 +126,15 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->display('sectionEditor/submission.tpl');
 	}
 
-	function submissionRegrets($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * View the submission regrets page.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function submissionRegrets($args, &$request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'review');
 
@@ -161,14 +174,19 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->display('sectionEditor/submissionRegrets.tpl');
 	}
 
-	function submissionReview($args) {
+	/**
+	 * View the submission review page.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function submissionReview($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$journal =& Request::getJournal();
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId);
 
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_MANAGER);
 
 		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
 		$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
@@ -197,8 +215,8 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		}
 
 		// Parse the list of email logs and populate the array.
-		import('classes.article.log.ArticleLog');
-		$emailLogEntries =& ArticleLog::getEmailLogEntries($articleId);
+		$emailLogDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
+		$emailLogEntries =& $emailLogDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 		foreach ($emailLogEntries->toArray() as $emailLog) {
 			if ($emailLog->getEventType() == ARTICLE_EMAIL_REVIEW_NOTIFY_REVIEWER) {
 				if (isset($notifyReviewerLogs[$emailLog->getAssocId()]) && is_array($notifyReviewerLogs[$emailLog->getAssocId()])) {
@@ -258,10 +276,15 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->display('sectionEditor/submissionReview.tpl');
 	}
 
-	function submissionEditing($args) {
+	/**
+	 * View the submission editing page.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function submissionEditing($args, $request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId);
 
@@ -288,7 +311,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$user =& Request::getUser();
-		$templateMgr->assign('isEditor', $roleDao->roleExists($journal->getId(), $user->getId(), ROLE_ID_EDITOR));
+		$templateMgr->assign('isEditor', $roleDao->userHasRole($journal->getId(), $user->getId(), ROLE_ID_EDITOR));
 
 		import('classes.issue.IssueAction');
 		$templateMgr->assign('issueOptions', IssueAction::getIssueOptions());
@@ -303,13 +326,13 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		// Set up required Payment Related Information
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
-		$completedPaymentDAO =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
+		$paymentManager = new OJSPaymentManager($request);
+		$completedPaymentDao =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
 
 		$publicationFeeEnabled = $paymentManager->publicationEnabled();
 		$templateMgr->assign('publicationFeeEnabled',  $publicationFeeEnabled);
 		if ( $publicationFeeEnabled ) {
-			$templateMgr->assign_by_ref('publicationPayment', $completedPaymentDAO->getPublicationCompletedPayment ( $journal->getId(), $articleId ));
+			$templateMgr->assign_by_ref('publicationPayment', $completedPaymentDao->getPublicationCompletedPayment ( $journal->getId(), $articleId ));
 		}
 
 		$templateMgr->assign('helpTopicId', 'editorial.sectionEditorsRole.editing');
@@ -318,33 +341,38 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * View submission history
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function submissionHistory($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	function submissionHistory($args, &$request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
 		$this->setupTemplate(true, $articleId);
 
-		// submission notes
-		$noteDao =& DAORegistry::getDAO('NoteDAO');
-
-		$submissionNotes =& $noteDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
-
-		import('classes.article.log.ArticleLog');
-		$rangeInfo =& Handler::getRangeInfo('eventLogEntries');
-		$eventLogEntries =& ArticleLog::getEventLogEntries($articleId, $rangeInfo);
-		$rangeInfo =& Handler::getRangeInfo('emailLogEntries');
-		$emailLogEntries =& ArticleLog::getEmailLogEntries($articleId, $rangeInfo);
-
 		$templateMgr =& TemplateManager::getManager();
-
-		$templateMgr->assign('isEditor', Validation::isEditor());
+		$submission =& $this->submission;
 		$templateMgr->assign_by_ref('submission', $submission);
-		$templateMgr->assign_by_ref('eventLogEntries', $eventLogEntries);
-		$templateMgr->assign_by_ref('emailLogEntries', $emailLogEntries);
+
+		// Notes
+		$noteDao =& DAORegistry::getDAO('NoteDAO');
+		$submissionNotes =& $noteDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 		$templateMgr->assign_by_ref('submissionNotes', $submissionNotes);
 
+		// Event log
+		$eventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
+		$rangeInfo =& $this->getRangeInfo('eventLogEntries');
+		$eventLogEntries =& $eventLogDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId, $rangeInfo);
+		$templateMgr->assign_by_ref('eventLogEntries', $eventLogEntries);
+		unset($rangeInfo);
+
+		// Email log
+		$emailLogDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
+		$rangeInfo =& $this->getRangeInfo('emailLogEntries');
+		$emailLogEntries =& $emailLogDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId, $rangeInfo);
+		$templateMgr->assign_by_ref('emailLogEntries', $emailLogEntries);
+		unset($rangeInfo);
+
+		$templateMgr->assign('isEditor', Validation::isEditor());
 		$templateMgr->display('sectionEditor/submissionHistory.tpl');
 	}
 
@@ -369,58 +397,75 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->display('sectionEditor/submissionCitations.tpl');
 	}
 
-	function changeSection() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Change an article's section.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function changeSection($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId);
 		$submission =& $this->submission;
 
-		$sectionId = Request::getUserVar('sectionId');
+		$sectionId = $request->getUserVar('sectionId');
 
 		SectionEditorAction::changeSection($submission, $sectionId);
 
-		Request::redirect(null, null, 'submission', $articleId);
+		$request->redirect(null, null, 'submission', $articleId);
 	}
 
-	function recordDecision() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Record an editor decision
+	 * @param $args array
+	 * @param $request object
+	 */
+	function recordDecision($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$decision = Request::getUserVar('decision');
+		$decision = $request->getUserVar('decision');
 
 		switch ($decision) {
 			case SUBMISSION_EDITOR_DECISION_ACCEPT:
 			case SUBMISSION_EDITOR_DECISION_PENDING_REVISIONS:
 			case SUBMISSION_EDITOR_DECISION_RESUBMIT:
 			case SUBMISSION_EDITOR_DECISION_DECLINE:
-				SectionEditorAction::recordDecision($submission, $decision);
+				SectionEditorAction::recordDecision($submission, $decision, $request);
 				break;
 		}
 
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
 	//
 	// Peer Review
 	//
 
-	function selectReviewer($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * Select a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function selectReviewer($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$reviewerId = (int) array_shift($args);
+
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
-		$sort = Request::getUserVar('sort');
+		$sort = $request->getUserVar('sort');
 		$sort = isset($sort) ? $sort : 'reviewerName';
-		$sortDirection = Request::getUserVar('sortDirection');
+		$sortDirection = $request->getUserVar('sortDirection');
 		$sortDirection = (isset($sortDirection) && ($sortDirection == SORT_DIRECTION_ASC || $sortDirection == SORT_DIRECTION_DESC)) ? $sortDirection : SORT_DIRECTION_ASC;
 
 		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
 
-		if (isset($args[1]) && $args[1] != null) {
+		if ($reviewerId) {
 			// Assign reviewer to article
-			SectionEditorAction::addReviewer($submission, $args[1]);
-			Request::redirect(null, null, 'submissionReview', $articleId);
+			SectionEditorAction::addReviewer($submission, $reviewerId, null, $request);
+			$request->redirect(null, null, 'submissionReview', $articleId);
 
 			// FIXME: Prompt for due date.
 		} else {
@@ -430,11 +475,11 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 			$searchType = null;
 			$searchMatch = null;
-			$search = $searchQuery = Request::getUserVar('search');
-			$searchInitial = Request::getUserVar('searchInitial');
+			$search = $searchQuery = $request->getUserVar('search');
+			$searchInitial = $request->getUserVar('searchInitial');
 			if (!empty($search)) {
-				$searchType = Request::getUserVar('searchField');
-				$searchMatch = Request::getUserVar('searchMatch');
+				$searchType = $request->getUserVar('searchField');
+				$searchMatch = $request->getUserVar('searchMatch');
 
 			} elseif (!empty($searchInitial)) {
 				$searchInitial = String::strtoupper($searchInitial);
@@ -442,10 +487,10 @@ class SubmissionEditHandler extends SectionEditorHandler {
 				$search = $searchInitial;
 			}
 
-			$rangeInfo =& Handler::getRangeInfo('reviewers');
+			$rangeInfo =& $this->getRangeInfo('reviewers');
 			$reviewers = $sectionEditorSubmissionDao->getReviewersForArticle($journal->getId(), $articleId, $submission->getCurrentRound(), $searchType, $search, $searchMatch, $rangeInfo, $sort, $sortDirection); /* @var $reviewers DAOResultFactory */
 
-			$journal = Request::getJournal();
+			$journal = $request->getJournal();
 			$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
 
 			$templateMgr =& TemplateManager::getManager();
@@ -453,12 +498,12 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->assign('searchField', $searchType);
 			$templateMgr->assign('searchMatch', $searchMatch);
 			$templateMgr->assign('search', $searchQuery);
-			$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
+			$templateMgr->assign('searchInitial', $request->getUserVar('searchInitial'));
 
 			$templateMgr->assign_by_ref('reviewers', $reviewers);
 			$templateMgr->assign('articleId', $articleId);
 			$templateMgr->assign('reviewerStatistics', $sectionEditorSubmissionDao->getReviewerStatistics($journal->getId()));
-			$templateMgr->assign('fieldOptions', Array(
+			$templateMgr->assign('fieldOptions', array(
 				USER_FIELD_INTERESTS => 'user.interests',
 				USER_FIELD_FIRSTNAME => 'user.firstName',
 				USER_FIELD_LASTNAME => 'user.lastName',
@@ -480,6 +525,8 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Create a new user as a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function createReviewer($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
@@ -495,7 +542,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			if ($createReviewerForm->validate()) {
 				// Create a user and enroll them as a reviewer.
 				$newUserId = $createReviewerForm->execute();
-				Request::redirect(null, null, 'selectReviewer', array($articleId, $newUserId));
+				$request->redirect(null, null, 'selectReviewer', array($articleId, $newUserId));
 			} else {
 				$createReviewerForm->display($args, $request);
 			}
@@ -508,47 +555,50 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			}
 			$createReviewerForm->display($args, $request);
 		}
-
 	}
 
 	/**
 	 * Get a suggested username, making sure it's not
 	 * already used by the system. (Poor-man's AJAX.)
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function suggestUsername() {
+	function suggestUsername($args, &$request) {
 		parent::validate();
 		$suggestion = Validation::suggestUsername(
-			Request::getUserVar('firstName'),
-			Request::getUserVar('lastName')
+			$request->getUserVar('firstName'),
+			$request->getUserVar('lastName')
 		);
 		echo $suggestion;
 	}
 
 	/**
 	 * Search for users to enroll as reviewers.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function enrollSearch($args) {
+	function enrollSearch($args, $request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_MANAGER)); // manager.people.enrollment, manager.people.enroll
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_MANAGER); // manager.people.enrollment, manager.people.enroll
 		$submission =& $this->submission;
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$roleId = $roleDao->getRoleIdFromPath('reviewer');
 
-		$user =& Request::getUser();
+		$user =& $request->getUser();
 
-		$rangeInfo = Handler::getRangeInfo('users');
+		$rangeInfo = $this->getRangeInfo('users');
 		$templateMgr =& TemplateManager::getManager();
 		$this->setupTemplate(true);
 
 		$searchType = null;
 		$searchMatch = null;
-		$search = $searchQuery = Request::getUserVar('search');
-		$searchInitial = Request::getUserVar('searchInitial');
+		$search = $searchQuery = $request->getUserVar('search');
+		$searchInitial = $request->getUserVar('searchInitial');
 		if (!empty($search)) {
-			$searchType = Request::getUserVar('searchField');
-			$searchMatch = Request::getUserVar('searchMatch');
+			$searchType = $request->getUserVar('searchField');
+			$searchMatch = $request->getUserVar('searchMatch');
 
 		} elseif (!empty($searchInitial)) {
 			$searchInitial = String::strtoupper($searchInitial);
@@ -562,7 +612,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->assign('searchField', $searchType);
 		$templateMgr->assign('searchMatch', $searchMatch);
 		$templateMgr->assign('search', $searchQuery);
-		$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
+		$templateMgr->assign('searchInitial', $request->getUserVar('searchInitial'));
 
 		$templateMgr->assign('articleId', $articleId);
 		$templateMgr->assign('fieldOptions', Array(
@@ -580,21 +630,26 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->display('sectionEditor/searchUsers.tpl');
 	}
 
-	function enroll($args) {
+	/**
+	 * Enroll a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function enroll($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$roleId = $roleDao->getRoleIdFromPath('reviewer');
 
-		$users = Request::getUserVar('users');
-		if (!is_array($users) && Request::getUserVar('userId') != null) $users = array(Request::getUserVar('userId'));
+		$users = $request->getUserVar('users');
+		if (!is_array($users) && $request->getUserVar('userId') != null) $users = array($request->getUserVar('userId'));
 
 		// Enroll reviewer
 		for ($i=0; $i<count($users); $i++) {
-			if (!$roleDao->roleExists($journal->getId(), $users[$i], $roleId)) {
+			if (!$roleDao->userHasRole($journal->getId(), $users[$i], $roleId)) {
 				$role = new Role();
 				$role->setJournalId($journal->getId());
 				$role->setUserId($users[$i]);
@@ -603,146 +658,223 @@ class SubmissionEditHandler extends SectionEditorHandler {
 				$roleDao->insertRole($role);
 			}
 		}
-		Request::redirect(null, null, 'selectReviewer', $articleId);
+		$request->redirect(null, null, 'selectReviewer', $articleId);
 	}
 
-	function notifyReviewer($args = array()) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Notify an assigned reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function notifyReviewer($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
+		$reviewId = (int) $request->getUserVar('reviewId');
 
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'review');
 
-		if (SectionEditorAction::notifyReviewer($submission, $reviewId, $send)) {
-			Request::redirect(null, null, 'submissionReview', $articleId);
+		if (SectionEditorAction::notifyReviewer($submission, $reviewId, $send, $request)) {
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		}
 	}
 
-	function clearReview($args) {
-		$articleId = isset($args[0])?$args[0]:0;
+	/**
+	 * Clear an assigned review.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function clearReview($args, $request) {
+		$articleId = (int) array_shift($args);
+		$reviewId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = $args[1];
+		SectionEditorAction::clearReview($submission, $reviewId, $request);
 
-		SectionEditorAction::clearReview($submission, $reviewId);
-
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function cancelReview($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Cancel a review.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function cancelReview($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
+		$reviewId = (int) $request->getUserVar('reviewId');
 
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'review');
 
-		if (SectionEditorAction::cancelReview($submission, $reviewId, $send)) {
-			Request::redirect(null, null, 'submissionReview', $articleId);
+		if (SectionEditorAction::cancelReview($submission, $reviewId, $send, $request)) {
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		}
 	}
 
-	function remindReviewer($args = null) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Remind a reviewer.
+	 * @param $args aray
+	 * @param $request PKPRequest
+	 */
+	function remindReviewer($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
+		$reviewId = (int) $request->getUserVar('reviewId');
 		$this->setupTemplate(true, $articleId, 'review');
 
-		if (SectionEditorAction::remindReviewer($submission, $reviewId, Request::getUserVar('send'))) {
-			Request::redirect(null, null, 'submissionReview', $articleId);
+		if (SectionEditorAction::remindReviewer($submission, $reviewId, $request->getUserVar('send'), $request)) {
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		}
 	}
 
-	function thankReviewer($args = array()) {
-		$articleId = Request::getUserVar('articleId');
+	/*
+	 * Reassign a reviewer to the current round of review
+	 * @param $args array
+	 * @param $request object
+	 */
+	function reassignReviewer($args, $request) {
+			$articleId = isset($args[0]) ? (int) $args[0] : 0;
+			$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
+			$userId = isset($args[1]) ? (int) $args[1] : 0;
+
+			$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
+			$submission =& $sectionEditorSubmissionDao->getSectionEditorSubmission($articleId);
+			$round = $submission->getCurrentRound();
+
+			$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
+			$reviewAssignment =& $reviewAssignmentDao->getReviewAssignment($articleId, $userId, $submission->getCurrentRound()); /* @var $reviewAssignment ReviewAssignment */
+			if($reviewAssignment && !$reviewAssignment->getDateCompleted() && $reviewAssignment->getDeclined()) {
+				$reviewAssignment->setDeclined(false);
+				$reviewAssignment->setDateAssigned(Core::getCurrentDate());
+				$reviewAssignment->setDateNotified(null);
+				$reviewAssignment->setDateConfirmed(null);
+				$reviewAssignment->setRound($submission->getCurrentRound());
+
+				$reviewAssignmentDao->updateReviewAssignment($reviewAssignment);
+			}
+			$request->redirect(null, null, 'submissionReview', $articleId);
+	}
+
+	/**
+	 * Thank a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function thankReviewer($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
+		$reviewId = (int) $request->getUserVar('reviewId');
 
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'review');
 
-		if (SectionEditorAction::thankReviewer($submission, $reviewId, $send)) {
-			Request::redirect(null, null, 'submissionReview', $articleId);
+		if (SectionEditorAction::thankReviewer($submission, $reviewId, $send, $request)) {
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		}
 	}
 
-	function rateReviewer() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Rate a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function rateReviewer($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$reviewId = (int) $request->getUserVar('reviewId');
+		$quality = (int) $request->getUserVar('quality');
+
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$this->setupTemplate(true, $articleId, 'review');
 
-		$reviewId = Request::getUserVar('reviewId');
-		$quality = Request::getUserVar('quality');
+		SectionEditorAction::rateReviewer($articleId, $reviewId, $quality, $request);
 
-		SectionEditorAction::rateReviewer($articleId, $reviewId, $quality);
-
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function confirmReviewForReviewer($args) {
-		$articleId = (int) isset($args[0])?$args[0]:0;
-		$accept = Request::getUserVar('accept')?true:false;
+	/**
+	 * Confirm a review for a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function confirmReviewForReviewer($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$reviewId = (int) array_shift($args);
+
+		$accept = $request->getUserVar('accept')?true:false;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = (int) isset($args[1])?$args[1]:0;
-
-		SectionEditorAction::confirmReviewForReviewer($reviewId, $accept);
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		SectionEditorAction::confirmReviewForReviewer($reviewId, $accept, $request);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function uploadReviewForReviewer($args) {
-		$articleId = (int) Request::getUserVar('articleId');
+	/**
+	 * Upload a review on behalf of a reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function uploadReviewForReviewer($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = (int) Request::getUserVar('reviewId');
+		$reviewId = (int) $request->getUserVar('reviewId');
 
-		SectionEditorAction::uploadReviewForReviewer($reviewId);
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		SectionEditorAction::uploadReviewForReviewer($reviewId, $submission, $request);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function makeReviewerFileViewable() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Make a reviewer file viewable to the author.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function makeReviewerFileViewable($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
-		$fileId = Request::getUserVar('fileId');
-		$revision = Request::getUserVar('revision');
-		$viewable = Request::getUserVar('viewable');
+		$reviewId = $request->getUserVar('reviewId');
+		$fileId = $request->getUserVar('fileId');
+		$revision = $request->getUserVar('revision');
+		$viewable = $request->getUserVar('viewable');
 
 		SectionEditorAction::makeReviewerFileViewable($articleId, $reviewId, $fileId, $revision, $viewable);
 
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function setDueDate($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * Set the review due date.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function setDueDate($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$reviewId = (int) array_shift($args);
+
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = isset($args[1]) ? $args[1] : 0;
-		$dueDate = Request::getUserVar('dueDate');
-		$numWeeks = Request::getUserVar('numWeeks');
+		$dueDate = $request->getUserVar('dueDate');
+		$numWeeks = $request->getUserVar('numWeeks');
 
 		if ($dueDate != null || $numWeeks != null) {
-			SectionEditorAction::setDueDate($articleId, $reviewId, $dueDate, $numWeeks);
-			Request::redirect(null, null, 'submissionReview', $articleId);
-
+			SectionEditorAction::setDueDate($articleId, $reviewId, $dueDate, $numWeeks, false, $request);
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		} else {
 			$this->setupTemplate(true, $articleId, 'review');
-			$journal =& Request::getJournal();
+			$journal =& $request->getJournal();
 
 			$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
 			$reviewAssignment = $reviewAssignmentDao->getById($reviewId);
@@ -768,18 +900,23 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		}
 	}
 
-	function enterReviewerRecommendation($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Enter a reviewer recommendation on behalf of a reviewer
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function enterReviewerRecommendation($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
-		$reviewId = Request::getUserVar('reviewId');
+		$reviewId = $request->getUserVar('reviewId');
 
-		$recommendation = Request::getUserVar('recommendation');
+		$recommendation = $request->getUserVar('recommendation');
 
 		if ($recommendation != null) {
-			SectionEditorAction::setReviewerRecommendation($articleId, $reviewId, $recommendation, SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT);
-			Request::redirect(null, null, 'submissionReview', $articleId);
+			SectionEditorAction::setReviewerRecommendation($this->submission, $reviewId, $recommendation, SUBMISSION_REVIEWER_RECOMMENDATION_ACCEPT, $request);
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		} else {
 			$this->setupTemplate(true, $articleId, 'review');
 
@@ -798,13 +935,14 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Display a user's profile.
 	 * @param $args array first parameter is the ID or username of the user to display
+	 * @param $request PKPRequest
 	 */
-	function userProfile($args) {
+	function userProfile($args, &$request) {
 		parent::validate();
 		$this->setupTemplate(true);
 
 		$templateMgr =& TemplateManager::getManager();
-		$templateMgr->assign('currentUrl', Request::url(null, Request::getRequestedPage()));
+		$templateMgr->assign('currentUrl', $request->url(null, $request->getRequestedPage()));
 
 		$userDao =& DAORegistry::getDAO('UserDAO');
 		$userId = isset($args[0]) ? $args[0] : 0;
@@ -823,8 +961,8 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->display('common/error.tpl');
 
 		} else {
-			$site =& Request::getSite();
-			$journal =& Request::getJournal();
+			$site =& $request->getSite();
+			$journal =& $request->getJournal();
 
 			$countryDao =& DAORegistry::getDAO('CountryDAO');
 			$country = null;
@@ -842,22 +980,32 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		}
 	}
 
-	function viewMetadata($args, $request) {
+	/**
+	 * View article metadata.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function viewMetadata($args, &$request) {
 		$articleId = (int) array_shift($args);
 		$journal =& $request->getJournal();
 
 		$this->validate($articleId);
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_AUTHOR));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_AUTHOR);
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'summary');
 
 		SectionEditorAction::viewMetadata($submission, $journal);
 	}
 
+	/**
+	 * Save modified metadata.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
 	function saveMetadata($args, &$request) {
 		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId);
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_AUTHOR));
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_AUTHOR);
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'summary');
 
@@ -868,6 +1016,8 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Remove cover page from article
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function removeArticleCoverPage($args, &$request) {
 		$articleId = isset($args[0]) ? (int)$args[0] : 0;
@@ -891,15 +1041,16 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Preview a review form.
 	 * @param $args array ($reviewId, $reviewFormId)
+	 * @param $request PKPRequest
 	 */
-	function previewReviewForm($args) {
+	function previewReviewForm($args, &$request) {
 		parent::validate();
 		$this->setupTemplate(true);
 
-		$reviewId = isset($args[0]) ? (int) $args[0] : null;
-		$reviewFormId = isset($args[1]) ? (int)$args[1] : null;
+		$reviewId = (int) array_shift($args);
+		$reviewFormId = (int) array_shift($args);
 
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$reviewFormDao =& DAORegistry::getDAO('ReviewFormDAO');
 		$reviewForm =& $reviewFormDao->getReviewForm($reviewFormId, ASSOC_TYPE_JOURNAL, $journal->getId());
 		$reviewFormElementDao =& DAORegistry::getDAO('ReviewFormElementDAO');
@@ -920,8 +1071,9 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Clear a review form, i.e. remove review form assignment to the review.
 	 * @param $args array ($articleId, $reviewId)
+	 * @param $request PKPRequest
 	 */
-	function clearReviewForm($args) {
+	function clearReviewForm($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$reviewId = isset($args[1]) ? (int) $args[1] : null;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
@@ -929,14 +1081,15 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		SectionEditorAction::clearReviewForm($submission, $reviewId);
 
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
 	/**
 	 * Select a review form
 	 * @param $args array ($articleId, $reviewId, $reviewFormId)
+	 * @param $request PKPRequest
 	 */
-	function selectReviewForm($args) {
+	function selectReviewForm($args, &$request) {
 		$articleId = isset($args[0]) ? (int) $args[0] : 0;
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
@@ -946,10 +1099,10 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		if ($reviewFormId != null) {
 			SectionEditorAction::addReviewForm($submission, $reviewId, $reviewFormId);
-			Request::redirect(null, null, 'submissionReview', $articleId);
+			$request->redirect(null, null, 'submissionReview', $articleId);
 		} else {
-			$journal =& Request::getJournal();
-			$rangeInfo =& Handler::getRangeInfo('reviewForms');
+			$journal =& $request->getJournal();
+			$rangeInfo =& $this->getRangeInfo('reviewForms');
 			$reviewFormDao =& DAORegistry::getDAO('ReviewFormDAO');
 			$reviewForms =& $reviewFormDao->getActiveByAssocId(ASSOC_TYPE_JOURNAL, $journal->getId(), $rangeInfo);
 			$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
@@ -970,24 +1123,29 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * View review form response.
 	 * @param $args array ($articleId, $reviewId)
+	 * @param $request PKPRequest
 	 */
-	function viewReviewFormResponse($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	function viewReviewFormResponse($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$reviewId = (int) array_shift($args);
+
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		$reviewId = isset($args[1]) ? (int) $args[1] : null;
-
-		SectionEditorAction::viewReviewFormResponse($submission, $reviewId);
+		SectionEditorAction::viewReviewFormResponse($this->submission, $reviewId);
 	}
 
 	//
 	// Editor Review
 	//
 
-	function editorReview() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Perform a review on behalf of the reviewer.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function editorReview($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
 		$submission =& $this->submission;
 
@@ -996,50 +1154,57 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$redirectTarget = 'submissionReview';
 
 		// If the Upload button was pressed.
-		$submit = Request::getUserVar('submit');
+		$submit = $request->getUserVar('submit');
 		if ($submit != null) {
-			SectionEditorAction::uploadEditorVersion($submission);
+			SectionEditorAction::uploadEditorVersion($submission, $request);
 		}
 
-		if (Request::getUserVar('setCopyeditFile')) {
+		if ($request->getUserVar('setCopyeditFile')) {
 			// If the Send To Copyedit button was pressed
-			$file = explode(',', Request::getUserVar('editorDecisionFile'));
+			$file = explode(',', $request->getUserVar('editorDecisionFile'));
 			if (isset($file[0]) && isset($file[1])) {
 				$round = $submission->getCurrentRound();
 				if ($submission->getMostRecentEditorDecisionComment()) {
 					// The conditions are met for being able
 					// to send a file to copyediting.
-					SectionEditorAction::setCopyeditFile($submission, $file[0], $file[1]);
+					SectionEditorAction::setCopyeditFile($submission, $file[0], $file[1], $request);
 				}
 				$redirectTarget = 'submissionEditing';
 			}
 
-		} else if (Request::getUserVar('resubmit')) {
+		} else if ($request->getUserVar('resubmit')) {
 			// If the Resubmit button was pressed
-			$file = explode(',', Request::getUserVar('editorDecisionFile'));
+			$file = explode(',', $request->getUserVar('editorDecisionFile'));
 			if (isset($file[0]) && isset($file[1])) {
-				SectionEditorAction::resubmitFile($submission, $file[0], $file[1]);
+				SectionEditorAction::resubmitFile($submission, $file[0], $file[1], $request);
 			}
 		}
 
-		Request::redirect(null, null, $redirectTarget, $articleId);
+		$request->redirect(null, null, $redirectTarget, $articleId);
 	}
 
 	//
 	// Copyedit
 	//
 
-	function selectCopyeditor($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * Select a copyeditor.
+	 * @param $args array
+	 * @param $request PKPRequest
+ 	 */
+	function selectCopyeditor($args, $request) {
+		$articleId = (int) array_shift($args);
+		$userId = (int) array_shift($args);
+
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 
-		if (isset($args[1]) && $args[1] != null && $roleDao->roleExists($journal->getId(), $args[1], ROLE_ID_COPYEDITOR)) {
-			SectionEditorAction::selectCopyeditor($submission, $args[1]);
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if ($roleDao->userHasRole($journal->getId(), $userId, ROLE_ID_COPYEDITOR)) {
+			SectionEditorAction::selectCopyeditor($submission, $userId, $request);
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		} else {
 			$this->setupTemplate(true, $articleId, 'editing');
 
@@ -1047,11 +1212,11 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 			$searchType = null;
 			$searchMatch = null;
-			$search = $searchQuery = Request::getUserVar('search');
-			$searchInitial = Request::getUserVar('searchInitial');
+			$search = $searchQuery = $request->getUserVar('search');
+			$searchInitial = $request->getUserVar('searchInitial');
 			if (!empty($search)) {
-				$searchType = Request::getUserVar('searchField');
-				$searchMatch = Request::getUserVar('searchMatch');
+				$searchType = $request->getUserVar('searchField');
+				$searchMatch = $request->getUserVar('searchMatch');
 
 			} elseif (!empty($searchInitial)) {
 				$searchInitial = String::strtoupper($searchInitial);
@@ -1067,7 +1232,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->assign('searchField', $searchType);
 			$templateMgr->assign('searchMatch', $searchMatch);
 			$templateMgr->assign('search', $searchQuery);
-			$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
+			$templateMgr->assign('searchInitial', $request->getUserVar('searchInitial'));
 
 			$templateMgr->assign_by_ref('users', $copyeditors);
 			$templateMgr->assign('currentUser', $submission->getUserBySignoffType('SIGNOFF_COPYEDITING_INITIAL'));
@@ -1075,13 +1240,13 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->assign('pageSubTitle', 'editor.article.selectCopyeditor');
 			$templateMgr->assign('pageTitle', 'user.role.copyeditors');
 			$templateMgr->assign('actionHandler', 'selectCopyeditor');
-			$templateMgr->assign('fieldOptions', Array(
+			$templateMgr->assign('fieldOptions', array(
 				USER_FIELD_FIRSTNAME => 'user.firstName',
 				USER_FIELD_LASTNAME => 'user.lastName',
 				USER_FIELD_USERNAME => 'user.username',
 				USER_FIELD_EMAIL => 'user.email'
 			));
-			$templateMgr->assign('articleId', $args[0]);
+			$templateMgr->assign('articleId', $articleId);
 
 			$templateMgr->assign('helpTopicId', 'journal.roles.copyeditor');
 			$templateMgr->assign('alphaList', explode(' ', __('common.alphaList')));
@@ -1089,138 +1254,171 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		}
 	}
 
-	function notifyCopyeditor($args = array()) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Notify a copyeditor of their assignment.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function notifyCopyeditor($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$submission =& $this->submission;
 
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::notifyCopyeditor($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::notifyCopyeditor($submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	/* Initiates the copyediting process when the editor does the copyediting */
-	function initiateCopyedit() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Initiate the copyediting process when the editor does the copyediting
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function initiateCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
 
-		SectionEditorAction::initiateCopyedit($submission);
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::initiateCopyedit($this->submission, $request);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
-	function thankCopyeditor($args = array()) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Thank the copyeditor.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function thankCopyeditor($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::thankCopyeditor($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::thankCopyeditor($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	function notifyAuthorCopyedit($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Notify the author of their copyediting task.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function notifyAuthorCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::notifyAuthorCopyedit($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::notifyAuthorCopyedit($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	function thankAuthorCopyedit($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Thank the author for completing their copyediting task.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function thankAuthorCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::thankAuthorCopyedit($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::thankAuthorCopyedit($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	function notifyFinalCopyedit($args = array()) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Notify the copyeditor of the final copyediting round.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function notifyFinalCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::notifyFinalCopyedit($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::notifyFinalCopyedit($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	function completeCopyedit($args) {
-		$articleId = (int) Request::getUserVar('articleId');
-
+	/**
+	 * Complete copyediting.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function completeCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		SectionEditorAction::completeCopyedit($submission);
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::completeCopyedit($this->submission, $request);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
-	function completeFinalCopyedit($args) {
-		$articleId = (int) Request::getUserVar('articleId');
-
+	/**
+	 * Complete the final copyedit.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function completeFinalCopyedit($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		SectionEditorAction::completeFinalCopyedit($submission);
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::completeFinalCopyedit($this->submission, $request);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
-	function thankFinalCopyedit($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Thank the copyeditor for the final copyedit.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function thankFinalCopyedit($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::thankFinalCopyedit($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::thankFinalCopyedit($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
-	function uploadReviewVersion() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Upload a review version.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function uploadReviewVersion($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		$submission =& $this->submission;
-
-		SectionEditorAction::uploadReviewVersion($submission);
-
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		SectionEditorAction::uploadReviewVersion($this->submission);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
-	function uploadCopyeditVersion() {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Upload a copyedit version.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function uploadCopyeditVersion($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
+		$copyeditStage = $request->getUserVar('copyeditStage');
+		SectionEditorAction::uploadCopyeditVersion($this->submission, $copyeditStage);
 
-		$copyeditStage = Request::getUserVar('copyeditStage');
-		SectionEditorAction::uploadCopyeditVersion($submission, $copyeditStage);
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Add a supplementary file.
 	 * @param $args array ($articleId)
+	 * @param $request PKPRequest
 	 */
 	function addSuppFile($args, $request) {
 		$articleId = (int) array_shift($args);
@@ -1245,6 +1443,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Edit a supplementary file.
 	 * @param $args array ($articleId, $suppFileId)
+	 * @param $request PKPRequest
 	 */
 	function editSuppFile($args, $request) {
 		$articleId = (int) array_shift($args);
@@ -1253,12 +1452,17 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$this->validate($articleId);
 		$submission =& $this->submission;
+
+		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
+		$suppFile =& $suppFileDao->getSuppFile($suppFileId, $articleId);
+		if (!$suppFile) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
+		}
+
 		$this->setupTemplate(true, $articleId, 'summary');
 
 		import('classes.submission.form.SuppFileForm');
-
 		$submitForm = new SuppFileForm($submission, $journal, $suppFileId);
-
 		if ($submitForm->isLocaleResubmit()) {
 			$submitForm->readInputData();
 		} else {
@@ -1270,26 +1474,28 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Set reviewer visibility for a supplementary file.
 	 * @param $args array ($suppFileId)
+	 * @param $request PKPRequest
 	 */
-	function setSuppFileVisibility($args) {
-		$articleId = Request::getUserVar('articleId');
+	function setSuppFileVisibility($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId);
 		$submission =& $this->submission;
 
-		$suppFileId = Request::getUserVar('fileId');
+		$suppFileId = (int) $request->getUserVar('fileId');
 		$suppFileDao =& DAORegistry::getDAO('SuppFileDAO');
 		$suppFile = $suppFileDao->getSuppFile($suppFileId, $articleId);
 
 		if (isset($suppFile) && $suppFile != null) {
-			$suppFile->setShowReviewers(Request::getUserVar('show')==1?1:0);
+			$suppFile->setShowReviewers($request->getUserVar('show')==1?1:0);
 			$suppFileDao->updateSuppFile($suppFile);
 		}
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
 	/**
 	 * Save a supplementary file.
 	 * @param $args array ($suppFileId)
+	 * @param $request Request
 	 */
 	function saveSuppFile($args, $request) {
 		$articleId = $request->getUserVar('articleId');
@@ -1309,20 +1515,19 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$submitForm->execute();
 
 			// Send a notification to associated users
-			import('lib.pkp.classes.notification.NotificationManager');
+			import('classes.notification.NotificationManager');
 			$notificationManager = new NotificationManager();
 			$articleDao =& DAORegistry::getDAO('ArticleDAO');
 			$article =& $articleDao->getArticle($articleId);
 			$notificationUsers = $article->getAssociatedUserIds(true, false);
 			foreach ($notificationUsers as $userRole) {
-				$url = $request->url(null, $userRole['role'], 'submissionEditing', $article->getId(), null, 'layout');
 				$notificationManager->createNotification(
-					$userRole['id'], 'notification.type.suppFileModified',
-					$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_SUPP_FILE_MODIFIED
+					$request, $userRole['id'], NOTIFICATION_TYPE_SUPP_FILE_MODIFIED,
+					$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 				);
 			}
 
-			$request->redirect(null, null, $this->getFrom(), $articleId);
+			$request->redirect(null, null, $this->_getFrom(), $articleId);
 		} else {
 			$submitForm->display();
 		}
@@ -1331,64 +1536,69 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Delete an editor version file.
 	 * @param $args array ($articleId, $fileId)
+	 * @param $request PKPRequest
 	 */
-	function deleteArticleFile($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$fileId = isset($args[1]) ? (int) $args[1] : 0;
-		$revisionId = isset($args[2]) ? (int) $args[2] : 0;
+	function deleteArticleFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revisionId = (int) array_shift($args);
 
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_REVIEW);
-		$submission =& $this->submission;
-		SectionEditorAction::deleteArticleFile($submission, $fileId, $revisionId);
+		SectionEditorAction::deleteArticleFile($this->submission, $fileId, $revisionId);
 
-		Request::redirect(null, null, 'submissionReview', $articleId);
+		$request->redirect(null, null, 'submissionReview', $articleId);
 	}
 
 	/**
 	 * Delete a supplementary file.
 	 * @param $args array ($articleId, $suppFileId)
+	 * @param $request PKPRequest
 	 */
-	function deleteSuppFile($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$suppFileId = isset($args[1]) ? (int) $args[1] : 0;
+	function deleteSuppFile($args, $request) {
+		$articleId = (int) array_shift($args);
+		$suppFileId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
-		SectionEditorAction::deleteSuppFile($submission, $suppFileId);
-
-		Request::redirect(null, null, $this->getFrom(), $articleId);
+		SectionEditorAction::deleteSuppFile($this->submission, $suppFileId);
+		$request->redirect(null, null, $this->_getFrom(), $articleId);
 	}
 
-	function archiveSubmission($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * Archive a submission.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function archiveSubmission($args, $request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
-		SectionEditorAction::archiveSubmission($submission);
-
-		Request::redirect(null, null, 'submission', $articleId);
+		SectionEditorAction::archiveSubmission($this->submission, $request);
+		$request->redirect(null, null, 'submission', $articleId);
 	}
 
-	function restoreToQueue($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	/**
+	 * Restore an archived submission to the queue.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function restoreToQueue($args, $request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
-		SectionEditorAction::restoreToQueue($submission);
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::restoreToQueue($this->submission, $request);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
-	function unsuitableSubmission($args) {
-		$articleId = Request::getUserVar('articleId');
+	/**
+	 * Notify the author of an unsuitable submission.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function unsuitableSubmission($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'summary');
 
-		if (SectionEditorAction::unsuitableSubmission($submission, $send)) {
-			Request::redirect(null, null, 'submission', $articleId);
+		if (SectionEditorAction::unsuitableSubmission($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submission', $articleId);
 		}
 	}
 
@@ -1396,24 +1606,23 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	 * Set section ID.
 	 * @param $args array ($articleId)
 	 */
-	function updateSection($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	function updateSection($args, &$request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-		SectionEditorAction::updateSection($submission, Request::getUserVar('section'));
-		Request::redirect(null, null, 'submission', $articleId);
+		SectionEditorAction::updateSection($this->submission, $request->getUserVar('section'));
+		$request->redirect(null, null, 'submission', $articleId);
 	}
 
 	/**
 	 * Set RT comments status for article.
 	 * @param $args array ($articleId)
+	 * @param $request PKPRequest
 	 */
-	function updateCommentsStatus($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
+	function updateCommentsStatus($args, &$request) {
+		$articleId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-		SectionEditorAction::updateCommentsStatus($submission, Request::getUserVar('commentsStatus'));
-		Request::redirect(null, null, 'submission', $articleId);
+		SectionEditorAction::updateCommentsStatus($this->submission, $request->getUserVar('commentsStatus'));
+		$request->redirect(null, null, 'submission', $articleId);
 	}
 
 	//
@@ -1422,78 +1631,77 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Upload a layout file (either layout version, galley, or supp. file).
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function uploadLayoutFile($args, $request) {
+	function uploadLayoutFile($args, &$request) {
 		$layoutFileType = $request->getUserVar('layoutFileType');
 		if ($layoutFileType == 'submission') {
-			$this->uploadLayoutVersion();
+			$this->_uploadLayoutVersion($request);
 
 		} else if ($layoutFileType == 'galley') {
-			$this->uploadGalley('layoutFile');
+			$this->_uploadGalley('layoutFile', $request);
 
 		} else if ($layoutFileType == 'supp') {
-			$this->uploadSuppFile('layoutFile', $request);
+			$this->_uploadSuppFile('layoutFile', $request);
 
 		} else {
-			$request->redirect(null, null, $this->getFrom(), Request::getUserVar('articleId'));
+			$request->redirect(null, null, $this->_getFrom(), $request->getUserVar('articleId'));
 		}
 	}
 
 	/**
 	 * Upload the layout version of the submission file
+	 * @param $request PKPRequest
 	 */
-	function uploadLayoutVersion() {
-		$articleId = Request::getUserVar('articleId');
+	function _uploadLayoutVersion(&$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		SectionEditorAction::uploadLayoutVersion($submission);
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::uploadLayoutVersion($this->submission);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Delete an article image.
 	 * @param $args array ($articleId, $fileId)
+	 * @param $request PKPRequest
 	 */
-	function deleteArticleImage($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
-		$fileId = isset($args[2]) ? (int) $args[2] : 0;
-		$revisionId = isset($args[3]) ? (int) $args[3] : 0;
-
+	function deleteArticleImage($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revision = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-		SectionEditorAction::deleteArticleImage($submission, $fileId, $revisionId);
-
-		Request::redirect(null, null, 'editGalley', array($articleId, $galleyId));
+		SectionEditorAction::deleteArticleImage($this->submission, $fileId, $revision);
+		$request->redirect(null, null, 'editGalley', array($articleId, $galleyId));
 	}
 
 	/**
 	 * Assign/reassign a layout editor to the submission.
 	 * @param $args array ($articleId, [$userId])
+	 * @param $request object
 	 */
-	function assignLayoutEditor($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$editorId = isset($args[1]) ? (int) $args[1] : 0;
+	function assignLayoutEditor($args, $request) {
+		$articleId = (int) array_shift($args);
+		$editorId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 
-		if ($editorId && $roleDao->roleExists($journal->getId(), $editorId, ROLE_ID_LAYOUT_EDITOR)) {
-			SectionEditorAction::assignLayoutEditor($submission, $editorId);
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if ($editorId && $roleDao->userHasRole($journal->getId(), $editorId, ROLE_ID_LAYOUT_EDITOR)) {
+			SectionEditorAction::assignLayoutEditor($submission, $editorId, $request);
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		} else {
 			$searchType = null;
 			$searchMatch = null;
-			$search = $searchQuery = Request::getUserVar('search');
-			$searchInitial = Request::getUserVar('searchInitial');
+			$search = $searchQuery = $request->getUserVar('search');
+			$searchInitial = $request->getUserVar('searchInitial');
 			if (!empty($search)) {
-				$searchType = Request::getUserVar('searchField');
-				$searchMatch = Request::getUserVar('searchMatch');
+				$searchType = $request->getUserVar('searchField');
+				$searchMatch = $request->getUserVar('searchMatch');
 
 			} elseif (!empty($searchInitial)) {
 				$searchInitial = String::strtoupper($searchInitial);
@@ -1513,7 +1721,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->assign('searchField', $searchType);
 			$templateMgr->assign('searchMatch', $searchMatch);
 			$templateMgr->assign('search', $searchQuery);
-			$templateMgr->assign('searchInitial', Request::getUserVar('searchInitial'));
+			$templateMgr->assign('searchInitial', $request->getUserVar('searchInitial'));
 			$templateMgr->assign('alphaList', explode(' ', __('common.alphaList')));
 
 			$templateMgr->assign('pageTitle', 'user.role.layoutEditors');
@@ -1541,47 +1749,49 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Notify the layout editor.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function notifyLayoutEditor($args) {
-		$articleId = Request::getUserVar('articleId');
+	function notifyLayoutEditor($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
-
-		if (SectionEditorAction::notifyLayoutEditor($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::notifyLayoutEditor($this->submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Thank the layout editor.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function thankLayoutEditor($args) {
-		$articleId = Request::getUserVar('articleId');
+	function thankLayoutEditor($args, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$submission =& $this->submission;
 
-		$send = Request::getUserVar('send')?true:false;
+		$send = $request->getUserVar('send')?true:false;
 		$this->setupTemplate(true, $articleId, 'editing');
 
-		if (SectionEditorAction::thankLayoutEditor($submission, $send)) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (SectionEditorAction::thankLayoutEditor($submission, $send, $request)) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Create a new galley with the uploaded file.
+	 * @param $fileName string
+	 * @param $request PKPRequest
 	 */
-	function uploadGalley($fileName = null) {
-		$articleId = Request::getUserVar('articleId');
+	function _uploadGalley($fileName = null, $request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
 
 		import('classes.submission.form.ArticleGalleyForm');
  		$galleyForm = new ArticleGalleyForm($articleId);
-		$galleyId = $galleyForm->execute($fileName);
+		$galleyId = $galleyForm->execute($fileName, $request->getUserVar('createRemote'));
 
 		Request::redirect(null, null, 'editGalley', array($articleId, $galleyId));
 	}
@@ -1589,19 +1799,23 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Edit a galley.
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function editGalley($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function editGalley($args, $request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
+
+		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
+		$galley =& $galleyDao->getGalley($galleyId, $articleId);
+		if (!$galley) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
+		}
 
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.form.ArticleGalleyForm');
-
 		$submitForm = new ArticleGalleyForm($articleId, $galleyId);
-
 		if ($submitForm->isLocaleResubmit()) {
 			$submitForm->readInputData();
 		} else {
@@ -1613,10 +1827,11 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Save changes to a galley.
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request Request
 	 */
-	function saveGalley($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function saveGalley($args, $request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 		$submission =& $this->submission;
@@ -1630,28 +1845,27 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$submitForm->execute();
 
 			// Send a notification to associated users
-			import('lib.pkp.classes.notification.NotificationManager');
+			import('classes.notification.NotificationManager');
 			$notificationManager = new NotificationManager();
 			$articleDao =& DAORegistry::getDAO('ArticleDAO');
 			$article =& $articleDao->getArticle($articleId);
 			$notificationUsers = $article->getAssociatedUserIds(true, false);
 			foreach ($notificationUsers as $userRole) {
-				$url = Request::url(null, $userRole['role'], 'submissionEditing', $article->getId(), null, 'layout');
 				$notificationManager->createNotification(
-					$userRole['id'], 'notification.type.galleyModified',
-					$article->getLocalizedTitle(), $url, 1, NOTIFICATION_TYPE_GALLEY_MODIFIED
+					$request, $userRole['id'], NOTIFICATION_TYPE_GALLEY_MODIFIED,
+					$article->getJournalId(), ASSOC_TYPE_ARTICLE, $article->getId()
 				);
 			}
 
-			if (Request::getUserVar('uploadImage')) {
+			if ($request->getUserVar('uploadImage')) {
 				$submitForm->uploadImage();
-				Request::redirect(null, null, 'editGalley', array($articleId, $galleyId));
-			} else if(($deleteImage = Request::getUserVar('deleteImage')) && count($deleteImage) == 1) {
+				$request->redirect(null, null, 'editGalley', array($articleId, $galleyId));
+			} else if(($deleteImage = $request->getUserVar('deleteImage')) && count($deleteImage) == 1) {
 				list($imageId) = array_keys($deleteImage);
 				$submitForm->deleteImage($imageId);
-				Request::redirect(null, null, 'editGalley', array($articleId, $galleyId));
+				$request->redirect(null, null, 'editGalley', array($articleId, $galleyId));
 			}
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		} else {
 			$submitForm->display();
 		}
@@ -1659,42 +1873,39 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Change the sequence order of a galley.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function orderGalley() {
-		$articleId = Request::getUserVar('articleId');
+	function orderGalley($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		SectionEditorAction::orderGalley($submission, Request::getUserVar('galleyId'), Request::getUserVar('d'));
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::orderGalley($this->submission, $request->getUserVar('galleyId'), $request->getUserVar('d'));
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Delete a galley file.
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function deleteGalley($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function deleteGalley($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
-		SectionEditorAction::deleteGalley($submission, $galleyId);
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::deleteGalley($this->submission, $galleyId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Proof / "preview" a galley.
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalley($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function proofGalley($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate();
-		$submission =& $this->submission;
 
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('articleId', $articleId);
@@ -1705,12 +1916,12 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Proof galley (shows frame header).
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalleyTop($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function proofGalleyTop($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
 		$this->setupTemplate();
 
 		$templateMgr =& TemplateManager::getManager();
@@ -1723,12 +1934,12 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Proof galley (outputs file contents).
 	 * @param $args array ($articleId, $galleyId)
+	 * @param $request PKPRequest
 	 */
-	function proofGalleyFile($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$galleyId = isset($args[1]) ? (int) $args[1] : 0;
+	function proofGalleyFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$galleyId = (int) array_shift($args);
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
 
 		$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
 		$galley =& $galleyDao->getGalley($galleyId, $articleId);
@@ -1748,15 +1959,17 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 			} else {
 				// View non-HTML file inline
-				$this->viewFile(array($articleId, $galley->getFileId()));
+				$this->viewFile(array($articleId, $galley->getFileId()), $request);
 			}
 		}
 	}
 
 	/**
-	 * Upload a new supplementary file.
+	 * Helper to upload a new supplementary file.
+	 * @param $fileName string
+	 * @param $request PKPRequest
 	 */
-	function uploadSuppFile($fileName = null, $request) {
+	function _uploadSuppFile($fileName = null, $request) {
 		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId);
 		$submission =& $this->submission;
@@ -1766,22 +1979,21 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$suppFileForm = new SuppFileForm($submission, $journal);
 		$suppFileForm->setData('title', array($submission->getLocale() => __('common.untitled')));
-		$suppFileId = $suppFileForm->execute($fileName);
+		$suppFileId = $suppFileForm->execute($fileName, $request->getUserVar('createRemote'));
 
 		$request->redirect(null, null, 'editSuppFile', array($articleId, $suppFileId));
 	}
 
 	/**
 	 * Change the sequence order of a supplementary file.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function orderSuppFile() {
-		$articleId = Request::getUserVar('articleId');
+	function orderSuppFile($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
-		SectionEditorAction::orderSuppFile($submission, Request::getUserVar('suppFileId'), Request::getUserVar('d'));
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		SectionEditorAction::orderSuppFile($this->submission, $request->getUserVar('suppFileId'), $request->getUserVar('d'));
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 
@@ -1791,10 +2003,12 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * View submission event log.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function submissionEventLog($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$logId = isset($args[1]) ? (int) $args[1] : 0;
+	function submissionEventLog($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$logId = (int) array_shift($args);
 		$this->validate($articleId);
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'history');
@@ -1806,7 +2020,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		if ($logId) {
 			$logDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-			$logEntry =& $logDao->getLogEntry($logId, $articleId);
+			$logEntry =& $logDao->getById($logId, ASSOC_TYPE_ARTICLE, $articleId);
 		}
 
 		if (isset($logEntry)) {
@@ -1814,66 +2028,41 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$templateMgr->display('sectionEditor/submissionEventLogEntry.tpl');
 
 		} else {
-			$rangeInfo =& Handler::getRangeInfo('eventLogEntries');
-
-			import('classes.article.log.ArticleLog');
-			$eventLogEntries =& ArticleLog::getEventLogEntries($articleId, $rangeInfo);
+			$rangeInfo =& $this->getRangeInfo('eventLogEntries');
+			$eventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
+			$eventLogEntries =& $eventLogDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId, $rangeInfo);
 			$templateMgr->assign('eventLogEntries', $eventLogEntries);
 			$templateMgr->display('sectionEditor/submissionEventLog.tpl');
 		}
 	}
 
 	/**
-	 * View submission event log by record type.
-	 */
-	function submissionEventLogType($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$assocType = isset($args[1]) ? (int) $args[1] : null;
-		$assocId = isset($args[2]) ? (int) $args[2] : null;
-		$this->validate($articleId);
-		$submission =& $this->submission;
-		$this->setupTemplate(true, $articleId, 'history');
-
-		$rangeInfo =& Handler::getRangeInfo('eventLogEntries');
-		$logDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		$eventLogEntries =& $logDao->getArticleLogEntriesByAssoc($articleId, $assocType, $assocId, $rangeInfo);
-
-		$templateMgr =& TemplateManager::getManager();
-
-		$templateMgr->assign('showBackLink', true);
-		$templateMgr->assign('isEditor', Validation::isEditor());
-		$templateMgr->assign_by_ref('submission', $submission);
-		$templateMgr->assign_by_ref('eventLogEntries', $eventLogEntries);
-		$templateMgr->display('sectionEditor/submissionEventLog.tpl');
-	}
-
-	/**
 	 * Clear submission event log entries.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function clearSubmissionEventLog($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$logId = isset($args[1]) ? (int) $args[1] : 0;
+	function clearSubmissionEventLog($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$logId = (int) array_shift($args);
 		$this->validate($articleId);
-		$submission =& $this->submission;
-
 		$logDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-
 		if ($logId) {
-			$logDao->deleteLogEntry($logId, $articleId);
-
+			$logDao->deleteObject($logId, ASSOC_TYPE_ARTICLE, $articleId);
 		} else {
-			$logDao->deleteArticleLogEntries($articleId);
+			$logDao->deleteByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 		}
-
-		Request::redirect(null, null, 'submissionEventLog', $articleId);
+		$request->redirect(null, null, 'submissionEventLog', $articleId);
 	}
 
 	/**
 	 * View submission email log.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function submissionEmailLog($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$logId = isset($args[1]) ? (int) $args[1] : 0;
+	function submissionEmailLog($args, $request) {
+		$articleId = (int) array_shift($args);
+		$logId = (int) array_shift($args);
+
 		$this->validate($articleId);
 		$submission =& $this->submission;
 		$this->setupTemplate(true, $articleId, 'history');
@@ -1889,130 +2078,112 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		if ($logId) {
 			$logDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-			$logEntry =& $logDao->getLogEntry($logId, $articleId);
+			$logEntry =& $logDao->getById($logId, ASSOC_TYPE_ARTICLE, $articleId);
 		}
 
 		if (isset($logEntry)) {
 			$templateMgr->assign_by_ref('logEntry', $logEntry);
 			$templateMgr->display('sectionEditor/submissionEmailLogEntry.tpl');
-
 		} else {
-			$rangeInfo =& Handler::getRangeInfo('emailLogEntries');
+			$rangeInfo =& $this->getRangeInfo('emailLogEntries');
 
-			import('classes.article.log.ArticleLog');
-			$emailLogEntries =& ArticleLog::getEmailLogEntries($articleId, $rangeInfo);
+			$emailLogDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
+			$emailLogEntries =& $emailLogDao->getByAssoc(ASSOC_TYPE_ARTICLE, $articleId, $rangeInfo);
 			$templateMgr->assign_by_ref('emailLogEntries', $emailLogEntries);
 			$templateMgr->display('sectionEditor/submissionEmailLog.tpl');
 		}
 	}
 
 	/**
-	 * View submission email log by record type.
-	 */
-	function submissionEmailLogType($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$assocType = isset($args[1]) ? (int) $args[1] : null;
-		$assocId = isset($args[2]) ? (int) $args[2] : null;
-		$this->validate($articleId);
-		$submission =& $this->submission;
-		$this->setupTemplate(true, $articleId, 'history');
-
-		$rangeInfo =& Handler::getRangeInfo('eventLogEntries');
-		$logDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-		$emailLogEntries =& $logDao->getArticleLogEntriesByAssoc($articleId, $assocType, $assocId, $rangeInfo);
-
-		$templateMgr =& TemplateManager::getManager();
-
-		$templateMgr->assign('showBackLink', true);
-		$templateMgr->assign('isEditor', Validation::isEditor());
-		$templateMgr->assign_by_ref('submission', $submission);
-		$templateMgr->assign_by_ref('emailLogEntries', $emailLogEntries);
-		$templateMgr->display('sectionEditor/submissionEmailLog.tpl');
-	}
-
-	/**
 	 * Clear submission email log entries.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function clearSubmissionEmailLog($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$logId = isset($args[1]) ? (int) $args[1] : 0;
+	function clearSubmissionEmailLog($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$logId = (int) array_shift($args);
 		$this->validate($articleId);
 
 		$logDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-
 		if ($logId) {
-			$logDao->deleteLogEntry($logId, $articleId);
-
+			$logDao->deleteObject($logId, ASSOC_TYPE_ARTICLE, $articleId);
 		} else {
-			$logDao->deleteArticleLogEntries($articleId);
+			$logDao->deleteByAssoc(ASSOC_TYPE_ARTICLE, $articleId);
 		}
-
-		Request::redirect(null, null, 'submissionEmailLog', $articleId);
+		$request->redirect(null, null, 'submissionEmailLog', $articleId);
 	}
 
+	//
 	// Submission Notes Functions
+	//
 
 	/**
-	 * Creates a submission note.
-	 * Redirects to submission notes list
+	 * Create a submission note and redirect to submission notes list
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function addSubmissionNote() {
-		$articleId = Request::getUserVar('articleId');
+	function addSubmissionNote($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId);
-
-		SectionEditorAction::addSubmissionNote($articleId);
-		Request::redirect(null, null, 'submissionNotes', $articleId);
+		SectionEditorAction::addSubmissionNote($articleId, $request);
+		$request->redirect(null, null, 'submissionNotes', $articleId);
 	}
 
 	/**
 	 * Removes a submission note.
 	 * Redirects to submission notes list
+	 * @param $args array
+	 * @param $request object
 	 */
-	function removeSubmissionNote() {
-		$articleId = Request::getUserVar('articleId');
+	function removeSubmissionNote($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$noteId = (int) $request->getUserVar('noteId');
+		$fileId = (int) $request->getUserVar('fileId');
 		$this->validate($articleId);
-
-		SectionEditorAction::removeSubmissionNote($articleId);
-		Request::redirect(null, null, 'submissionNotes', $articleId);
+		SectionEditorAction::removeSubmissionNote($articleId, $noteId, $fileId);
+		$request->redirect(null, null, 'submissionNotes', $articleId);
 	}
 
 	/**
 	 * Updates a submission note.
 	 * Redirects to submission notes list
+	 * @param $args array
+	 * @param $request object
 	 */
-	function updateSubmissionNote() {
-		$articleId = Request::getUserVar('articleId');
+	function updateSubmissionNote($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId);
-
-		SectionEditorAction::updateSubmissionNote($articleId);
-		Request::redirect(null, null, 'submissionNotes', $articleId);
+		SectionEditorAction::updateSubmissionNote($articleId, $request);
+		$request->redirect(null, null, 'submissionNotes', $articleId);
 	}
 
 	/**
-	 * Clear all submission notes.
-	 * Redirects to submission notes list
+	 * Clear all submission notes and redirect to submission notes list
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function clearAllSubmissionNotes() {
-		$articleId = Request::getUserVar('articleId');
+	function clearAllSubmissionNotes($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
 		$this->validate($articleId);
-
 		SectionEditorAction::clearAllSubmissionNotes($articleId);
-		Request::redirect(null, null, 'submissionNotes', $articleId);
+		$request->redirect(null, null, 'submissionNotes', $articleId);
 	}
 
 	/**
 	 * View submission notes.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function submissionNotes($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$noteViewType = isset($args[1]) ? $args[1] : '';
-		$noteId = isset($args[2]) ? (int) $args[2] : 0;
+	function submissionNotes($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$noteViewType = array_shift($args); // May be null/empty
+		$noteId = (int) array_shift($args);
 
 		$this->validate($articleId);
 		$this->setupTemplate(true, $articleId, 'history');
 		$submission =& $this->submission;
 
-		$rangeInfo =& Handler::getRangeInfo('submissionNotes');
+		$rangeInfo =& $this->getRangeInfo('submissionNotes');
 		$noteDao =& DAORegistry::getDAO('NoteDAO');
 
 		// submission note edit
@@ -2047,30 +2218,32 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Download a file.
 	 * @param $args array ($articleId, $fileId, [$revision])
+	 * @param $request PKPRequest
 	 */
-	function downloadFile($args) {
-		$articleId = isset($args[0]) ? $args[0] : 0;
-		$fileId = isset($args[1]) ? $args[1] : 0;
-		$revision = isset($args[2]) ? $args[2] : null;
+	function downloadFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revision = array_shift($args); // May be null
 
 		$this->validate($articleId);
 		if (!SectionEditorAction::downloadFile($articleId, $fileId, $revision)) {
-			Request::redirect(null, null, 'submission', $articleId);
+			$request->redirect(null, null, 'submission', $articleId);
 		}
 	}
 
 	/**
 	 * View a file (inlines file).
 	 * @param $args array ($articleId, $fileId, [$revision])
+	 * @param $request PKPRequest
 	 */
-	function viewFile($args) {
-		$articleId = isset($args[0]) ? $args[0] : 0;
-		$fileId = isset($args[1]) ? $args[1] : 0;
-		$revision = isset($args[2]) ? $args[2] : null;
+	function viewFile($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$fileId = (int) array_shift($args);
+		$revision = array_shift($args); // May be null
 
 		$this->validate($articleId);
 		if (!SectionEditorAction::viewFile($articleId, $fileId, $revision)) {
-			Request::redirect(null, null, 'submission', $articleId);
+			$request->redirect(null, null, 'submission', $articleId);
 		}
 	}
 
@@ -2082,32 +2255,33 @@ class SubmissionEditHandler extends SectionEditorHandler {
 	/**
 	 * Select Proofreader.
 	 * @param $args array ($articleId, $userId)
+	 * @param $request PKPRequest
 	 */
-	function selectProofreader($args) {
-		$articleId = isset($args[0]) ? (int) $args[0] : 0;
-		$userId = isset($args[1]) ? (int) $args[1] : 0;
+	function selectProofreader($args, $request) {
+		$articleId = (int) array_shift($args);
+		$userId = (int) array_shift($args);
 
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 
-		if ($userId && $articleId && $roleDao->roleExists($journal->getId(), $userId, ROLE_ID_PROOFREADER)) {
+		if ($userId && $articleId && $roleDao->userHasRole($journal->getId(), $userId, ROLE_ID_PROOFREADER)) {
 			import('classes.submission.proofreader.ProofreaderAction');
-			ProofreaderAction::selectProofreader($userId, $submission);
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+			ProofreaderAction::selectProofreader($userId, $submission, $request);
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		} else {
 			$this->setupTemplate(true, $articleId, 'editing');
 
 			$searchType = null;
 			$searchMatch = null;
-			$search = $searchQuery = Request::getUserVar('search');
-			$searchInitial = Request::getUserVar('searchInitial');
+			$search = $searchQuery = $request->getUserVar('search');
+			$searchInitial = $request->getUserVar('searchInitial');
 			if (!empty($search)) {
-				$searchType = Request::getUserVar('searchField');
-				$searchMatch = Request::getUserVar('searchMatch');
+				$searchType = $request->getUserVar('searchField');
+				$searchMatch = $request->getUserVar('searchMatch');
 
 			} elseif (!empty($searchInitial)) {
 				$searchInitial = String::strtoupper($searchInitial);
@@ -2152,40 +2326,46 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 	/**
 	 * Notify author for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function notifyAuthorProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send')?1:0;
+	function notifyAuthorProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_AUTHOR_REQUEST', $send?'':Request::url(null, null, 'notifyAuthorProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_AUTHOR_REQUEST', $request, $send?'':$request->url(null, null, 'notifyAuthorProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Thank author for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function thankAuthorProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send')?1:0;
+	function thankAuthorProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_AUTHOR_ACK', $send?'':Request::url(null, null, 'thankAuthorProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_AUTHOR_ACK', $request, $send?'':$request->url(null, null, 'thankAuthorProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Editor initiates proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function editorInitiateProofreader() {
-		$articleId = Request::getUserVar('articleId');
-		$user =& Request::getUser();
+	function editorInitiateProofreader($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
+		$user =& $request->getUser();
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
@@ -2196,62 +2376,66 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$signoff->setDateNotified(Core::getCurrentDate());
 		$signoffDao->updateObject($signoff);
 
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Editor completes proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function editorCompleteProofreader() {
-		$articleId = Request::getUserVar('articleId');
+	function editorCompleteProofreader($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$submission =& $this->submission;
-
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 		$signoff = $signoffDao->build('SIGNOFF_PROOFREADING_PROOFREADER', ASSOC_TYPE_ARTICLE, $articleId);
 		$signoff->setDateCompleted(Core::getCurrentDate());
 		$signoffDao->updateObject($signoff);
-
-
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Notify proofreader for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function notifyProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send');
+	function notifyProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_REQUEST', $send?'':Request::url(null, null, 'notifyProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_REQUEST', $request, $send?'':$request->url(null, null, 'notifyProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Thank proofreader for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function thankProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send')?1:0;
+	function thankProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_ACK', $send?'':Request::url(null, null, 'thankProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_ACK', $request, $send?'':$request->url(null, null, 'thankProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Editor initiates layout editor proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function editorInitiateLayoutEditor() {
-		$articleId = Request::getUserVar('articleId');
-		$user =& Request::getUser();
+	function editorInitiateLayoutEditor($args, &$request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$user =& $request->getUser();
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
@@ -2265,14 +2449,16 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$signoff->setDateAcknowledged(null);
 		$signoffDao->updateObject($signoff);
 
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Editor completes layout editor proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function editorCompleteLayoutEditor() {
-		$articleId = Request::getUserVar('articleId');
+	function editorCompleteLayoutEditor($args, &$request) {
+		$articleId = $request->getUserVar('articleId');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
@@ -2280,15 +2466,17 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$signoff->setDateCompleted(Core::getCurrentDate());
 		$signoffDao->updateObject($signoff);
 
-		Request::redirect(null, null, 'submissionEditing', $articleId);
+		$request->redirect(null, null, 'submissionEditing', $articleId);
 	}
 
 	/**
 	 * Notify layout editor for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function notifyLayoutEditorProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send')?1:0;
+	function notifyLayoutEditorProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
@@ -2301,23 +2489,25 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$signoffDao->updateObject($signoff);
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_LAYOUT_REQUEST', $send?'':Request::url(null, null, 'notifyLayoutEditorProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_LAYOUT_REQUEST', $request, $send?'':$request->url(null, null, 'notifyLayoutEditorProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
 	/**
 	 * Thank layout editor for proofreading
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
-	function thankLayoutEditorProofreader($args) {
-		$articleId = Request::getUserVar('articleId');
-		$send = Request::getUserVar('send')?1:0;
+	function thankLayoutEditorProofreader($args, $request) {
+		$articleId = (int) $request->getUserVar('articleId');
+		$send = $request->getUserVar('send');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$this->setupTemplate(true, $articleId, 'editing');
 
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_LAYOUT_ACK', $send?'':Request::url(null, null, 'thankLayoutEditorProofreader'))) {
-			Request::redirect(null, null, 'submissionEditing', $articleId);
+		if (ProofreaderAction::proofreadEmail($articleId, 'PROOFREAD_LAYOUT_ACK', $request, $send?'':$request->url(null, null, 'thankLayoutEditorProofreader'))) {
+			$request->redirect(null, null, 'submissionEditing', $articleId);
 		}
 	}
 
@@ -2342,12 +2532,31 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$issue =& $issueDao->getIssueById($issueId, $journal->getId());
 
+		if ($publishedArticle) {
+			if (!$issue || !$issue->getPublished()) {
+				$fromIssue =& $issueDao->getIssueById($publishedArticle->getIssueId(), $journal->getId());
+				if ($fromIssue->getPublished()) {
+					// Insert article tombstone
+					import('classes.article.ArticleTombstoneManager');
+					$articleTombstoneManager = new ArticleTombstoneManager();
+					$articleTombstoneManager->insertArticleTombstone($submission, $journal);
+				}
+			}
+		}
+
+		import('classes.search.ArticleSearchIndex');
+		$articleSearchIndex = new ArticleSearchIndex();
+
 		if ($issue) {
+
 			// Schedule against an issue.
 			if ($publishedArticle) {
 				$publishedArticle->setIssueId($issueId);
 				$publishedArticle->setSeq(REALLY_BIG_NUMBER);
 				$publishedArticleDao->updatePublishedArticle($publishedArticle);
+
+				// Re-index the published article metadata.
+				$articleSearchIndex->articleMetadataChanged($publishedArticle);
 			} else {
 				$publishedArticle = new PublishedArticle();
 				$publishedArticle->setId($submission->getId());
@@ -2368,15 +2577,24 @@ class SubmissionEditHandler extends SectionEditorHandler {
 						$sectionDao->resequenceCustomSectionOrders($issueId);
 					}
 				}
+
+				// Index the published article metadata and files for the first time.
+				$articleSearchIndex->articleMetadataChanged($publishedArticle);
+				$articleSearchIndex->articleFilesChanged($publishedArticle);
 			}
+
 		} else {
 			if ($publishedArticle) {
 				// This was published elsewhere; make sure we don't
 				// mess up sequencing information.
 				$issueId = $publishedArticle->getIssueId();
 				$publishedArticleDao->deletePublishedArticleByArticleId($articleId);
+
+				// Delete the article from the search index.
+				$articleSearchIndex->articleFileDeleted($articleId);
 			}
 		}
+
 		// Resequence the articles.
 		$publishedArticleDao->resequencePublishedArticles($submission->getSectionId(), $issueId);
 
@@ -2384,11 +2602,15 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		if ($issue && $issue->getPublished()) {
 			$submission->setStatus(STATUS_PUBLISHED);
+			// delete article tombstone
+			$tombstoneDao =& DAORegistry::getDAO('DataObjectTombstoneDAO');
+			$tombstoneDao->deleteByDataObjectId($submission->getId());
 		} else {
 			$submission->setStatus(STATUS_QUEUED);
 		}
 
 		$sectionEditorSubmissionDao->updateSectionEditorSubmission($submission);
+		$articleSearchIndex->articleChangesFinished();
 
 		$request->redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
 	}
@@ -2412,14 +2634,25 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$datePublished = $request->getUserDateVar('datePublished');
 			$publishedArticle->setDatePublished($datePublished);
 			$publishedArticleDao->updatePublishedArticle($publishedArticle);
+
+			// Re-index the published article metadata.
+			import('classes.search.ArticleSearchIndex');
+			$articleSearchIndex = new ArticleSearchIndex();
+			$articleSearchIndex->articleMetadataChanged($publishedArticle);
+			$articleSearchIndex->articleChangesFinished();
 		}
 		$request->redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
 	}
 
-	/**
-	 * Payments
-	 */
+	//
+	// Payments
+	//
 
+	/**
+	 * Waive a submission fee.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
 	function waiveSubmissionFee($args, $request) {
 		$articleId = (int) array_shift($args);
 		$markAsPaid = $request->getUserVar('markAsPaid');
@@ -2427,7 +2660,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$submission =& $this->submission;
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($request);
 		$user =& $request->getUser();
 		$journal =& $request->getJournal();
 
@@ -2447,16 +2680,21 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$request->redirect(null, null, 'submission', array($articleId));
 	}
 
-	function waiveFastTrackFee($args) {
+	/**
+	 * Waive the fast track fee.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function waiveFastTrackFee($args, &$request) {
 		$articleId = (int) array_shift($args);
-		$markAsPaid = Request::getUserVar('markAsPaid');
+		$markAsPaid = $request->getUserVar('markAsPaid');
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 		$submission =& $this->submission;
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
-		$user =& Request::getUser();
+		$paymentManager = new OJSPaymentManager($request);
+		$user =& $request->getUser();
 
 		$queuedPayment =& $paymentManager->createQueuedPayment(
 			$journal->getId(),
@@ -2471,21 +2709,26 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		// Since this is a waiver, fulfill the payment immediately
 		$paymentManager->fulfillQueuedPayment($queuedPayment, $markAsPaid?'ManualPayment':'Waiver');
-		Request::redirect(null, null, 'submission', array($articleId));
+		$request->redirect(null, null, 'submission', array($articleId));
 	}
 
-	function waivePublicationFee($args) {
+	/**
+	 * Waive the publication fee.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function waivePublicationFee($args, $request) {
 		$articleId = (int) array_shift($args);
-		$markAsPaid = Request::getUserVar('markAsPaid');
-		$sendToScheduling = Request::getUserVar('sendToScheduling')?true:false;
+		$markAsPaid = $request->getUserVar('markAsPaid');
+		$sendToScheduling = $request->getUserVar('sendToScheduling')?true:false;
 
 		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
 		$journal =& Request::getJournal();
 		$submission =& $this->submission;
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
-		$user =& Request::getUser();
+		$paymentManager = new OJSPaymentManager($request);
+		$user =& $request->getUser();
 
 		$queuedPayment =& $paymentManager->createQueuedPayment(
 			$journal->getId(),
@@ -2501,99 +2744,12 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		// Since this is a waiver, fulfill the payment immediately
 		$paymentManager->fulfillQueuedPayment($queuedPayment, $markAsPaid?'ManualPayment':'Waiver');
 
-		if ( $sendToScheduling ) {
-			Request::redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
+		if ($sendToScheduling) {
+			$request->redirect(null, null, 'submissionEditing', array($articleId), null, 'scheduling');
 		} else {
-			Request::redirect(null, null, 'submission', array($articleId));
+			$request->redirect(null, null, 'submission', array($articleId));
 		}
 	}
-
-	//
-	// Validation
-	//
-
-	/**
-	 * Validate that the user is the assigned section editor for
-	 * the article, or is a managing editor.
-	 * Redirects to sectionEditor index page if validation fails.
-	 * @param $articleId int Article ID to validate
-	 * @param $access int Optional name of access level required -- see SECTION_EDITOR_ACCESS_... constants
-	 */
-	function validate($articleId, $access = null) {
-		parent::validate();
-		$isValid = true;
-
-		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
-		$journal =& Request::getJournal();
-		$user =& Request::getUser();
-
-		$sectionEditorSubmission =& $sectionEditorSubmissionDao->getSectionEditorSubmission($articleId);
-
-		if ($sectionEditorSubmission == null) {
-			$isValid = false;
-
-		} else if ($sectionEditorSubmission->getJournalId() != $journal->getId()) {
-			$isValid = false;
-
-		} else if ($sectionEditorSubmission->getDateSubmitted() == null) {
-			$isValid = false;
-
-		} else {
-			$templateMgr =& TemplateManager::getManager();
-
-			if (Validation::isEditor()) {
-				// Make canReview and canEdit available to templates.
-				// Since this user is an editor, both are available.
-				$templateMgr->assign('canReview', true);
-				$templateMgr->assign('canEdit', true);
-			} else {
-				// If this user isn't the submission's editor, they don't have access.
-				$editAssignments =& $sectionEditorSubmission->getEditAssignments();
-				$wasFound = false;
-				foreach ($editAssignments as $editAssignment) {
-					if ($editAssignment->getEditorId() == $user->getId()) {
-						$templateMgr->assign('canReview', $editAssignment->getCanReview());
-						$templateMgr->assign('canEdit', $editAssignment->getCanEdit());
-						switch ($access) {
-							case SECTION_EDITOR_ACCESS_EDIT:
-								if ($editAssignment->getCanEdit()) {
-									$wasFound = true;
-								}
-								break;
-							case SECTION_EDITOR_ACCESS_REVIEW:
-								if ($editAssignment->getCanReview()) {
-									$wasFound = true;
-								}
-								break;
-
-							default:
-								$wasFound = true;
-						}
-						break;
-					}
-				}
-
-				if (!$wasFound) $isValid = false;
-			}
-		}
-
-		if (!$isValid) {
-			Request::redirect(null, Request::getRequestedPage());
-		}
-
-		// If necessary, note the current date and time as the "underway" date/time
-		$editAssignmentDao =& DAORegistry::getDAO('EditAssignmentDAO');
-		$editAssignments =& $sectionEditorSubmission->getEditAssignments();
-		foreach ($editAssignments as $editAssignment) {
-			if ($editAssignment->getEditorId() == $user->getId() && $editAssignment->getDateUnderway() === null) {
-				$editAssignment->setDateUnderway(Core::getCurrentDate());
-				$editAssignmentDao->updateEditAssignment($editAssignment);
-			}
-		}
-
-		$this->submission =& $sectionEditorSubmission;
-		return true;
-	}
-
 }
+
 ?>

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file poToCountries.php
+ * @file tools/poToCountries.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class poToCountries
@@ -12,9 +12,6 @@
  * @brief CLI tool to convert a .PO file for ISO3166 into the countries.xml format
  * supported by the PKP suite.
  */
-
-// $Id$
-
 
 require(dirname(__FILE__) . '/bootstrap.inc.php');
 
@@ -97,12 +94,10 @@ class poToCountries extends CommandLineTool {
 <!--
   * countries.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized list of countries.
-  *
-  * $Id$
   -->
 
 <!DOCTYPE countries [

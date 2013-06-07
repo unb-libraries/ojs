@@ -7,7 +7,7 @@
 /**
  * @file classes/subscription/form/UserIndividualSubscriptionForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserIndividualSubscriptionForm
@@ -16,11 +16,11 @@
  * @brief Form class for user purchase of individual subscription.
  */
 
-// $Id$
-
 import('lib.pkp.classes.form.Form');
 
 class UserIndividualSubscriptionForm extends Form {
+	/** @var $request PKPRequest */
+	var $request;
 
 	/** @var userId int the user associated with the subscription */
 	var $userId;
@@ -33,14 +33,17 @@ class UserIndividualSubscriptionForm extends Form {
 
 	/**
 	 * Constructor
-	 * @param userId int
-	 * @param subscriptionId int
+	 * @param $request PKPRequest
+	 * @param $userId int
+	 * @param $subscriptionId int
 	 */
-	function UserIndividualSubscriptionForm($userId = null, $subscriptionId = null) {
+	function UserIndividualSubscriptionForm($request, $userId = null, $subscriptionId = null) {
 		parent::Form('subscription/userIndividualSubscriptionForm.tpl');
 
 		$this->userId = isset($userId) ? (int) $userId : null;
 		$this->subscription = null;
+		$this->request =& $request;
+
 		$subscriptionId = isset($subscriptionId) ? (int) $subscriptionId : null;
 
 		if (isset($subscriptionId)) {
@@ -50,7 +53,7 @@ class UserIndividualSubscriptionForm extends Form {
 			}
 		}
 
-		$journal =& Request::getJournal();
+		$journal =& $this->request->getJournal();
 		$journalId = $journal->getId();
 
 		$subscriptionTypeDao =& DAORegistry::getDAO('SubscriptionTypeDAO');
@@ -120,7 +123,7 @@ class UserIndividualSubscriptionForm extends Form {
 	 * Create/update individual subscription. 
 	 */
 	function execute() {
-		$journal =& Request::getJournal();
+		$journal =& $this->request->getJournal();
 		$journalId = $journal->getId();
 		$typeId = $this->getData('typeId');
 		$subscriptionTypeDao =& DAORegistry::getDAO('SubscriptionTypeDAO');
@@ -142,7 +145,7 @@ class UserIndividualSubscriptionForm extends Form {
 		}
 
 		import('classes.payment.ojs.OJSPaymentManager');
-		$paymentManager =& OJSPaymentManager::getManager();
+		$paymentManager = new OJSPaymentManager($this->request);
 		$paymentPlugin =& $paymentManager->getPaymentPlugin();
 		
 		if ($paymentPlugin->getName() == 'ManualPayment') {

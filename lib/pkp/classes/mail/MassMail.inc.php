@@ -3,7 +3,7 @@
 /**
  * @file classes/mail/MassMail.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MassMail
@@ -11,8 +11,6 @@
  *
  * @brief Helper class to send mass emails
  */
-
-// $Id$
 
 
 import ('classes.mail.MailTemplate');

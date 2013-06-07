@@ -3,7 +3,7 @@
 /**
  * @file classes/controllers/grid/GridRow.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GridRow
@@ -19,18 +19,21 @@
 define('GRID_ACTION_POSITION_ROW_CLICK', 'row-click');
 define('GRID_ACTION_POSITION_ROW_LEFT', 'row-left');
 
-class GridRow {
-	/**
-	 * @var string identifier of the row instance - must be unique
-	 *  among all row instances within a grid.
-	 */
-	var $_id;
+import('lib.pkp.classes.controllers.grid.GridBodyElement');
+
+class GridRow extends GridBodyElement {
+
+	/** @var array */
+	var $_requestArgs;
 
 	/** @var the grid this row belongs to */
 	var $_gridId;
 
 	/** @var mixed the row's data source */
 	var $_data;
+
+	/** @var $isModified boolean true if the row has been modified */
+	var $_isModified;
 
 	/**
 	 * @var array row actions, the first key represents
@@ -47,28 +50,15 @@ class GridRow {
 	 * Constructor.
 	 */
 	function GridRow() {
+		parent::GridBodyElement();
+
+		$this->_isModified = false;
 	}
 
 
 	//
 	// Getters/Setters
 	//
-	/**
-	 * Set the grid id
-	 * @param $id string
-	 */
-	function setId($id) {
-		$this->_id = $id;
-	}
-
-	/**
-	 * Get the grid id
-	 * @return string
-	 */
-	function getId() {
-		return $this->_id;
-	}
-
 	/**
 	 * Set the grid id
 	 * @param $gridId string
@@ -83,6 +73,24 @@ class GridRow {
 	 */
 	function getGridId() {
 		return $this->_gridId;
+	}
+
+	/**
+	 * Set the grid request parameters.
+	 * @see GridHandler::getRequestArgs()
+	 * @param $requestArgs array
+	 */
+	function setRequestArgs($requestArgs) {
+		$this->_requestArgs = $requestArgs;
+	}
+
+	/**
+	 * Get the grid request parameters.
+	 * @see GridHandler::getRequestArgs()
+	 * @return array
+	 */
+	function getRequestArgs() {
+		return $this->_requestArgs;
 	}
 
 	/**
@@ -102,31 +110,42 @@ class GridRow {
 	}
 
 	/**
+	 * Set the modified flag for the row
+	 * @param $isModified boolean
+	 */
+	function setIsModified($isModified) {
+		$this->_isModified = $isModified;
+	}
+
+	/**
+	 * Get the modified flag for the row
+	 * @return boolean
+	 */
+	function getIsModified() {
+		return $this->_isModified;
+	}
+
+	/**
+	 * Get whether this row has any actions or not.
+	 * @return boolean
+	 */
+	function hasActions() {
+		$allActions = array();
+		foreach($this->_actions as $actions) {
+			$allActions = array_merge($allActions, $actions);
+		}
+
+		return !empty($allActions);
+	}
+
+	/**
 	 * Get all actions for a given position within the controller
 	 * @param $position string the position of the actions
-	 * @return array the LinkActions for the given position
+	 * @return array the LegacyLinkActions for the given position
 	 */
 	function getActions($position = GRID_ACTION_POSITION_DEFAULT) {
 		if(!isset($this->_actions[$position])) return array();
 		return $this->_actions[$position];
-	}
-
-	/**
-	 * Get actions for a given cell in this row specified
-	 * by its column.
-	 *
-	 * NB: Subclasses have to override this method to
-	 * actually provide cell-specific actions based on row
-	 * and column information. The default implementation
-	 * returns an empty array.
-	 *
-	 * @param $column GridColumn
-	 * @return array the LinkActions for the cell
-	 */
-	function getCellActions(&$request, &$column, $position = GRID_ACTION_POSITION_DEFAULT) {
-		// The default implementation returns an empty array
-		$actions = array();
-		return $actions;
 	}
 
 	/**
@@ -145,10 +164,6 @@ class GridRow {
 	 * @return string
 	 */
 	function getTemplate() {
-		if (is_null($this->_template)) {
-			$this->setTemplate('controllers/grid/gridRow.tpl');
-		}
-
 		return $this->_template;
 	}
 
@@ -169,9 +184,12 @@ class GridRow {
 	 * Subclasses can override this method.
 	 *
 	 * @param $request Request
+	 * @param $template string
 	 */
-	function initialize($request) {
-		// Default implementation does nothing
+	function initialize($request, $template = 'controllers/grid/gridRow.tpl') {
+		// Set the template.
+		$this->setTemplate($template);
 	}
 }
+
 ?>

@@ -4,12 +4,11 @@
 <!--
   * /locale/da_DK/author.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the da_DK (Danish) locale.
   *
-  * $Id$
   -->
 
 <locale name="da_DK" full_name = "Danish">
@@ -30,7 +29,7 @@
 	<message key="author.submit.cancelSubmission">Du kan fuldføre dette manuskript på et senere tidspunkt ved at vælge Aktive manuskripter på startsiden for forfattere.</message>
 	<message key="author.submit.notAccepting">Dette tidsskrift accepterer ikke manuskripter på nuværende tidspunkt.</message>
 	<message key="author.submit.requestWaiver">Anmod om afkald</message>
-	<message key="author.submit.qualityForWaiver">Overvej at give afkald på artikelmanuskriptgebyret for denne artikel</message>
+	<message key="author.submit.qualifyForWaiver">Overvej at give afkald på artikelmanuskriptgebyret for denne artikel</message>
 	<message key="author.submit.addReasonsForWaiver">Angiv, hvorfor der skal gives afkald på gebyrer, i kommentarfeltet nedenfor.</message>
 	<message key="author.submissions.uploadCopyeditedVersion">Overfør manuskriptredigeret version</message>
 	<message key="author.submissions.proofreadingCorrections">Korrekturrettelser</message>
@@ -56,8 +55,6 @@
 	<message key="author.submit.addAuthor">Tilføj forfatter</message>
 	<message key="author.submit.deleteAuthor">Slet forfatter</message>
 	<message key="author.submit.submissionIndexingDescription">Angiv termer for indeksering af manuskriptet, og adskil termerne med et semikolon (term1; term2; term3).</message>
-	<message key="author.submit.submissionSupportingAgencies">Støtteinstanser</message>
-	<message key="author.submit.submissionSupportingAgenciesDescription">Identificer instanser, der yder finansiering eller support til det værk, der præsenteres i dette manuskript.</message>
 	<message key="author.submit.coverageInstructions">Henviser til geografisk placering, kronologisk eller historisk dækning og/eller karaktertræk ved forskningseksempel.</message>
 	<message key="author.submit.subjectClassInstructions">Brug klassificeringssystemet med hyperlinks til at vælge klassificeringstermer og eventuelt numre.</message>
 	<message key="author.submit.languageInstructions"><![CDATA[Engelsk=en; Fransk=fr; Spansk=es. <a href="http://www.loc.gov/standards/iso639-2/php/code_list.php" target="_blank">Flere koder</a>.]]></message>

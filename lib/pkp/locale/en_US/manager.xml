@@ -4,12 +4,11 @@
 <!--
   * locale/en_US/manager.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the en_US (English) locale.
   *
-  * $Id$
   -->
 
 <locale name="en_US" full_name = "English">
@@ -18,6 +17,7 @@
 	<message key="manager.announcements.create">Create New Announcement</message>
 	<message key="manager.announcements.createTitle">Create</message>
 	<message key="manager.announcements.dateExpire">Expiry</message>
+	<message key="manager.announcements.datePublish">Published</message>
 	<message key="manager.announcements.edit">Edit Announcement</message>
 	<message key="manager.announcements.editTitle">Edit</message>
 	<message key="manager.announcements.form.dateExpireDayIncompleteDate">Please select a year and/or month in addition to the expiry date day.</message>
@@ -54,8 +54,12 @@
 	<message key="manager.announcementTypes.typeName">Announcement Type</message>
 	<message key="manager.emails.confirmDelete">Are you sure you want to delete this email template?</message>
 	<message key="manager.emails.confirmReset">Are you sure you want to reset this email template to its default values?</message>
+	<message key="manager.emails.addEmail">Add Email Template</message>
 	<message key="manager.emails.createEmail">Create Email</message>
+	<message key="manager.emails.data">Template Message Data</message>
+	<message key="manager.emails.details">Template Details</message>
 	<message key="manager.emails.disable">Disable</message>
+	<message key="manager.emails.disable.message">You are about to disable this email template.  If there were system processes using this template, they will not use it anymore.  Do you want to confirm this operation?</message>
 	<message key="manager.emails.editEmail">Edit Email</message>
 	<message key="manager.emails.editTestExample">Edit Email Test Example</message>
 	<message key="manager.emails.emailKey">Email Key</message>
@@ -64,12 +68,15 @@
 	<message key="manager.emails.emailTemplates">Email Templates</message>
 	<message key="manager.emails.enabled">Enable this email template</message>
 	<message key="manager.emails.enable">Enable</message>
+	<message key="manager.emails.enable.message">You are about to enable this email.  Do you want to confirm this operation?</message>
 	<message key="manager.emails.form.emailKeyRequired">A unique email key is required for the email.</message>
 	<message key="manager.emails.form.bodyRequired">A body is required for the email.</message>
 	<message key="manager.emails.form.subjectRequired">A subject is required for the email.</message>
 	<message key="manager.emails">Prepared Emails</message>
 	<message key="manager.emails.resetAll">Reset All Templates</message>
+	<message key="manager.emails.resetAll.message">If you reset all templates, all modifications to the email templates will be lost.  Do you want to confirm this operation?</message>
 	<message key="manager.emails.reset">Reset</message>
+	<message key="manager.emails.reset.message">If you reset this template, all message data will be reset to its default value, losing all modifications.  Do you want to confirm this operation?</message>
 	<message key="manager.emails.resetToDefault">Reset To Default</message>
 	<message key="manager.filesBrowser">Files Browser</message>
 	<message key="manager.files.confirmDelete">Delete this file or directory? Note that a directory must be empty before it can be deleted.</message>
@@ -92,6 +99,8 @@
 	<message key="manager.importExport">Import/Export Data</message>
 	<message key="manager.languages.alternateLocaleInstructions">This system optionally allows certain critical information to be entered in several additional languages. To use this feature, select alternate locales and choose from the options listed below.</message>
 	<message key="manager.languages.supportedLocalesInstructions">Select all locales to support on the site via a language select menu to appear on each page. The menu will only appear if more than one locale is selected.</message>
+	<message key="manager.masthead.title">Masthead</message>
+	<message key="manager.navigation">Navigation</message>
 	<message key="manager.payment.timestamp">Timestamp</message>
 	<message key="manager.people.authSource">Authentication source</message>
 	<message key="manager.people.confirmUnenroll">Unenroll this user?</message>
@@ -140,35 +149,39 @@
 	<message key="manager.plugins">System Plugins</message>
 	<message key="manager.readingTools">Reading Tools</message>
 	<message key="manager.reviewerSearch.advancedSearch">Advanced Reviewer Search</message>
+	<message key="manager.reviewerSearch.advancedSearch.short">Advanced Search</message>
 	<message key="manager.reviewerSearch.searchByName">Search For Reviewer By Name</message>
-	<message key="manager.reviewerSearch.doneAmount">Number of reviews completed</message>
-	<message key="manager.reviewerSearch.avgAmount">Average number of days per review</message>
+	<message key="manager.reviewerSearch.searchByName.short">Search By Name</message>
+	<message key="manager.reviewerSearch.doneAmount">Reviews completed</message>
+	<message key="manager.reviewerSearch.avgAmount">Average days to complete</message>
 	<message key="manager.reviewerSearch.lastAmount">Days since last review</message>
-	<message key="manager.reviewerSearch.activeAmount">Number of currently active reviews</message>
+	<message key="manager.reviewerSearch.activeAmount">Currently active reviews</message>
 	<message key="manager.reviewerSearch.interests">Reviewing Interests</message>
+	<message key="manager.reviewerSearch.form.instructions">Use the form below to set the maximum values for the terms you wish to search for.  The form is pre-populated with the calculated averages of those fields.</message>
+	<message key="manager.reviewerSearch.form.interests.instructions">Enter reviewer interests, separated by commas...</message>
 	<message key="manager.roles">Roles</message>
 	<message key="manager.setup.citationAssistant">Citation Markup Assistant</message>
 	<message key="manager.setup.citationFilterParser">Citation Extraction</message>
 	<message key="manager.setup.citationFilterParserDescription"><![CDATA[<p>To find and check citations in citation databases they first have to be split into machine readable metadata: title, publisher, publication date, etc. must all be extracted from the original citation text provided by the author. Connectors to external web services can assist in this process. One or several connectors can be added by clicking on the "Add Item" button below. Some of these connectors may need to be configured; you will be prompted if this is the case.</p>
 		<p>You can edit or delete an existing Connector by clicking the gear icon next to it.</p>]]></message>
 	<message key="manager.setup.citationFilterLookup">Citation Checking</message>
-	<message key="manager.setup.citationFilterLookupDescription"><![CDATA[<p>You must also enable and configure connections to external citation databases. This helps you to find errors in authors' citations or add additional information (e.g. DOIs or PubMed IDs) required for electronic publishing or deposit.</p> 
+	<message key="manager.setup.citationFilterLookupDescription"><![CDATA[<p>You must also enable and configure connections to external citation databases. This helps you to find errors in authors' citations or add additional information (e.g. DOIs or PubMed IDs) required for electronic publishing or deposit.</p>
 		<p>We provide connectors to several external databases in which you can search for citations. Some of these databases require registration or configuration information to be entered. Please refer to the public websites of the databases for further information on how to register. You can add one or several databases by clicking on the "Add Item" button below.</p>
 		<p>You can edit or delete an existing external database connection by clicking the gear icon next to it.</p>
 		<p><strong>Note:</strong> In order for the citation checking process to complete in a timely manner, the <tt>citation_checking_max_processes</tt> directive in your configuration file must be set to a reasonable value. See the General Settings section in <tt>config.inc.php</tt> for more information.</p>]]></message>
 	<message key="manager.setup.citationOutput">Citation Output</message>
-	<message key="manager.setup.citationOutputStyleDescription">Choose the citation style that is being used in your journal's author submissions. The Citation Markup Assistant lets you compare the author's version of the citation to a version generated from the XML you are generating so that you can easily spot errors:</message>
+	<message key="manager.setup.citationOutputStyleDescription">Choose the citation style that is being used in your publication's submissions. The Citation Markup Assistant lets you compare the author's version of the citation to a version generated from the XML you are generating so that you can easily spot errors:</message>
 	<message key="manager.setup.errorDeletingItem">There was an error when deleting this item.</message>
 	<message key="manager.setup.filter.grid.errorDeletingFilter">An error occurred while trying to remove this filter. Please report this as a bug.</message>
 	<message key="manager.setup.filter.grid.filterDisplayName">Connector</message>
 	<message key="manager.setup.filter.grid.filterSettings">Registration Information and Connector Settings</message>
 	<message key="manager.setup.filter.grid.filterTemplateRequired">Please select one of the transformations from the drop-down.</message>
-	<message key="manager.setup.filter.grid.confirmDelete">Do you really want to delete the {$filterName} filter?</message>	
+	<message key="manager.setup.filter.grid.confirmDelete">Do you really want to delete the {$filterName} filter?</message>
 	<message key="manager.setup.filter.lookup.grid.descriptionConfirm">You have chosen to add the {$filterDisplayName} database. Please click on 'OK' to confirm.</message>
 	<message key="manager.setup.filter.lookup.grid.descriptionTemplate">Please select a lookup database.</message>
 	<message key="manager.setup.filter.lookup.grid.description.iSBNdb"><![CDATA[<p>This filter connects to the <a href="http://isbndb.com/" target="_blank">ISBNdb.com</a> book and ISBN database.</p>
 	<p>An ISBNdb API key is mandatory. For information on generating a key, see the <a href="http://isbndb.com/docs/api/30-keys.html" target="_blank">online documentation</a>.</p>]]></message>
-	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>This filter connects to the CrossRef citation database using CrossRef's <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a>.</p> 
+	<message key="manager.setup.filter.lookup.grid.description.crossRef"><![CDATA[<p>This filter connects to the CrossRef citation database using CrossRef's <a href="http://www.crossref.org/02publishers/openurl_info.html" target="_blank">OpenURL Query Interface</a>.</p>
 	<p>To use this filter, you can use your CrossRef system account, or register a valid email address with CrossRef <a href="http://www.crossref.org/requestaccount/" target="_blank">here</a>.</p>]]></message>
 	<message key="manager.setup.filter.lookup.grid.description.pubMed"><![CDATA[<p>This filter connects to PubMed's <a href="http://www.ncbi.nlm.nih.gov/gquery/gquery.fcgi" target="_blank">Entrez</a> cross-database search engine.</p>
 	<p>A registration email is not strictly mandatory, but may be necessary if you run into connection problems. See the section on <a href="http://www.be-md.ncbi.nlm.nih.gov/bookshelf/br.fcgi?book=helpeutils&part=chapter2#chapter2.Usage_Guidelines_and_Requiremen" target="_blank">Usage Guidelines and Requirements</a> in the Entrez documentation for more information.</p>]]></message>
@@ -190,6 +203,7 @@
 	<message key="manager.setup.homeHeaderImageInvalid">Invalid homepage header logo image format or upload failed. Accepted formats are .gif, .jpg, or .png.</message>
 	<message key="manager.setup.homepageImageInvalid">Invalid homepage image format or upload failed. Accepted formats are .gif, .jpg, or .png.</message>
 	<message key="manager.setup.homeTitleImageInvalid">Invalid homepage header title image format or upload failed. Accepted formats are .gif, .jpg, or .png.</message>
+	<message key="manager.setup.layout.blockManagement">Sidebar management</message>
 	<message key="manager.setup.layout.leftSidebar">Left Sidebar</message>
 	<message key="manager.setup.layout.rightSidebar">Right Sidebar</message>
 	<message key="manager.setup.layout.unselected">Unselected</message>
@@ -202,10 +216,18 @@
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
 	<message key="manager.statistics.statistics.totalNewValue">{$numTotal} ({$numNew} new)</message>
 	<message key="manager.users">Users</message>
+	<message key="plugins.categories.metadata">Metadata Plugins</message>
+	<message key="plugins.categories.metadata.description">Metadata Plugins implement additional meta-data standards.</message>
 	<message key="plugins.categories.auth">Authorization Plugins</message>
 	<message key="plugins.categories.blocks">Block Plugins</message>
 	<message key="plugins.categories.blocks.description">Block Plugins are pluggable UI components, such as the various sidebar tools.</message>
 	<message key="plugins.categories.citationFormats">Citation Format Plugins</message>
+	<message key="plugins.categories.citationLookup">Citation Database Connector Plugins</message>
+	<message key="plugins.categories.citationLookup.description">Citation Database Connector Plugins connect to citation databases to look up citations, e.g. during citation editing.</message>
+	<message key="plugins.categories.citationOutput">Citation Output Plugins</message>
+	<message key="plugins.categories.citationOutput.description">Citation Output Plugins implement citation standards. This supersedes Citation Format Plugins.</message>
+	<message key="plugins.categories.citationParser">Citation Extraction Plugins</message>
+	<message key="plugins.categories.citationParser.description">Citation Extraction Plugins extract field-level data from raw citations (e.g. author, title, etc.).</message>
 	<message key="plugins.categories.gateways.description">Gateway Plugins provide live data to external systems.</message>
 	<message key="plugins.categories.gateways">Gateway Plugins</message>
 	<message key="plugins.categories.generic">Generic Plugins</message>

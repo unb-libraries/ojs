@@ -3,7 +3,7 @@
 /**
  * @file classes/user/InterestDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class InterestDAO
@@ -51,6 +51,31 @@ class InterestDAO extends ControlledVocabDAO {
 	}
 
 	/**
+	 * Get a list of user IDs attributed to an interest
+	 * @param $userId int
+	 * @return array
+	 */
+	function getUserIdsByInterest($interest) {
+		$result =& $this->retrieve('
+			SELECT ui.user_id
+			FROM user_interests ui
+				INNER JOIN controlled_vocab_entry_settings cves ON (ui.controlled_vocab_entry_id = cves.controlled_vocab_entry_id)
+			WHERE cves.setting_name = ? AND cves.setting_value = ?',
+			array('interest', $interest)
+		);
+
+		$returner = array();
+		while (!$result->EOF) {
+			$row = $result->GetRowAssoc(false);
+			$returner[] = $row['user_id'];
+			$result->MoveNext();
+		}
+		$result->Close();
+		return $returner;
+
+	}
+
+	/**
 	 * Get all user's interests
 	 * @param $filter string (optional)
 	 * @return object
@@ -76,6 +101,7 @@ class InterestDAO extends ControlledVocabDAO {
 	 */
 	function setUserInterests($interests, $userId) {
 		// Remove duplicates
+		$interests = isset($interests) ? $interests : array();
 		$interests = array_unique($interests);
 
 		// Trim whitespace

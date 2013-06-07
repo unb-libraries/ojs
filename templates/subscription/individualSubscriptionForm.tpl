@@ -1,12 +1,11 @@
 {**
- * individualSubscriptionForm.tpl
+ * templates/subscription/individualSubscriptionForm.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Individual subscription form under journal management.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageCrumbTitle" value="$subscriptionTitle"}
@@ -23,7 +22,7 @@
 
 <br/>
 
-<form method="post" name="subscriptionForm" action="{url op="updateSubscription" path="individual"}">
+<form method="post" id="subscriptionForm" action="{url op="updateSubscription" path="individual"}">
 {if $subscriptionId}
 <input type="hidden" name="subscriptionId" value="{$subscriptionId|escape}" />
 {/if}

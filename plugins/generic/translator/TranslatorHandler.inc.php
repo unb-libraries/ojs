@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file TranslatorHandler.inc.php
+ * @file plugins/generic/translator/TranslatorHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class TranslatorHandler
@@ -11,9 +11,6 @@
  *
  * @brief This handles requests for the translator plugin.
  */
-
-// $Id$
-
 
 require_once('TranslatorAction.inc.php');
 import('classes.handler.Handler');
@@ -58,7 +55,7 @@ class TranslatorHandler extends Handler {
 	function setupTemplate($subclass = true) {
 		parent::setupTemplate();
 		$templateMgr =& TemplateManager::getManager();
-		AppLocale::requireComponents(array(LOCALE_COMPONENT_PKP_ADMIN, LOCALE_COMPONENT_PKP_MANAGER));
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_ADMIN, LOCALE_COMPONENT_PKP_MANAGER);
 		$pageHierarchy = array(array(Request::url(null, 'user'), 'navigation.user'), array(Request::url(null, 'admin'), 'admin.siteAdmin'));
 		if ($subclass) $pageHierarchy[] = array(Request::url(null, 'translate'), 'plugins.generic.translator.name');
 		$templateMgr->assign('pageHierarchy', $pageHierarchy);
@@ -126,7 +123,7 @@ class TranslatorHandler extends Handler {
 
 	/**
 	 * Export the locale files to the browser as a tarball.
-	 * Requires /bin/tar for operation.
+	 * Requires tar (configured in config.inc.php) for operation.
 	 */
 	function export($args) {
 		$this->validate();
@@ -409,7 +406,8 @@ class TranslatorHandler extends Handler {
 		}
 
 		import('lib.pkp.classes.file.FileManager');
-		FileManager::copyFile(TranslatorAction::determineReferenceFilename($locale, $filename), $filename);
+		$fileManager = new FileManager();
+		$fileManager->copyFile(TranslatorAction::determineReferenceFilename($locale, $filename), $filename);
 		Request::redirectUrl(Request::getUserVar('redirectUrl'));
 	}
 
@@ -464,12 +462,11 @@ class TranslatorHandler extends Handler {
 <!--
   * emailTemplateData.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
   *
-  * $Id$
   -->
 <email_texts locale="' . $locale . '">
 </email_texts>');

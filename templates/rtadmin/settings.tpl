@@ -1,12 +1,11 @@
 {**
- * settings.tpl
+ * templates/rtadmin/settings.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * RT Administration settings.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="rt.admin.settings"}
@@ -26,10 +25,6 @@
 	<tr valign="top">
 		<td class="label" width="3%"><input type="checkbox" name="abstract" id="abstract" {if $abstract}checked="checked" {/if}/></td>
 		<td class="value" width="97%"><label for="abstract">{translate key="rt.admin.settings.abstract"}</label></td>
-	</tr>
-	<tr valign="top">
-		<td class="label"><input type="checkbox" name="authorBio" id="authorBio" {if $authorBio}checked="checked" {/if}/></td>
-		<td class="value"><label for="authorBio">{translate key="rt.admin.settings.authorBio"}</label></td>
 	</tr>
 	<tr valign="top">
 		<td class="label"><input type="checkbox" name="captureCite" id="captureCite" {if $captureCite}checked="checked" {/if}/></td>
@@ -64,6 +59,10 @@
 	<tr valign="top">
 		<td class="label"><input type="checkbox" name="findingReferences" id="findingReferences" value="1"{if $findingReferences} checked="checked"{/if} /></td>
 		<td class="value"><label for="findingReferences">{translate key="rt.admin.settings.findingReferences"}</label></td>
+	</tr>
+	<tr valign="top">
+		<td class="label"><input type="checkbox" name="viewReviewPolicy" id="viewReviewPolicy" value="1"{if $viewReviewPolicy} checked="checked"{/if} /></td>
+		<td class="value"><label for="viewReviewPolicy">{translate key="rt.admin.settings.viewReviewPolicy"}</label></td>
 	</tr>
 	<tr valign="top">
 		<td class="label"><input type="checkbox" name="enableComments" id="enableComments" value="1"{if $enableComments} checked="checked"{/if} /></td>

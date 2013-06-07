@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file EmailHandler.inc.php
+ * @file pages/user/EmailHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EmailHandler
@@ -11,8 +11,6 @@
  *
  * @brief Handle requests for user emails.
  */
-
-// $Id$
 
 import('pages.user.UserHandler');
 
@@ -23,22 +21,27 @@ class EmailHandler extends UserHandler {
 	function EmailHandler() {
 		parent::UserHandler();
 	}
-	
-	function email($args) {
+
+	/**
+	 * Display a "send email" template or send an email.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function email($args, &$request) {
 		$this->validate();
 
-		$this->setupTemplate(true);
+		$this->setupTemplate($request, true);
 
 		$templateMgr =& TemplateManager::getManager();
 
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 		$userDao =& DAORegistry::getDAO('UserDAO');
 
-		$journal =& Request::getJournal();
-		$user =& Request::getUser();
+		$journal =& $request->getJournal();
+		$user =& $request->getUser();
 
 		// See if this is the Editor or Manager and an email template has been chosen
-		$template = Request::getUserVar('template');
+		$template = $request->getUserVar('template');
 		if (	!$journal || empty($template) || (
 			!Validation::isJournalManager($journal->getId()) &&
 			!Validation::isEditor($journal->getId()) &&
@@ -77,7 +80,7 @@ class EmailHandler extends UserHandler {
 		}
 
 		$email = null;
-		if ($articleId = Request::getUserVar('articleId')) {
+		if ($articleId = $request->getUserVar('articleId')) {
 			// This message is in reference to an article.
 			// Determine whether the current user has access
 			// to the article in some form, and if so, use an
@@ -127,7 +130,7 @@ class EmailHandler extends UserHandler {
 			$email = new MailTemplate($template);
 		}
 
-		if (Request::getUserVar('send') && !$email->hasErrors()) {
+		if ($request->getUserVar('send') && !$email->hasErrors()) {
 			$recipients = $email->getRecipients();
 			$ccs = $email->getCcs();
 			$bccs = $email->getBccs();
@@ -146,14 +149,19 @@ class EmailHandler extends UserHandler {
 				$templateMgr->assign('backLinkLabel', 'email.compose');
 				return $templateMgr->display('common/message.tpl');
 			}
-			$email->send();
-			$redirectUrl = Request::getUserVar('redirectUrl');
-			if (empty($redirectUrl)) $redirectUrl = Request::url(null, 'user');
+			if (is_a($email, 'ArticleMailTemplate')) {
+				// Make sure the email gets logged if needed
+				$email->send($request);
+			} else {
+				$email->send();
+			}
+			$redirectUrl = $request->getUserVar('redirectUrl');
+			if (empty($redirectUrl)) $redirectUrl = $request->url(null, 'user');
 			$user->setDateLastEmail(Core::getCurrentDate());
 			$userDao->updateObject($user);
-			Request::redirectUrl($redirectUrl);
+			$request->redirectUrl($redirectUrl);
 		} else {
-			$email->displayEditForm(Request::url(null, null, 'email'), array('redirectUrl' => Request::getUserVar('redirectUrl'), 'articleId' => $articleId), null, array('disableSkipButton' => true, 'articleId' => $articleId));
+			$email->displayEditForm($request->url(null, null, 'email'), array('redirectUrl' => $request->getUserVar('redirectUrl'), 'articleId' => $articleId), null, array('disableSkipButton' => true, 'articleId' => $articleId));
 		}
 	}
 }

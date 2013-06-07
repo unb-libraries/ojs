@@ -1,18 +1,17 @@
 {**
- * gridCell.tpl
+ * templates/controllers/grid/gridCell.tpl
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * a regular grid cell (with or without actions)
  *}
-{assign var=cellId value="cell-"|concat:$id}
-<span id="{$cellId}">
-	{if count($actions) gt 0}
-		{assign var=defaultCellAction value=$actions[0]}
-		{include file="linkAction/linkAction.tpl" id=$cellId|concat:"-action-":$defaultCellAction->getId() action=$defaultCellAction objectId=$cellId}
-	{else}
-		{$label|strip_unsafe_html}
-	{/if}
+{if $id}
+	{assign var=cellId value="cell-"|concat:$id}
+{else}
+	{assign var=cellId value=""}
+{/if}
+<span {if $cellId}id="{$cellId|escape}" {/if}class="gridCellContainer">
+	{include file="controllers/grid/gridCellContents.tpl"}
 </span>
 

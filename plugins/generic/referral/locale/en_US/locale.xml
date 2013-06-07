@@ -2,14 +2,12 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/referral/locale/en_US/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (U.S. English) locale.
-  *
-  * $Id$
+  * Localization strings
   -->
  
 <locale name="en_US" full_name="U.S. English">
@@ -25,11 +23,15 @@
 	<message key="plugins.generic.referral.all.empty">There are currently no refbacks.</message>
 	<message key="plugins.generic.referral.status.new">New</message>
 	<message key="plugins.generic.referral.status.new.empty">There are currently no new refbacks.</message>
-	<message key="plugins.generic.referral.status.accept">Published</message>
+	<message key="plugins.generic.referral.status.accepted">Published</message>
+	<message key="plugins.generic.referral.status.accept">Publish</message>
+	<message key="plugins.generic.referral.status.accept.confirm">Are you sure you wish to publish the selected refback(s)?</message>
 	<message key="plugins.generic.referral.status.accept.empty">There are currently no published refbacks.</message>
-	<message key="plugins.generic.referral.status.decline">Ignored</message>
+	<message key="plugins.generic.referral.status.decline">Ignore</message>
+	<message key="plugins.generic.referral.status.declined">Ignored</message>
+	<message key="plugins.generic.referral.status.decline.confirm">Are you sure you wish to ignore the selected refback(s)?</message>
 	<message key="plugins.generic.referral.status.decline.empty">There are currently no ignored refbacks.</message>
-	<message key="plugins.generic.referral.confirmDelete">Are you sure you wish to delete this refback?</message>
+	<message key="plugins.generic.referral.confirmDelete">Are you sure you wish to delete the selected refback(s)?</message>
 	<message key="plugins.generic.referral.nameRequired">A refback title is required.</message>
 	<message key="plugins.generic.referral.urlRequired">A refback URL is required.</message>
 	<message key="plugins.generic.referral.settings">Referral Plugin Settings</message>

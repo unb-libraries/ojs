@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file PeopleHandler.inc.php
+ * @file pages/manager/PeopleHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PeopleHandler
@@ -11,9 +11,6 @@
  *
  * @brief Handle requests for people management functions.
  */
-
-// $Id$
-
 
 import('pages.manager.ManagerHandler');
 
@@ -41,6 +38,7 @@ class PeopleHandler extends ManagerHandler {
 		$sort = Request::getUserVar('sort');
 		$sort = isset($sort) ? $sort : 'name';
 		$sortDirection = Request::getUserVar('sortDirection');
+		$sortDirection = isset($sortDirection) ? $sortDirection : SORT_DIRECTION_ASC;
 
 		if ($roleSymbolic != 'all' && String::regexp_match_get('/^(\w+)s$/', $roleSymbolic, $matches)) {
 			$roleId = $roleDao->getRoleIdFromPath($matches[1]);
@@ -71,10 +69,10 @@ class PeopleHandler extends ManagerHandler {
 			$search = $searchInitial;
 		}
 
-		$rangeInfo = Handler::getRangeInfo('users');
+		$rangeInfo = $this->getRangeInfo('users');
 
 		if ($roleId) {
-			$users =& $roleDao->getUsersByRoleId($roleId, $journal->getId(), $searchType, $search, $searchMatch, $rangeInfo, $sort);
+			$users =& $roleDao->getUsersByRoleId($roleId, $journal->getId(), $searchType, $search, $searchMatch, $rangeInfo, $sort, $sortDirection);
 			$templateMgr->assign('roleId', $roleId);
 			switch($roleId) {
 				case ROLE_ID_JOURNAL_MANAGER:
@@ -112,7 +110,7 @@ class PeopleHandler extends ManagerHandler {
 					break;
 			}
 		} else {
-			$users =& $roleDao->getUsersByJournalId($journal->getId(), $searchType, $search, $searchMatch, $rangeInfo, $sort);
+			$users =& $roleDao->getUsersByJournalId($journal->getId(), $searchType, $search, $searchMatch, $rangeInfo, $sort, $sortDirection);
 			$helpTopicId = 'journal.users.allUsers';
 		}
 
@@ -148,6 +146,7 @@ class PeopleHandler extends ManagerHandler {
 		$templateMgr->assign('alphaList', explode(' ', __('common.alphaList')));
 		$templateMgr->assign('roleSymbolic', $roleSymbolic);
 		$templateMgr->assign('sort', $sort);
+		$templateMgr->assign('sortDirection', $sortDirection);
 
 		$session =& Request::getSession();
 		$session->setSessionVar('enrolmentReferrer', Request::getRequestedArgs());
@@ -191,7 +190,7 @@ class PeopleHandler extends ManagerHandler {
 			$search = $searchInitial;
 		}
 
-		$rangeInfo = Handler::getRangeInfo('users');
+		$rangeInfo = $this->getRangeInfo('users');
 
 		$users =& $userDao->getUsersByField($searchType, $searchMatch, $search, true, $rangeInfo, $sort);
 
@@ -238,7 +237,7 @@ class PeopleHandler extends ManagerHandler {
 
 		parent::setupTemplate(true);
 
-		$rangeInfo = PKPHandler::getRangeInfo('users');
+		$rangeInfo = $this->getRangeInfo('users');
 
 		$users =& $userDao->getUsersWithNoRole(true, $rangeInfo);
 
@@ -271,7 +270,7 @@ class PeopleHandler extends ManagerHandler {
 
 		if ($users != null && is_array($users) && $rolePath != '' && $rolePath != 'admin') {
 			for ($i=0; $i<count($users); $i++) {
-				if (!$roleDao->roleExists($journal->getId(), $users[$i], $roleId)) {
+				if (!$roleDao->userHasRole($journal->getId(), $users[$i], $roleId)) {
 					$role = new Role();
 					$role->setJournalId($journal->getId());
 					$role->setUserId($users[$i]);
@@ -352,7 +351,7 @@ class PeopleHandler extends ManagerHandler {
 			while (!$roles->eof()) {
 				$role =& $roles->next();
 				$role->setJournalId($journal->getId());
-				if ($role->getRolePath() != 'admin' && !$roleDao->roleExists($role->getJournalId(), $role->getUserId(), $role->getRoleId())) {
+				if ($role->getRolePath() != 'admin' && !$roleDao->userHasRole($role->getJournalId(), $role->getUserId(), $role->getRoleId())) {
 					$roleDao->insertRole($role);
 				}
 			}
@@ -363,9 +362,11 @@ class PeopleHandler extends ManagerHandler {
 
 	/**
 	 * Display form to create a new user.
+	 * @param $args array
+	 * @param $request PKPRequest
 	 */
 	function createUser($args, &$request) {
-		PeopleHandler::editUser($args, $request);
+		$this->editUser($args, $request);
 	}
 
 	/**
@@ -499,7 +500,7 @@ class PeopleHandler extends ManagerHandler {
 			$search = $searchInitial;
 		}
 
-		$rangeInfo = Handler::getRangeInfo('users');
+		$rangeInfo = $this->getRangeInfo('users');
 
 		if ($roleId) {
 			$users =& $roleDao->getUsersByRoleId($roleId, $journalId, $searchType, $search, $searchMatch, $rangeInfo, $sort);
@@ -567,7 +568,7 @@ class PeopleHandler extends ManagerHandler {
 				return $templateMgr->display('common/error.tpl');
 			}
 			$userDao =& DAORegistry::getDAO('UserDAO');
-			$user =& $userDao->getUser($userId);
+			$user =& $userDao->getById($userId);
 			if ($user) {
 				$user->setDisabled(1);
 				$user->setDisabledReason(Request::getUserVar('reason'));
@@ -591,7 +592,7 @@ class PeopleHandler extends ManagerHandler {
 
 		if ($userId != null && $userId != $user->getId()) {
 			$userDao =& DAORegistry::getDAO('UserDAO');
-			$user =& $userDao->getUser($userId, true);
+			$user =& $userDao->getById($userId, true);
 			if ($user) {
 				$user->setDisabled(0);
 			}
@@ -693,7 +694,7 @@ class PeopleHandler extends ManagerHandler {
 		$userId = isset($args[0]) ? $args[0] : 0;
 		if (is_numeric($userId)) {
 			$userId = (int) $userId;
-			$user = $userDao->getUser($userId);
+			$user = $userDao->getById($userId);
 		} else {
 			$user = $userDao->getUserByUsername($userId);
 		}

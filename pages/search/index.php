@@ -3,29 +3,25 @@
 /**
  * @defgroup pages_search
  */
- 
+
 /**
  * @file pages/search/index.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_search
- * @brief Handle search requests. 
+ * @brief Handle search requests.
  *
  */
-
-// $Id$
-
 
 switch ($op) {
 	case 'index':
 	case 'search':
-	case 'advanced':
 	case 'authors':
 	case 'titles':
-	case 'results':
-	case 'advancedResults':
+	case 'categories':
+	case 'category':
 		define('HANDLER_CLASS', 'SearchHandler');
 		import('pages.search.SearchHandler');
 		break;

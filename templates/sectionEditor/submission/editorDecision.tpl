@@ -1,12 +1,11 @@
 {**
- * editorDecision.tpl
+ * templates/sectionEditor/submission/editorDecision.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the editor decision table.
  *
- * $Id$
  *}
 <div id="editorDecision">
 <h3>{translate key="submission.editorDecision"}</h3>

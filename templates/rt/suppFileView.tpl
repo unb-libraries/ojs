@@ -1,12 +1,11 @@
 {**
- * suppFileView.tpl
+ * templates/rt/suppFileView.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Read-only view of supplementary file information.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="article.suppFile"}
@@ -62,6 +61,19 @@
 		<td class="label">{translate key="common.language"}</td>
 		<td class="value">{$suppFile->getLanguage()|escape|default:"&mdash;"}</td>
 	</tr>
+	{foreach from=$pubIdPlugins item=pubIdPlugin}
+		{if $issue->getPublished()}
+			{assign var=pubId value=$pubIdPlugin->getPubId($suppFile)}
+		{else}
+			{assign var=pubId value=$pubIdPlugin->getPubId($suppFile, true)}{* Preview rather than assign a pubId *}
+		{/if}
+		{if $pubId}
+			<tr valign="top">
+				<td>{$pubIdPlugin->getPubIdFullName()|escape}</td>
+				<td><a target="_new" href="{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}">{$pubIdPlugin->getResolvingURL($currentJournal->getId(), $pubId)|escape}</a></td>
+			</tr>
+		{/if}
+	{/foreach}
 </table>
 </div>
 
@@ -72,6 +84,12 @@
 
 <table width="100%" class="data">
 {if $suppFile}
+{if $suppFile->getRemoteURL()}
+	<tr valign="top">
+		<td width="20%" class="label">{translate key="submission.layout.galleyRemoteURL"}</td>
+		<td width="80%" class="value"><a href="{$suppFile->getRemoteURL()|escape}">{$suppFile->getRemoteURL()|escape}</a></td>
+	</tr>
+{else}
 	<tr valign="top">
 		<td width="20%" class="label">{translate key="common.fileName"}</td>
 		<td width="80%" class="value"><a href="{url page="article" op="downloadSuppFile" path=$articleId|to_array:$suppFile->getBestSuppFileId($currentJournal)}">{$suppFile->getFileName()|escape}</a></td>
@@ -89,6 +107,7 @@
 		<td class="value">{$suppFile->getDateUploaded()|date_format:$datetimeFormatShort}</td>
 	</tr>
 	</table>
+{/if}
 {else}
 	<tr valign="top">
 		<td colspan="2" class="noResults">{translate key="author.submit.suppFile.noFile"}</td>

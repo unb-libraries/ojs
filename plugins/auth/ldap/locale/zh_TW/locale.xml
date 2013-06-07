@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/auth/ldap/locale/zh_TW/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * LDAP authentication plugin localization strings for the Chinese locale.
   * 翻譯：鄭凱元
-  * $Id$
   -->
  
 <locale name="zh_TW" full_name="繁體中文">

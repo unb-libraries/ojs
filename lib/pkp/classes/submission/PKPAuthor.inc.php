@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/PKPAuthor.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAuthor
@@ -12,9 +12,6 @@
  *
  * @brief Author metadata class.
  */
-
-// $Id$
-
 
 class PKPAuthor extends DataObject {
 	/**
@@ -33,7 +30,7 @@ class PKPAuthor extends DataObject {
 	 */
 	function getFullName($lastFirst = false) {
 		if ($lastFirst) return $this->getData('lastName') . ', ' . $this->getData('firstName') . ($this->getData('middleName') != '' ? ' ' . $this->getData('middleName') : '');
-		else return $this->getData('firstName') . ' ' . ($this->getData('middleName') != '' ? $this->getData('middleName') . ' ' : '') . $this->getData('lastName');
+		else return $this->getData('firstName') . ' ' . ($this->getData('middleName') != '' ? $this->getData('middleName') . ' ' : '') . $this->getData('lastName') . ($this->getData('suffix') != '' ? ', ' . $this->getData('suffix') : '');
 	}
 
 	//
@@ -152,6 +149,22 @@ class PKPAuthor extends DataObject {
 	 */
 	function setLastName($lastName) {
 		return $this->setData('lastName', $lastName);
+	}
+
+	/**
+	 * Get suffix.
+	 * @return string
+	 */
+	function getSuffix() {
+		return $this->getData('suffix');
+	}
+
+	/**
+	 * Set suffix.
+	 * @param $suffix string
+	 */
+	function setSuffix($suffix) {
+		return $this->setData('suffix', $suffix);
 	}
 
 	/**

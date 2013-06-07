@@ -7,7 +7,7 @@
 /**
  * @file pages/issue/index.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_issue
@@ -15,14 +15,15 @@
  *
  */
 
-// $Id$
-
-
 switch ($op) {
 	case 'index':
 	case 'current':
 	case 'view':
 	case 'archive':
+	case 'viewIssue':
+	case 'viewDownloadInterstitial':
+	case 'viewFile':
+	case 'download':
 		define('HANDLER_CLASS', 'IssueHandler');
 		import('pages.issue.IssueHandler');
 		break;

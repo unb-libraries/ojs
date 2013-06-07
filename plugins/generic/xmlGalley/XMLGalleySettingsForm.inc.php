@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file XMLGalleySettingsForm.inc.php
+ * @file plugins/generic/xmlGalley/XMLGalleySettingsForm.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XMLGalleySettingsForm
@@ -11,9 +11,6 @@
  *
  * @brief Form for journal managers to modify Article XML Galley plugin settings
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.form.Form');
 

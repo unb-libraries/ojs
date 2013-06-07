@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * ojs2-devel//locale/eu_ES/editor.xml
+  * locale/eu_ES/editor.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Basque (Euskara)) locale.
   *
-  * $Id$
   -->
 
 <locale name="eu_ES" full_name = "Basque (Euskara)">
@@ -58,7 +57,6 @@
 	<message key="editor.issues.accessStatus">Sarbidea</message>
 	<message key="editor.issues.accessDate">Sarrera libreko data </message>
 	<message key="editor.issues.invalidAccessDate">Sarrera librea emateko data ez da baliozkoa.</message>
-	<message key="editor.issues.issuePublicIdentificationExists">Zenbaki-identifikazio publikoa badago lehendik.</message>
 	<message key="editor.issues.coverPage">Azaleko irudia</message>
 	<message key="editor.issues.coverPageInstructions">(gif, .jpg, edo .png formatuak onartzen dira)</message>
 	<message key="editor.issues.uploaded">Kargatuta</message>
@@ -208,4 +206,16 @@
 	<message key="editor.issues.coverPageCaption">Azaleko irudia</message>
 	<message key="editor.issues.unpublishIssue">Gaia desargitaratu</message>
 	<message key="editor.issues.confirmUnpublish">Ziur al zaude desargitaratu  egin nahi duzula argitaratu dagoen gai hau?</message>
+	<message key="editor.reassign">Berriro esleitu</message>
+	<message key="editor.publicIdentificationExists">'{$publicIdentifier}' identifikatzaile publikoa jadanik erabiltzen da beste helburu batentzat (alea, artikulua, galera proba edo artxibategi osagarri bat). Mesedez, aukeratu identifikatzaile bakarrak zure aldizkariaren barruan.</message>
+	<message key="editor.issues.galleys">Alearen galera probak</message>
+	<message key="editor.issues.galley">Alearen galera proba</message>
+	<message key="editor.issues.viewingGalley">Alearen galera proba aztertzea</message>
+	<message key="editor.issues.issueGalleysDescription">Argitaratu galera probak ale osoko edukiekin.</message>
+	<message key="editor.issues.noneIssueGalleys">Ez dira argitaratu alearen galera probak.</message>
+	<message key="editor.issues.galleyLabelRequired">Beharrezkoa da alearen galera probaren etiketa.</message>
+	<message key="editor.issues.galleyLocaleRequired">Beharrezkoa da alearen galera probaren kokaleku bat.</message>
+	<message key="editor.issues.galleyPublicIdentificationExists">Jadanik bada ale publikoaren galera probaren identifikazioa.</message>
+	<message key="editor.issues.backToIssueGalleys">Atzera alearen galera probetara</message>
+	<message key="editor.issues.confirmDeleteGalley">Ziur al zaude alearen galera proba hau ezabatu nahi duzula?</message>
 </locale>

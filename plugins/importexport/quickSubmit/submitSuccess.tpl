@@ -1,12 +1,11 @@
 {**
- * submitSuccess.tpl
+ * plugins/importexport/quickSubmit/submitSuccess.tpl
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display a message indicating that the article was successfuly submitted.
  *
- * $Id$
  *}
 {strip}
 {assign var="pageTitle" value="plugins.importexport.quickSubmit.success"}

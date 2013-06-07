@@ -4,12 +4,11 @@
 <!--
   * locale/eu_ES/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Basque (Euskara)) locale.
   *
-  * $Id$
   -->
 
 <locale name="eu_ES" full_name = "Basque (Euskara)">
@@ -113,7 +112,6 @@
 	<message key="common.notAvailable">Ez dago erabilgarri</message>
 	<message key="common.note">Oharra</message>
 	<message key="common.notes">Oharrak</message>
-	<message key="common.notify">Jakinarazi</message>
 	<message key="common.off">Off</message>
 	<message key="common.on">On</message>
 	<message key="common.options">Aukerak</message>
@@ -271,16 +269,16 @@
 	<message key="search.typeMethodApproach">Mota (metodoa/hurbilketa)</message>
 	<message key="common.re">Re:</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-		Lan hau baimentzen du: <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  License</a>.]]></message>
+		Lan hau baimentzen du: <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  License</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-		Lan hau baimentzen du: <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0 License</a>.
+		Lan hau baimentzen du: <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 License</a>.
 	</div>]]></message>
 	<message key="common.false">Faltsua</message>
 	<message key="common.manage">Kudeatu</message>
@@ -315,10 +313,8 @@
 	<message key="notification.reminderError">Errorea pasahitza bidaltzean, egiaztatu posta elektronikoko helbidea zuzen idatzi duzula.</message>
 	<message key="notification.reminderSent">Pasahitz berria bidali da emandako posta elektronikoko helbidera.</message>
 	<message key="notification.unsubscribe">Harpidetza kendu</message>
-	<message key="notification.unsubscribeDescription">Idatzi behean posta elektronikoko helbidea eta pasahitza posta elektronikoko jakinarazpenen harpidetza kentzeko. Pasahitza gogoan ez baduzu, utzi bete gabe pasahitzaren eremua eta pasahitz berria bidaliko da emandako posta elektronikoko helbidera.</message>
 	<message key="notification.unsubscribeError">Errorea harpidetza kentzean. Egiaztatu posta elektronikoko helbidea eta pasahitza zuzenak direla.</message>
 	<message key="notification.unsubscribeSuccess">Harpidetza kentzea lortu duzu.</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Ez zaude erabiltzaileen taldean</message>
 	<message key="common.disable">Desgaitu</message>
 	<message key="common.enable">Gaitu</message>
 	<message key="common.fullscreen">Pantaila osoa</message>
@@ -327,4 +323,51 @@
 	<message key="common.pluginDisabled">"{$pluginName}" plugina desgaitu da.</message>
 	<message key="common.refresh">Freskatu</message>
 	<message key="common.loading">Kargatzen...</message>
+	<message key="announcement.postedOn">Bidalia {$postDate}</message>
+	<message key="common.accepted">Onartua</message>
+	<message key="common.acknowledged">Jasoa</message>
+	<message key="common.warning">Oharra</message>
+	<message key="common.confirm">Baieztatu</message>
+	<message key="common.content">Edukia</message>
+	<message key="common.considered">Kontuan hartuta</message>
+	<message key="common.declined">Uko egina</message>
+	<message key="common.finish">Amaitua</message>
+	<message key="common.go">Aurrera</message>
+	<message key="common.less">Gutxiago</message>
+	<message key="common.billingAddress">Fakturatze helbidea (desberdina izanez gero)</message>
+	<message key="common.more">Gehiago</message>
+	<message key="common.notified">Jakinarazia</message>
+	<message key="common.noMatches">Ez dago bat datorrenik</message>
+	<message key="common.overdue">Atzeratua</message>
+	<message key="common.reminder">Gogorarazlea</message>
+	<message key="common.remote">Urruneko</message>
+	<message key="common.remoteURL">UrrunekoURL</message>
+	<message key="common.reset">Berrezarri</message>
+	<message key="common.signoff">Itxi saioa</message>
+	<message key="common.element">Elementu</message>
+	<message key="common.unread">Irakurri gabea</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Zerbitzari honek gehienez {$fileSize} neurria duen fitxategia kargatzen uzten du.  Laguntza behar izanez gero, jarri harremanetan hemen: <a href="mailto:{$supportEmail}">{$supportName}</a>.]]></message>
+	<message key="common.invalidFileType">Ez da fitxategirik kargagu edo fitxategi mota baliogabea da.</message>
+	<message key="common.plugins">Pluginak</message>
+	<message key="email.subjectRequired">Mesedez, idatzi mezuaren gaia</message>
+	<message key="email.bodyRequired">Mesedez, idatzi mezuaren testua</message>
+	<message key="form.confirmSubmit">Ziur zaude inprimaki hau bidali nahi duzula?</message>
+	<message key="form.confirmSubmit.title">Baieztatu</message>
+	<message key="form.emailRequired">Beharrezkoa da helbide elektroniko bat.</message>
+	<message key="form.dataHasChanged">Inprimaki honetako datuak aldatu dira. Jarraitu hala ere?</message>
+	<message key="form.invalidImage">Irudi baliogabe bat kargatu da. Onartzen diren formatuak: .png, .gif, edo .jpg.</message>
+	<message key="navigation.website">Webgunea</message>
+	<message key="navigation.admin">Administrazioa</message>
+	<message key="navigation.data">Datuak</message>
+	<message key="navigation.settings">Ezarpenak</message>
+	<message key="navigation.sitemap">Gunearen mapa</message>
+	<message key="navigation.system">Sistema</message>
+	<message key="navigation.userManagement">Erabiltzaileen kudeaketa</message>
+	<message key="help.toggleInlineHelpOn">Laguntza aktibatua</message>
+	<message key="help.toggleInlineHelpOff">Laguntza desaktibatua</message>
+	<message key="navigation.browseByAuthor">Egileka</message>
+	<message key="navigation.publicMenu">Menu publikoa</message>
+	<message key="navigation.setup">Konfigurazioa</message>
+	<message key="navigation.submissions">Aurkezpenak</message>
+	<message key="navigation.access"><![CDATA[&amp erabiltzaileak; eginkizunak]]></message>
 </locale>

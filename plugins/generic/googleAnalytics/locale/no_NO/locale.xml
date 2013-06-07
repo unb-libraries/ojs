@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/googleAnalytics/locale/no_NO/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Google Analytics plugin localization strings for the en_US (U.S. English) locale.
   *
-  * $Id: locale.xml,v 1.6 2009/04/08 19:54:41 asmecher Exp $
   -->
  
 <locale name="en_US" full_name="U.S. English">
@@ -28,4 +27,7 @@
 	<message key="plugins.generic.googleAnalytics.manager.settings.trackingCodeRequired">Velg en sporingskode.</message>
 	<message key="plugins.generic.googleAnalytics.manager.settings.urchin">Gammel sporingskode (urchin.js)</message>
 	<message key="plugins.generic.googleAnalytics.manager.settings.ga">Ny sporingskode (ga.js)</message>
+	<message key="plugins.generic.googleAnalytics.authorAccount">Google Analytics kontonummer</message>
+	<message key="plugins.generic.googleAnalytics.authorAccount.description">For å følge med på lesingen av publiserte artikler ved bruk av Google Analytics, kan du legge inn et kontonummer her (på formen UA-xxxxxx-x).</message>
+	<message key="plugins.generic.googleAnalytics.authorAccountInvalid">En eller flere Google Analytics-kontonummer som er lagt inn av innsendende forfattere, er ugyldige.</message>
 </locale>

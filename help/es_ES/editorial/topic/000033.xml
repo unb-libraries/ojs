@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000033.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Rol del Autor Índice de Revisión - Revisión hecha por Expertos
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Author's Role Review Index - Peer Review
   *
   * $Id$
   -->
 
-<topic id="editorial/topic/000033" locale="es_ES" title="Revisión hecha por Expertos" toc="editorial/toc/000010" key="editorial.authorsRole.review.peerReview">
+<topic id="editorial/topic/000033" locale="es_ES" title="Evaluación por pares" toc="editorial/toc/000010" key="editorial.authorsRole.review.peerReview">
 	<section>
-		<![CDATA[<p>Varias fechas son registradas en esta página, incluyendo la fecha en la que el editor solicitó Revisores, las fechas en las que se comenzó con la Revisión, y las fechas en las que cada Revisor completó la Revisión. El Autor puede consultar la Política de Revisión en {help_topic key="user.about" text="About the Journal"} para aprender más sobre cómo revisa la revista los envíos. Los Revisores pueden cargar archivos que pueden ser consultados por el Autor, incluyendo versiones del envío con notas. (Para consultar archivos cargados, el Autor puede pulsar sobre el nombre del archivo enlazado con el Archivo Cargado, y así abrir el archivo o guardarlo en su computador para abrirlo luego.)</p>]]>	
+		<![CDATA[<p>En esta página permanecen registradas varias fechas, incluidas la fecha en la que el editor/a solicita la revisión, las fechas en las que las revisiones están en proceso y las fechas en las que los revisores/as han completado sus revisiones. El autor/a puede consultar la política de revisión en {help_topic key="user.about" text=»Sobre la revista"} para obtener más información acerca de cómo se revisan los envíos en la revista. Los revisores/as pueden cargar archivos para que los consulte el autor/a, así como versiones del envío con notas. (Para consultar los archivos cargados, el autor/a debe hacer clic en el nombre del archivo enlazado que aparece junto a dicho archivo y abrirlo directamente o guardarlo en el equipo para abrirlo posteriormente.)</p>]]>	
 	</section>
 </topic>

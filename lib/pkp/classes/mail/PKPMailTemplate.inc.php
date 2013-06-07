@@ -3,7 +3,7 @@
 /**
  * @file classes/mail/PKPMailTemplate.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPMailTemplate
@@ -11,8 +11,6 @@
  *
  * @brief Subclass of Mail for mailing a template email.
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.mail.Mail');

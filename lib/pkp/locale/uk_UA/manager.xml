@@ -4,14 +4,13 @@
 <!--
   * locale/uk_UA/manager.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the uk_UA (Ukrainian) locale.
   *
   * Translated by Denys Solovianenko, 2011
   * V. I. Vernadsky National Library of Ukraine
-  * $Id$
   -->
 
 <locale name="uk_UA" full_name = "Ukrainian">
@@ -219,4 +218,27 @@
 	<message key="plugins.categories.reports">Модулі звітів</message>
 	<message key="plugins.categories.themes.description">Модулі тем можуть використовуватись для зміни зовнішнього вигляду системи.</message>
 	<message key="plugins.categories.themes">Модулі тем</message>
+	<message key="manager.emails.addEmail">Додати шаблон листа</message>
+	<message key="manager.emails.details">Інформація шаблону</message>
+	<message key="manager.emails.resetAll.message">Якщо Ви перевантажите всі шаблони, всі зміни шаблонів листів будуть втрачені. Ви підтверджуєте цю дію?</message>
+	<message key="manager.emails.reset.message">Якщо Ви перевантажите цей шаблон, всі фрагменти тексту будуть повернені до стандартних значень, а всі зміни втрачені. Ви підтверджуєте цю дію?</message>
+	<message key="manager.navigation">Навігація</message>
+	<message key="manager.reviewerSearch.advancedSearch.short">Розширений пошук</message>
+	<message key="manager.reviewerSearch.form.interests.instructions">Вкажіть наукові інтереси, розділені комами...</message>
+	<message key="plugins.categories.metadata">Модулі метаданих</message>
+	<message key="plugins.categories.metadata.description">Модулі метаданих дозволяють використання додаткових стандартів метаданих.</message>
+	<message key="plugins.categories.citationLookup">Модулі шлюзів до баз даних цитованості</message>
+	<message key="plugins.categories.citationLookup.description">Модулі шлюзів до баз даних цитованості дозволяють зв'язок з базами даних цитованості для пошуку посилань, наприклад, під час редагування пристатейної бібліографії.</message>
+	<message key="manager.announcements.datePublish">Опубліковано</message>
+	<message key="manager.reviewerSearch.searchByName.short">Пошук за іменем</message>
+	<message key="manager.reviewerSearch.form.instructions">Користуйтеся формою нижче, щоб встановити максимальні значення для параметрів, за якими здійснюється пошук. За замовчуванням, форма заповнена вирахуваними середніми значеннями для кожного з полів.</message>
+	<message key="plugins.categories.citationOutput">Модулі відображення цитат</message>
+	<message key="plugins.categories.citationOutput.description">Модулі відображення цитат дозволяють відображати цитати за правилами різних бібліографічних стандартів. Ці модулі раніше називалися "Модулі форматів цитування".</message>
+	<message key="plugins.categories.citationParser">Модулі екстракції цитат</message>
+	<message key="plugins.categories.citationParser.description">Модулі екстракції цитат дозволяють видобувати з оригінальних цитат бібліографічну інформацію (наприклад, імена авторів, назви статей тощо).</message>
+	<message key="manager.emails.data">Дані шаблону повідомлення</message>
+	<message key="manager.emails.disable.message">Ви намагаєтеся відключити цей шаблон листа. Якщо система була налаштована на використання цього шаблону, вона не зможе надалі його використовувати. Ви підтверджуєте цю дію?</message>
+	<message key="manager.emails.enable.message">Ви намагаєтеся включити цей шаблон листа. Ви підтверджуєте цю дію?</message>
+	<message key="manager.masthead.title">Вихідні дані</message>
+	<message key="manager.setup.layout.blockManagement">Налаштування бічних панелей</message>
 </locale>

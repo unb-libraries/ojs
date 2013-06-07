@@ -2,16 +2,15 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/importexport/mets/locale/sv_SE/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the sv_SE (Swedish) locale.
   *
   * Translated by per@funke.com 2010-02-04
   *
-  * $Id: locale.xml,v 1.2.2.2 2009/04/08 20:32:39 asmecher Exp $
   -->
  
 <locale name="en_US" full_name="U.S. English">

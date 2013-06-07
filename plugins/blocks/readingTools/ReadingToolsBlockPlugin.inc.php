@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ReadingToolsBlockPlugin.inc.php
+ * @file plugins/blocks/readingTools/ReadingToolsBlockPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReadingToolsBlockPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Class for reading tools block plugin
  */
-
-// $Id$
-
 
 import('lib.pkp.classes.plugins.BlockPlugin');
 

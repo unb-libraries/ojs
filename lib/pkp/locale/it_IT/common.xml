@@ -4,12 +4,11 @@
 <!--
   * locale/it_IT/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
   *
-  * $Id: common.xml,v 1.6 2009/12/08 04:19:13 jmacgreg Exp $
   -->
 
 <locale name="it_IT" full_name = "Italiano">
@@ -113,7 +112,6 @@
 	<message key="common.notAvailable">Non disponibile</message>
 	<message key="common.note">Nota</message>
 	<message key="common.notes">Note</message>
-	<message key="common.notify">Notifica</message>
 	<message key="common.off">Off</message>
 	<message key="common.on">On</message>
 	<message key="common.options">Opzioni</message>
@@ -271,15 +269,15 @@
 	<message key="search.typeMethodApproach">Tipo (metodo/sistema)</message>
 	<message key="common.re">Re:</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
 		Se non diversamente indicato, i contenuti di questa rivista sono pubblicati sotto licenza
- <a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>.]]></message>
+ <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
 		Se non diversamente indicato, i contenuti di questa rivista sono pubblicati sotto licenza <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new">Creative Commons Attribution 3.0</a>.
 	</div>]]></message>
@@ -313,10 +311,8 @@
 	<message key="notification.settingsDescription"><![CDATA[Seleziona gli elementi per i quali vuoi ricevere notifiche. Deselezionare un elemento non ti far&#224; ricevere notifiche su quell'elemento specifico.]]></message>
 	<message key="notification.subscribeSuccess">Abbiamo inviato un messaggio all'indirizzo email specificato. Clicca sul link presente nel messaggio ricevuto per confermare la tua iscrizione alla mailing list.</message>
 	<message key="notification.reminderError">L'nvio della password non è andato a buon fine. Controlla di aver inserito l'indirizzo email correttamente.</message>
-	<message key="notification.unsubscribeDescription">Inserisci l'indirizzo email e la password per non ricevere più notifiche. Se hai dimenticato la password, lascia il campo vuoto e ne invieremo una nuova all'indirizzo postale che indichi.</message>
 	<message key="notification.unsubscribeError">La cancellazione non è avvenuta. Controlla di aver inserito il tuo indirizzo email correttamente</message>
 	<message key="notification.unsubscribeSuccess">Sei stato cancellato dalla lista.</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">Non appartieni a questo gruppo</message>
 	<message key="common.disable">Disabilita</message>
 	<message key="common.enable">Abilita</message>
 	<message key="common.fullscreen">Schermo intero</message>
@@ -328,4 +324,53 @@
 	<message key="common.refresh">Aggiorna</message>
 	<message key="common.true">Vero</message>
 	<message key="common.loading">Sto caricando...</message>
+	<message key="announcement.postedOn">Pubblicato il {$postDate}</message>
+	<message key="common.accepted">Accettato</message>
+	<message key="common.titleSmallWords">of a the and an or nor but is if then else when at from by on off for in out over to into with</message>
+	<message key="common.warning">Attenzione</message>
+	<message key="common.confirm">Conferma</message>
+	<message key="common.content">Contenuto</message>
+	<message key="common.declined">Rifiutato</message>
+	<message key="common.finish">Completa</message>
+	<message key="common.go">Vai</message>
+	<message key="common.less">Meno</message>
+	<message key="common.billingAddress">Indirizzo di fatturazione (se differente)</message>
+	<message key="common.more">Più</message>
+	<message key="common.noMatches">Nessuna corrispondenza</message>
+	<message key="common.overdue">Scaduto</message>
+	<message key="common.reminder">Promemoria</message>
+	<message key="common.remote">Remoto</message>
+	<message key="common.remoteURL">URL remota</message>
+	<message key="common.signoff">Termina</message>
+	<message key="common.element">Elemento</message>
+	<message key="common.unread">Non letto</message>
+	<message key="common.fileUpload.maxFileSizeStatus"><![CDATA[Questo server consente di caricare file della grandezza massima di {$fileSize}.  Se necessario, contatta <a href="mailto:{$supportEmail}">{$supportName}</a> per assistenza.]]></message>
+	<message key="common.invalidFileType">Nessun file caricato o tipo di file non valido!</message>
+	<message key="common.plugins">Plugin</message>
+	<message key="email.subjectRequired">Inserisci l'oggetto del messaggio</message>
+	<message key="email.bodyRequired">Inserisci un testo nel messaggio</message>
+	<message key="form.confirmSubmit.title">Conferma</message>
+	<message key="form.emailRequired">Inserisci un indirizzo email</message>
+	<message key="form.invalidImage">Formato dell'immagine non valido. I formati consentiti sono .png, .gif, or .jpg.</message>
+	<message key="help.toggleInlineHelpOn">Chiudi la guida</message>
+	<message key="help.toggleInlineHelpOff">Apri la guida</message>
+	<message key="navigation.website">Sito web</message>
+	<message key="navigation.access"><![CDATA[Utenti &amp; Ruoli]]></message>
+	<message key="navigation.admin">Amministrazione</message>
+	<message key="navigation.browseByAuthor">Per autore</message>
+	<message key="navigation.data">Dati</message>
+	<message key="navigation.publicMenu">Menu pubblico</message>
+	<message key="navigation.settings">Impostazioni</message>
+	<message key="navigation.setup">Setup</message>
+	<message key="navigation.submissions">Proposte</message>
+	<message key="navigation.system">Sistema</message>
+	<message key="navigation.userManagement">Gestione utenti</message>
+	<message key="form.confirmSubmit">Sei sicuro di concludere questo formulario?</message>
+	<message key="form.dataHasChanged">I dati nel formulario sono cambiati. Continui ugualmente?</message>
+	<message key="navigation.sitemap">Mappa del sito</message>
+	<message key="common.acknowledged">Riconosciuto</message>
+	<message key="common.considered">Considerato</message>
+	<message key="common.notified">Notificato</message>
+	<message key="common.reset">Reset</message>
+	<message key="grid.action.downloadFile">Scarica questo file</message>
 </locale>

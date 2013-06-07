@@ -3,7 +3,7 @@
 /**
  * @file classes/author/form/submit/AuthorSubmitStep2Form.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorSubmitStep2Form
@@ -12,9 +12,6 @@
  * @brief Form for Step 2 of author article submission.
  */
 
-// $Id$
-
-
 import('classes.author.form.submit.AuthorSubmitForm');
 
 class AuthorSubmitStep2Form extends AuthorSubmitForm {
@@ -22,8 +19,8 @@ class AuthorSubmitStep2Form extends AuthorSubmitForm {
 	/**
 	 * Constructor.
 	 */
-	function AuthorSubmitStep2Form(&$article, &$journal) {
-		parent::AuthorSubmitForm($article, 2, $journal);
+	function AuthorSubmitStep2Form(&$article, &$journal, $request) {
+		parent::AuthorSubmitForm($article, 2, $journal, $request);
 
 		// Validation checks for this form
 	}

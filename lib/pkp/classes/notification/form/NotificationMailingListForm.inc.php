@@ -6,7 +6,7 @@
 /**
  * @file classes/notification/form/NotificationMailingListForm.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NotificationMailingListForm
@@ -14,8 +14,6 @@
  *
  * @brief Form to subscribe to the notification mailing list
  */
-
-// $Id$
 
 
 import('lib.pkp.classes.form.Form');
@@ -62,7 +60,7 @@ class NotificationMailingListForm extends Form {
 	/**
 	 * Display the form.
 	 */
-	function display() {
+	function display(&$request) {
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('new', true);
 		
@@ -76,7 +74,11 @@ class NotificationMailingListForm extends Form {
 			}
 		}
 
-		$templateMgr->assign('settings', Notification::getSubscriptionSettings());
+		$context =& $request->getContext();
+		if ($context) {
+			$templateMgr->assign('allowRegReviewer', $context->getSetting('allowRegReviewer'));
+			$templateMgr->assign('allowRegAuthor', $context->getSetting('allowRegAuthor'));
+		}
 
 		return parent::display();
 	}
@@ -84,15 +86,17 @@ class NotificationMailingListForm extends Form {
 	/**
 	 * Save the form
 	 */
-	function execute() {
+	function execute(&$request) {
 		$userEmail = $this->getData('email');
+		$context =& $request->getContext();
 
-		$notificationSettingsDao =& DAORegistry::getDAO('NotificationSettingsDAO');
-		if($password = $notificationSettingsDao->subscribeGuest($userEmail)) {
-			Notification::sendMailingListEmail($userEmail, $password, 'NOTIFICATION_MAILLIST_WELCOME');
+		$notificationMailListDao =& DAORegistry::getDAO('NotificationMailListDAO');
+		if($password = $notificationMailListDao->subscribeGuest($userEmail, $context->getId())) {
+			$notificationManager = new NotificationManager();
+			$notificationManager->sendMailingListEmail($request, $userEmail, $password, 'NOTIFICATION_MAILLIST_WELCOME');
 			return true;
 		} else {
-			PKPRequest::redirect(null, 'notification', 'mailListSubscribed', array('error'));
+			$request->redirect(null, 'notification', 'mailListSubscribed', array('error'));
 			return false;
 		}
 	}

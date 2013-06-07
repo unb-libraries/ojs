@@ -3,7 +3,7 @@
 /**
  * @file classes/core/Dispatcher.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Dispatcher
@@ -25,6 +25,9 @@ class Dispatcher {
 
 	/** @var PKPRouter */
 	var $_router;
+
+	/** @var PKPRequest Used for a callback hack - NOT GENERALLY SET. */
+	var $_requestCallbackHack;
 
 	/**
 	 * Get the application
@@ -111,6 +114,7 @@ class Dispatcher {
 
 		// Can we serve a cached response?
 		if ($router->isCacheable($request)) {
+			$this->_requestCallbackHack =& $request;
 			if (Config::getVar('cache', 'web_cache')) {
 				if ($this->_displayCached($router, $request)) exit(); // Success
 				ob_start(array(&$this, '_cacheContent'));
@@ -132,7 +136,7 @@ class Dispatcher {
 	/**
 	 * Build a handler request URL into PKPApplication.
 	 * @param $request PKPRequest the request to be routed
-	 * @param $shortcut the short name of the router that should be used to construct the URL
+	 * @param $shortcut string the short name of the router that should be used to construct the URL
 	 * @param $newContext mixed Optional contextual paths
 	 * @param $handler string Optional name of the handler to invoke
 	 * @param $op string Optional name of operation to invoke
@@ -223,7 +227,8 @@ class Dispatcher {
 	 */
 	function _cacheContent($contents) {
 		assert(is_a($this->_router, 'PKPRouter'));
-		$filename = $this->_router->getCacheFilename();
+		if ($contents == '') return $contents; // Do not cache empties
+		$filename = $this->_router->getCacheFilename($this->_requestCallbackHack);
 		$fp = fopen($filename, 'w');
 		if ($fp) {
 			fwrite($fp, mktime() . ':' . $contents);

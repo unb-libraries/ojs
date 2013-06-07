@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file ReferralHandler.inc.php
+ * @file plugins/generic/referral/ReferralHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReferralHandler
@@ -11,9 +11,6 @@
  *
  * @brief This handles requests for the referral plugin.
  */
-
-// $Id$
-
 
 import('classes.handler.Handler');
 
@@ -109,7 +106,7 @@ class ReferralHandler extends Handler {
 
 	function validate($referralId = null) {
 		parent::validate();
-		
+
 		if ($referralId) {
 			$referralDao =& DAORegistry::getDAO('ReferralDAO');
 			$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
@@ -128,6 +125,29 @@ class ReferralHandler extends Handler {
 		}
 		$plugin =& Registry::get('plugin');
 		return array(&$plugin, &$referral, &$article);
+	}
+
+	/**
+	 * Perform a batch action on a set of referrals.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function bulkAction($args, $request) {
+		$referralIds = (array) $request->getUserVar('referralId');
+		$referralDao = DAORegistry::getDAO('ReferralDAO');
+		foreach ($referralIds as $referralId) {
+			list($plugin, $referral, $article) = $this->validate($referralId);
+			if ($request->getUserVar('delete')) {
+				$referralDao->deleteReferral($referral);
+			} else if ($request->getUserVar('accept')) {
+				$referral->setStatus(REFERRAL_STATUS_ACCEPT);
+				$referralDao->updateReferral($referral);
+			} else if ($request->getUserVar('decline')) {
+				$referral->setStatus(REFERRAL_STATUS_DECLINE);
+				$referralDao->updateReferral($referral);
+			}
+		}
+		$request->redirect(null, 'author');
 	}
 }
 

@@ -7,7 +7,7 @@
 /**
  * @file classes/xml/XMLParser.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XMLParser
@@ -15,8 +15,6 @@
  *
  * @brief Generic class for parsing an XML document into a data structure.
  */
-
-// $Id$
 
 
 // The default character encodings
@@ -92,9 +90,10 @@ class XMLParser {
 	 * Parse an XML file using the specified handler.
 	 * If no handler has been specified, XMLParserDOMHandler is used by default, returning a tree structure representing the document.
 	 * @param $file string full path to the XML file
+	 * @param $dataCallback mixed Optional callback for data handling: function dataCallback($operation, $wrapper, $data = null)
 	 * @return object actual return type depends on the handler
 	 */
-	function &parse($file) {
+	function &parse($file, $dataCallback = null) {
 		$parser =& $this->createParser();
 
 		if (!isset($this->handler)) {
@@ -133,6 +132,8 @@ class XMLParser {
 			return $result;
 		}
 
+		if ($dataCallback) call_user_func($dataCallback, 'open', $wrapper);
+
 		while (!$wrapper->eof() && ($data = $wrapper->read()) !== false) {
 
 			// if the string contains non-UTF8 characters, convert it to UTF-8 for parsing
@@ -159,11 +160,13 @@ class XMLParser {
 			// strip any invalid ASCII control characters
 			$data = String::utf8_strip_ascii_ctrl($data);
 
+			if ($dataCallback) call_user_func($dataCallback, 'parse', $wrapper, $data);
 			if (!xml_parse($parser, $data, $wrapper->eof())) {
 				$this->addError(xml_error_string(xml_get_error_code($parser)));
 			}
 		}
 
+		if ($dataCallback) call_user_func($dataCallback, 'close', $wrapper);
 		$wrapper->close();
 		$result =& $this->handler->getResult();
 		$this->destroyParser($parser);

@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * default.xml
+  * locale/ru_RU/default.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
   *
-  * $Id$
   -->
 
 <locale name="ru_RU" full_name="Russian">
@@ -308,4 +307,5 @@ The paragraph that begins "This last topic..." is not indented.</pre>]]></messag
 	<message key="default.journalSettings.membershipFeeDescription">Оплата позволит Вас стать членом данной ассоциации сроком на один год и со свободным доступом к этому журналу.</message>
 	<message key="default.journalSettings.donationFee">Добровольные пожертвования</message>
 	<message key="default.journalSettings.donationFeeDescription">Мы с благодарностью принимаем пожертвования, которые дадут редакции больше свободы в повышении качества журнала для своих читателей.</message>
+	<message key="default.journalSettings.purchaseIssueFee">Купить выпуск</message>
 </locale>

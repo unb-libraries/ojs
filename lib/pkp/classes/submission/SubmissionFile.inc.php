@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/SubmissionFile.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionFile
@@ -12,23 +12,20 @@
  * @brief Submission file class.
  */
 
-// $Id$
+import('lib.pkp.classes.file.PKPFile');
 
-
-class SubmissionFile extends DataObject {
-
+class SubmissionFile extends PKPFile {
 	/**
 	 * Constructor.
 	 */
 	function SubmissionFile() {
-		parent::DataObject();
+		parent::PKPFile();
 	}
 
 
 	//
-	// Get/set methods
+	// Getters and Setters
 	//
-
 	/**
 	 * Get ID of file.
 	 * @return int
@@ -106,6 +103,21 @@ class SubmissionFile extends DataObject {
 	}
 
 	/**
+	 * Get the combined key of the file
+	 * consisting of the file id and the revision.
+	 * @return string
+	 */
+	function getFileIdAndRevision() {
+		$id = $this->getFileId();
+		$revision = $this->getRevision();
+		$idAndRevision = $id;
+		if ($revision) {
+			$idAndRevision .= '-'.$revision;
+		}
+		return $idAndRevision;
+	}
+
+	/**
 	 * Set revision number.
 	 * @param $revision int
 	 */
@@ -130,86 +142,37 @@ class SubmissionFile extends DataObject {
 	}
 
 	/**
-	 * Get file name of the file.
-	 * @param return string
-	 */
-	function getFileName() {
-		return $this->getData('fileName');
-	}
-
-	/**
-	 * Set file name of the file.
-	 * @param $fileName string
-	 */
-	function setFileName($fileName) {
-		return $this->setData('fileName', $fileName);
-	}
-
-	/**
-	 * Get file type of the file.
-	 * @ return string
-	 */
-	function getFileType() {
-		return $this->getData('fileType');
-	}
-
-	/**
-	 * Set file type of the file.
-	 * @param $fileType string
-	 */
-	function setFileType($fileType) {
-		return $this->setData('fileType', $fileType);
-	}
-
-	/**
-	 * Get original uploaded file name of the file.
-	 * @param return string
-	 */
-	function getOriginalFileName() {
-		return $this->getData('originalFileName');
-	}
-
-	/**
-	 * Set original uploaded file name of the file.
-	 * @param $originalFileName string
-	 */
-	function setOriginalFileName($originalFileName) {
-		return $this->setData('originalFileName', $originalFileName);
-	}
-
-	/**
 	 * Get type of the file.
-	 * @ return string
+	 * @return int
 	 */
 	function getType() {
-		return $this->getData('type');
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->getFileStage();
 	}
 
 	/**
 	 * Set type of the file.
-	 * @param $type string
+	 * @param $type int
 	 */
 	function setType($type) {
-		return $this->setData('type', $type);
+		if (Config::getVar('debug', 'deprecation_warnings')) trigger_error('Deprecated function.');
+		return $this->setFileStage($type);
 	}
 
 	/**
-	 * Get uploaded date of file.
-	 * @return date
+	 * Get file stage of the file.
+	 * @return int
 	 */
-
-	function getDateUploaded() {
-		return $this->getData('dateUploaded');
+	function getFileStage() {
+		return $this->getData('fileStage');
 	}
 
-
 	/**
-	 * Set uploaded date of file.
-	 * @param $dateUploaded date
+	 * Set file stage of the file.
+	 * @param $fileStage int
 	 */
-
-	function setDateUploaded($dateUploaded) {
-		return $this->SetData('dateUploaded', $dateUploaded);
+	function setFileStage($fileStage) {
+		return $this->setData('fileStage', $fileStage);
 	}
 
 	/**
@@ -221,7 +184,6 @@ class SubmissionFile extends DataObject {
 		return $this->getData('dateModified');
 	}
 
-
 	/**
 	 * Set modified date of file.
 	 * @param $dateModified date
@@ -229,34 +191,6 @@ class SubmissionFile extends DataObject {
 
 	function setDateModified($dateModified) {
 		return $this->SetData('dateModified', $dateModified);
-	}
-
-	/**
-	 * Get file size of file.
-	 * @return int
-	 */
-
-	function getFileSize() {
-		return $this->getData('fileSize');
-	}
-
-
-	/**
-	 * Set file size of file.
-	 * @param $fileSize int
-	 */
-
-	function setFileSize($fileSize) {
-		return $this->SetData('fileSize', $fileSize);
-	}
-
-	/**
-	 * Get nice file size of file.
-	 * @return string
-	 */
-
-	function getNiceFileSize() {
-		return FileManager::getNiceFileSize($this->getData('fileSize'));
 	}
 
 	/**
@@ -268,12 +202,10 @@ class SubmissionFile extends DataObject {
 		return $this->getData('round');
 	}
 
-
 	/**
 	 * Set round.
 	 * @param $round int
 	 */
-
 	function setRound($round) {
 		return $this->SetData('round', $round);
 	}
@@ -282,7 +214,6 @@ class SubmissionFile extends DataObject {
 	 * Get viewable.
 	 * @return boolean
 	 */
-
 	function getViewable() {
 		return $this->getData('viewable');
 	}
@@ -292,10 +223,25 @@ class SubmissionFile extends DataObject {
 	 * Set viewable.
 	 * @param $viewable boolean
 	 */
-
 	function setViewable($viewable) {
 		return $this->SetData('viewable', $viewable);
 	}
+
+
+	//
+	// Public methods
+	//
+	/**
+	 * Check if the file may be displayed inline.
+	 * FIXME: Move to DAO to remove coupling of the domain
+	 *  object to its DAO.
+	 * @return boolean
+	 */
+	function isInlineable() {
+		$submissionFileDao =& DAORegistry::getDAO('SubmissionFileDAO'); /* @var $submissionFileDao SubmissionFileDAO */
+		return $submissionFileDao->isInlineable($this);
+	}
+
 }
 
 ?>

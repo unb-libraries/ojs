@@ -4,12 +4,11 @@
 <!--
   * 000015.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Roles - Subscription Manager 
   *
-  * $Id: 000032.xml,v 1.6 2009/08/17 23:38:28 asmecher Exp $
   -->
 
 <topic id="journal/topic/000032" locale="it_IT" title="Gestore degli abbonamenti" toc="journal/toc/000003" key="journal.roles.subscriptionManager">

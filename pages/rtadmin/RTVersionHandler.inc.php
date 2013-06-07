@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file RTVersionHandler.inc.php
+ * @file pages/rtadmin/RTVersionHandler.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RTVersionHandler
@@ -12,10 +12,6 @@
  * @brief Handle Reading Tools administration requests -- setup section.
  */
 
-// $Id$
-
-
-import('classes.rt.ojs.JournalRTAdmin');
 import('pages.rtadmin.RTAdminHandler');
 
 class RTVersionHandler extends RTAdminHandler {
@@ -103,7 +99,7 @@ class RTVersionHandler extends RTAdminHandler {
 		$journal = Request::getJournal();
 
 		$rtDao =& DAORegistry::getDAO('RTDAO');
-		$rangeInfo = Handler::getRangeInfo('versions');
+		$rangeInfo = $this->getRangeInfo('versions');
 
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign_by_ref('versions', $rtDao->getVersions($journal->getId(), $rangeInfo));

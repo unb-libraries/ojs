@@ -7,7 +7,7 @@
 /**
  * @file classes/article/log/ArticleLog.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleLog
@@ -16,97 +16,67 @@
  * @brief Static class for adding / accessing article log entries.
  */
 
-// $Id$
-
+import('classes.article.log.ArticleEventLogEntry');
+import('classes.article.log.ArticleEmailLogEntry');
 
 class ArticleLog {
-
 	/**
-	 * Add an event log entry to this article.
-	 * @param $articleId int
-	 * @param $entry ArticleEventLogEntry
+	 * Add a new event log entry with the specified parameters
+	 * @param $request object
+	 * @param $article object
+	 * @param $eventType int
+	 * @param $messageKey string
+	 * @param $params array optional
+	 * @return object ArticleLogEntry iff the event was logged
 	 */
-	function logEventEntry($articleId, &$entry) {
-		$articleDao =& DAORegistry::getDAO('ArticleDAO');
-		$journalId = $articleDao->getArticleJournalId($articleId);
-
-		if (!$journalId) {
-			// Invalid article
-			return false;
-		}
-
-		$settingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
-		if (!$settingsDao->getSetting($journalId, 'articleEventLog')) {
-			// Event logging is disabled
-			return false;
-		}
-
-		// Add the entry
-		$entry->setArticleId($articleId);
-
-		if ($entry->getUserId() == null) {
-			$user =& Request::getUser();
-			$entry->setUserId($user == null ? 0 : $user->getId());
-		}
-
-		$logDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		return $logDao->insertLogEntry($entry);
+	function logEvent(&$request, &$article, $eventType, $messageKey, $params = array()) {
+		$journal =& $request->getJournal();
+		$user =& $request->getUser();
+		$userId = (isset($user)) ? $user->getId() : 0;
+		return ArticleLog::logEventHeadless($journal, $userId, $article, $eventType, $messageKey, $params);
 	}
 
 	/**
-	 * Add a new event log entry with the specified parameters, at the default log level
-	 * @param $articleId int
+	 * Add a new event log entry with the specified parameters
+	 * @param $request object
+	 * @param $article object
 	 * @param $eventType int
-	 * @param $assocType int
-	 * @param $assocId int
 	 * @param $messageKey string
-	 * @param $messageParams array
+	 * @param $params array optional
+	 * @return object ArticleLogEntry iff the event was logged
 	 */
-	function logEvent($articleId, $eventType, $assocType = 0, $assocId = 0, $messageKey = null, $messageParams = array()) {
-		return ArticleLog::logEventLevel($articleId, ARTICLE_LOG_LEVEL_NOTICE, $eventType, $assocType, $assocId, $messageKey, $messageParams);
-	}
+	function logEventHeadless(&$journal, $userId, &$article, $eventType, $messageKey, $params = array()) {
 
-	/**
-	 * Add a new event log entry with the specified parameters, including log level.
-	 * @param $articleId int
-	 * @param $logLevel char
-	 * @param $eventType int
-	 * @param $assocType int
-	 * @param $assocId int
-	 * @param $messageKey string
-	 * @param $messageParams array
-	 */
-	function logEventLevel($articleId, $logLevel, $eventType, $assocType = 0, $assocId = 0, $messageKey = null, $messageParams = array()) {
-		$entry = new ArticleEventLogEntry();
-		$entry->setLogLevel($logLevel);
+		// Create a new entry object
+		$articleEventLogDao =& DAORegistry::getDAO('ArticleEventLogDAO');
+		$entry = $articleEventLogDao->newDataObject();
+
+		// Set implicit parts of the log entry
+		$entry->setDateLogged(Core::getCurrentDate());
+		$entry->setIPAddress(Request::getRemoteAddr());
+		$entry->setUserId($userId);
+		$entry->setAssocType(ASSOC_TYPE_ARTICLE);
+		$entry->setAssocId($article->getId());
+
+		// Set explicit parts of the log entry
 		$entry->setEventType($eventType);
-		$entry->setAssocType($assocType);
-		$entry->setAssocId($assocId);
+		$entry->setMessage($messageKey);
+		$entry->setParams($params);
+		$entry->setIsTranslated(0);
+		$entry->setParams($params);
 
-		if (isset($messageKey)) {
-			$entry->setLogMessage($messageKey, $messageParams);
-		}
-
-		return ArticleLog::logEventEntry($articleId, $entry);
-	}
-
-	/**
-	 * Get all event log entries for an article.
-	 * @param $articleId int
-	 * @return array ArticleEventLogEntry
-	 */
-	function &getEventLogEntries($articleId, $rangeInfo = null) {
-		$logDao =& DAORegistry::getDAO('ArticleEventLogDAO');
-		$returner =& $logDao->getArticleLogEntries($articleId, $rangeInfo);
-		return $returner;
+		// Insert the resulting object
+		$articleEventLogDao->insertObject($entry);
+		return $entry;
 	}
 
 	/**
 	 * Add an email log entry to this article.
 	 * @param $articleId int
 	 * @param $entry ArticleEmailLogEntry
+	 * @param $request object
 	 */
-	function logEmailEntry($articleId, &$entry) {
+	function logEmail($articleId, &$entry, $request = null) {
 		$articleDao =& DAORegistry::getDAO('ArticleDAO');
 		$journalId = $articleDao->getArticleJournalId($articleId);
 
@@ -115,35 +85,21 @@ class ArticleLog {
 			return false;
 		}
 
-		$settingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
-		if (!$settingsDao->getSetting($journalId, 'articleEmailLog')) {
-			// Email logging is disabled
-			return false;
-		}
-
 		// Add the entry
-		$entry->setArticleId($articleId);
+		$entry->setAssocType(ASSOC_TYPE_ARTICLE);
+		$entry->setAssocId($articleId);
 
-		if ($entry->getSenderId() == null) {
-			$user =& Request::getUser();
+		if ($request) {
+			$user =& $request->getUser();
 			$entry->setSenderId($user == null ? 0 : $user->getId());
-		}
+			$entry->setIPAddress($request->getRemoteAddr());
+		} else $entry->setSenderId(0);
+
+		$entry->setDateSent(Core::getCurrentDate());
 
 		$logDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-		return $logDao->insertLogEntry($entry);
+		return $logDao->insertObject($entry);
 	}
-
-	/**
-	 * Get all email log entries for an article.
-	 * @param $articleId int
-	 * @return array ArticleEmailLogEntry
-	 */
-	function &getEmailLogEntries($articleId, $rangeInfo = null) {
-		$logDao =& DAORegistry::getDAO('ArticleEmailLogDAO');
-		$result =& $logDao->getArticleLogEntries($articleId, $rangeInfo);
-		return $result;
-	}
-
 }
 
 ?>

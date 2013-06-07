@@ -1,38 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE topic SYSTEM "../../../../lib/pkp/dtd/helpTopic.dtd">
-
 <!--
   * 000002.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Administración del Sitio - Administración de la Página 
-  *
-  * Translated by Juan Arias, Corporación Parque Tecnológico de Mérida: juanarias@ula.ve.
+  * Site Administration - Site Management 
   *
   * $Id$
   -->
 
-<topic id="site/topic/000002" locale="es_ES" title="Administración del Sitio Web" toc="site/toc/000000" key="site.siteManagement">
+<topic id="site/topic/000002" locale="es_ES" title="Administración del sitio" toc="site/toc/000000" key="site.siteManagement">
 	<section>
-		<![CDATA[<p>OJS está diseñado para ser un sistema de revistas múltiples, el Administrador del Sitio es responsable de realizar la configuración de los distintos niveles de la revista y de crear nuevas revistas que sean almacenadas en un solo sitio Web.. Los sitios de la revista son totalmente independientes, con excepción de las cuentas de usuarios; mientras que un usuario puede participar en cualquier combinación de roles y revistas, la misma dirección de correo electrónico y nombre de usuario se referirán al mismo usuario sin tener en cuenta la revista.</p>]]>
+		<![CDATA[<p>OJS está diseñado para ser un sistema multirevista, y el administrador/a del sito web es responsable de configurar las características de sus distintos niveles y de crear nuevas revistas que se almacenarán dentro de un mismo sito web. Los sitos web de revistas son totalmente independientes, a excepción de las cuentas de los usuarios/as. Aunque un usuario/a puede participar en diferentes combinaciones de roles y revistas, mantendrá el mismo nombre y la misma dirección de correo electrónico en todas las revistas.</p>]]>
 	</section>
 	
-	<section title="Propiedades del Sitio">
-		<![CDATA[<p> El Administrador del Sitio ingresa Información Básica que será aplicable a todas las revistas almacenadas por el sitio, incluyendo el título del sitio, su descripción y la información de contacto.</p>   <p><em>Redirección a una Revista.</em> Esta configuración puede ser utilizada para asegurarse que todas las solicitudes sean redirigidas a una página Web de una revista en particular. Normalmente esta configuración se utiliza cuando un sitio almacena una sola revista.</p>]]>
+	<section title="Opciones del sitio">
+		<![CDATA[<p>El administrador/a del sitio web introduce información básica que se ofrece a todas la revistas almacenadas en el sitio web, incluidos el título del sitio, la descripción y la información de contacto.</p> <p><em>Redireccionar a la revista.</em> Esta opción puede usarse para asegurarse de que todos los visitantes sean redireccionados a un sitio web de revistas concreto. Normalmente esta función se usa cuando un sitio web alberga una sola revista.</p>]]>
 	</section>
 	
-	<section title="Revistas recibidas">
-		<![CDATA[<p>Ya que OJS permite que se generen cualquier número de usuarios y distintas páginas Web de revistas, se pueden crear nuevas revistas y administrarlas en cualquier momento. Cada revista creada puede ser accedida por medio de un URL único basado en un camino ingresado por el Administrador del Sitio. Las revistas que están actualmente en el proceso de instalación y de configuración puede estar ocultas del sitio principal hasta que estén listas para ser activadas.</p>]]>
+	<section title="Revistas alojadas">
+		<![CDATA[<p>Al igual que OJS permite generar cualquier número de sitios web de revistas individuales y concretas, también se pueden crear y gestionar nuevas revistas en cualquier momento. Se puede acceder a cada revista creada a través de un URL único basado en un nombre de ruta introducido por el administrador/a del sitio web. Las revistas que están en proceso de creación y configuración, se pueden ocultar del sitio web principal hasta el momento en que deban entrar en funcionamiento.</p>]]>
 	</section>
 	
 	<section title="Idiomas">
-		<![CDATA[<p>OJS está diseñado para ser un sistema multilingüe, permitiéndole a las revistas que provean la información en una gran variedad de idiomas en un solo sitio. El Administrador del Sitio puede especificar el idioma predeterminado en el sitio e instalar locales adicionales en la medida en que están listas, para hacerlos disponibles a otros idiomas para el uso de las revistas.</p>
-		<p>Los paquetes adicionales de idiomas normalmente están disponibles para ser descargados desde la página Web de Open Journal Systems <a href="http://pkp.sfu.ca/" target="_blank"> </a> en la medida en que se reciben las traducciones contribuidas por los usuarios del sistema. Estos paquetes pueden ser instalados dentro de un sistema de OJS existente para que estén disponibles para la revista.</p>]]>
+		<![CDATA[<p>OJS está diseñado para ser un sistema multilingüe, lo que permite que las revistas admitan albergar una amplia variedad de idiomas en un solo sitio web. El administrador/a del sitio web puede especificar el idioma por defecto e instalar configuraciones locales que estarán disponibles para permitir el uso de otros idiomas en las revistas.</p> <p>Se podrán descargar paquetes de idiomas adicionales desde la <a href="http://pkp.sfu.ca/ojs-languages" target="_blank">página de OJS</a> gracias a traducciones aportadas por los usuarios/as. Estos paquetes se pueden instalar en un sistema OJS existente para que estén disponibles en las diferentes revistas.</p>]]>
 	</section>
 	
-	<section title="Autentificación de las Fuentes">
-		<![CDATA[<p>OJS autentifica, por defecto, a los usuarios en contraposición con su base de datos interna. Sin embargo, es posible, usar otros métodos de autentificación como LDAP. Otras fuentes de autentificación adicionales son implementadas como plugins de OJS; refiérase a la documentación enviada con cada plugin para más detalles.</p>]]>
+	<section title="Fuentes de autenticación">
+		<![CDATA[<p>OJS autentica por defecto a los usuarios/as de acuerdo con su base de datos interna. Sin embargo, es posible usar otros métodos de autenticación, como el LDAP. Existen conectores de OJS de recursos de autenticación adicionales. Para más información, consulte la documentación adjunta a cada conector.</p>]]>
 	</section>
 </topic>

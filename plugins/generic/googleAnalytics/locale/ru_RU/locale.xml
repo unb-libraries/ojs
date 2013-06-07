@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/generic/googleAnalytics/locale/ru_RU/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Google Analytics plugin localization strings for the en_US (U.S. English) locale.
   *
-  * $Id$
   -->
  
 <locale name="en_US" full_name="U.S. English">
@@ -29,4 +28,5 @@
 	<message key="plugins.generic.googleAnalytics.manager.settings.trackingCodeRequired">Выберите код, который хотите использовать.</message>
 	<message key="plugins.generic.googleAnalytics.manager.settings.urchin">Старый код (urchin.js)</message>
 	<message key="plugins.generic.googleAnalytics.manager.settings.ga">Новый код (ga.js)</message>
+	<message key="plugins.generic.googleAnalytics.authorAccount">Номер учетной записи Google Analytics</message>
 </locale>

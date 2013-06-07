@@ -7,7 +7,7 @@
 /**
  * @file classes/scheduledTask/ScheduledTaskDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ScheduledTaskDAO
@@ -21,6 +21,13 @@
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
 
 class ScheduledTaskDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function ScheduledTaskDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Get the last time a scheduled task was executed.
 	 * @param $className string

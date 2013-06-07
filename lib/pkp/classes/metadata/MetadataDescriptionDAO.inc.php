@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @file MetadataDescriptionDAO.inc.php
+ * @file classes/metadata/MetadataDescriptionDAO.inc.php
  *
- * Copyright (c) 2000-2012 John Willinsky
+ * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataDescriptionDAO
@@ -17,6 +17,13 @@ import('lib.pkp.classes.metadata.MetadataDescription');
 
 
 class MetadataDescriptionDAO extends DAO {
+	/**
+	 * Constructor
+	 */
+	function MetadataDescriptionDAO() {
+		parent::DAO();
+	}
+
 	/**
 	 * Insert a new meta-data description.
 	 *
@@ -175,11 +182,11 @@ class MetadataDescriptionDAO extends DAO {
 	 */
 	function &_resolveSchemaIdentifierToMetadataSchemaName($metadataSchemaId) {
 		static $metadataSchemaMapping = array(
-			'nlm30:nlm-3.0-element-citation' => 'lib.pkp.classes.metadata.nlm.NlmCitationSchema',
-			'nlm30:nlm-3.0-name' => 'lib.pkp.classes.metadata.nlm.NlmNameSchema',
-			'openurl10:openurl-1.0-journal' => 'lib.pkp.classes.metadata.nlm.OpenUrlJournalSchema',
-			'openurl10:openurl-1.0-book' => 'lib.pkp.classes.metadata.nlm.OpenUrlBookSchema',
-			'openurl10:openurl-1.0-dissertation' => 'lib.pkp.classes.metadata.nlm.OpenUrlDissertationSchema'
+			'nlm30:nlm-3.0-element-citation' => 'lib.pkp.plugins.metadata.nlm30.schema.Nlm30CitationSchema',
+			'nlm30:nlm-3.0-name' => 'lib.pkp.plugins.metadata.nlm30.schema.Nlm30NameSchema',
+			'openurl10:openurl-1.0-journal' => 'lib.pkp.plugins.metadata.nlm30.schema.Openurl10JournalSchema',
+			'openurl10:openurl-1.0-book' => 'lib.pkp.plugins.metadata.nlm30.schema.Openurl10BookSchema',
+			'openurl10:openurl-1.0-dissertation' => 'lib.pkp.plugins.metadata.nlm30.schema.Openurl10DissertationSchema'
 		);
 
 		// Map the metadata schema identifier to a metadata schema class name.

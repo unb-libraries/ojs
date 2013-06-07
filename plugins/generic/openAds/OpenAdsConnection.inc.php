@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @file OpenAdsConnection.inc.php
+ * @file plugins/generic/openAds/OpenAdsConnection.inc.php
  *
  * Copyright (c) 2003-2009 Siavash Miri and Alec Smecher
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
@@ -12,7 +12,6 @@
  * @brief Abstracts the OpenAds link.
  */
 
-// $Id: CounterPlugin.inc.php,v 1.0 2006/10/20 12:28pm
 
 class OpenAdsConnection {
 	/** @var $installPath string Path to config file */

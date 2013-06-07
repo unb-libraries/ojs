@@ -2,14 +2,13 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * locale.xml
+  * plugins/citationFormats/mla/locale/ro_RO/locale.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for this citation plugin in ro_RO.
   * KOSSON FECIT
-  * $Id: locale.xml,v 1.2 2008/06/11 18:55:10 asmecher Exp $
   -->
  
 <locale name="ro_RO" full_name="Română">

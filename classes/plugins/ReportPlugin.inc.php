@@ -3,7 +3,7 @@
 /**
  * @file classes/plugins/ReportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReportPlugin
@@ -11,9 +11,6 @@
  *
  * @brief Abstract class for report plugins
  */
-
-// $Id$
-
 
 import('classes.plugins.Plugin');
 

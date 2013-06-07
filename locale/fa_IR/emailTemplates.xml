@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE email_texts SYSTEM "../../lib/pkp/dtd/emailTemplateData.dtd">
+
 <!--
-  * emailTemplateData.xml
+  * locale/fa_IR/emailTemplateData.xml
   *
-  * Copyright (c) 2003-2012 John Willinsky
+  * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
   *
-  * $Id$
   -->
+
 <email_texts locale="fa_IR">
 	<email_text key="PASSWORD_RESET_CONFIRM">
 		<subject>تائیدیه دوباره تنظیم کردن رمزعبور</subject>
@@ -336,7 +337,7 @@ Thank you,
 ۱. با استفاده از نام کاربری و رمز عبور خود و بکمک لینک زیر وارد سایت مجله شوید (در صورت فراموش کردن نام کاربری یا رمز عبور از گزینه مربوط به فراموشی رمز  عبور استفاده کنید)
 ۲. بر روی فایل موجود در مرحله اول ویراستاری کلیک کنید و آنرا دانلود کنید. پس از دانلود آنرا باز کنید.
 ۳. مقاله را بدقت مطالعه کرده و قسمتهای ویراستاری شده را بررسی کنید. لازم به ذکر است که در فایل ورد ارسالی تغییرات اعمال شده با رنگ و علائم مخصوص براحتی قابل تشخیص است. ویراستار ممکن است در متن مقاله سؤالاتی کرده باشد که لازم است بدقت به آنها جواب دهید.
-۴. پس از وارد کردن پاسخ سؤالات  
+۴. پس از وارد کردن پاسخ سؤالات
 4. Save file to desktop and upload it in 2. Author Copyedit.
 5. Click the email icon under COMPLETE and send email to the editor.
 
@@ -684,7 +685,7 @@ jhvdo hkrqh: {$expiryDate}
 	</email_text>
 	<email_text key="LOCKSS_EXISTING_ARCHIVE">
 		<subject>تقاضای آزشیو برای {$journalName}</subject>
-		<body>مسئول محترم کتابخانه 
+		<body>مسئول محترم کتابخانه
 
 مجله {$journalName} &lt;{$journalUrl}&gt;, مجله ای است که یکی از اعضای آن مؤسسه  (بنام فلان) در آن عضو میباشد. این مجله متقاضی آرشیو شدن محتوایش در یک سایت LOCKSS میباشد. خواهشمند است مساعدت فرموده و این مجله را در سیستم خود آرشیو کنید.rsity libraries.
 
@@ -730,14 +731,6 @@ jhvdo hkrqh: {$expiryDate}
 چنانچه دی\ر مایل به دریافت ایمیل اطلاع رسانی نیستید، لطفا به آدرس {$unsubscribeLink} رفته و ایمیل و رمز خود را وارد کنید.
 
  :رمز عبور شما برای غیر فعال کردن ایمیل اطلاع رسانی{$password}
-
-{$principalContactSignature}</body>
-	</email_text>
-	<email_text key="NOTIFICATION_MAILLIST_PASSWORD">
-		<subject>اطلاعات لیست ایمیلی اطلاع رسانی شما برای {$siteTitle}</subject>
-		<body>رمز عبور جدید شما برای غیر فعال سازی ایمیل اطلاع رسانی: {$password}
-
-در صورتی که دیگر مایل نیستید ایمیل اطلاع رسانی دریافت کنید، لطفا به {$unsubscribeLink} رفته و ایمیل و رمز عبور را وارد کنید.
 
 {$principalContactSignature}</body>
 	</email_text>
@@ -884,5 +877,60 @@ Subscription Type:
 
 {$userFirstName}
 ویراستار, {$journalName}</body>
+	</email_text>
+	<email_text key="GIFT_AVAILABLE">
+		<subject>{$giftNoteTitle}</subject>
+		<body>سلام {$recipientFirstName},
+
+{$buyerFullName}  اشتراک نشریه {$giftJournalName} را برای شما هدیه خریده است‫: ‬
+{$giftDetails}
+
+{$giftNote}
+
+‎ایمیل دیگری حاوی اطلاعات لاگ این به نشریه و دریافت هدیه اشتراک شما برایتان فرستاده شده‫.‬
+‎امیدواریم که از دریافت این هدیه لذت ببرید‫.‬
+
+
+{$giftContactSignature}</body>
+		<description>این ایمیل به دریافت کننده هدیه اطلاع میدهد که هدیه خریده شده و آماده دریافت است‫.‬</description>
+	</email_text>
+	<email_text key="GIFT_USER_REGISTER">
+		<subject>دریافت هدیه‫:‬ اطلاعات ورود</subject>
+		<body>سلام {$recipientFirstName},
+
+{$buyerFullName}  اشتراک نشریه {$giftJournalName} را برای شما هدیه خریده است‫: ‬
+
+{$giftDetails}
+
+‎برای دریافت هدیه لطفا با اسم و رمز زیر در سایت ما به آدرس{$giftUrl}  لاگ این کنید‫.‬
+
+‎اسم ورود: {$username}
+‎رمز ورود: {$password}
+
+‎بعد از ورود شما میتوانید رمزتان را هر موقعی خواستید تغییر دهید‫.‬
+
+‎امیدواریم که از دریافت این هدیه لذت ببرید‫.‬
+
+{$giftContactSignature}</body>
+		<description>این ایمیل حاوی اطلاعات حساب جدید کاربری برای دریافت کننده هدیه اشتراک است‫.‬</description>
+	</email_text>
+	<email_text key="GIFT_USER_LOGIN">
+		<subject>دریافت هدیه‫:‬ اطلاعات ورود</subject>
+		<body>سلام {$recipientFirstName},
+
+{$buyerFullName}  اشتراک نشریه {$giftJournalName} را برای شما هدیه خریده است‫: ‬
+
+{$giftDetails}
+
+
+‎برای دریافت هدیه لطفا با اسم و رمز زیر در سایت ما به آدرس{$giftUrl}  لاگ این کنید‫.‬
+
+‎اسم ورود: {$username}
+
+‎امیدواریم که از دریافت این هدیه لذت ببرید‫.‬
+
+
+{$giftContactSignature}</body>
+		<description>این ایمیل حاوی اطلاعات حساب جدید کاربری برای دریافت کننده هدیه اشتراک است‫.‬</description>
 	</email_text>
 </email_texts>

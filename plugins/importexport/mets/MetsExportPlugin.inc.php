@@ -3,7 +3,7 @@
 /**
  * @file METSExportPlugin.inc.php
  *
- * Copyright (c) 2003-2012 John Willinsky
+ * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PubMedExportPlugin
@@ -11,9 +11,6 @@
  *
  * @brief METS/MODS XML metadata export plugin
  */
-
-// $Id$
-
 
 import('classes.plugins.ImportExportPlugin');
 
@@ -47,9 +44,9 @@ class METSExportPlugin extends ImportExportPlugin {
 		return __('plugins.importexport.METSExport.description');
 	}
 
-	function display(&$args) {
+	function display(&$args, $request) {
 		$templateMgr =& TemplateManager::getManager();
-		parent::display($args);
+		parent::display($args, $request);
 		$issueDao =& DAORegistry::getDAO('IssueDAO');
 		$journal =& Request::getJournal();
 		switch (array_shift($args)) {
@@ -74,7 +71,7 @@ class METSExportPlugin extends ImportExportPlugin {
 			case 'issues':
 				// Display a list of issues for export
 				$this->setBreadcrumbs(array(), true);
-				AppLocale::requireComponents(array(LOCALE_COMPONENT_OJS_EDITOR));
+				AppLocale::requireComponents(LOCALE_COMPONENT_OJS_EDITOR);
 				$issueDao =& DAORegistry::getDAO('IssueDAO');
 				$issues =& $issueDao->getIssues($journal->getId(), Handler::getRangeInfo('issues'));
 

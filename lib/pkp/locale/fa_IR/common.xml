@@ -4,12 +4,11 @@
 <!--
   * locale/fa_IR/common.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fa_IR (Persian) locale.
   *
-  * $Id$
   -->
 
 <locale name="fa_IR" full_name = "Persian">
@@ -257,9 +256,9 @@
 	<message key="search.matchAll">جور بودن با همه قسمت ها</message>
 	<message key="search.noKeywordError">باید حداقل یک کلید واژه جستجو وارد کنید</message>
 	<message key="search.noResults">بی نتیجه</message>
-	<message key="search.operator.and">و</message>
-	<message key="search.operator.not">نه</message>
-	<message key="search.operator.or">یا</message>
+	<message key="search.operator.and">and</message>
+	<message key="search.operator.not">not</message>
+	<message key="search.operator.or">or</message>
 	<message key="search.reviseSearch">تجدید نظر در جستجو</message>
 	<message key="search.searchAllCategories">جستجو کن تمام قسمت ها را برای</message>
 	<message key="search.searchCategories">قسمت های جستجو</message>
@@ -269,21 +268,21 @@
 	<message key="search.title">عنوان</message>
 	<message key="search.typeMethodApproach">نوع ، روش یا راهکار</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_new" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
+		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
 		<br/>
-کار حاضر تحت لیسانس 
-		<a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">
+کار حاضر تحت لیسانس
+		<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">
 		Creative Commons Attribution 3.0
 		</a>
 		میباشد.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_new"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 		<br />
-کار حاضر تحت لیسانس 
-		<a rel="license" target="_new" href="http://creativecommons.org/licenses/by/3.0/">
+کار حاضر تحت لیسانس
+		<a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">
 		Creative Commons Attribution 3.0
 		</a>
 		میباشد.]]></message>
@@ -321,10 +320,8 @@
 	<message key="notification.reminderError">بروز خطا هنگام ارسال رمز عبور شما، مطمئن شوید که آدرس ایمیل را صحیح وارد کرده اید.</message>
 	<message key="notification.reminderSent">رمز عبور جدیدی برایتان به آدرس ایمیلی که وارد کردید ارسال شد.</message>
 	<message key="notification.unsubscribe">لغو اشتراک</message>
-	<message key="notification.unsubscribeDescription">آدرس ایمیل و رمز عبور خود را در پائین وارد کنید تا اشتراک خود را برای اطلاع رسانی از طریق ایمیل لغو کرده باشید. اگر رمز عبور خود را بیاد نمی آورید، رمز عبور را خالی بگذارید تا بدین رسیله رمز جدیدی برایتان ارسال شود.</message>
 	<message key="notification.unsubscribeError">بروز خطا هنگام لغو اشتراک شما. لطفا مطمئن شوید که آدرس ایمیل و رمز عبور را صحیح وارد کرده اید.</message>
 	<message key="notification.unsubscribeSuccess">لغو اشتراک با موفقیت انجام شد.</message>
-	<message key="common.actingAsUserGroup.userIsNotInTargetUserGroup">شما در این گروه کاربری نیستید</message>
 	<message key="common.disable">غیرفعال کردن</message>
 	<message key="common.enable">فعال کردن</message>
 	<message key="common.fullscreen">تمام صفحه</message>

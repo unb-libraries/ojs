@@ -4,12 +4,11 @@
 <!--
   * locale/en_US/installer.xml
   *
-  * Copyright (c) 2000-2012 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ml_IN (Malayalam) locale.
   *
-  * $Id$
   -->
 
 <locale name="ml_IN" full_name = "Malayalam">
@@ -70,6 +69,5 @@
 	<message key="installer.publicFilesDirError">പൊതു ഫയലുകളുടെ ഡയറക്ടറി നിലവിലില്ല.</message>
 	<message key="installer.releaseNotes">കുറിപ്പുകള്‍ പ്രകാശിപ്പിക്കുക</message>
 	<message key="installer.securitySettings">ഭദ്രത ക്രമീകരണം</message>
-	<message key="installer.skipFilesDir">സബ് ഡയറക്ടറികള്‍ സൃഷ്ടിക്കരുത് (മാനുവല്‍ ഇന്‍സ്റ്റാളേഷന് മാത്രം സാധ്യം)</message>
 	<message key="installer.manualUpgrade">മാനുവല്‍ അപ്ഗ്രേഡ്</message>
 </locale>
