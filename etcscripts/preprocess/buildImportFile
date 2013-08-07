@@ -606,6 +606,7 @@ class EruditUnmarshaller {
   private $erudit_langcodes = array(
     'en' => 'en_US',
     'fr' => 'fr_CA',
+    'es' => 'es_ES',
   );
   
   function __construct($xml) {
