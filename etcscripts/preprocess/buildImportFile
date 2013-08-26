@@ -727,7 +727,7 @@ class EruditUnmarshaller {
 
       // there may be multiple issues: replace commas with ' and ' for
       // readability
-      if (strpos($issue, '-') >= 0) {
+      if (strpos($issue, '-') !== false) {
         $title .= 's';
         $issue = str_replace('-', ' and ', $issue);
       }
