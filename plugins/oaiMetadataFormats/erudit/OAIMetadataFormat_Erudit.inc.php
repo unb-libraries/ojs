@@ -133,12 +133,15 @@ class OAIMetadataFormat_Erudit extends OAIMetadataFormat {
 
     // Examine files with type = 'public' to find a candidate galley upon
     // which to base the search for the corresponding Erudit XML file. 
+    // JS : 2013-09-17 
+    // Looks like 'public' has been changed to CONST 7
+    // Altering appropriately. See http://support.lib.unb.ca/default.asp?259
     
     $eruditXmlFileName = '';
     
     foreach ($articleFiles as $articleFile) {
       // We're only interested in public galleys
-      if ($articleFile->getType() == 'public') {
+      if ($articleFile->getType() == '7') {
 
         // Galley filenames may have been changed to follow naming convention:
         // filter out any that don't correspond.
