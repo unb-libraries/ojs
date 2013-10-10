@@ -194,6 +194,20 @@ class Article extends Submission {
 	 * @return int
 	 */
 	function getStoredPubId($pubIdType) {
+		// Temporary work-around to not display DOIs for articles that haven't yet registered with Crossref
+		if( $pubIdType == 'doi' ) {
+			$articleIssueDAO =& DAORegistry::GetDAO( 'IssueDAO' );
+			$articleIssue =& $articleIssueDAO->getIssueByArticleId( $this->getArticleId() );
+			$journalId = $this->getJournalId();
+
+			if (
+				( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
+				( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
+			) {
+				return null;
+			}
+		}
+
 		return $this->getData('pub-id::'.$pubIdType);
 	}
 

@@ -96,6 +96,19 @@ class DOIPubIdPlugin extends PubIdPlugin {
 		$doiEnabled = ($this->getSetting($journalId, "enable${pubObjectType}Doi") == '1');
 		if (!$doiEnabled) return null;
 
+		// Temporary work-around to not display DOIs for articles that haven't yet registered with Crossref
+		if( is_a( $pubObject, 'Article' ) ) {
+			$articleIssueDAO =& DAORegistry::GetDAO( 'IssueDAO' ); 
+			$articleIssue =& $articleIssueDAO->getIssueByArticleId( $article->getArticleId() ); 
+
+			if (
+                                ( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
+                                ( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
+			) {
+				return null;
+			}
+		}
+
 		// If we already have an assigned DOI, use it.
 		$storedDOI = $pubObject->getStoredPubId('doi');
 		if ($storedDOI) return $storedDOI;
