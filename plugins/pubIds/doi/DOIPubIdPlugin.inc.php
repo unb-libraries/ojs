@@ -102,8 +102,9 @@ class DOIPubIdPlugin extends PubIdPlugin {
 			$articleIssue =& $articleIssueDAO->getIssueByArticleId( $article->getArticleId() ); 
 
 			if (
-                                ( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
-                                ( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
+				$articleIssue !== null &&
+				( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
+				( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
 			) {
 				return null;
 			}
