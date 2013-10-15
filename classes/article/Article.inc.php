@@ -201,10 +201,14 @@ class Article extends Submission {
 			$journalId = $this->getJournalId();
 
 			if (
+				$articleIssue !== null &&
 				( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
 				( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
 			) {
 				return null;
+			}
+			else {
+				$this->getData('pub-id::'.$pubIdType);
 			}
 		}
 
