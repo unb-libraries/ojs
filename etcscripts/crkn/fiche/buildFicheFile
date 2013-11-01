@@ -3,7 +3,12 @@
 use strict;
 use DBI;
 
-my $dbh = DBI->connect("DBI:mysql:db","user","password");
+require 'db_auth.pl';
+our $ojs_db_conn;
+our $ojs_db_user;
+our $ojs_db_password;
+
+my $dbh = DBI->connect($ojs_db_conn,$ojs_db_user,$ojs_db_password);
 
 local $/ = undef;
 
