@@ -129,7 +129,8 @@ class OAIMetadataFormat_Erudit extends OAIMetadataFormat {
     $articleFiles = $articleFileDao->getArticleFilesByArticle($articleId);
 
     // First parenthesized subpattern captures filename excluding extension.    
-    $fileNameRegExp = "/^([A-Za-z]+\d+_?(\d+)?(_\d+)*[a-z]+\d+)\.(pdf|html)$/";
+    $oldFileNameRegExp = "/^([A-Za-z]+\d+_?(\d+)?(_\d+)*[a-z]+\d+)\.(pdf|html)$/";
+    $tournesolFileNameRegExp = "/^(\d{7,8}ar)\.(pdf|html)$/";
 
     // Examine files with type = 'public' to find a candidate galley upon
     // which to base the search for the corresponding Erudit XML file. 
@@ -145,9 +146,14 @@ class OAIMetadataFormat_Erudit extends OAIMetadataFormat {
 
         // Galley filenames may have been changed to follow naming convention:
         // filter out any that don't correspond.
-        if (preg_match($fileNameRegExp, $articleFile->getOriginalFileName(), $matches)) {
+        if (preg_match($oldFileNameRegExp, $articleFile->getOriginalFileName(), $matches)) {
           
           // Seems fine.  Build Erudit XML filename 
+          $eruditXmlFileName = $matches[1] . ".xml";
+          break;
+        } elseif (preg_match($tournesolFileNameRegExp, $articleFile->getOriginalFileName(), $matches)) {
+
+          // Seems fine.  Build Erudit XML filename
           $eruditXmlFileName = $matches[1] . ".xml";
           break;
         }
