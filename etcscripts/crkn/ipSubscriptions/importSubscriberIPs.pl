@@ -192,11 +192,14 @@ my $log = Log::Handler->new(
 
   # Grab the subscriber data 
   $log->info("Loading subscriber data...") if verbose();
-  
+
+  my $total = 0;  
   my $subscriber_data = subscriber_data();
   foreach my $institution (sort keys %$subscriber_data) {
     my $ip_list = $subscriber_data->{$institution};
     
+    $total += scalar @$ip_list;
+        
     foreach my $ip_data (@$ip_list) {
       $sth->execute(
         # IP data is UTF8-encoded but database's default character set is Latin-1.
@@ -209,6 +212,8 @@ my $log = Log::Handler->new(
     } # end foreach (ip range)
     
   } # end foreach institution
+
+  $log->info( "Entries: " . $total ) if verbose();
 
   # Done.
   $dbh->disconnect;
