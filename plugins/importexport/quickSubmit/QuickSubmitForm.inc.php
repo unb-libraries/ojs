@@ -3,6 +3,7 @@
 /**
  * @file plugins/importexport/quickSubmit/QuickSubmitForm.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -38,8 +39,10 @@ class QuickSubmitForm extends Form {
 		$this->addCheck(new FormValidatorArray($this, 'authors', 'required', 'author.submit.form.authorRequiredFields', array('firstName', 'lastName')));
 		$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.emailRequired', create_function('$email, $regExp', 'return String::regexp_match($regExp, $email);'), array(ValidatorEmail::getRegexp()), false, array('email')));
 		$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.urlInvalid', create_function('$url, $regExp', 'return empty($url) ? true : String::regexp_match($regExp, $url);'), array(ValidatorUrl::getRegexp()), false, array('url')));
-		$this->addCheck(new FormValidatorLocale($this, 'title', 'required', 'author.submit.form.titleRequired'));
 
+		$supportedSubmissionLocales = $journal->getSetting('supportedSubmissionLocales');
+		if (!is_array($supportedSubmissionLocales) || count($supportedSubmissionLocales) < 1) $supportedSubmissionLocales = array($journal->getPrimaryLocale());
+		$this->addCheck(new FormValidatorInSet($this, 'locale', 'required', 'author.submit.form.localeRequired', $supportedSubmissionLocales));
 	}
 
 	/**
@@ -102,9 +105,46 @@ class QuickSubmitForm extends Form {
 
 		$templateMgr->assign('enablePageNumber', $journal->getSetting('enablePageNumber'));
 
+		// Provide available submission languages. (Convert the array
+		// of locale symbolic names xx_XX into an associative array
+		// of symbolic names => readable names.)
+		$supportedSubmissionLocales = $journal->getSetting('supportedSubmissionLocales');
+		if (empty($supportedSubmissionLocales)) $supportedSubmissionLocales = array($journal->getPrimaryLocale());
+		$templateMgr->assign(
+			'supportedSubmissionLocaleNames',
+			array_flip(array_intersect(
+				array_flip(AppLocale::getAllLocales()),
+				$supportedSubmissionLocales
+			))
+		);
 		parent::display();
 	}
 
+	/**
+	 * Initialize form data for a new form.
+	 */
+	function initData() {
+		$request =& $this->request;
+		$journal =& $request->getJournal();
+		$supportedSubmissionLocales = $journal->getSetting('supportedSubmissionLocales');
+		// Try these locales in order until we find one that's
+		// supported to use as a default.
+		$fallbackLocales = array_keys($supportedSubmissionLocales);
+		$tryLocales = array(
+			$this->getFormLocale(), // Current form locale
+			AppLocale::getLocale(), // Current UI locale
+			$journal->getPrimaryLocale(), // Journal locale
+			$supportedSubmissionLocales[array_shift($fallbackLocales)] // Fallback: first one on the list
+		);
+		$this->_data = array();
+		foreach ($tryLocales as $locale) {
+			if (in_array($locale, $supportedSubmissionLocales)) {
+				// Found a default to use
+				$this->_data['locale'] = $locale;
+				break;
+			}
+		}
+	}
 
 	/**
 	 * Assign form data to user-submitted data.
@@ -132,7 +172,8 @@ class QuickSubmitForm extends Form {
 				'sponsor',
 				'citations',
 				'title',
-				'abstract'
+				'abstract',
+				'locale'
 			)
 		);
 
@@ -141,8 +182,9 @@ class QuickSubmitForm extends Form {
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$section =& $sectionDao->getSection($this->getData('sectionId'));
 		if ($section && !$section->getAbstractsNotRequired()) {
-			$this->addCheck(new FormValidatorLocale($this, 'abstract', 'required', 'author.submit.form.abstractRequired'));
+			$this->addCheck(new FormValidatorLocale($this, 'abstract', 'required', 'author.submit.form.abstractRequired', $this->getData('locale')));
 		}
+		$this->addCheck(new FormValidatorLocale($this, 'title', 'required', 'author.submit.form.titleRequired', $this->getData('locale')));
 	}
 
 	/**
@@ -180,11 +222,11 @@ class QuickSubmitForm extends Form {
 		$journal =& $router->getContext($request);
 
 		$article = new Article();
-		$article->setLocale($journal->getPrimaryLocale()); // FIXME in bug #5543
+		$article->setLocale($this->getData('locale'));
 		$article->setUserId($user->getId());
 		$article->setJournalId($journal->getId());
 		$article->setSectionId($this->getData('sectionId'));
-		$article->setLanguage(String::substr($journal->getPrimaryLocale(), 0, 2));
+		$article->setLanguage($this->getData('language'));
 		$article->setTitle($this->getData('title'), null); // Localized
 		$article->setAbstract($this->getData('abstract'), null); // Localized
 		$article->setDiscipline($this->getData('discipline'), null); // Localized
@@ -256,6 +298,7 @@ class QuickSubmitForm extends Form {
 		$tempFileIds = $this->getData('tempFileId');
 		$temporaryFileManager = new TemporaryFileManager();
 		$articleFileManager = new ArticleFileManager($articleId);
+		$designatedPrimary = false;
 		foreach (array_keys($tempFileIds) as $locale) {
 			$temporaryFile = $temporaryFileManager->getFile($tempFileIds[$locale], $user->getId());
 			$fileId = null;
@@ -290,11 +333,17 @@ class QuickSubmitForm extends Form {
 
 				$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
 				$galleyDao->insertGalley($galley);
-			}
 
-			if ($locale == $journal->getPrimaryLocale()) {
-				$article->setSubmissionFileId($fileId);
-				$article->SetReviewFileId($fileId);
+				if (!$designatedPrimary) {
+					$article->setSubmissionFileId($fileId);
+					$article->setReviewFileId($fileId);
+					if ($locale == $journal->getPrimaryLocale()) {
+						// Used to make sure that *some* file
+						// is designated Review Version, but
+						// preferrably the primary locale.
+						$designatedPrimary = true;
+					}
+				}
 			}
 
 			// Update file search index
@@ -400,7 +449,6 @@ class QuickSubmitForm extends Form {
 				$publishedArticle->setIssueId($issueId);
 				$publishedArticle->setDatePublished($this->getData('datePublished'));
 				$publishedArticle->setSeq(REALLY_BIG_NUMBER);
-				$publishedArticle->setViews(0);
 				$publishedArticle->setAccessStatus(ARTICLE_ACCESS_ISSUE_DEFAULT);
 
 				$publishedArticleDao->insertPublishedArticle($publishedArticle);

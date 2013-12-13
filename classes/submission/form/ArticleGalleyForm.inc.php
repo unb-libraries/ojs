@@ -7,6 +7,7 @@
 /**
  * @file classes/submission/form/ArticleGalleyForm.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -154,6 +155,9 @@ class ArticleGalleyForm extends Form {
 		$journal =& Request::getJournal();
 		$fileId = null;
 
+		$articleDao =& DAORegistry::getDAO('ArticleDAO');
+		$article =& $articleDao->getArticle($this->articleId, $journal->getId());
+
 		if (isset($this->galley)) {
 			$galley =& $this->galley;
 
@@ -231,7 +235,7 @@ class ArticleGalleyForm extends Form {
 				} else if ($createRemote) {
 					$galley->setLabel(__('common.remote'));
 					$galley->setRemoteURL(__('common.remoteURL'));
-					if ($enablePublicGalleyId) $galley->setPublicGalleyId(strtolower(__('common.remote')));
+					if ($enablePublicGalleyId) $galley->setStoredPubId('publisher-id', strtolower(__('common.remote')));
 				} else if (isset($fileType)) {
 					if(strstr($fileType, 'pdf')) {
 						$galley->setLabel('PDF');
@@ -252,8 +256,6 @@ class ArticleGalleyForm extends Form {
 			} else {
 				$galley->setLabel($this->getData('label'));
 			}
-			$articleDao =& DAORegistry::getDAO('ArticleDAO');
-			$article =& $articleDao->getArticle($this->articleId, $journal->getId());
 			$galley->setLocale($article->getLocale());
 
 			if ($enablePublicGalleyId) {
@@ -283,6 +285,9 @@ class ArticleGalleyForm extends Form {
 			$articleSearchIndex->articleFileChanged($this->articleId, ARTICLE_SEARCH_GALLEY_FILE, $fileId);
 			$articleSearchIndex->articleChangesFinished();
 		}
+
+		// Stamp the article modification (for OAI)
+		$articleDao->updateArticle($article);
 
 		return $this->galleyId;
 	}

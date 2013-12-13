@@ -4,6 +4,7 @@
 <!--
   * ojs_schema.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -304,6 +305,7 @@
 		</field>
 		<field name="date_published" type="T" />
 		<field name="date_notified" type="T" />
+		<field name="last_modified" type="T" />
 		<field name="access_status" type="I1">
 			<NOTNULL />
 			<DEFAULT VALUE="1" />
@@ -384,10 +386,6 @@
 		</field>
 		<field name="label" type="C2" size="32"/>
 		<field name="seq" type="F">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
-		</field>
-		<field name="views" type="I4">
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
 		</field>
@@ -629,10 +627,6 @@
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
 		</field>
-		<field name="views" type="I4">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
-		</field>
 		<field name="access_status" type="I1">
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
@@ -861,10 +855,6 @@
 		</field>
 		<field name="style_file_id" type="I8"/>
 		<field name="seq" type="F">
-			<NOTNULL/>
-			<DEFAULT VALUE="0"/>
-		</field>
-		<field name="views" type="I4">
 			<NOTNULL/>
 			<DEFAULT VALUE="0"/>
 		</field>

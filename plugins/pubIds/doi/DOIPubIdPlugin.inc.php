@@ -3,6 +3,7 @@
 /**
  * @file plugins/pubIds/doi/DOIPubIdPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -88,7 +89,7 @@ class DOIPubIdPlugin extends PubIdPlugin {
 			$journalId = $article->getJournalId();
 		}
 
-		$journal =& $this->_getJournal($journalId);
+		$journal =& $this->getJournal($journalId);
 		if (!$journal) return null;
 		$journalId = $journal->getId();
 
@@ -165,8 +166,12 @@ class DOIPubIdPlugin extends PubIdPlugin {
 				$doiSuffix = $this->getSetting($journalId, "doi${pubObjectType}SuffixPattern");
 
 				// %j - journal initials
-				$doiSuffix = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials')), $doiSuffix);
+				$doiSuffix = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials', $journal->getPrimaryLocale())), $doiSuffix);
 
+				// %x - custom identifier
+				if ($pubObject->getStoredPubId('publisher-id')) {
+					$doiSuffix = String::regexp_replace('/%x/', $pubObject->getStoredPubId('publisher-id'), $doiSuffix);
+				}
 				if ($issue) {
 					// %v - volume number
 					$doiSuffix = String::regexp_replace('/%v/', $issue->getVolume(), $doiSuffix);
@@ -175,19 +180,18 @@ class DOIPubIdPlugin extends PubIdPlugin {
 					// %Y - year
 					$doiSuffix = String::regexp_replace('/%Y/', $issue->getYear(), $doiSuffix);
 				}
-
 				if ($article) {
 					// %a - article id
 					$doiSuffix = String::regexp_replace('/%a/', $article->getId(), $doiSuffix);
 					// %p - page number
-					$doiSuffix = String::regexp_replace('/%p/', $article->getPages(), $doiSuffix);
+					if ($article->getPages()) {
+						$doiSuffix = String::regexp_replace('/%p/', $article->getPages(), $doiSuffix);
+					}
 				}
-
 				if ($galley) {
 					// %g - galley id
 					$doiSuffix = String::regexp_replace('/%g/', $galley->getId(), $doiSuffix);
 				}
-
 				if ($suppFile) {
 					// %s - supp file id
 					$doiSuffix = String::regexp_replace('/%s/', $suppFile->getId(), $doiSuffix);
@@ -195,7 +199,7 @@ class DOIPubIdPlugin extends PubIdPlugin {
 				break;
 
 			default:
-				$doiSuffix = String::strtolower($journal->getLocalizedSetting('initials'));
+				$doiSuffix = String::strtolower($journal->getLocalizedSetting('initials', $journal->getPrimaryLocale()));
 
 				if ($issue) {
 					$doiSuffix .= '.v' . $issue->getVolume() . 'i' . $issue->getNumber();
@@ -253,7 +257,12 @@ class DOIPubIdPlugin extends PubIdPlugin {
 	 * @see PubIdPlugin::getResolvingURL()
 	 */
 	function getResolvingURL($journalId, $pubId) {
-		return 'http://dx.doi.org/'.urlencode($pubId);
+		// See ANSI/NISO Z39.84-2005, Appendix E. (Bug #8190)
+		$separatorIndex = String::strpos($pubId, '/');
+		assert($separatorIndex !== false); // Should contain a slash
+		$prefix = String::substr($pubId, 0, $separatorIndex);
+		$suffix = String::substr($pubId, $separatorIndex+1);
+		return 'http://dx.doi.org/' . $prefix . '/' . urlencode($suffix);
 	}
 
 	/**
@@ -313,32 +322,6 @@ class DOIPubIdPlugin extends PubIdPlugin {
 		return count($doiParts) == 2;
 	}
 
-
-	//
-	// Private helper methods
-	//
-	/**
-	 * Get the journal object.
-	 * @param $journalId integer
-	 * @return Journal
-	 */
-	function &_getJournal($journalId) {
-		assert(is_numeric($journalId));
-
-		// Get the journal object from the context (optimized).
-		$request =& Application::getRequest();
-		$router =& $request->getRouter();
-		$journal =& $router->getContext($request); /* @var $journal Journal */
-
-		// Check whether we still have to retrieve the journal from the database.
-		if (!$journal || $journal->getId() != $journalId) {
-			unset($journal);
-			$journalDao =& DAORegistry::getDAO('JournalDAO');
-			$journal =& $journalDao->getById($journalId);
-		}
-
-		return $journal;
-	}
 }
 
 ?>

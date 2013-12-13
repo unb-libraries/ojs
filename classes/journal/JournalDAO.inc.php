@@ -3,6 +3,7 @@
 /**
  * @file classes/journal/JournalDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -14,6 +15,7 @@
  */
 
 import ('classes.journal.Journal');
+import('lib.pkp.classes.metadata.MetadataTypeDescription');
 
 define('JOURNAL_FIELD_TITLE', 1);
 define('JOURNAL_FIELD_SEQUENCE', 2);

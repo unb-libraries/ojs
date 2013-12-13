@@ -3,6 +3,7 @@
 /**
  * @file classes/notification/PKPNotificationManager.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -465,7 +466,7 @@ class PKPNotificationManager {
 		$mailList = $notificationMailListDao->getMailList($notification->getContextId());
 		AppLocale::requireComponents(LOCALE_COMPONENT_APPLICATION_COMMON);
 
-		foreach ($mailList as $email) {
+		foreach ($mailList as $recipient) {
 			import('classes.mail.MailTemplate');
 			$context =& $request->getContext();
 			$site =& $request->getSite();
@@ -478,9 +479,9 @@ class PKPNotificationManager {
 				'notificationContents' => $this->getNotificationContents($request, $notification),
 				'url' => $this->getNotificationUrl($request, $notification),
 				'siteTitle' => $context->getLocalizedTitle(),
-				'unsubscribeLink' => $dispatcher->url($request, ROUTE_PAGE, null, 'notification', 'unsubscribeMailList')
+				'unsubscribeLink' => $dispatcher->url($request, ROUTE_PAGE, null, 'notification', 'unsubscribeMailList', $recipient['token'])
 			));
-			$mail->addRecipient($email);
+			$mail->addRecipient($recipient['email']);
 			$mail->send();
 		}
 	}

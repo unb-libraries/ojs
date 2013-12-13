@@ -4,6 +4,7 @@
 <!--
   * locale/en_US/admin.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -38,6 +39,7 @@
 	<message key="admin.languages.reload">Reload Locale</message>
 	<message key="admin.languages.uninstall">Uninstall Locale</message>
 	<message key="admin.phpInfo">Extended PHP Information</message>
+	<message key="admin.scheduledTask">Scheduled task</message>
 	<message key="admin.server.apacheVersion">Apache version</message>
 	<message key="admin.server.dbDriver">Database driver</message>
 	<message key="admin.server.dbVersion">Database server version</message>
@@ -83,4 +85,9 @@
 	<message key="admin.version.updateAvailable">An updated version is available</message>
 	<message key="admin.version.upToDate">Your system is up-to-date</message>
 	<message key="admin.version">Version</message>
+	
+	<message key="admin.fileLoader.wrongBasePathLocation">Base path {$path} must be inside the public files directory.</message>
+	<message key="admin.fileLoader.pathNotAccessible">Folder {$path} is not a directory or is not readable.</message>
+	<message key="admin.fileLoader.moveFileFailed">File {$filename} could not be moved from {$currentFilePath} to {$destinationPath}</message>
+	<message key="admin.fileLoader">File loader</message>
 </locale>

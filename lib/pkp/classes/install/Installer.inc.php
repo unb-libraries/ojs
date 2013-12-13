@@ -3,6 +3,7 @@
 /**
  * @file classes/install/Installer.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -419,6 +420,14 @@ class Installer {
 				}
 				break;
 			case 'note':
+				$condition = isset($action['attr']['condition'])?$action['attr']['condition']:null;
+				$includeAction = true;
+				if ($condition) {
+					$funcName = create_function('$installer,$action', $condition);
+					$includeAction = $funcName($this, $action);
+				}
+				if (!$includeAction) break;
+
 				$this->log(sprintf('note: %s', $action['file']));
 				$this->notes[] = join('', file($action['file']));
 				break;
@@ -705,6 +714,18 @@ class Installer {
 		// Check whether the table exists.
 		$tables = $dict->MetaTables('TABLES', false);
 		return in_array($tableName, $tables);
+	}
+
+	/**
+	 * Check to see whether the passed file exists.
+	 * @param $filePath string
+	 * @return boolean
+	 */
+	function fileExists($filePath) {
+		import('lib.pkp.classes.file.FileManager');
+		$fileMgr = new FileManager();
+
+		return $fileMgr->fileExists(realpath($filePath));
 	}
 
 	/**

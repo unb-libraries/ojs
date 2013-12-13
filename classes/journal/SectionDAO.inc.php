@@ -3,6 +3,7 @@
 /**
  * @file classes/journal/SectionDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -207,7 +208,7 @@ class SectionDAO extends DAO {
 			array(
 				(int)$section->getJournalId(),
 				(int)$section->getReviewFormId(),
-				$section->getSequence() == null ? 0 : $section->getSequence(),
+				(float) $section->getSequence(),
 				$section->getMetaIndexed() ? 1 : 0,
 				$section->getMetaReviewed() ? 1 : 0,
 				$section->getAbstractsNotRequired() ? 1 : 0,
@@ -247,7 +248,7 @@ class SectionDAO extends DAO {
 				WHERE section_id = ?',
 			array(
 				(int)$section->getReviewFormId(),
-				$this->nullOrInt($section->getSequence()),
+				(float) $section->getSequence(),
 				(int)$section->getMetaIndexed(),
 				(int)$section->getMetaReviewed(),
 				(int)$section->getAbstractsNotRequired(),

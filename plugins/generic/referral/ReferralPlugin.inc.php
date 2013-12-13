@@ -3,6 +3,7 @@
 /**
  * @file plugins/generic/referral/ReferralPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -48,10 +49,10 @@ class ReferralPlugin extends GenericPlugin {
 		return parent::getManagementVerbs($verbs);
 	}
 
- 	/*
- 	 * Execute a management verb on this plugin
- 	 * @param $verb string
- 	 * @param $args array
+	/*
+	 * Execute a management verb on this plugin
+	 * @param $verb string
+	 * @param $args array
 	 * @param $message string Result status message
 	 * @param $messageParams array Parameters for the message key
 	 * @return boolean
@@ -248,7 +249,7 @@ class ReferralPlugin extends GenericPlugin {
 			$referral->setUrl($referrer);
 			$referral->setStatus(REFERRAL_STATUS_NEW);
 			$referral->setDateAdded(Core::getCurrentDate());
-			$referralDao->insertReferral($referral);
+			$referralDao->replaceReferral($referral);
 		}
 		return false;
 	}

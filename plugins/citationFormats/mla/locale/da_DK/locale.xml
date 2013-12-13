@@ -4,6 +4,7 @@
 <!--
   * plugins/citationFormats/mla/locale/da_DK/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -11,7 +12,7 @@
   *
   -->
  
-<locale name="da_DK" full_name="Dutch">
+<locale name="da_DK" full_name="Danish">
 	<message key="plugins.citationFormats.mla.displayName">MLA citeringsformat plugin</message>
 	<message key="plugins.citationFormats.mla.citationFormatName">MLA</message>
 	<message key="plugins.citationFormats.mla.description">Dette plugin implementerer MLA citeringsformatet.</message>

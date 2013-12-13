@@ -4,6 +4,7 @@
 <!--
   * plugins/citationFormats/refMan/locale/da_DK/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -11,7 +12,7 @@
   *
   -->
  
-<locale name="da_DK" full_name="Dutch">
+<locale name="da_DK" full_name="Danish">
 	<message key="plugins.citationFormats.refMan.displayName">Reference Manager citeringsformat plugin</message>
 	<message key="plugins.citationFormats.refMan.citationFormatName">Reference Manager - RIS format (kun Windows)</message>
 	<message key="plugins.citationFormats.refMan.description">Dette plugin implementerer Reference Manager citeringsformatet.</message>

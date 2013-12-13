@@ -4,14 +4,15 @@
 <!--
   * plugins/generic/thesis/locale/da_DK/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Thesis abstracts plugin localization strings for the da_DK (Dutch) locale.
+  * Thesis abstracts plugin localization strings for the da_DK (Danish) locale.
   *
   -->
  
-<locale name="da_DK" full_name="Dutch">
+<locale name="da_DK" full_name="Danish">
 
 	<!-- Thesis Abstract Management -->
 	<message key="plugins.generic.thesis.manager.settings">Indstillinger</message>

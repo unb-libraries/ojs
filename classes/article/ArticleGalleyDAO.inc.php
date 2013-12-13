@@ -3,6 +3,7 @@
 /**
  * @file classes/article/ArticleGalleyDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -280,7 +281,6 @@ class ArticleGalleyDAO extends DAO {
 		$galley->setLabel($row['label']);
 		$galley->setFileStage($row['file_stage']);
 		$galley->setSequence($row['seq']);
-		$galley->setViews($row['views']);
 		$galley->setRemoteURL($row['remote_url']);
 
 		// ArticleFile set methods

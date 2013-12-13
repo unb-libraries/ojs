@@ -3,6 +3,7 @@
 /**
  * @file pages/user/RegistrationHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -113,7 +114,7 @@ class RegistrationHandler extends UserHandler {
 	 * Show error message if user registration is not allowed.
 	 * @param $request PKPRequest
 	 */
-	function registrationDisabled(&$request) {
+	function registrationDisabled($request) {
 		$this->setupTemplate($request, true);
 		$templateMgr =& TemplateManager::getManager();
 		$templateMgr->assign('pageTitle', 'user.register');

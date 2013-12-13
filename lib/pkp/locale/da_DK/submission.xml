@@ -4,6 +4,7 @@
 <!--
   * locale/da_DK/submission.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -158,6 +159,7 @@
 	<message key="submission.submitter">Indsender</message>
 	<message key="submission.summary">Resumé</message>
 	<message key="submission.supplementaryFiles">Supplerende filer</message>
+	<message key="submission.supportingAgencies">Støtteinstanser</message>
 	<message key="submission.titleAndAbstract">Titel og resumé</message>
 	<message key="submission.underway">Forestående</message>
 	<message key="submission.uploadFileTo">Overfør fil til</message>
@@ -379,7 +381,7 @@
 	<message key="submission.layout.galleyRemoteURL">Ekstern URL</message>
 	<message key="submission.layout.galleyRemoteURLValid">Indsæt en gyldig ekstern URL (medtag http://).</message>
 	<message key="submission.reviewed">Bedømt</message>
-	<message key="submission.supportingAgencies">Støtteorganisationer</message>
+	<message key="submission.supportingAgencies">Støtteinstanser</message>
 	<message key="submission.createRemote">Opret ekstern</message>
 	<message key="submission.form.name">Giv denne fil et sigendenavn</message>
 	<message key="submission.form.replaceExisting">Erstat en eksisterende fil?</message>

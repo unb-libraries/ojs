@@ -4,6 +4,7 @@
 <!--
   * ../pkp//locale/es_AR/installer.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -67,4 +68,6 @@
 	<message key="installer.installationWrongPhp"><![CDATA[<br/><strong>ATENCION: Su versión actual de PHP no cumple los requerimientos mínimos para una correcta instalación. SE recomiendo actualizar a una versión más reciente de PHP.</strong>]]></message>
 	<message key="installer.installParseEmailTemplatesFileError"><![CDATA[Error al parsear el archivo de plantilla de correo <tt>{$file}</tt>.]]></message>
 	<message key="installer.locale.maybeIncomplete">Las internacionalizaciones seleccionadas podrían estar incompletas</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Error al interpretar el arhivo de configuración de filtros: <tt>{$file}</tt>]]></message>
+	<message key="installer.oaiSettings">Configuración de OAI</message>
 </locale>

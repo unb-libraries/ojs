@@ -3,6 +3,7 @@
 /**
  * @file classes/i18n/AppLocale.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -79,10 +80,14 @@ class AppLocale extends PKPLocale {
 			} else {
 				$sessionManager =& SessionManager::getManager();
 				$session =& $sessionManager->getUserSession();
-				$locale = $session->getSessionVar('currentLocale');
+				$locale = Request::getUserVar('uiLocale');
 
 				$journal =& Request::getJournal();
 				$site =& Request::getSite();
+
+				if (!isset($locale)) {
+					$locale = $session->getSessionVar('currentLocale');
+				}
 
 				if (!isset($locale)) {
 					$locale = Request::getCookieVar('currentLocale');

@@ -1,6 +1,7 @@
 {**
  * plugins/citationFormats/endNote/citation.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -29,12 +30,17 @@
 %K {$article->getLocalizedSubject()|escape}
 %X {$article->getLocalizedAbstract()|strip_tags|replace:"\n":" "|replace:"\r":" "}
 %U {$articleUrl}
+%0 Journal Article
+{if $article->getPubId('doi')}%R {$article->getPubId('doi')|escape}
+{/if}
+{if $article->getPages()}%R {$article->getPages()|escape}
+{/if}
 %J {$currentJournal->getLocalizedTitle()|escape}
 {if $issue->getShowVolume()}%V {$issue->getVolume()|escape}
 {/if}
 {if $issue->getShowNumber()}%N {$issue->getNumber()|escape}
 {/if}
-{if $currentJournal->getSetting('onlineIssn')}%@ {$currentJournal->getSetting('onlineIssn')}|escape}
-{elseif $currentJournal->getSetting('printIssn')}%@ {$currentJournal->getSetting('printIssn')}|escape}
+{if $currentJournal->getSetting('onlineIssn')}%@ {$currentJournal->getSetting('onlineIssn')|escape}
+{elseif $currentJournal->getSetting('printIssn')}%@ {$currentJournal->getSetting('printIssn')|escape}
 {/if}
 

@@ -4,14 +4,15 @@
 <!--
   * plugins/generic/announcementFeed/locale/da_DK/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the da_DK (Dutch) locale.
+  * Localization strings for the da_DK (Danish) locale.
   *
   -->
  
-<locale name="da_DK" full_name="Dutch">
+<locale name="da_DK" full_name="Danish">
 	<message key="plugins.generic.announcementfeed.displayName">Meddelelsesfeed plugin</message>
 	<message key="plugins.generic.announcementfeed.description">Dette plugin genererer RSS/Atom web syndication feeds til meddelelser i tidsskriftet.</message>
 

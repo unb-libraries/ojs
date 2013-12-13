@@ -3,6 +3,7 @@
 /**
  * @file classes/submission/sectionEditor/SectionEditorSubmission.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -571,6 +572,8 @@ class SectionEditorSubmission extends Article {
 				strtotime($finalSignoff->getDateUnderway()) : 0;
 			$dateCopyeditorFinalCompleted = $finalSignoff->getDateCompleted() ?
 				strtotime($finalSignoff->getDateCompleted()) : 0;
+			$dateCopyeditorFinalAcknowledged = $finalSignoff->getDateAcknowledged() ?
+				strtotime($finalSignoff->getDateAcknowledged()) : 0;
 			$dateLastCopyeditorFinal = max($dateCopyeditorFinalNotified, $dateCopyeditorUnderway);
 
 			// Check if round 3 is awaiting notification.

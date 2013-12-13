@@ -4,6 +4,7 @@
 <!--
   * plugins/blocks/donation/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,6 +20,6 @@
   -->
  
 <locale name="el_GR" full_name="Greek">
-	<message key="plugins.block.donation.displayName">Block Δωρεών</message>
-	<message key="plugins.block.donation.description">Το plugin αυτό παρέχει ένα σύνδεσμο στην πλαϊνή μπάρα για την αποδοχή δωρεών.</message>
+	<message key="plugins.block.donation.displayName">Δομική Μονάδα Δωρεών</message>
+	<message key="plugins.block.donation.description">Το πρόσθετο αυτό παρέχει ένα σύνδεσμο στην πλαϊνή μπάρα για την αποδοχή δωρεών.</message>
 </locale>

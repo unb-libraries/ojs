@@ -4,14 +4,15 @@
 <!--
   * plugins/generic/xmlGalley/locale/da_DK/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the da_DK (Dutch) locale.
+  * Localization strings for the da_DK (Danish) locale.
   *
   -->
  
-<locale name="da_DK" full_name="Dutch">
+<locale name="da_DK" full_name="Danish">
 	<message key="plugins.generic.xmlGalley.displayName">XML korrektur plugin</message>
 	<message key="plugins.generic.xmlGalley.description">Dette plugin genererer XHTML korrekturer fra en XML artikel ved hjælp af XSLT.</message>
 

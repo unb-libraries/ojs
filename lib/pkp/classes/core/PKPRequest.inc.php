@@ -3,6 +3,7 @@
 /**
  * @file classes/core/PKPRequest.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -12,7 +13,6 @@
  * @brief Class providing operations associated with HTTP requests.
  */
 
-define('USER_AGENTS_FILE', Core::getBaseDir() . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . 'pkp' . DIRECTORY_SEPARATOR . 'registry' . DIRECTORY_SEPARATOR . 'botAgents.txt');
 
 class PKPRequest {
 	//
@@ -162,7 +162,18 @@ class PKPRequest {
 		$_this =& PKPRequest::_checkThis();
 
 		if (!isset($_this->_basePath)) {
-			$_this->_basePath = dirname($_SERVER['SCRIPT_NAME']);
+			$path = parse_url(dirname($_SERVER['SCRIPT_NAME']), PHP_URL_PATH);
+
+			// Encode charcters which need to be encoded in a URL.
+			// Simply using rawurlencode() doesn't work because it
+			// also encodes characters which are valid in a URL (i.e. @, $).
+			$parts = explode('/', $path);
+			foreach ($parts as $i => $part) {
+				$pieces = array_map(array($this, 'encodeBasePathFragment'), str_split($part));
+				$parts[$i] = implode('', $pieces);
+			}
+			$_this->_basePath = implode('/', $parts);
+
 			if ($_this->_basePath == '/' || $_this->_basePath == '\\') {
 				$_this->_basePath = '';
 			}
@@ -170,6 +181,19 @@ class PKPRequest {
 		}
 
 		return $_this->_basePath;
+	}
+
+	/**
+	 * Callback function for getBasePath() to correctly encode (or not encode)
+	 * a basepath fragment.
+	 * @param string $fragment
+	 * @return string
+	 */
+	function encodeBasePathFragment($fragment) {
+		if (!preg_match('/[A-Za-z0-9-._~!$&\'()*+,;=:@]/', $fragment)) {
+			return rawurlencode($fragment);
+		}
+		return $fragment;
 	}
 
 	/**
@@ -412,8 +436,8 @@ class PKPRequest {
 	}
 
 	/**
-	 * Determine whether a user agent is a bot or not using an external
-	 * list of regular expressions.
+	 * Determine whether the user agent is a bot or not.
+	 * @return boolean
 	 */
 	function isBot() {
 		$_this =& PKPRequest::_checkThis();
@@ -421,14 +445,7 @@ class PKPRequest {
 		static $isBot;
 		if (!isset($isBot)) {
 			$userAgent = $_this->getUserAgent();
-			$isBot = false;
-			$regexps = array_filter(file(USER_AGENTS_FILE), create_function('&$a', 'return ($a = trim($a)) && !empty($a) && $a[0] != \'#\';'));
-			foreach ($regexps as $regexp) {
-				if (String::regexp_match($regexp, $userAgent)) {
-					$isBot = true;
-					return $isBot;
-				}
-			}
+			$isBot = Core::isUserAgentBot($userAgent);
 		}
 		return $isBot;
 	}

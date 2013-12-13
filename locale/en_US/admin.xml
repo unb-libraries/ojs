@@ -4,6 +4,7 @@
 <!--
   * locale/en_US/admin.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -23,6 +24,11 @@
     <message key="admin.settings.journalsList.showThumbnail">Journal thumbnail</message>
     <message key="admin.settings.journalsList.showTitle">Journal title</message>
     <message key="admin.settings.journalsList.showDescription">Journal description</message>
+	<message key="admin.settings.defaultMetricDescription">
+		Your OJS installation is configured to record more than one usage metric. Usage statistics will be displayed in severeral contexts.
+		There are cases where a single usage statistic must be used, e.g. to display an ordered list of most-used articles or to rank
+		search results. Please select one of the configured metrics as a default.
+	</message>
 	<message key="admin.languages.primaryLocaleInstructions">This will be the default language for the site and any hosted journals.</message>
 	<message key="admin.languages.supportedLocalesInstructions">Select all locales to support on the site. The selected locales will be available for use by all journals hosted on the site, and also appear in a language select menu to appear on each site page (which can be overridden on journal-specific pages). If multiple locales are not selected, the language toggle menu will not appear and extended language settings will not be available to journals.</message>
 	<message key="admin.locale.maybeIncomplete">Marked locales may be incomplete.</message>
@@ -79,4 +85,19 @@
 	<message key="admin.categories.confirmDelete">Are you sure you wish to delete this category?</message>
 	<message key="admin.categories.name">Name</message>
 	<message key="admin.categories.nameRequired">A category name is required.</message>
+	
+	<message key="admin.copyAccessLogFileTool.usage">Copy the passed apache access log file(s), filtering the entries related with this installation,
+to the current files directory, inside the UsageStatsPlugin stage directory. Must run under user with enough privilegies to read access apache log files.
+
+This tool will only copy files that aren't already inside the usageStats file loader directories (stage, processing, archive, reject).
+
+Usage: {$scriptName} path/to/apache/log/file.log
+Usage (processing all files inside a directory): {$scriptName} path/to/apache/directory 
+	</message>
+	<message key="admin.copyAccessLogFileTool.error.creatingFolder">Error: can't create temporary folder {$tmpDir}</message>
+	<message key="admin.copyAccessLogFileTool.error.acessingFile">Error: File {$filePath} don't exist or can't be accessed.</message>
+	<message key="admin.copyAccessLogFileTool.error.copyingFile">Error: can't copy file from {$filePath} to {$tmpFilePath}</message>
+	<message key="admin.copyAccessLogFileTool.error.deletingFile">Error: can't delete file {$tmpFilePath}</message>
+	<message key="admin.copyAccessLogFileTool.warning.fileAlreadyExists">Warning: file {$filePath} already exists inside the usage stats directory.</message>
+	<message key="admin.copyAccessLogFileTool.success">Success: {$filePath} to {$destinationPath}</message>
 </locale>

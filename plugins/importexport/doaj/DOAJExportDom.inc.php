@@ -3,6 +3,7 @@
 /**
  * @file plugins/importexport/doaj/DOAJExportDom.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -69,7 +70,7 @@ class DOAJExportDom {
 		XMLCustomWriter::createChildWithText($doc, $root, 'eissn', $journal->getSetting('onlineIssn'), false);
 
 		/* --- Article's publication date, volume, issue, DOI --- */
-		XMLCustomWriter::createChildWithText($doc, $root, 'publicationDate', DOAJExportDom::formatDate($issue->getDatePublished()), false);
+		XMLCustomWriter::createChildWithText($doc, $root, 'publicationDate', DOAJExportDom::formatDate($article->getDatePublished()), false);
 
 		XMLCustomWriter::createChildWithText($doc, $root, 'volume',  $issue->getVolume(), false);
 

@@ -3,6 +3,7 @@
 /**
  * @file plugins/reports/articles/ArticleReportPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  * 
@@ -23,7 +24,7 @@ class ArticleReportPlugin extends ReportPlugin {
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
-		if ($success) {
+		if ($success && Config::getVar('general', 'installed')) {
 			$this->import('ArticleReportDAO');
 			$articleReportDAO = new ArticleReportDAO();
 			DAORegistry::registerDAO('ArticleReportDAO', $articleReportDAO);

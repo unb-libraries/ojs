@@ -1,6 +1,7 @@
 {**
  * templates/submission/metadata/metadataEdit.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -166,6 +167,14 @@ function moveAuthor(dir, authorIndex) {
 		<td class="value"><input type="text" name="authors[0][lastName]" id="authors-0-lastName" size="20" maxlength="90" class="textField" /></td>
 	</tr>
 	<tr valign="top">
+		<td class="label">{fieldLabel name="authors-0-email" required="true" key="user.email"}</td>
+		<td class="value"><input type="text" name="authors[0][email]" id="authors-0-email" size="30" maxlength="90" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{fieldLabel name="authors-0-url" key="user.url"}</td>
+		<td class="value"><input type="text" name="authors[0][url]" id="authors-0-url" size="30" maxlength="255" class="textField" /></td>
+	</tr>
+	<tr valign="top">
 		<td class="label">{fieldLabel name="authors-0-affiliation" key="user.affiliation"}</td>
 		<td class="value">
 			<textarea name="authors[0][affiliation][{$formLocale|escape}]" class="textArea" id="authors-0-affiliation" rows="5" cols="40"></textarea><br/>
@@ -173,12 +182,13 @@ function moveAuthor(dir, authorIndex) {
 		</td>
 	</tr>
 	<tr valign="top">
-		<td class="label">{fieldLabel name="authors-0-email" required="true" key="user.email"}</td>
-		<td class="value"><input type="text" name="authors[0][email]" id="authors-0-email" size="30" maxlength="90" class="textField" /></td>
-	</tr>
-	<tr valign="top">
-		<td class="label">{fieldLabel name="authors-0-url" key="user.url"}</td>
-		<td class="value"><input type="text" name="authors[0][url]" id="authors-0-url" size="30" maxlength="255" class="textField" /></td>
+		<td class="label">{fieldLabel name="authors-$authorIndex-country" key="common.country"}</td>
+		<td class="value">
+			<select name="authors[0][country]" id="authors-0-country" class="selectMenu">
+				<option value=""></option>
+				{html_options options=$countries}
+			</select>
+		</td>
 	</tr>
 	{if $currentJournal->getSetting('requireAuthorCompetingInterests')}
 		<tr valign="top">

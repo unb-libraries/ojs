@@ -7,6 +7,7 @@
 /**
  * @file classes/issue/Issue.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -166,7 +167,7 @@ class Issue extends DataObject {
 		return $this->setData('current', $current);
 	}
 
- 	/**
+	/**
 	 * get date published
 	 * @return date
 	 */
@@ -182,7 +183,7 @@ class Issue extends DataObject {
 		return $this->setData('datePublished', $datePublished);
 	}
 
- 	/**
+	/**
 	 * get date the users were last notified
 	 * @return date
 	 */
@@ -196,6 +197,29 @@ class Issue extends DataObject {
 	 */
 	function setDateNotified($dateNotified) {
 		return $this->setData('dateNotified', $dateNotified);
+	}
+
+	/**
+	 * get date the issue was last modified
+	 * @return date
+	 */
+	function getLastModified() {
+		return $this->getData('lastModified');
+	}
+
+	/**
+	 * set date the issue was last modified
+	 * @param $lastModified date
+	 */
+	function setLastModified($lastModified) {
+		return $this->setData('lastModified', $lastModified);
+	}
+
+	/**
+	 * Stamp the date of the last modification to the current time.
+	 */
+	function stampModified() {
+		return $this->setLastModified(Core::getCurrentDate());
 	}
 
 	/**
@@ -214,7 +238,7 @@ class Issue extends DataObject {
 		return $this->setData('accessStatus', $accessStatus);
 	}
 
- 	/**
+	/**
 	 * get open access date
 	 * @return date
 	 */

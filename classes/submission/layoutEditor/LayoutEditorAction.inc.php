@@ -7,6 +7,7 @@
 /**
  * @file classes/submission/layoutEditor/LayoutEditorAction.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -71,6 +72,10 @@ class LayoutEditorAction extends Action {
 				}
 			}
 			$galleyDao->deleteGalley($galley);
+
+			// Stamp the article modification (for OAI)
+			$articleDao =& DAORegistry::getDAO('ArticleDAO');
+			$articleDao->updateArticle($article);
 		}
 	}
 
@@ -138,6 +143,10 @@ class LayoutEditorAction extends Action {
 				$articleSearchIndex->articleFileDeleted($article->getId(), ARTICLE_SEARCH_SUPPLEMENTARY_FILE, $suppFile->getFileId());
 				$articleSearchIndex->articleChangesFinished();
 			}
+
+			// Stamp the article modification (for OAI)
+			$articleDao =& DAORegistry::getDAO('ArticleDAO');
+			$articleDao->updateArticle($article);
 		}
 	}
 

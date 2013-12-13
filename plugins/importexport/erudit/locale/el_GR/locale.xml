@@ -4,6 +4,7 @@
 <!--
   * plugins/importexport/erudit/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,11 +20,10 @@
   -->
  
 <locale name="el_GR" full_name="Greek">	
-	<message key="plugins.importexport.erudit.displayName">Plugin εξαγωγής άρθρου Erudit</message>
+	<message key="plugins.importexport.erudit.displayName">Πρόσθετο εξαγωγής άρθρου Erudit</message>
 	<message key="plugins.importexport.erudit.description">Εξαγωγή άρθρων με την χρήση του English Erudit DTD</message>
 
-	<message key="plugins.importexport.erudit.cliUsage"><![CDATA[Χρήση: {$scriptName} {$pluginName} [xmlFileName] [journalPath] [articleId] [galleyLabel]
-]]></message>
+	<message key="plugins.importexport.erudit.cliUsage">Χρήση: {$scriptName} {$pluginName} [xmlFileName] [journalPath] [articleId] [galleyLabel]</message>
 	<message key="plugins.importexport.erudit.export">Εξαγωγή δεδομένων</message>
 	<message key="plugins.importexport.erudit.export.issues">Εξαγωγή Τευχών</message>
 	<message key="plugins.importexport.erudit.export.sections">Εξαγωγή Ενοτήτων</message>

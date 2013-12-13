@@ -4,6 +4,7 @@
 <!--
   * plugins/blocks/keywordCloud/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -12,7 +13,7 @@
   -->
  
 <locale name="el_GR" full_name="Greek">
-	<message key="plugins.block.keywordCloud.description">Αυτό το plugin παρέχει ένα  tag cloud με λέξεις κλειδιά για ένα άρθρο.</message>
+	<message key="plugins.block.keywordCloud.description">Αυτό το πρόσθετο παρέχει ένα  νέφος ετικετών με λέξεις κλειδιά για ένα άρθρο.</message>
 	<message key="plugins.block.keywordCloud.title">Λέξεις κλειδιά</message>
-	<message key="plugins.block.keywordCloud.displayName">Blocl Νέφους Λέξεων Κλειδιών</message>
+	<message key="plugins.block.keywordCloud.displayName">Δομική Μοανάδα Νέφους Λέξεων Κλειδιών</message>
 </locale>

@@ -4,6 +4,7 @@
 <!--
   * lcoale/de_DE/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -27,6 +28,7 @@
 	<!-- review froms start -->
 
 	<!-- common -->
+	<message key="common.journal">Zeitschrift</message>
 
 	<!-- Journal Management -->
 
@@ -199,6 +201,7 @@
 	<message key="journal.issn">ISSN</message>
 
 	<!-- Benutzer/in -->
+	<message key="user.profile.profileImage">Profilbild</message>
 	<message key="user.showAllJournals">Alle Zeitschriften anzeigen</message>
 	<message key="user.registerForOtherJournals">Für andere Zeitschriften registrieren</message>
 	<message key="user.myJournals">Meine Zeitschriften</message>
@@ -413,7 +416,7 @@ Autor/innen, die in dieser Zeitschrift publizieren möchten, stimmen den folgend
 	<li>Die Autor/innen werden dazu ermutigt, ihre Arbeit parallel zur Einreichung bei dieser Zeitschrift online zu veröffentlichen (z.B. auf den Homepages von Institutionen oder auf ihrer eigenen Homepage), weil so produktive Austauschprozesse wie auch eine frühe und erweiterte Bezugnahme auf das veröffentlichte Werk gefördert werden (siehe <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>).</li>
 </ol>
 
-<h4>Empfohlene Copyright-Regelungen für Zeitschriften mit verzögertem Open Access</h4>
+<h4>2. Empfohlene Copyright-Regelungen für Zeitschriften mit verzögertem Open Access</h4>
 Autor/innen, die in dieser Zeitschrift publizieren möchten, stimmen den folgenden Bedingungen zu:
 <ol type="a">
 	<li>Die Autor/innen behalten das Copyright und erlauben der Zeitschrift die Erstveröffentlichung, womit die Arbeit [ZEITSPANNE FESTLEGEN] nach der Veröffentlichung zugleich unter einer <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Namensnennung Lizenz</a> lizensiert wird, die es anderen erlaubt, die Arbeit unter Nennung der Autor/innenschaft und der Erstpublikation in dieser Zeitschrift zu verwenden.</li>
@@ -561,11 +564,11 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
 	<!-- Im Begutachtungsverfahren -->
 	<message key="reviewer.article.fileToBeReviewed">Zu begutachtende Datei</message>
 	<message key="reviewer.article.notifyTheEditor">Redakteur/in benachrichtigen</message>
-	<message key="reviewer.article.canDoReview">Übernimmt die Begutachtung</message>
-	<message key="reviewer.article.cannotDoReview">Übernimmt die Begutachtung nicht</message>
+	<message key="reviewer.article.canDoReview">Gutachten wird angefertigt</message>
+	<message key="reviewer.article.cannotDoReview">Gutachten wird nicht angefertigt</message>
 	<message key="reviewer.article.restrictedFileAccess">Der Beitrag wird erst zur Verfügung gestellt, wenn die Gutachterin/der Gutachter der Begutachtung zustimmt.</message>
 	<message key="reviewer.article.submissionEditor">Zuständige/r Redakteur/in</message>
-	<message key="reviewer.article.reviewerCommentsDescription">Begutachtungskommentare hier eingeben oder einkopieren</message>
+	<message key="reviewer.article.reviewerCommentsDescription">Begutachtungskommentare hier eingeben oder hineinkopieren</message>
 	<message key="reviewer.article.editorToEnter">Von der Redakteurin/dem Redakteur einzutragen</message>
 	<message key="reviewer.article.sendReminder">Erinnerung senden</message>
 	<message key="reviewer.article.automatic">(Auto)</message>
@@ -573,8 +576,8 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
 	<message key="reviewer.article.submitReview">Gutachten bei der Redaktion einreichen</message>
 	<message key="reviewer.article.reviewerComments">Kommentare</message>
 	<message key="reviewer.article.uploadedFile">Hochgeladene Dateien</message>
-	<message key="reviewer.article.reviewersAnnotatedVersion">Von der Gutachterin/dem Gutachter hochgeladene Version </message>
-	<message key="reviewer.article.reviewersAnnotatedVersionDescription">(Falls Sie die Datei für die Redakteurin/den Redakteur kommentieren wollen, speichern Sie sie auf Ihrer Festplatte und verwenden Sie Hochladen.)</message>
+	<message key="reviewer.article.reviewersAnnotatedVersion">Von der Gutachterin/dem Gutachter hochgeladene Version</message>
+	<message key="reviewer.article.reviewersAnnotatedVersionDescription">(Falls Sie die Datei für die Redakteurin/den Redakteur kommentieren wollen, speichern Sie sie auf Ihrer Festplatte und verwenden Sie Durchsuchen/Hochladen.)</message>
 	<message key="reviewer.article.schedule.request">Anfrage der Redakteurin/des Redakteurs</message>
 	<message key="reviewer.article.schedule.response">Ihre Antwort</message>
 	<message key="reviewer.article.schedule.submitted">Gutachten eingereicht</message>
@@ -590,11 +593,11 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
 	<message key="reviewer.article.reviewSchedule">Zeitplan der Begutachtung</message>
 	<message key="reviewer.article.reviewSteps">Begutachtungsschritte</message>
 	<message key="reviewer.article.reviewerGuidelines">Richtlinien für die Gutachter/innen</message>
+	<message key="reviewer.article.reviewGuidelinesDescription"><![CDATA[Die Begutachtungsrichtlinien geben den Gutachter/innen Kriterien an die Hand, mit deren Hilfe sie bewerten können, ob eine Einreichung für die Veröffentlichung in der Zeitschrift geeignet ist; sie können auch zusätzliche Instruktionen enthalten, die für eine effektive und hilfreiche Begutachtung nützlich sind. Für die Einreichung des Gutachtens stehen den Gutachter/innen zwei offene Textfelder zur Verfügung, eines "für die Autor/innen und die Redakteur/innen", ein zweites "für die Redakteur/innen". Alternativ können Zeitschriftenverwalter/innen ein Formular für die Begutachtung erstellen. Redakteur/innen haben immer die Option, die Gutachten in ihre Korrespondenz mit den Autor/innen aufzunehmen.]]></message>
 	<message key="reviewer.article.notifyEditorA">Die Redakteurin/den Redakteur</message>
 	<message key="reviewer.article.notifyEditorB">des Beitrags benachrichtigen, ob Sie die Begutachtung übernehmen wollen.</message>
 	<message key="reviewer.article.consultGuidelines">Falls Sie die Begutachtung vornehmen wollen, beachten Sie bitte die nachfolgenden Richtlinien für Gutachter/innen.</message>
-	<message key="reviewer.article.downloadSubmission">Zum Herunterladen und Begutachten der Beitragsdateien (auf dem Bildschirm oder als Ausdruck) die Dateinamen anklicken.</message>
-	<message key="reviewer.article.reviewGuidelinesDescription">Die Begutachtungsrichtlinien geben den Gutachter/innen Kriterien an die Hand, mit deren Hilfe sie bewerten können, ob eine Einreichung für die Veröffentlichung in der Zeitschrift geeignet ist; sie können auch zusätzliche Instruktionen enthalten, die für eine effektive und hilfreiche Begutachtung nützlich sind. Für die Einreichung des Gutachtens stehen den Gutachter/innen zwei offene Textfelder zur Verfügung, eines "für die Autor/innen und die Redakteur/innen", ein zweites "für die Redakteur/innen". Alternativ können Zeitschriftenverwalter/innen ein Formular für die Begutachtung erstellen. Redakteur/innen haben immer die Option, in ihrer Kommunikation mit den Autor/innen Gutachten hinzuzufügen.</message>
+	<message key="reviewer.article.downloadSubmission">Klicken Sie auf die Dateinamen, um die zur Einreichung gehörenden Dateien herunterzuladen und zu begutachten (auf dem Bildschirm oder im Ausdruck).</message>
 	<message key="reviewer.article.enterCompetingInterests"><![CDATA[Erklären Sie, ob Sie bezüglich dieser Forschung einen Interessenskonflikt haben (Siehe <a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">Richtlinien für Interessenkonflikte</a>).]]></message>
 	<message key="reviewer.competingInterests">Interessenkonflikte</message>
 	<message key="reviewer.article.enterReviewA">Bitte klicken Sie auf das Symbol, um Ihr Gutachten zu diesem Beitrag einzugeben.</message>
@@ -605,7 +608,7 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
 	<message key="reviewer.article.ensuringBlindReview">Eine anonyme Begutachtung sicherstellen</message>
 
 	<!-- Im Lektorat -->	
-	<message key="copyeditor.article.fileToCopyedit">Datei zum Lektorieren</message>
+	<message key="copyeditor.article.fileToCopyedit">Datei zum Lektorat</message>
 	<message key="copyeditor.article.copyeditorFile">Datei der Lektorin/des Lektors</message>
 	<message key="copyeditor.article.uploadedFile">Hochgeladene Datei</message>
 	<message key="copyeditor.article.copyeditorFinalFile">Datei der Lektorin/des Lektors</message>
@@ -957,7 +960,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 
 <ul>
 	<li><a href="http://www.php.net/" target="_blank">PHP</a> >= {$phpRequiredVersion} (einschließlich PHP 5.x); Sie nutzen momentan PHP {$phpVersion}{$wrongPhpText}</li>
-	<li><a href="http://www.mysql.com/" target="_blank">MySQL</a> >= 3.23.23 (einschließlich MySQL 4.x) oder <a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a> >= 7.1 (einschließlich PostgreSQL 8.x)</li>
+	<li><a href="http://www.mysql.com/" target="_blank">MySQL</a> >= 4.1 oder <a href="http://www.postgresql.org/" target="_blank">PostgreSQL</a> >= 7.1 (einschließlich PostgreSQL 8.x)</li>
 	<li><a href="http://httpd.apache.org/" target="_blank">Apache</a> >= 1.3.2x oder >= 2.0.4x oder Microsoft IIS 6</li>
 	<li>Betriebssystem: Jedes Betriebssystem, das die obigen Programme unterstützt, darunter <a href="http://www.linux.org/" target="_blank">Linux</a>, <a href="http://www.bsd.org/" target="_blank">BSD</a>, <a href="http://www.sun.com/" target="_blank">Solaris</a>, <a href="http://www.apple.com/" target="_blank">Mac OS X</a>, <a href="http://www.microsoft.com/">Windows</a></li>
 </ul>

@@ -3,6 +3,7 @@
 /**
  * @file classes/notification/NotificationMailListDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -116,14 +117,14 @@ class NotificationMailListDAO extends DAO {
 	 */
 	function getMailList($contextId) {
 		$result =& $this->retrieve(
-			'SELECT email FROM notification_mail_list WHERE context = ?',
+			'SELECT email, token FROM notification_mail_list WHERE context = ?',
 			(int) $contextId
 		);
 
 		$mailList = array();
 		while (!$result->EOF) {
 			$row = $result->GetRowAssoc(false);
-			$mailList[] = $row['email'];
+			$mailList[] = $row;
 			$result->MoveNext();
 		}
 

@@ -7,6 +7,7 @@
 ;
 ; config.TEMPLATE.inc.php
 ;
+; Copyright (c) 2013 Simon Fraser University Library
 ; Copyright (c) 2003-2013 John Willinsky
 ; Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 ;
@@ -421,6 +422,12 @@ perl = /usr/bin/perl
 
 ; tar (used in backup plugin, translation packaging)
 tar = /bin/tar
+
+; egrep (used in copyAccessLogFileTool)
+egrep = /bin/egrep
+
+; gunzip (used in copyAccessLogFileTool)
+gunzip = /bin/gunzip
 
 ; On systems that do not have PHP4's Sablotron/xsl or PHP5's libxsl/xslt
 ; libraries installed, or for those who require a specific XSLT processor,

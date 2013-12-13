@@ -3,6 +3,7 @@
 /**
  * @file plugins/generic/driver/DRIVERPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -84,7 +85,6 @@ class DRIVERPlugin extends GenericPlugin {
 
 		$records = array();
 		if (isset($set) && $set == 'driver') {
-			$journalId = $journalOAI->journalId;
 			$driverDao =& DAORegistry::getDAO('DRIVERDAO');
 			$driverDao->setOAI($journalOAI);
 			if ($hookName == 'JournalOAI::records') {
@@ -92,7 +92,8 @@ class DRIVERPlugin extends GenericPlugin {
 			} else if ($hookName == 'JournalOAI::identifiers') {
 				$funcName = '_returnIdentifierFromRow';
 			}
-			$records = $driverDao->getDRIVERRecordsOrIdentifiers($journalId, $from, $until, $offset, $limit, $total, $funcName);
+			$journalId = $journalOAI->journalId;
+			$records = $driverDao->getDRIVERRecordsOrIdentifiers(array($journalId, null), $from, $until, $offset, $limit, $total, $funcName);
 			return true;
 		}
 		return false;

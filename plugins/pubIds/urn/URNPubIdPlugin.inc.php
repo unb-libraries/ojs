@@ -3,6 +3,7 @@
 /**
  * @file plugins/pubIds/urn/URNPubIdPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -89,11 +90,10 @@ class URNPubIdPlugin extends PubIdPlugin {
 				// Now we can identify the journal
 				$journalId = $article->getJournalId();
 			}
-			// get the journal
-			$request =& Application::getRequest();
-			$router =& $request->getRouter();
-			$journal =& $router->getContext($request);
-			if (!$journal || $journal->getId() != $journalId) return null;
+
+			$journal =& $this->getJournal($journalId);
+			if (!$journal) return null;
+			$journalId = $journal->getId();
 
 			// Check whether URNs are enabled for the given object type
 			$urnEnabled = ($this->getSetting($journalId, "enable${pubObjectType}URN") == '1');
@@ -120,49 +120,59 @@ class URNPubIdPlugin extends PubIdPlugin {
 					if ($pubObjectType != 'Article' && $urnSuffix === (string) $pubObject->getId()) {
 						$urnSuffix = strtolower_codesafe($pubObjectType{0}) . $urnSuffix;
 					}
-					$urn = $urnPrefix . $urnSuffix;
-					if ($this->getSetting($journal->getId(), 'checkNo')) {
-						$urn .= $this->_calculateCheckNo($urn);
+
+					if (!empty($urnSuffix)) {
+						$urn = $urnPrefix . $urnSuffix;
+						if ($this->getSetting($journal->getId(), 'checkNo')) {
+							$urn .= $this->_calculateCheckNo($urn);
+						}
 					}
 					break;
 
 				case 'customIdentifier':
 					$urnSuffix = $pubObject->getData('urnSuffix');
+
 					if (!empty($urnSuffix)) {
 						$urn = $urnPrefix . $urnSuffix;
 					}
 					break;
 
 				case 'pattern':
-					$suffixPattern = $this->getSetting($journal->getId(), "urn${pubObjectType}SuffixPattern");
-					$urn = $urnPrefix . $suffixPattern;
+					$urnSuffix = $this->getSetting($journal->getId(), "urn${pubObjectType}SuffixPattern");
+
+					// %j - journal initials
+					$urnSuffix = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials', $journal->getPrimaryLocale())), $urnSuffix);
+					// %x - custom identifier
+					if ($pubObject->getStoredPubId('publisher-id')) {
+						$urnSuffix = String::regexp_replace('/%x/', $pubObject->getStoredPubId('publisher-id'), $urnSuffix);
+					}
 					if ($issue) {
-						// %j - journal initials
-						$suffixPattern = String::regexp_replace('/%j/', String::strtolower($journal->getLocalizedSetting('initials')), $suffixPattern);
 						// %v - volume number
-						$suffixPattern = String::regexp_replace('/%v/', $issue->getVolume(), $suffixPattern);
+						$urnSuffix = String::regexp_replace('/%v/', $issue->getVolume(), $urnSuffix);
 						// %i - issue number
-						$suffixPattern = String::regexp_replace('/%i/', $issue->getNumber(), $suffixPattern);
+						$urnSuffix = String::regexp_replace('/%i/', $issue->getNumber(), $urnSuffix);
 						// %Y - year
-						$suffixPattern = String::regexp_replace('/%Y/', $issue->getYear(), $suffixPattern);
-
-						if ($article) {
-							// %a - article id
-							$suffixPattern = String::regexp_replace('/%a/', $article->getId(), $suffixPattern);
-							// %p - page number
-							$suffixPattern = String::regexp_replace('/%p/', $article->getPages(), $suffixPattern);
+						$urnSuffix = String::regexp_replace('/%Y/', $issue->getYear(), $urnSuffix);
+					}
+					if ($article) {
+						// %a - article id
+						$urnSuffix = String::regexp_replace('/%a/', $article->getId(), $urnSuffix);
+						// %p - page number
+						if ($article->getPages()) {
+							$urnSuffix = String::regexp_replace('/%p/', $article->getPages(), $urnSuffix);
 						}
+					}
+					if ($galley) {
+						// %g - galley id
+						$urnSuffix = String::regexp_replace('/%g/', $galley->getId(), $urnSuffix);
+					}
+					if ($suppFile) {
+						// %s - supp file id
+						$urnSuffix = String::regexp_replace('/%s/', $suppFile->getId(), $urnSuffix);
+					}
 
-						if ($galley) {
-							// %g - galley id
-							$suffixPattern = String::regexp_replace('/%g/', $galley->getId(), $suffixPattern);
-						}
-
-						if ($suppFile) {
-							// %s - supp file id
-							$suffixPattern = String::regexp_replace('/%s/', $suppFile->getId(), $suffixPattern);
-						}
-						$urn = $urnPrefix . $suffixPattern;
+					if (!empty($urnSuffix)) {
+						$urn = $urnPrefix . $urnSuffix;
 						if ($this->getSetting($journal->getId(), 'checkNo')) {
 							$urn .= $this->_calculateCheckNo($urn);
 						}
@@ -170,34 +180,29 @@ class URNPubIdPlugin extends PubIdPlugin {
 					break;
 
 				default:
+					$urnSuffix = String::strtolower($journal->getLocalizedSetting('initials', $journal->getPrimaryLocale()));
+
 					if ($issue) {
-						$suffixPattern = String::strtolower($journal->getLocalizedSetting('initials'));
-						$suffixPattern .= '.v' . $issue->getVolume() . 'i' . $issue->getNumber();
-						if ($article) {
-		 					$suffixPattern .= '.' . $article->getId();
-						}
-						if ($galley) {
-							$suffixPattern .= '.g' . $galley->getId();
-						}
-						if ($suppFile) {
-							$suffixPattern .= '.s' . $suppFile->getId();
-						}
-						$urn = $urnPrefix . $suffixPattern;
-						if ($this->getSetting($journal->getId(), 'checkNo')) {
-							$urn .= $this->_calculateCheckNo($urn);
-						}
+						$urnSuffix .= '.v' . $issue->getVolume() . 'i' . $issue->getNumber();
 					} else {
-						$suffixPattern = '%j.v%vi%i';
-						if ($article) {
-							$suffixPattern .= '.%a';
-						}
-						if ($galley) {
-							$suffixPattern .= '.g%g';
-						}
-						if ($suppFile) {
-							$suffixPattern .= '.s%s';
-						}
-						$urn = $urnPrefix . $suffixPattern;
+						$urnSuffix .= '.v%vi%i';
+					}
+
+					if ($article) {
+		 				$urnSuffix .= '.' . $article->getId();
+					}
+
+					if ($galley) {
+						$urnSuffix .= '.g' . $galley->getId();
+					}
+
+					if ($suppFile) {
+						$urnSuffix .= '.s' . $suppFile->getId();
+					}
+
+					$urn = $urnPrefix . $urnSuffix;
+					if ($this->getSetting($journal->getId(), 'checkNo')) {
+						$urn .= $this->_calculateCheckNo($urn);
 					}
 			}
 

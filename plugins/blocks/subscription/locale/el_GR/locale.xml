@@ -4,6 +4,7 @@
 <!--
   * plugins/blocks/subscription/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -12,12 +13,12 @@
   -->
  
 <locale name="el_GR" full_name="Greek">
-	<message key="plugins.block.subscription.displayName">Block Συνδρομών</message>
-	<message key="plugins.block.subscription.description">Το plugin αυτό παρέχει πληροφορίες συνδρομών στην πλαϊνή μπάρα.</message>
+	<message key="plugins.block.subscription.displayName">Δομική Μονάδα Συνδρομών</message>
+	<message key="plugins.block.subscription.description">Το πρόσθετο αυτό παρέχει πληροφορίες συνδρομών στην πλαϊνή μπάρα.</message>
 	<message key="plugins.block.subscription.blockTitle">Συνδρομή</message>
 	<message key="plugins.block.subscription.expires">Λήγει</message>
 	<message key="plugins.block.subscription.providedBy">Η πρόσβαση παρέχετε από:</message>
-	<message key="plugins.block.subscription.comingFromIP">'Ελεγχος IP:</message>
+	<message key="plugins.block.subscription.comingFromIP">Από το</message>
 	<message key="plugins.block.subscription.about">Συνδρομές</message>
 	<message key="plugins.block.subscription.loginToVerifySubscription">Συνδεθείτε για να επιβεβαιώσετε τη συνδρομή</message>
 </locale>

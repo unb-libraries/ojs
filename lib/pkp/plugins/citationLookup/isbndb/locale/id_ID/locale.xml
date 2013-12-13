@@ -4,6 +4,7 @@
 <!--
   * plugins/citationLookup/isbndb/locale/id_ID/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -12,8 +13,8 @@
 
 <locale name="id_ID" full_name="Indonesia">
 	<!-- plug-in -->
-	<message key="plugins.citationLookup.isbndb.displayName">Konektor Database CrossRef</message>
-	<message key="plugins.citationLookup.isbndb.description">Koneksi ke database bibliografi CrossRef.</message>
+	<message key="plugins.citationLookup.isbndb.displayName">Konektor Database ISBNdb</message>
+	<message key="plugins.citationLookup.isbndb.description">Koneksi ke database bibliografi ISBNdb.</message>
 
 	<!-- ISBN lookup and extraction services -->
 	<message key="plugins.citationLookup.isbndbExtraction.displayName">Layanan ekstraksi ISBN</message>

@@ -3,6 +3,7 @@
 /**
  * @file plugins/generic/lucene/LuceneHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -171,10 +172,12 @@ class LuceneHandler extends Handler {
 	 * @param $batchCount integer The number of articles in
 	 *  the XML list (i.e. the expected number of documents
 	 *  to be indexed).
+	 * @param $numDeleted integer The number of articles in
+	 *  the XML list that are marked for deletion.
 	 *
 	 * @return integer The number of articles processed.
 	 */
-	function pullIndexingCallback($articleXml, $batchCount) {
+	function pullIndexingCallback($articleXml, $batchCount, $numDeleted) {
 		// Flush the XML to the Solr server to make sure it
 		// arrives there before we commit our transaction.
 		echo $articleXml;

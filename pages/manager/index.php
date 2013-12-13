@@ -3,15 +3,16 @@
 /**
  * @defgroup pages_manager
  */
- 
+
 /**
  * @file pages/manager/index.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_manager
- * @brief Handle requests for journal management functions. 
+ * @brief Handle requests for journal management functions.
  *
  */
 
@@ -118,7 +119,7 @@ switch ($op) {
 		import('pages.manager.FilesHandler');
 		break;
 	//
-	// Subscription Policies 
+	// Subscription Policies
 	//
 	case 'subscriptionPolicies':
 	case 'saveSubscriptionPolicies':
@@ -185,15 +186,17 @@ switch ($op) {
 	// Statistics Functions
 	//
 	case 'statistics':
-	case 'saveStatisticsSections':
+	case 'saveStatisticsSettings':
 	case 'savePublicStatisticsList':
 	case 'report':
+	case 'reportGenerator':
+	case 'generateReport':
 		define('HANDLER_CLASS', 'StatisticsHandler');
 		import('pages.manager.StatisticsHandler');
 		break;
 	//
 	// Payment
-	//	
+	//
 	case 'payments':
 	case 'savePaymentSettings':
 	case 'payMethodSettings':

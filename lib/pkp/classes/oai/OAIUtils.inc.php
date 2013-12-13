@@ -7,6 +7,7 @@
 /**
  * @file classes/oai/OAIUtils.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -85,7 +86,7 @@ class OAIUtils {
 		} else {
 			foreach ($data as $k => $v) {
 				if (is_array($data[$k])) {
-					$this->prepInput($data[$k]);
+					OAIUtils::prepInput($data[$k]);
 				} else {
 					$data[$k] = urldecode($v);
 				}

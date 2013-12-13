@@ -4,6 +4,7 @@
 <!--
   * plugins/blocks/help/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,6 +20,6 @@
   -->
  
 <locale name="el_GR" full_name="Greek">
-	<message key="plugins.block.help.displayName">Block Βοήθειας</message>
-	<message key="plugins.block.help.description">Το plugin αυτό παρέχει ένα σύνδεσμο Βοήθειας στην πλαϊνή μπάρα .</message>
+	<message key="plugins.block.help.displayName">Δομική Μονάδα Βοήθειας</message>
+	<message key="plugins.block.help.description">Το πρόσθετο αυτό παρέχει ένα σύνδεσμο Βοήθειας στην πλαϊνή μπάρα .</message>
 </locale>

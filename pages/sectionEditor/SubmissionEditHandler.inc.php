@@ -3,6 +3,7 @@
 /**
  * @file pages/sectionEditor/SubmissionEditHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -2563,7 +2564,6 @@ class SubmissionEditHandler extends SectionEditorHandler {
 				$publishedArticle->setIssueId($issueId);
 				$publishedArticle->setDatePublished(Core::getCurrentDate());
 				$publishedArticle->setSeq(REALLY_BIG_NUMBER);
-				$publishedArticle->setViews(0);
 				$publishedArticle->setAccessStatus(ARTICLE_ACCESS_ISSUE_DEFAULT);
 
 				$publishedArticleDao->insertPublishedArticle($publishedArticle);

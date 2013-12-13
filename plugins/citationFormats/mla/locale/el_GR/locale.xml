@@ -4,6 +4,7 @@
 <!--
   * plugins/citationFormats/mla/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,8 +20,8 @@
   -->
  
 <locale name="el_GR" full_name="Greek">	
-	<message key="plugins.citationFormats.mla.displayName">Plugin σχήματος παραπομπής MLA </message>
+	<message key="plugins.citationFormats.mla.displayName">Πρόσθετο σχήματος παραπομπής MLA</message>
 	<message key="plugins.citationFormats.mla.citationFormatName">MLA</message>
-	<message key="plugins.citationFormats.mla.description">Το plugin αυτό υλοποιεί το σχήμα παραπομπής  MLA.</message>
-	<message key="plugins.citationFormats.mla.noPages">α. σελ.</message>
+	<message key="plugins.citationFormats.mla.description">Το πρόσθετο αυτό υλοποιεί το σχήμα παραπομπής  MLA.</message>
+	<message key="plugins.citationFormats.mla.noPages">αρ. σελ.</message>
 </locale>

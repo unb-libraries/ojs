@@ -3,6 +3,7 @@
 /**
  * @file plugins/importexport/native/NativeImportDom.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -143,6 +144,12 @@ class NativeImportDom {
 		/* --- Set attributes: Identification type, published, current, public ID --- */
 
 		switch(($value = $issueNode->getAttribute('identification'))) {
+			case 'num_vol_year_title':
+				$issue->setShowVolume(1);
+				$issue->setShowNumber(1);
+				$issue->setShowYear(1);
+				$issue->setShowTitle(1);
+				break;
 			case 'num_vol_year':
 				$issue->setShowVolume(1);
 				$issue->setShowNumber(1);
@@ -154,6 +161,12 @@ class NativeImportDom {
 				$issue->setShowNumber(0);
 				$issue->setShowYear(1);
 				$issue->setShowTitle(0);
+				break;
+			case 'num_year_title':
+				$issue->setShowVolume(0);
+				$issue->setShowNumber(1);
+				$issue->setShowYear(1);
+				$issue->setShowTitle(1);
 				break;
 			case 'vol':
 				$issue->setShowVolume(1);
@@ -649,7 +662,7 @@ class NativeImportDom {
 				$errors[] = array('plugins.importexport.native.import.error.duplicatePublicArticleId', array('articleTitle' => $article->getLocalizedTitle(), 'otherArticleTitle' => $anotherArticle->getLocalizedTitle()));
 				$hasErrors = true;
 			} else {
-				$issue->setStoredPubId('publisher-id', $value);
+				$article->setStoredPubId('publisher-id', $value);
 			}
 		}
 
@@ -860,7 +873,6 @@ class NativeImportDom {
 		$node = $articleNode->getChildByName('open_access');
 		$publishedArticle->setAccessStatus($node?ARTICLE_ACCESS_OPEN:ARTICLE_ACCESS_ISSUE_DEFAULT);
 		$publishedArticle->setSeq(REALLY_BIG_NUMBER);
-		$publishedArticle->setViews(0);
 
 		$publishedArticle->setPublishedArticleId($publishedArticleDao->insertPublishedArticle($publishedArticle));
 
@@ -1042,6 +1054,11 @@ class NativeImportDom {
 				$errors[] = array('plugins.importexport.native.import.error.couldNotWriteFile', array('originalName' => $originalName));
 				return false;
 			}
+		}
+		if (($remote = $node->getChildByName('remote'))) {
+			$url = $remote->getAttribute('src');
+			$galley->setRemoteURL($url);
+			$fileId = 0;
 		}
 		if (!isset($fileId)) {
 			$errors[] = array('plugins.importexport.native.import.error.galleyFileMissing', array('articleTitle' => $article->getLocalizedTitle(), 'sectionTitle' => $section->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification()));
@@ -1312,8 +1329,13 @@ class NativeImportDom {
 				return false;
 			}
 		}
+		if (($remote = $fileNode->getChildByName('remote'))) {
+			$url = $remote->getAttribute('src');
+			$suppFile->setRemoteURL($url);
+			$fileId = 0;
+		}
 
-		if (!$fileId) {
+		if (!isset($fileId)) {
 			$errors[] = array('plugins.importexport.native.import.error.suppFileMissing', array('articleTitle' => $article->getLocalizedTitle(), 'sectionTitle' => $section->getLocalizedTitle(), 'issueTitle' => $issue->getIssueIdentification()));
 			return false;
 		}

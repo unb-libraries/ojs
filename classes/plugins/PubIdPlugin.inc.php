@@ -3,6 +3,7 @@
 /**
  * @file classes/plugins/PubIdPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -230,6 +231,28 @@ class PubIdPlugin extends Plugin {
 		assert(false); // Should be overridden
 	}
 
+	/**
+	 * Get the journal object.
+	 * @param $journalId integer
+	 * @return Journal
+	 */
+	function &getJournal($journalId) {
+		assert(is_numeric($journalId));
+
+		// Get the journal object from the context (optimized).
+		$request =& Application::getRequest();
+		$router =& $request->getRouter();
+		$journal =& $router->getContext($request); /* @var $journal Journal */
+
+		// Check whether we still have to retrieve the journal from the database.
+		if (!$journal || $journal->getId() != $journalId) {
+			unset($journal);
+			$journalDao =& DAORegistry::getDAO('JournalDAO');
+			$journal =& $journalDao->getById($journalId);
+		}
+
+		return $journal;
+	}
 
 	//
 	// Public API

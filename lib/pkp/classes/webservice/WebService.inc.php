@@ -3,6 +3,7 @@
 /**
  * @file classes/citation/WebService.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -91,9 +92,11 @@ class WebService {
 		if (!$result) return $nullVar;
 
 		// Clean the result
-		$result = stripslashes($result);
-		if ( Config::getVar('i18n', 'charset_normalization') == 'On' && !String::utf8_compliant($result) ) {
-			$result = String::utf8_normalize($result);
+		if ($webServiceRequest->getCleanResult()) {
+			$result = stripslashes($result);
+			if ( Config::getVar('i18n', 'charset_normalization') == 'On' && !String::utf8_compliant($result) ) {
+				$result = String::utf8_normalize($result);
+			}
 		}
 
 		return $result;
@@ -131,7 +134,7 @@ class WebService {
 
 		// POST to the web service
 		for ($retries = 0; $retries < WEBSERVICE_RETRIES; $retries++) {
-			if ($result = @curl_exec($ch)) break;
+			if (($result = @curl_exec($ch)) !== false) break;
 
 			// Wait for a short interval before trying again
 			usleep(WEBSERVICE_MICROSECONDS_BEFORE_RETRY);
@@ -180,7 +183,7 @@ class WebService {
 
 		// POST to the web service
 		for ($retries = 0; $retries < WEBSERVICE_RETRIES; $retries++) {
-			if ($result = @curl_exec($ch)) break;
+			if (($result = @curl_exec($ch)) !== false) break;
 
 			// Wait for a short interval before trying again
 			usleep(WEBSERVICE_MICROSECONDS_BEFORE_RETRY);

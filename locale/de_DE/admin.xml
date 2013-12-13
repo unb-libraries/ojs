@@ -4,6 +4,7 @@
 <!--
   * locale/de_DE/admin.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -23,6 +24,11 @@
 	<message key="admin.settings.journalsList.showThumbnail">Vorschaubild der Zeitschrift</message>
 	<message key="admin.settings.journalsList.showTitle">Titel der Zeitschrift</message>
 	<message key="admin.settings.journalsList.showDescription">Beschreibung der Zeitschrift</message>
+	<message key="admin.settings.defaultMetricDescription">
+		Ihre OJS-Installation ist so eingestellt, dass sie mehr als eine Nutzungsstatistik aufzeichnet. Nutzungsstatistiken werden in verschiedenen Kontexten angezeigt.
+		Es gibt Fälle, in denen eine einzige Nutzungsstatistik benutzt werden muss, z.B. wenn eine sortierte Liste der am häufigsten genutzten Artikel angezeigt werden soll oder um
+		Suchergebnisse zu gewichten. Bitte wählen Sie eine der Nutzungsmetriken als Standard aus.
+	</message>
 	<message key="admin.languages.primaryLocaleInstructions">Diese Regionaleinstellung wird die Standardeinstellung der Website und aller ihrer Zeitschriften.</message>
 	<message key="admin.languages.supportedLocalesInstructions">Wählen Sie alle Regionaleinstellungen aus, die die Website anbieten soll. Die gewählten Parameter können von allen Zeitschriften, die auf der Website angeboten werden, verwendet werden und erscheinen auch im Sprachenmenü auf jeder Seite der Website (die Seiten bestimmter Zeitschriften können davon ausgenommen werden). Wenn nur eine Regionaleinstellung ausgewählt wird, erscheint das Sprachenmenü nicht, und den Zeitschriften stehen keine erweiterten Spracheinstellungen zur Verfügung.</message>
 	<message key="admin.locale.maybeIncomplete">Gekennzeichnete Lokaleinstellungen können unvollständig sein.</message>	
@@ -79,4 +85,19 @@
 	<message key="admin.categories.confirmDelete">Sind Sie sicher, dass Sie diese Kategorie löschen wollen?</message>
 	<message key="admin.categories.name">Name</message>
 	<message key="admin.categories.nameRequired">Ein Kategorienname ist notwendig.</message>
+
+	<message key="admin.copyAccessLogFileTool.usage">Kopiere die übergebenen Apache-Zugriffsdatei(en), woraus die mit dieser Installation zusammenhängenden Einträge ausgewählt werden,
+in das aktuelle Dateiverzeichnis innerhalb des Vorbereitungs-Verzeichnisses des UsageStats-Plug-Ins. Muss unter einem Benutzer mit ausreichenden Rechten für den Lesezugriff auf Apache-Log-Dateien ausgeführt werden.
+
+Dieses Werkzeug wird nur Dateien kopieren, die nicht bereits in den usageStats-Verzeichnissen (Vorbereitung, Bearbeitung, Archiv, zurückgewiesen) sind.
+
+Benutzung: {$scriptName} path/to/apache/log/file.log
+Benutzung (verarbeite alle Dateien in einem Verzeichnis): {$scriptName} path/to/apache/directory 
+	</message>
+	<message key="admin.copyAccessLogFileTool.error.creatingFolder">Fehler: kann temporären Ordner {$tmpDir} nicht anlegen</message>
+	<message key="admin.copyAccessLogFileTool.error.acessingFile">Fehler: Datei {$filePath} existiert nicht, oder es kann nicht auf sie zugegriffen werden.</message>
+	<message key="admin.copyAccessLogFileTool.error.copyingFile">Fehler: kann Datei nicht von {$filePath} nach {$tmpFilePath} kopieren</message>
+	<message key="admin.copyAccessLogFileTool.error.deletingFile">Fehler: kann Datei {$tmpFilePath} nicht löschen</message>
+	<message key="admin.copyAccessLogFileTool.warning.fileAlreadyExists">Warnung: Datei {$filePath} gibt es bereits im Verzeichnis der Nutzungsstatistiken.</message>
+	<message key="admin.copyAccessLogFileTool.success">Erfolgreich kopiert: {$filePath} nach {$destinationPath}</message>
 </locale>

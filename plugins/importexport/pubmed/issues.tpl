@@ -1,6 +1,7 @@
 {**
  * plugins/importexport/pubmed/issues.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -30,7 +31,7 @@ function toggleChecked() {
 
 <br/>
 
-<div id="issues">
+<div id="issuesDiv">
 <form action="{plugin_url path="exportIssues"}" method="post" id="issues">
 <table width="100%" class="listing">
 	<tr>

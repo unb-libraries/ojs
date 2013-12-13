@@ -35,6 +35,31 @@ but it may perform poorly. See docs/README, under Installation, for a list of
 directories that must be writeable by the web server.
 
 
+Stats Migration
+---------------
+
+To be able to run the upgrade process and to correctly migrate the old statistics
+data, you will have to download the geolocalization database. To install it 
+you can execute the following steps:
+
+Linux:
+1 - open a shell prompt
+2 - go into OJS installation’s base directory
+2 - wget http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz
+3 - gunzip GeoLiteCity.dat.gz
+4 - mv GeoLiteCity.dat plugins/generic/usageStats
+
+Windows
+1 - download the file http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz 
+2 - decompress it using any decompression tool into plugins/generic/usageStats directory
+
+In both cases the complete path to the installed database file should be 
+plugins/generic/usageStats/GeoLiteCity.dat
+
+Warning: If you have a very large set of Timed Views entries, 
+the migration process can take hours. 
+  
+
 Obtaining the latest OJS code
 -----------------------------
 
@@ -175,10 +200,13 @@ This script can be executed from the command-line or via the OJS web interface.
 1. Command-line
 
 If you have the CLI version of PHP installed (e.g., /usr/bin/php), you can
-upgrade the database by running the following command from the OJS directory:
+upgrade the database as follows:
 
-    $ php tools/upgrade.php upgrade
-
+    - Edit config.inc.php and change "installed = On" to "installed = Off"
+    - Run the following command from the OJS directory (not including the $):
+      $ php tools/upgrade.php upgrade
+    - Re-edit config.inc.php and change "installed = Off" back to
+       "installed = On"
 
 2. Web
 

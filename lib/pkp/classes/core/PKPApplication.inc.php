@@ -3,6 +3,7 @@
 /**
  * @file classes/core/PKPApplication.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -474,7 +475,7 @@ class PKPApplication {
 							$args .= 'Object('.get_class($a).')';
 							break;
 						case 'resource':
-							$args .= 'Resource('.strstr($a, '#').')';
+							$args .= 'Resource()';
 							break;
 						case 'boolean':
 							$args .= $a ? 'True' : 'False';

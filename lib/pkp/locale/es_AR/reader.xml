@@ -4,6 +4,7 @@
 <!--
   * ../pkp//locale/es_AR/reader.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -174,4 +175,5 @@
 	<message key="rt.findingReferences.googleScholar">Google Scholar</message>
 	<message key="rt.findingReferences.windowsLiveAcademic">Windows Live Academic</message>
 	<message key="rt.captureCite.web">Web</message>
+	<message key="rt.admin.settings.viewReviewPolicy">Política de para ver las revisiones</message>
 </locale>

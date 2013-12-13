@@ -1,6 +1,7 @@
 {**
  * templates/article/footer.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -68,14 +69,28 @@
 			var range = document.selection.createRange();
 			term = range.text;
 		}
-		if (url.indexOf('?') > -1) openRTWindowWithToolbar(url + '&defineTerm=' + term);
-		else openRTWindowWithToolbar(url + '?defineTerm=' + term);
+		if (term != ""){
+			if (url.indexOf('?') > -1) openRTWindowWithToolbar(url + '&defineTerm=' + term);
+			else openRTWindowWithToolbar(url + '?defineTerm=' + term);
+		}
 	}
 
 	if(document.captureEvents) {
 		document.captureEvents(Event.DBLCLICK);
 	}
-	document.ondblclick = new Function("openSearchTermWindow('{/literal}{url page="rt" op="context" path=$articleId|to_array:$galleyId:$defineTermsContextId escape=false}{literal}')");
+
+	// Make sure to only open the reading tools when double clicking within the galley	
+	if (document.getElementById('inlinePdfResizer')) {
+		context = document.getElementById('inlinePdfResizer');	
+	}
+	else if (document.getElementById('content')) {
+		context = document.getElementById('content');	
+	}
+	else {
+		context = document;
+	}
+
+	context.ondblclick = new Function("openSearchTermWindow('{/literal}{url page="rt" op="context" path=$articleId|to_array:$galleyId:$defineTermsContextId escape=false}{literal}')");
 // -->
 {/literal}
 </script>

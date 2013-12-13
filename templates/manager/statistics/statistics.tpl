@@ -1,6 +1,7 @@
 {**
  * templates/manager/statistics/statistics.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -14,7 +15,26 @@
 <p>{translate key="manager.statistics.statistics.description"}</p>
 <div id="selectSections">
 <p>{translate key="manager.statistics.statistics.selectSections"}</p>
-<form action="{url op="saveStatisticsSections"}" method="post">
+<form action="{url op="saveStatisticsSettings"}" method="post">
+	{if count($availableMetricTypes) > 1}
+		<h3>{translate key="defaultMetric.title"}</h3>
+		<p>{translate key="manager.statistics.defaultMetricDescription"}</p>
+		<div id="defaultMetricSelection">
+			<table class="data" width="100%">
+				<tr valign="top">
+					<td width="20%" class="label">{fieldLabel name="defaultMetricType" key="defaultMetric.availableMetrics"}</td>
+					<td colspan="2" width="80%" class="value">
+						<select name="defaultMetricType" class="selectMenu" id="defaultMetricType">
+						{foreach from=$availableMetricTypes key=metricType item=displayName}
+							<option value="{$metricType|escape}"{if $metricType == $defaultMetricType} selected="selected"{/if}>{$displayName|escape}</option>
+						{/foreach}
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<br />
+	{/if}
 	<select name="sectionIds[]" class="selectMenu" multiple="multiple" size="5">
 		{foreach from=$sections item=section}
 			<option {if in_array($section->getId(), $sectionIds)}selected="selected" {/if}value="{$section->getId()}">{$section->getLocalizedTitle()}</option>
@@ -60,6 +80,10 @@
 		<td width="80%" colspan="2" class="value">{translate key="manager.statistics.statistics.count.value" count=$limitedArticleStatistics.submissionsDecline percentage=$limitedArticleStatistics.submissionsDeclinePercent}</td>
 	</tr>
 	<tr valign="top">
+		<td width="20%" class="label"><input type="checkbox" id="statCountRevise" name="statCountRevise" {if $statCountRevise}checked="checked" {/if}/>&nbsp;&nbsp;<label for="statCountRevise">{translate key="manager.statistics.statistics.count.revise"}</label></td>
+		<td width="80%" colspan="2" class="value">{translate key="manager.statistics.statistics.count.value" count=$limitedArticleStatistics.submissionsRevise percentage=$limitedArticleStatistics.submissionsRevise}</td>
+	</tr>
+	<tr valign="top">
 		<td width="20%" class="label"><input type="checkbox" id="statDaysPerReview" name="statDaysPerReview" {if $statDaysPerReview}checked="checked" {/if}/>&nbsp;&nbsp;<label for="statDaysPerReview">{translate key="manager.statistics.statistics.daysPerReview"}</label></td>
 		<td colspan="2" class="value">
 			{assign var=daysPerReview value=$reviewerStatistics.daysPerReview}
@@ -101,4 +125,3 @@
 <input type="submit" class="button defaultButton" value="{translate key="common.record"}"/>
 </form>
 </div>
-

@@ -4,6 +4,7 @@
 <!--
   * plugins/citationFormats/refMan/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,7 +20,7 @@
   -->
  
 <locale name="el_GR" full_name="Greek">	
-	<message key="plugins.citationFormats.refMan.displayName">Plugin σχήματος παραπομπής Reference Manager</message>
+	<message key="plugins.citationFormats.refMan.displayName">Πρόσθετο σχήματος παραπομπής Reference Manager</message>
 	<message key="plugins.citationFormats.refMan.citationFormatName">Reference Manager - RIS format (Windows only)</message>
-	<message key="plugins.citationFormats.refMan.description">Το plugin αυτό υλοποιεί το σχήμα παραπομπής Reference Manager.</message>
+	<message key="plugins.citationFormats.refMan.description">Το πρόσθετο αυτό υλοποιεί το σχήμα παραπομπής Reference Manager.</message>
 </locale>

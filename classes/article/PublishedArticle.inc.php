@@ -3,6 +3,7 @@
 /**
  * @file classes/article/PublishedArticle.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -114,15 +115,8 @@ class PublishedArticle extends Article {
 	 * @return int
 	 */
 	function getViews() {
-		return $this->getData('views');
-	}
-
-	/**
-	 * Set views of the published article.
-	 * @param $views int
-	 */
-	function setViews($views) {
-		return $this->setData('views', $views);
+		$application =& PKPApplication::getApplication();
+		return $application->getPrimaryMetricByAssoc(ASSOC_TYPE_ARTICLE, $this->getId());
 	}
 
 	/**

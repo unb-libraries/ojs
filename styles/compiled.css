@@ -720,7 +720,7 @@ table.pkp_listing td.separator {
   line-height:1%;
 }
 .pkp_controllers_fontController_smallFont {
-  background:url(../lib/pkp/templates/images/icons/font-down.png);
+  background:url(../lib/pkp/templates/images/icons/font-down.png) !important;
   outline:none;
   text-indent:-9999px;
   display:block;
@@ -729,7 +729,7 @@ table.pkp_listing td.separator {
   height:23px;
 }
 .pkp_controllers_fontController_defaultFont {
-  background:url(../lib/pkp/templates/images/icons/font-default.png);
+  background:url(../lib/pkp/templates/images/icons/font-default.png) !important;
   outline:none;
   text-indent:-9999px;
   display:block;
@@ -738,7 +738,7 @@ table.pkp_listing td.separator {
   height:23px;
 }
 .pkp_controllers_fontController_largeFont {
-  background:url(../lib/pkp/templates/images/icons/font-up.png);
+  background:url(../lib/pkp/templates/images/icons/font-up.png) !important;
   outline:none;
   text-indent:-9999px;
   display:block;
@@ -1282,6 +1282,8 @@ a.request_review { background-image:url(../lib/pkp/templates/images/structure/gr
 .ui-dialog { background-color:#f7f5f4; }
 .ui-dialog-content { background-color:#ffffff !important; }
 .ui-dialog-buttonpane { border-color:#f7f5f4; }
+#reportGeneratorContainer .pkp_form #columns, #reportGeneratorContainer .pkp_form #issues, #reportGeneratorContainer .pkp_form #articles, #reportGeneratorContainer .pkp_form #countries, #reportGeneratorContainer .pkp_form #regions { height:150px; }
+#reportGeneratorContainer .pkp_form #reportTimeFilterArea .selectMenu { width:auto; }
 .pkp_controllers_extrasOnDemand .ui-icon { float:left; }
 .pkp_controllers_extrasOnDemand .toggleExtras {
   margin-top:15px;
@@ -1289,4 +1291,9 @@ a.request_review { background-image:url(../lib/pkp/templates/images/structure/gr
   cursor:pointer;
   float:left;
   display:none;
+}
+.pkp_controllers_extrasOnDemand .extrasOnDemand-label {
+  font-size:80%;
+  color:#999999;
+  margin-left:10px;
 }

@@ -3,6 +3,7 @@
 /**
  * @file pages/reviewer/ReviewerHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -29,7 +30,6 @@ class ReviewerHandler extends Handler {
 		parent::Handler();
 
 		$this->addCheck(new HandlerValidatorJournal($this));
-		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_REVIEWER)));
 	}
 
 	/**
@@ -197,8 +197,10 @@ class ReviewerHandler extends Handler {
 
 			$this->submission =& $reviewerSubmission;
 			$this->user =& $user;
+			return true;
 		}
 
+		$this->addCheck(new HandlerValidatorRoles($this, true, null, null, array(ROLE_ID_REVIEWER)));
 		parent::validate();
 	}
 }

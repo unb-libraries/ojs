@@ -3,6 +3,7 @@
 /**
  * @file classes/webservice/WebServiceRequest.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -31,6 +32,9 @@ class WebServiceRequest {
 
 	/** @var boolean Whether to make an asynchronous request */
 	var $_async = false;
+
+	/** @var boolean Whether to clean the request result */
+	var $_cleanResult = true;
 
 	/**
 	 * Constructor
@@ -156,6 +160,22 @@ class WebServiceRequest {
 	 */
 	function getAsync() {
 		return $this->_async;
+	}
+
+	/**
+	 * Whether to clean the request result.
+	 * @param $cleanResult
+	 */
+	function setCleanResult($cleanResult) {
+		$this->_cleanResult = $cleanResult;
+	}
+
+	/**
+	 * Get whether to clean the request result.
+	 * @return boolean
+	 */
+	function getCleanResult() {
+		return $this->_cleanResult;
 	}
 }
 ?>

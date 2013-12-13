@@ -3,6 +3,7 @@
 /**
  * @file plugins/importexport/medra/classes/O4DOIExportDom.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -738,7 +739,7 @@ class O4DOIExportDom extends DOIExportDom {
 		XMLCustomWriter::createChildWithText($this->getDoc(), $titleElement, 'TitleType', $titleType);
 
 		// Title text (mandatory)
-		XMLCustomWriter::createChildWithText($this->getDoc(), $titleElement, 'TitleText', $localizedTitle);
+		XMLCustomWriter::createChildWithText($this->getDoc(), $titleElement, 'TitleText', String::html2text($localizedTitle));
 
 		return $titleElement;
 	}
@@ -1045,7 +1046,7 @@ class O4DOIExportDom extends DOIExportDom {
 		// Biographical note
 		$bioNote = $this->getPrimaryTranslation($author->getBiography(null), $objectLocalePrecedence);
 		if (!empty($bioNote)) {
-			XMLCustomWriter::createChildWithText($this->getDoc(), $contributorElement, 'BiographicalNote', $bioNote);
+			XMLCustomWriter::createChildWithText($this->getDoc(), $contributorElement, 'BiographicalNote', String::html2text($bioNote));
 		}
 
 		return $contributorElement;

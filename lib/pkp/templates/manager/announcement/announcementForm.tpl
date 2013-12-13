@@ -1,6 +1,7 @@
 {**
  * templates/manager/announcement/announcementForm.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -19,7 +20,7 @@
 {/strip}
 
 <br/>
-<div id="announcementForm">
+<div id="announcement">
 <form id="announcementForm" method="post" action="{url op="updateAnnouncement"}">
 {if $announcementId}
 <input type="hidden" name="announcementId" value="{$announcementId|escape}" />
@@ -69,6 +70,12 @@
 	<td class="value"><textarea name="description[{$formLocale|escape}]" id="description" cols="40" rows="6" class="textArea richContent">{$description[$formLocale]|escape}</textarea>
 		<br />
 		<span class="instruct">{translate key="manager.announcements.form.descriptionInstructions"}</span>
+	</td>
+</tr>
+<tr valign="top">
+	<td class="label">{fieldLabel name="datePosted" key="manager.announcements.datePublish"}</td>
+	<td class="value">
+		{html_select_date prefix="datePosted" all_extra="class=\"selectMenu\"" end_year="$yearOffsetFuture" year_empty="" month_empty="" day_empty="" time="$datePosted"}
 	</td>
 </tr>
 <tr valign="top">

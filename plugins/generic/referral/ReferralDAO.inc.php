@@ -3,6 +3,7 @@
 /**
  * @file plugins/generic/referral/ReferralDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -108,26 +109,24 @@ class ReferralDAO extends DAO {
 	}
 
 	/**
-	 * Insert a new Referral.
+	 * Insert a new Referral or replace the Referral if it already exists
 	 * @param $referral Referral
-	 * @return int 
+	 * @return int
 	 */
-	function insertReferral(&$referral) {
-		$this->update(
-			sprintf(
-				'INSERT INTO referrals
-					(status, article_id, url, date_added, link_count)
-				VALUES
-					(?, ?, ?, %s, ?)',
-				$this->datetimeToDB($referral->getDateAdded())
-			),
+	function replaceReferral(&$referral) {
+		$date = trim($this->datetimeToDB($referral->getDateAdded()), "'");
+		$this->replace(
+			'referrals',
 			array(
-				(int) $referral->getStatus(),
-				(int) $referral->getArticleId(),
-				$referral->getUrl(),
-				(int) $referral->getLinkCount()
-			)
+				'status' => (int) $referral->getStatus(),
+				'article_id' => (int) $referral->getArticleId(),
+				'url' => $referral->getUrl(),
+				'date_added' => $date,
+				'link_count' => (int) $referral->getLinkCount(),
+			),
+			array('article_id', 'url')
 		);
+
 		$referral->setId($this->getInsertObjectId());
 		$this->updateLocaleFields($referral);
 		return $referral->getId();
@@ -164,7 +163,7 @@ class ReferralDAO extends DAO {
 	/**
 	 * Delete a referral.
 	 * deleted.
-	 * @param $referral Referral 
+	 * @param $referral Referral
 	 * @return boolean
 	 */
 	function deleteReferral($referral) {

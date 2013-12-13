@@ -1,6 +1,7 @@
 {**
  * templates/sectionEditor/submission/scheduling.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -32,7 +33,7 @@
 				<input type="submit" value="{translate key="common.record"}" class="button defaultButton" />&nbsp;
 				{if $issueId}
 					{if $isEditor}
-						<a href="{url op="issueToc" path=$issueId}" class="action">{translate key="issue.toc"}</a>
+						<a href="{url page="editor" op="issueToc" path=$issueId}" class="action">{translate key="issue.toc"}</a>
 					{else}
 						<a href="{url page="issue" op="view" path=$issueId}" class="action">{translate key="issue.toc"}</a>
 					{/if}
@@ -78,7 +79,7 @@
 		</td>
 		{if $isEditor}
 			<td align="left">
-				<form action="{url op="waivePublicationFee" path=$submission->getId()}" method="post">
+				<form action="{url page="editor" op="waivePublicationFee" path=$submission->getId()}" method="post">
 					<input type="hidden" name="sendToScheduling" value=1 />
 					<input type="submit" value="{translate key="payment.waive"}" class="button defaultButton" />&nbsp;
 				</form>

@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
   * locale/es_ES/common.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -371,4 +372,9 @@
 	<message key="search.deleteFilter">Eliminar</message>
 	<message key="search.indexTermsLong">Todos los camps término del índice</message>
 	<message key="grid.action.downloadFile">Descargar el fichero</message>
+	<message key="common.error">Error</message>
+	<message key="common.metric">Métrica</message>
+	<message key="common.count">Contar</message>
+	<message key="defaultMetric.title">Métrica por defecto</message>
+	<message key="defaultMetric.availableMetrics">Métricas disponibles</message>
 </locale> 

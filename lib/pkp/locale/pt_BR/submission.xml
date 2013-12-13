@@ -4,6 +4,7 @@
 <!--
   * locale/pt_BR/submission.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -384,4 +385,5 @@
 	<message key="submission.createRemote">Criar remoto</message>
 	<message key="submission.form.name">Informe um nome útil para o arquivo</message>
 	<message key="submission.form.replaceExisting">Substituindo um arquivo existente?</message>
+	<message key="submission.addFile">Enviar arquivo</message>
 </locale>

@@ -1,6 +1,7 @@
 {**
  * plugins/pubIds/urn/templates/urnSuffixEdit.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -37,7 +38,10 @@
 	{elseif $storedPubId}
 		{$storedPubId|escape}
 	{else}
-		{$pubIdPlugin->getPubId($pubObject, true)|escape}
+		{$pubIdPlugin->getPubId($pubObject, true)|escape}<br />
+			<br />
+			{capture assign=translatedObjectType}{translate key="plugins.pubIds.urn.editor.urnObjectType"|cat:$pubObjectType}{/capture}
+			{translate key="plugins.pubIds.urn.editor.urnNotYetGenerated" pubObjectType=$translatedObjectType}
 	{/if}
 	<div class="separator"></div>
 	<!-- /URN -->

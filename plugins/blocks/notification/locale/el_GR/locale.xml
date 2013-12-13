@@ -4,6 +4,7 @@
 <!--
   * plugins/blocks/notification/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -12,6 +13,6 @@
   -->
  
 <locale name="el_GR" full_name="Greek">
-	<message key="plugins.block.notification.displayName">Block "Ειδοποιήσεων"</message>
-	<message key="plugins.block.notification.description">Αυτό το plugin εμφανίζει πληροφορίες σχετικά με τις ειδοποιήσεις του συστήματος.</message>
+	<message key="plugins.block.notification.displayName">Δομική Μονάδα "Ειδοποιήσεων"</message>
+	<message key="plugins.block.notification.description">Αυτό το πρόσθετο εμφανίζει πληροφορίες σχετικά με τις ειδοποιήσεις του συστήματος.</message>
 </locale>

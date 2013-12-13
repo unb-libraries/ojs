@@ -3,6 +3,7 @@
 /**
  * @file classes/submission/sectionEditor/SectionEditorSubmissionDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -784,53 +785,38 @@ class SectionEditorSubmissionDAO extends DAO {
 				break;
 		}
 
+		$interestJoinSql = ($joinInterests ? '
+					LEFT JOIN user_interests ui ON (ui.user_id = u.user_id)
+					LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = ui.controlled_vocab_entry_id) ':'');
 
-		// If we are sorting a column, we'll need to configure the additional join conditions
-		$sortSelect = '';
-		$joinAll = $joinComplete = $joinIncomplete = false;
-		$selectQuality = $selectLatest = $selectComplete = $selectAverage = $selectIncomplete = false;
-		if($sortBy) switch($sortBy) {
-			case 'quality':
-				$selectQuality = $joinAll = true;
-				break;
-			case 'latest':
-				$selectLatest = $joinAll = true;
-				break;
-			case 'done':
-				$selectComplete = $joinComplete = true;
-				break;
-			case 'average':
-				$selectAverage = $joinComplete = true;
-				break;
-			case 'active':
-				$selectIncomplete = $joinIncomplete = true;
-				break;
-		}
-
-		$sql = 'SELECT DISTINCT
+		$result =& $this->retrieveRange(
+			'SELECT DISTINCT
 				u.user_id,
 				u.last_name,
 				ar.review_id,
-				MAX(ar.declined) ' . // MAX needed for PSQL (bug #6007)
-				($selectQuality ? ', AVG(ac.quality) AS average_quality ' : '') .
-				($selectLatest ? ', MAX(ac.date_notified) AS latest ' : '') .
-				($selectComplete ? ', COUNT(ra.review_id) AS completed ' : '') .
-				($selectAverage ? ', AVG(ra.date_completed-ra.date_notified) AS average ' : '') .
-				($selectIncomplete ? ', COUNT(ai.review_id) AS incomplete ' : '') .
-			'FROM roles r, users u
-				LEFT JOIN review_assignments ar ON (ar.reviewer_id = u.user_id AND ar.cancelled = 0 AND ar.submission_id = ? AND ar.round = ?) ' .
-				($joinInterests ? 'LEFT JOIN user_interests ui ON (ui.user_id = u.user_id)
-				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = ui.controlled_vocab_entry_id) ':'') .
-		 		($joinAll ? 'LEFT JOIN review_assignments ac ON (ac.reviewer_id = u.user_id) ':'') .
-				($joinComplete ? 'LEFT JOIN review_assignments ra ON (ra.reviewer_id = u.user_id AND ra.date_completed IS NOT NULL) ':'') .
-				($joinIncomplete ? 'LEFT JOIN review_assignments ai ON (ai.reviewer_id = u.user_id AND ai.date_notified IS NOT NULL AND ai.cancelled = 0 AND ai.date_completed IS NULL) ':'') .
-			'WHERE u.user_id = r.user_id AND
+				(SELECT AVG(ra.quality) FROM review_assignments ra WHERE ra.reviewer_id = u.user_id) AS average_quality,
+				(SELECT COUNT(ac.review_id) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS completed,
+				(SELECT COUNT(ac.review_id) FROM review_assignments ac, articles a WHERE
+					ac.reviewer_id = u.user_id AND
+					ac.submission_id = a.article_id AND
+					ac.date_notified IS NOT NULL AND
+					ac.date_completed IS NULL AND
+					ac.cancelled = 0 AND
+					ac.declined = 0 AND
+					a.status <> '.STATUS_QUEUED.') AS incomplete,
+				(SELECT MAX(ac.date_notified) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS latest,
+				(SELECT AVG(ac.date_completed-ac.date_notified) FROM review_assignments ac WHERE ac.reviewer_id = u.user_id AND ac.date_completed IS NOT NULL) AS average
+			 FROM users u
+				LEFT JOIN review_assignments ra ON (ra.reviewer_id = u.user_id)
+				LEFT JOIN review_assignments ar ON (ar.reviewer_id = u.user_id AND ar.cancelled = 0 AND ar.submission_id = ? AND ar.round = ?)
+				LEFT JOIN roles r ON (r.user_id = u.user_id)
+				LEFT JOIN articles a ON (ra.submission_id = a.article_id)
+				'.$interestJoinSql.'
+				WHERE u.user_id = r.user_id AND
 				r.journal_id = ? AND
-				r.role_id = ? ' . $searchSql . ' GROUP BY u.user_id, u.last_name, ar.review_id' .
-			($sortBy?(' ORDER BY ' . $this->getSortMapping($sortBy) . ' ' . $this->getDirectionMapping($sortDirection)) : '');
-
-		$result =& $this->retrieveRange(
-			$sql, $paramArray, $rangeInfo
+				r.role_id = ? ' . $searchSql . 'GROUP BY u.user_id, u.last_name, ar.review_id' .
+			($sortBy?(' ORDER BY ' . $this->getSortMapping($sortBy) . ' ' . $this->getDirectionMapping($sortDirection)) : ''),
+			$paramArray, $rangeInfo
 		);
 
 		$returner = new DAOResultFactory($result, $this, '_returnReviewerUserFromRow');
@@ -890,81 +876,6 @@ class SectionEditorSubmissionDAO extends DAO {
 			'SELECT COUNT(*) FROM signoffs WHERE assoc_id = ? AND assoc_type = ? AND user_id = ? AND symbolic = ?', array($articleId, ASSOC_TYPE_ARTICLE, $copyeditorId, 'SIGNOFF_COPYEDITING_INITIAL')
 		);
 		return isset($result->fields[0]) && $result->fields[0] == 1 ? true : false;
-	}
-
-	/**
-	 * Retrieve a list of all copyeditors not assigned to the specified article.
-	 * @param $journalId int
-	 * @param $articleId int
-	 * @return array matching Users
-	 */
-	function &getCopyeditorsNotAssignedToArticle($journalId, $articleId, $searchType = null, $search = null, $searchMatch = null) {
-		$users = array();
-
-		$paramArray = array(ASSOC_TYPE_USER, 'interest', $articleId, ASSOC_TYPE_ARTICLE, 'SIGNOFF_COPYEDITING_INITIAL', $journalId, RoleDAO::getRoleIdFromPath('copyeditor'));
-		$searchSql = '';
-
-		$searchTypeMap = array(
-			USER_FIELD_FIRSTNAME => 'u.first_name',
-			USER_FIELD_LASTNAME => 'u.last_name',
-			USER_FIELD_USERNAME => 'u.username',
-			USER_FIELD_EMAIL => 'u.email',
-			USER_FIELD_INTERESTS => 'cves.setting_value'
-		);
-
-		if (isset($search) && isset($searchTypeMap[$searchType])) {
-			$fieldName = $searchTypeMap[$searchType];
-			switch ($searchMatch) {
-				case 'is':
-					$searchSql = "AND LOWER($fieldName) = LOWER(?)";
-					$paramArray[] = $search;
-					break;
-				case 'contains':
-					$searchSql = "AND LOWER($fieldName) LIKE LOWER(?)";
-					$paramArray[] = '%' . $search . '%';
-					break;
-				case 'startsWith':
-					$searchSql = "AND LOWER($fieldName) LIKE LOWER(?)";
-					$paramArray[] = $search . '%';
-					break;
-			}
-		} elseif (isset($search)) switch ($searchType) {
-			case USER_FIELD_USERID:
-				$searchSql = 'AND user_id=?';
-				$paramArray[] = $search;
-				break;
-			case USER_FIELD_INITIAL:
-				$searchSql = 'AND (LOWER(last_name) LIKE LOWER(?) OR LOWER(username) LIKE LOWER(?))';
-				$paramArray[] = $search . '%';
-				$paramArray[] = $search . '%';
-				break;
-		}
-
-		$result =& $this->retrieve(
-			'SELECT	u.*
-			FROM	users u
-				LEFT JOIN controlled_vocabs cv ON (cv.assoc_type = ? AND cv.assoc_id = u.user_id AND cv.symbolic = ?)
-				LEFT JOIN controlled_vocab_entries cve ON (cve.controlled_vocab_id = cv.controlled_vocab_id)
-				LEFT JOIN controlled_vocab_entry_settings cves ON (cves.controlled_vocab_entry_id = cve.controlled_vocab_entry_id)
-				LEFT JOIN roles r ON (r.user_id = u.user_id)
-				LEFT JOIN signoffs sci ON (sci.user_id = u.user_id AND sci.assoc_id = ? AND sci.assoc_type = ? AND sci.symbolic = ?)
-			WHERE	r.journal_id = ? AND
-				r.role_id = ? AND
-				sci.assoc_id IS NULL
-				' . $searchSql . '
-			ORDER BY last_name, first_name',
-			$paramArray
-		);
-
-		while (!$result->EOF) {
-			$users[] =& $this->userDao->_returnUserFromRowWithData($result->GetRowAssoc(false));
-			$result->moveNext();
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $users;
 	}
 
 	/**
@@ -1042,13 +953,15 @@ class SectionEditorSubmissionDAO extends DAO {
 
 		// Get completion status
 		$result =& $this->retrieve(
-			'SELECT	r.reviewer_id, COUNT(*) AS incomplete
-			FROM	review_assignments r,
+			'SELECT r.reviewer_id, COUNT(*) AS incomplete
+			FROM    review_assignments r,
 				articles a
-			WHERE	r.submission_id = a.article_id AND
+			WHERE   r.submission_id = a.article_id AND
 				r.date_notified IS NOT NULL AND
 				r.date_completed IS NULL AND
 				r.cancelled = 0 AND
+				r.declined = 0 AND
+				a.status != '.STATUS_QUEUED.' AND
 				a.journal_id = ?
 			GROUP BY r.reviewer_id',
 			(int) $journalId

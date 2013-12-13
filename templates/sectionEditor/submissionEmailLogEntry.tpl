@@ -1,6 +1,7 @@
 {**
  * templates/sectionEditor/submissionEmailLogEntry.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -86,7 +87,7 @@
 	</tr>
 </table>
 {if $isEditor}
-	<a href="{url op="clearSubmissionEmailLog" path=$submission->getId()|to_array:$logEntry->getId()}" onclick="return confirm('{translate|escape:"jsparam" key="submission.email.confirmDeleteLogEntry"}')" class="action">{translate key="submission.email.deleteLogEntry"}</a><br/>
+	<a href="{url page="editor" op="clearSubmissionEmailLog" path=$submission->getId()|to_array:$logEntry->getId()}" onclick="return confirm('{translate|escape:"jsparam" key="submission.email.confirmDeleteLogEntry"}')" class="action">{translate key="submission.email.deleteLogEntry"}</a><br/>
 {/if}
 
 <a href="{url op="submissionEmailLog" path=$submission->getId()}" class="action">{translate key="submission.email.backToEmailLog"}</a>

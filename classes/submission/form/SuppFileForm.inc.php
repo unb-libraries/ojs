@@ -3,6 +3,7 @@
 /**
  * @file classes/submission/form/SuppFileForm.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -274,6 +275,10 @@ class SuppFileForm extends Form {
 		// Index updated metadata.
 		$articleSearchIndex->suppFileMetadataChanged($this->suppFile);
 		$articleSearchIndex->articleChangesFinished();
+
+		// Stamp the article modification (for OAI)
+		$articleDao =& DAORegistry::getDAO('ArticleDAO');
+		$articleDao->updateArticle($this->article);
 
 		return $this->suppFileId;
 	}

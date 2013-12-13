@@ -3,6 +3,7 @@
 /**
  * @file pages/issue/IssueHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -56,7 +57,7 @@ class IssueHandler extends Handler {
 		$templateMgr =& TemplateManager::getManager();
 
 		if ($issue != null) {
-			$this->_setupIssueTemplate($request, $issue, ($showToc == 'showToc') ? true : false);
+			$request->redirect(null, 'issue', 'view', $issue->getId(), $request->getQueryArray());
 		} else {
 			$issueCrumbTitle = __('current.noCurrentIssue');
 			$issueHeadingTitle = __('current.noCurrentIssue');
@@ -390,7 +391,6 @@ class IssueHandler extends Handler {
 		$galley =& $this->getGalley();
 
 		$galleyDao =& DAORegistry::getDAO('IssueGalleyDAO');
-		if (!$request->isBot()) $galleyDao->incrementViews($galley->getId());
 
 		if (!HookRegistry::call('IssueHandler::viewFile', array(&$issue, &$galley))) {
 			import('classes.file.IssueFileManager');

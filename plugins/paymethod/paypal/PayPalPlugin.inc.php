@@ -3,6 +3,7 @@
 /**
  * @file plugins/paymethod/paypal/PayPalPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -213,8 +214,8 @@ class PayPalPlugin extends PaymethodPlugin {
 							$payPalDao->insertTransaction(
 								$transactionId,
 								$request->getUserVar('txn_type'),
-								$request->getUserVar('payer_email'),
-								$request->getUserVar('receiver_email'),
+								String::strtolower($request->getUserVar('payer_email')),
+								String::strtolower($request->getUserVar('receiver_email')),
 								$request->getUserVar('item_number'),
 								$request->getUserVar('payment_date'),
 								$request->getUserVar('payer_id'),
@@ -244,7 +245,7 @@ class PayPalPlugin extends PaymethodPlugin {
 							if (
 								(($queuedAmount = $queuedPayment->getAmount()) != ($grantedAmount = $request->getUserVar('mc_gross')) && $queuedAmount > 0) ||
 								($queuedCurrency = $queuedPayment->getCurrencyCode()) != ($grantedCurrency = $request->getUserVar('mc_currency')) ||
-								($grantedEmail = $request->getUserVar('receiver_email')) != ($queuedEmail = $this->getSetting($journal->getId(), 'selleraccount'))
+								($grantedEmail = String::strtolower($request->getUserVar('receiver_email'))) != ($queuedEmail = String::strtolower($this->getSetting($journal->getId(), 'selleraccount')))
 							) {
 								// The integrity checks for the transaction failed. Complain.
 								$mail->assignParams(array(

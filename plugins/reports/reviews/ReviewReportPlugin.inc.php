@@ -3,6 +3,7 @@
 /**
  * @file plugins/reports/reviews/ReviewReportPlugin.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  * 
@@ -24,7 +25,7 @@ class ReviewReportPlugin extends ReportPlugin {
 	 */
 	function register($category, $path) {
 		$success = parent::register($category, $path);
-		if ($success) {
+		if ($success && Config::getVar('general', 'installed')) {
 			$this->import('ReviewReportDAO');
 			$reviewReportDAO = new ReviewReportDAO();
 			DAORegistry::registerDAO('ReviewReportDAO', $reviewReportDAO);

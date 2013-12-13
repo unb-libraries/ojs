@@ -4,6 +4,7 @@
 <!--
   * plugins/citationFormats/proCite/locale/el_GR/locale.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -19,7 +20,7 @@
   -->
  
 <locale name="el_GR" full_name="Greek">	
-	<message key="plugins.citationFormats.proCite.displayName">Plugin σχήματος παραπομπής ProCite </message>
-	<message key="plugins.citationFormats.proCite.citationFormatName">ProCite - RIS σχήμα (Macintosh &amp; Windows)</message>
-	<message key="plugins.citationFormats.proCite.description">Το plugin αυτό υλοποιεί το σχήμα παραπομπής ProCite.</message>
+	<message key="plugins.citationFormats.proCite.displayName">Πρόσθετο σχήματος παραπομπής ProCite</message>
+	<message key="plugins.citationFormats.proCite.citationFormatName"><![CDATA[ProCite - RIS σχήμα (Macintosh & Windows)]]></message>
+	<message key="plugins.citationFormats.proCite.description">Το πρόσθετο αυτό υλοποιεί το σχήμα παραπομπής ProCite.</message>
 </locale>

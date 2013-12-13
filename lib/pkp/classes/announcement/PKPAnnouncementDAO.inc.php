@@ -3,6 +3,7 @@
 /**
  * @file classes/announcement/PKPAnnouncementDAO.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2000-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -134,8 +135,9 @@ class PKPAnnouncementDAO extends DAO {
 				(assoc_type, assoc_id, type_id, date_expire, date_posted)
 				VALUES
 				(?, ?, ?, %s, %s)',
-				$this->datetimeToDB($announcement->getDateExpire()), $this->datetimeToDB($announcement->getDatetimePosted())),
-			array(
+				$this->datetimeToDB($announcement->getDateExpire()),
+				$this->datetimeToDB($announcement->getDatetimePosted())
+			), array(
 				(int) $announcement->getAssocType(),
 				(int) $announcement->getAssocId(),
 				(int) $announcement->getTypeId()
@@ -158,9 +160,11 @@ class PKPAnnouncementDAO extends DAO {
 					assoc_type = ?,
 					assoc_id = ?,
 					type_id = ?,
-					date_expire = %s
+					date_expire = %s,
+					date_posted = %s
 				WHERE announcement_id = ?',
-				$this->datetimeToDB($announcement->getDateExpire())),
+				$this->datetimeToDB($announcement->getDateExpire()),
+				$this->datetimeToDB($announcement->getDatetimePosted())),
 			array(
 				(int) $announcement->getAssocType(),
 				(int) $announcement->getAssocId(),

@@ -4,6 +4,7 @@
 <!--
   * 2.4.0_update.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2003-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -52,9 +53,9 @@
 	
 	<!-- default site settings -->
 	<sql>
-		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showThumbnail', true, 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showThumbnail' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
-		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showTitle', true, 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showTitle' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
-		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showDescription', true, 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showDescription' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
+		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showThumbnail', 'true', 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showThumbnail' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
+		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showTitle', 'true', 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showTitle' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
+		<query>INSERT INTO site_settings (setting_name, setting_value, setting_type, locale) SELECT 'showDescription', 'true', 'bool', '' FROM mutex LEFT OUTER JOIN site_settings ON site_settings.setting_name = 'showDescription' WHERE mutex.i = 1 AND site_settings.setting_name IS NULL</query>
 	</sql>
 	
 </data>

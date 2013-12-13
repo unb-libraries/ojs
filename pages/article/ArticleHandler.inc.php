@@ -3,6 +3,7 @@
 /**
  * @file pages/article/ArticleHandler.inc.php
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -94,19 +95,19 @@ class ArticleHandler extends Handler {
 				$request->redirectUrl($galley->getRemoteURL());
 			}
 			if ($galley->isInlineable()) {
-				$this->viewFile(
+				return $this->viewFile(
 					array($galley->getArticleId(), $galley->getId()),
 					$request
 				);
 			} else {
-				$this->download(
+				return $this->download(
 					array($galley->getArticleId(), $galley->getId()),
 					$request
 				);
 			}
 		}
 
-		$templateMgr =& TemplateManager::getManager();
+		$templateMgr =& TemplateManager::getManager($request);
 		$templateMgr->addJavaScript('js/relatedItems.js');
 		$templateMgr->addJavaScript('js/inlinePdf.js');
 		$templateMgr->addJavaScript('js/pdfobject.js');
@@ -157,19 +158,7 @@ class ArticleHandler extends Handler {
 			$citationDao =& DAORegistry::getDAO('CitationDAO'); /* @var $citationDao CitationDAO */
 			$citationFactory =& $citationDao->getObjectsByAssocId(ASSOC_TYPE_ARTICLE, $article->getId());
 			$templateMgr->assign('citationFactory', $citationFactory);
-
-			// Increment the published article's abstract views count
-			if (!$request->isBot()) {
-				$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-				$publishedArticleDao->incrementViewsByArticleId($article->getId());
-			}
 		} else {
-			if (!$request->isBot() && !$galley->isPdfGalley()) {
-				// Increment the galley's views count.
-				// PDF galley views are counted in viewFile.
-				$galleyDao->incrementViews($galley->getId());
-			}
-
 			// Use the article's CSS file, if set.
 			if ($galley->isHTMLGalley() && $styleFile =& $galley->getStyleFile()) {
 				$templateMgr->addStyleSheet($router->url($request, null, 'article', 'viewFile', array(
@@ -341,7 +330,6 @@ class ArticleHandler extends Handler {
 		if (!$galley) $request->redirect(null, null, 'view', $articleId);
 
 		if (!$fileId) {
-			if(!$request->isBot()) $galleyDao->incrementViews($galley->getId());
 			$fileId = $galley->getFileId();
 		} else {
 			if (!$galley->isDependentFile($fileId)) {
@@ -374,7 +362,6 @@ class ArticleHandler extends Handler {
 		} else {
 			$galley =& $galleyDao->getGalley($galleyId, $article->getId());
 		}
-		if (!$request->isBot() && $galley) $galleyDao->incrementViews($galley->getId());
 
 		if ($article && $galley && !HookRegistry::call('ArticleHandler::downloadFile', array(&$article, &$galley))) {
 			import('classes.file.ArticleFileManager');
@@ -477,10 +464,16 @@ class ArticleHandler extends Handler {
 				// Subscription Access
 				$subscribedUser = IssueAction::subscribedUser($journal, $issue->getId(), $publishedArticle->getId());
 
-				if (!(!$subscriptionRequired || $publishedArticle->getAccessStatus() == ARTICLE_ACCESS_OPEN || $subscribedUser)) {
-					// if payment information is enabled,
-					import('classes.payment.ojs.OJSPaymentManager');
-					$paymentManager = new OJSPaymentManager($request);
+				import('classes.payment.ojs.OJSPaymentManager');
+				$paymentManager = new OJSPaymentManager($request);
+
+				$purchasedIssue = false;
+				if (!$subscribedUser && $paymentManager->purchaseIssueEnabled()) {
+					$completedPaymentDao =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
+					$purchasedIssue = $completedPaymentDao->hasPaidPurchaseIssue($userId, $issue->getId());
+				}
+
+				if (!(!$subscriptionRequired || $publishedArticle->getAccessStatus() == ARTICLE_ACCESS_OPEN || $subscribedUser || $purchasedIssue)) {
 
 					if ( $paymentManager->purchaseArticleEnabled() || $paymentManager->membershipEnabled() ) {
 						/* if only pdf files are being restricted, then approve all non-pdf galleys
@@ -509,7 +502,6 @@ class ArticleHandler extends Handler {
 						$completedPaymentDao =& DAORegistry::getDAO('OJSCompletedPaymentDAO');
 						$dateEndMembership = $user->getSetting('dateEndMembership', 0);
 						if ($completedPaymentDao->hasPaidPurchaseArticle($userId, $publishedArticle->getId())
-							|| $completedPaymentDao->hasPaidPurchaseIssue($userId, $issue->getId())
 							|| (!is_null($dateEndMembership) && $dateEndMembership > time())) {
 							$this->journal =& $journal;
 							$this->issue =& $issue;

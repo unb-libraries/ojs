@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../dtd/locale.dtd">
 
 <!--
   * locale/es_ES/manager.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -229,4 +230,6 @@
 	<message key="plugins.categories.citationOutput.description">Los conectores de salida de citas implementan estándares de cita. Estos tienen prioridad sobre los conectores de formato de cita.</message>
 	<message key="plugins.categories.citationParser">Conectores de extracción de citas</message>
 	<message key="plugins.categories.citationParser.description">Los conectores de extracción de citas segmentan en campos el texto de una cita (p.e.: autor, título, etc.).</message>
+	<message key="manager.statistics.city">Ciudad</message>
+	<message key="manager.statistics.region">Región</message>
 </locale> 

@@ -1,6 +1,7 @@
 {**
  * templates/editor/notifyUsers.tpl
  *
+ * Copyright (c) 2013 Simon Fraser University Library
  * Copyright (c) 2003-2013 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -76,6 +77,12 @@
 	</td>
 </tr>
 {/if}{* publishingMode is PUBLISHING_MODE_SUBSCRIPTION *}
+<tr valign="top">
+	<td><input type="checkbox" name="sendToMailList" /></td>
+	<td class="label">
+		{translate key="editor.notifyUsers.allMailingList" count=$allMailListCount|default:0}
+	</td>
+</tr>
 {if $senderEmail}
 	<tr valign="top">
 		<td><input type="checkbox" name="ccSelf" /></td>

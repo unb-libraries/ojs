@@ -4,6 +4,7 @@
 <!--
   * locale/en_US/manager.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -215,6 +216,8 @@
 	<message key="manager.statistics"><![CDATA[Stats &amp; Reports]]></message>
 	<message key="manager.statistics.statistics.count.value">{$count} ({$percentage}%)</message>
 	<message key="manager.statistics.statistics.totalNewValue">{$numTotal} ({$numNew} new)</message>
+	<message key="manager.statistics.city">City</message>	
+	<message key="manager.statistics.region">Region</message>	
 	<message key="manager.users">Users</message>
 	<message key="plugins.categories.metadata">Metadata Plugins</message>
 	<message key="plugins.categories.metadata.description">Metadata Plugins implement additional meta-data standards.</message>

@@ -4,6 +4,7 @@
 <!--
   * locale/en_US/common.xml
   *
+  * Copyright (c) 2013 Simon Fraser University Library
   * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -53,6 +54,7 @@
 	<message key="common.cancel">Cancel</message>	
 	<message key="common.cancelled">Cancelled</message>
 	<message key="common.warning">Warning</message>
+	<message key="common.error">Error</message>
 	<message key="common.captchaField.altText">Validation image</message>
 	<message key="common.captchaField.badCaptcha">The characters you entered did not match the characters in the image. Please check the characters and try again.</message>
 	<message key="common.captchaField.description">Please enter the letters as they appear in the image above.</message>
@@ -217,6 +219,8 @@
 	<message key="common.yes">Yes</message>
 	<message key="common.loading">Loading ...</message>
 	<message key="common.plugins">Plugins</message>
+	<message key="common.metric">Metric</message>
+	<message key="common.count">Count</message>
 	<message key="debug.databaseQueries">Number of database queries</message>
 	<message key="debug.executionTime">Page generated in</message>
 	<message key="debug.memoryUsage">Memory Usage</message>
@@ -224,6 +228,8 @@
 	<message key="debug.notes.localeLoad">Loaded locale file "{$localeFile}" from XML</message>
 	<message key="debug.notes.missingLocaleKey">Missing locale key "{$key}".</message>
 	<message key="debug.notes">Notes:</message>
+	<message key="defaultMetric.title">Default Metric</message>
+	<message key="defaultMetric.availableMetrics">Available Metrics</message>	
 	<message key="email.addAttachment">Add Attachment</message>
 	<message key="email.addBccRecipient">Add BCC</message>
 	<message key="email.addCcRecipient">Add CC</message>
