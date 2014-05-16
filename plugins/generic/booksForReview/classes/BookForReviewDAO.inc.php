@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/booksForReview/classes/BookForReviewDAO.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BookForReviewDAO
@@ -17,12 +17,12 @@
 import('lib.pkp.classes.db.DAO');
 
 /* These constants are used for user-selectable search fields. */
-define('BFR_FIELD_PUBLISHER', 	'publisher');
-define('BFR_FIELD_YEAR', 		'year');
-define('BFR_FIELD_ISBN', 		'isbn');
-define('BFR_FIELD_TITLE', 		'title');
+define('BFR_FIELD_PUBLISHER',	'publisher');
+define('BFR_FIELD_YEAR',		'year');
+define('BFR_FIELD_ISBN',		'isbn');
+define('BFR_FIELD_TITLE',		'title');
 define('BFR_FIELD_DESCRIPTION', 'description');
-define('BFR_FIELD_NONE', 		null);
+define('BFR_FIELD_NONE',		null);
 
 
 class BookForReviewDAO extends DAO {

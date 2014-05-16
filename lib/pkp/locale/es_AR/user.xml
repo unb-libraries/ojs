@@ -4,8 +4,8 @@
 <!--
   * ../pkp//locale/es_AR/user.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
@@ -125,4 +125,5 @@
 	<message key="user.profile.form.passwordSameAsOld">Su nueva clave es la misma que la anterior clave.</message>
 	<message key="user.profile.form.usergroupRequired">Un  grupo de usuario es requerido</message>
 	<message key="user.suffix">Subfijo</message>
+	<message key="user.profile.form.hashInvalid">El hash de reseteo de claves que esta intentando utilizar no es válido.</message>
 </locale>

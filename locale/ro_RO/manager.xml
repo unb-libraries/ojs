@@ -4,8 +4,8 @@
 <!--
   * locale/ro_RO/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
@@ -201,7 +201,7 @@
 	<message key="manager.setup.authorGuidelines">Îndrumări pentru autori</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Menționează standardele bibliografice pentru autori şi standardele de redactare şi formatare utilizate pentru articolele propuse revistei (ex. <em>Publication Manual of the American Psychological Association</em>, a V-a ediţie, 2001). Este de mare ajutor, să oferi exemple de referinţe bibliografice pentru seriale şi cărţi care ar putea fi folosite la elaborarea propunerilor. De asemenea, identificarea tipurilor de fişiere adiţionale (ex. seturi de date, instrumente de cercetare, etc.) pe care autorii ar trebui să fie încurajaţi să le încarce suplimentar propunerii pentru a mări implicarea cititorilor în lucrarea respectivă.]]></message>
 	<message key="manager.setup.competingInterests">Conflictul de interese</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[De obicei, revistele de medicină cer autorilor şi evaluatorilor lor să declare dacă au interese concurente sau conflictuale în ceea ce priveşte cercetările lor (vezi <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">politicile de la PLoS</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[De obicei, revistele de medicină cer autorilor şi evaluatorilor lor să declare dacă au interese concurente sau conflictuale în ceea ce priveşte cercetările lor (vezi <a href="http://www.plosbiology.org/static/competing.action" target="_new">politicile de la PLoS</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Îndrumări pentru depunerea unei declaraţii de conflict de interese</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Cereţi autorilor care fac propuneri să depună şi o declaraţie privind conflictul de interes (CI) atașat acestora.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Cereţi evaluatorilor să depună o declaraţie de CI la fiecare evaluare peer review pe care o fac.</message>
@@ -292,7 +292,6 @@
 	<message key="manager.setup.guidingSubmissions">Pasul 3. Îndrumarea propunerilor</message>
 	<message key="manager.setup.homepageImage">Imaginea care apare în pagina principală</message>
 	<message key="manager.setup.homepageImageDescription">Adaugă o imagine sau un fişier grafic la partea mediană a paginii.</message>
-	<message key="manager.setup.includeCreativeCommons">Pentru revistele care oferă acces deschis imediat sau cu embargo, includeţi la timpul potrivit o licenţă Creative Commons care să cuprindă toate articolele publicate.</message>
 	<message key="manager.setup.information">Informaţie</message>
 	<message key="manager.setup.information.description">Descrierea pe scurt a revistei necesară bibliotecarilor, autorilor şi cititorilor care prospectează, este disponibilă în secţiunea „Informaţii” din bara laterale.</message>
 	<message key="manager.setup.information.forAuthors">Pentru autori</message>
@@ -518,19 +517,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">lună(i) după ce numărul este publicat.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Selectează o perioadă de timp validă.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Următoarea politică de acces deschis întârziat va fi postată sub regulamente la secţiunea „despre revistă”.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Foloseşte căsuţa de bifare existentă.</message>
 	<message key="manager.subscriptionPolicies.expiry">Expirarea abonamentului</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Privind expirarea abonamentului, cititorilor li se poate restricționa accesul la toate abonamentele sau pot să aibe acces doar la conţinutul anterior datei expirării abonamentului.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Expirat definitiv</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Cititorilor li se interzice accesul la întreg conţinutul cu abonament după expirarea abonamentului.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Expirare parţială</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Cititorilor li se interzice accesul la conţinutul recent publicat, dar vor putea accesa conţinutul cu abonament publicat înainte de data expirării abonamentului.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Anunţă abonaţii prin email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">lună(i) după expirarea abonamentului.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Anunţă abonaţii prin email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">săptămână(i) după expirarea abonamentului.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Anunţă abonaţii prin email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">lună(i) înainte de expirarea abonamentului.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Anunţă abonaţii prin email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">săptămână(i) înainte de expirarea abonamentului.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Înștiințări privind expirarea abonamentului</message>

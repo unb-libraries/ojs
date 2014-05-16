@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/layoutEditor/LayoutEditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LayoutEditorSubmissionDAO
@@ -342,7 +342,7 @@ class LayoutEditorSubmissionDAO extends DAO {
 	 */
 	function getSortMapping($heading) {
 		switch ($heading) {
-	 		case 'id': return 'a.article_id';
+			case 'id': return 'a.article_id';
 			case 'assignDate': return 'notified_date';
 			case 'section': return 'section_abbrev';
 			case 'authors': return 'author_name';

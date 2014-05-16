@@ -1,8 +1,8 @@
 {**
  * templates/about/journalSponsorship.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * About the Journal / Journal Sponsorship.
@@ -30,15 +30,17 @@
 
 {if $sponsorNote}<p>{$sponsorNote|nl2br}</p>{/if}
 
-<ul>
-	{foreach from=$sponsors item=sponsor}
-	{if $sponsor.url}
-		<li><a href="{$sponsor.url|escape}">{$sponsor.institution|escape}</a></li>
-	{else}
-		<li>{$sponsor.institution|escape}</li>
-	{/if}
-	{/foreach}
-</ul>
+{if $sponsors}
+  <ul>
+    {foreach from=$sponsors item=sponsor}
+      {if $sponsor.url}
+        <li><a href="{$sponsor.url|escape}">{$sponsor.institution|escape}</a></li>
+        {else}
+        <li>{$sponsor.institution|escape}</li>
+        {/if}
+      {/foreach}
+  </ul>
+{/if}
 </div>
 <div class="separator"></div>
 {/if}
@@ -49,17 +51,19 @@
 
 {if $contributorNote}<p>{$contributorNote|nl2br}</p>{/if}
 
-<ul>
-	{foreach from=$contributors item=contributor}
-	{if $contributor.name}
-		{if $contributor.url}
-			<li><a href="{$contributor.url|escape}">{$contributor.name|escape}</a></li>
-		{else}
-			<li>{$contributor.name|escape}</li>
-		{/if}
-	{/if}
-	{/foreach}
-</ul>
+{if $contributors}
+  <ul>
+    {foreach from=$contributors item=contributor}
+      {if $contributor.name}
+        {if $contributor.url}
+          <li><a href="{$contributor.url|escape}">{$contributor.name|escape}</a></li>
+          {else}
+          <li>{$contributor.name|escape}</li>
+          {/if}
+        {/if}
+      {/foreach}
+  </ul>
+{/if}
 </div>
 {/if}
 

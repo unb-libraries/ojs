@@ -4,8 +4,8 @@
 <!--
   * locale/it_IT/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the it_IT (Italiano) locale.
@@ -174,7 +174,7 @@ Una volta aggiunto, il SE sarà automaticamente assegnato  alla gestione della R
 	<message key="manager.setup.authorGuidelines">Linee guida per gli autori</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Preparare per gli autori degli standard per le citazioni blibliografiche e la formattazione da utilizzare per gli articoli inviati alla rivista (ad esempio <em><a href="http://www.apa.org/pubs/books/4200060.aspx">Publication Manual of the American Psychological Association</a></em>, quinta edizione, 2001). Pu&#x00F2; essere utile fornire esempi dei formati comuni delle citazioni di riviste e libri da utilizzare negli articoli proposti alla rivista. &#x00C8; utile inoltre identificare il tipo di file supplementari appropriati (ad esempio dataset, strumenti di ricercaecc.) che gli autori sono incoraggiati ad inviare, insieme agli articoli, per aumentare il livello di coinvolgimento dei lettori con i loro lavori.]]></message>
 	<message key="manager.setup.competingInterests">Conflitto di interessi</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Le riviste biomediche solitamente richiedono agli autori e ai revisori una dichiarazione di assenza di conflitti di interesse sulla rivista (vedi <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Le riviste biomediche solitamente richiedono agli autori e ai revisori una dichiarazione di assenza di conflitti di interesse sulla rivista (vedi <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Linee guida per presentare una dichiarazione sul conflitto di interessi</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Richiedi agli autori di inviare una dichiarazione di assenza di conflitto di interessi durante l'invio della proposta.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Richiedi ai revisori di allegare una dichiarazione di assenza di conflitto di interessi per ogni revisione che invieranno.</message>
@@ -253,7 +253,6 @@ Una volta aggiunto, il SE sarà automaticamente assegnato  alla gestione della R
 	<message key="manager.setup.guidingSubmissions">Fase 3. Guidare le proposte</message>
 	<message key="manager.setup.homepageImage">Immagine dell'homepage</message>
 	<message key="manager.setup.homepageImageDescription">Aggiungi un'immagine che comparirà al centro della pagina..</message>
-	<message key="manager.setup.includeCreativeCommons">Per le riviste ad accesso aperto (immediato o differito), inserisci una  licenza Creative Commons per tutti gli articoli che verrà mostrata al momento della pubblicazione.</message>
 	<message key="manager.setup.information">Informazioni</message>
 	<message key="manager.setup.information.description">Una breve descrizione della rivista per i bibliotecari e i potenziali autori e lettori, è disponibile nella sezione "Informazioni" del menu laterale.</message>
 	<message key="manager.setup.information.forAuthors">Per gli autori</message>
@@ -301,7 +300,7 @@ Una volta aggiunto, il SE sarà automaticamente assegnato  alla gestione della R
 	<message key="manager.setup.lists">Liste</message>
 	<message key="manager.setup.listsDescription">Inserisci il numero massimo di voci delle liste che devono comparire nelle diverse pagine (es. fascicoli, utenti o incarichi) e il numero di link alle altre pagine da visualizzare.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Abilita  LOCKSS a conservare e distribuire il contenuto della rivista alle biblioteche partecipanti attivando il <a href="{$lockssUrl}" target="_blank">Publisher Manifest</a> page. Una licenza LOCKSS apparir&#x00E0; nelle informazioni sulla rivista, sotto Archiviazione:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Vedi <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">altre versioni di una licenza LOCKSS</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Vedi <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">altre versioni di una licenza LOCKSS</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identifica 6-10 biblioteche che registreranno e depositeranno la rivista. Per esempio, guarda alle istituzioni dove lavorano gli editor o i membri della direzione e/o istituzioni che gi&#x00E0; parteciapno al LOCKSS. Vedi <a href="http://www.lockss.org/community/" target="_blank">participating libraries</a>. Usa gli inviti preparati per (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">biblioteche partecipanti al LOCKSS</a> o (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">libraries not yet participating in LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Aspetto</message>
 	<message key="manager.setup.look.description">Testata dell'homepage, contenuto, testata della rivista, pie' di pagina, menu di navigazione e fogli di stile.</message>
@@ -473,19 +472,14 @@ Al momento di concludere una revisione, ai revisori vengono presentate due box, 
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mese(i) dopo la pubblicazione di un fascicolo.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Seleziona un periodo valido.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">La seguente dichiarazione sarà inserita tra le informazioni sulla rivista, sotto Politiche</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Si prega di usare la checkbox fornita.</message>
 	<message key="manager.subscriptionPolicies.expiry">Scadenza dell'abbonamento</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">È possibile decidere se, alla scadenza dell'abbonamento, i lettori perdano completamente l'accesso ai contenuti riservati o se mantengano il diritto di accedere al contenuto pubblicato prima della data di scadenza dell'abbonamento stesso.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Scadenza totale</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">I lettori non possono più accedere dal momento di scadenza dell'abbonamento.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Scadenza parziale</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">I lettori non possono accedere ai contenuti pubblicati successivamente alla scadenza dell'abbonamento, ma mantengono l'accesso a ciò che è stato pubblicato prima.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Avvisa gli abbonati per email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">mese (mesi) dopo la scadenza dell'abbonamento.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Avvisa gli abbonati per email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">settimana (settimane) dopo la scadenza dell'abbonamento.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Avvisa gli abbonati per email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">mese (mesi) prima della scadenza dell'abbonamento.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Avvisa gli abbonati per email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">settimana (settimane)prima della scadenza dell'abbonamento.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Avvisi di scadenza degli abbonamenti</message>

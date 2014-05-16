@@ -7,8 +7,8 @@
 /**
  * @file classes/article/Article.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Article
@@ -41,6 +41,11 @@ define ('AUTHOR_TOC_SHOW', 2);
 define ('COMMENTS_SECTION_DEFAULT', 0);
 define ('COMMENTS_DISABLE', 1);
 define ('COMMENTS_ENABLE', 2);
+
+// License settings (internal use only)
+define ('PERMISSIONS_FIELD_LICENSE_URL', 1);
+define ('PERMISSIONS_FIELD_COPYRIGHT_HOLDER', 2);
+define ('PERMISSIONS_FIELD_COPYRIGHT_YEAR', 3);
 
 import('lib.pkp.classes.submission.Submission');
 
@@ -126,6 +131,120 @@ class Article extends Submission {
 	}
 
 	/**
+	 * Get the localized copyright holder for this article, attaching it
+	 * from journal settings as necessary.
+	 * @param $preview boolean If true, preview the license; do not attach
+	 */
+	function getLocalizedCopyrightHolder($preview = false) {
+		$copyrightHolders = $this->getCopyrightHolder(null, $preview);
+		foreach (AppLocale::getLocalePrecedence() as $locale) {
+			if (isset($copyrightHolders[$locale])) return $copyrightHolders[$locale];
+		}
+		// Fallback: return anything available
+		return array_shift($copyrightHolders);
+	}
+
+	/**
+	 * Get the license URL for this article, attaching it from journal
+	 * settings as necessary.
+	 * @param $preview boolean If true, preview the license; do not attach
+	 */
+	function getLicenseUrl($preview = false) {
+		return $this->_getLicenseFieldValue(null, PERMISSIONS_FIELD_LICENSE_URL, $preview);
+	}
+
+	/**
+	 * Get the copyright holder for this article, attaching it from journal
+	 * settings as necessary.
+	 * @param $locale string Locale
+	 * @param $preview boolean If true, preview the license; do not attach
+	 */
+	function getCopyrightHolder($locale, $preview = false) {
+		return $this->_getLicenseFieldValue($locale, PERMISSIONS_FIELD_COPYRIGHT_HOLDER, $preview);
+	}
+
+	/**
+	 * Get the copyright year for this article, attaching it as necessary
+	 * @param $preview boolean If true, preview the license; do not attach
+	 */
+	function getCopyrightYear($preview = false) {
+		return $this->_getLicenseFieldValue(null, PERMISSIONS_FIELD_COPYRIGHT_YEAR, $preview);
+	}
+
+	/**
+	 * Get a license field for this article, attaching it from journal
+	 * settings as necessary.
+	 * @param $locale string Locale
+	 * @param $field int PERMISSIONS_FIELD_... Which to return
+	 * @param $preview boolean If true, preview the license; do not attach
+	 */
+	function _getLicenseFieldValue($locale, $field, $preview = false) {
+		// If possible, use the stored permissions info
+		switch ($field) {
+			case PERMISSIONS_FIELD_LICENSE_URL:
+				$fieldValue = $this->getStoredLicenseURL();
+				break;
+			case PERMISSIONS_FIELD_COPYRIGHT_HOLDER:
+				$fieldValue = $this->getStoredCopyrightHolder($locale);
+				break;
+			case PERMISSIONS_FIELD_COPYRIGHT_YEAR:
+				$fieldValue = $this->getStoredCopyrightYear($locale);
+				break;
+			default: assert(false);
+		}
+		if (!empty($fieldValue)) {
+			if ($locale === null || !is_array($fieldValue)) return $fieldValue;
+			if (isset($fieldValue[$locale])) return $fieldValue[$locale];
+			return null;
+		}
+
+		// Otherwise, get the permissions info from journal settings.
+		$journalDao = DAORegistry::getDAO('JournalDAO');
+		$journal =& $journalDao->getById($this->getJournalId());
+		$licenseUrl = $journal->getSetting('licenseURL');
+		switch($journal->getSetting('copyrightHolderType')) {
+			case 'author':
+				$copyrightHolder = array($journal->getPrimaryLocale() => $this->getAuthorString());
+				break;
+			case 'other':
+				$copyrightHolder = $journal->getSetting('copyrightHolderOther');
+				break;
+			case 'journal':
+			default:
+				$copyrightHolder = $journal->getTitle(null);
+				break;
+		}
+		$copyrightYear = date('Y');
+
+		if (!$preview) {
+			// If not previewing the license, attach to the article
+			$this->setStoredLicenseURL($licenseUrl);
+			$this->setStoredCopyrightHolder($copyrightHolder, null);
+			$this->setStoredCopyrightYear($copyrightYear);
+			$articleDao = DAORegistry::getDAO('ArticleDAO');
+			$articleDao->updateLocaleFields($this);
+		}
+
+		switch ($field) {
+			case PERMISSIONS_FIELD_LICENSE_URL:
+				$fieldValue = $licenseUrl;
+				break;
+			case PERMISSIONS_FIELD_COPYRIGHT_HOLDER:
+				$fieldValue = $copyrightHolder;
+				break;
+			case PERMISSIONS_FIELD_COPYRIGHT_YEAR:
+				$fieldValue = $copyrightYear;
+				break;
+			default: assert(false);
+		}
+
+		// Return the fetched license field
+		if ($locale === null || !is_array($fieldValue)) return $fieldValue;
+		if (isset($fieldValue[$locale])) return $fieldValue[$locale];
+		return null;
+	}
+
+	/**
 	 * Get a public ID for this article.
 	 * @param $pubIdType string One of the NLM pub-id-type values or
 	 * 'other::something' if not part of the official NLM list
@@ -195,24 +314,6 @@ class Article extends Submission {
 	 * @return int
 	 */
 	function getStoredPubId($pubIdType) {
-		// Temporary work-around to not display DOIs for articles that haven't yet registered with Crossref
-		if( $pubIdType == 'doi' ) {
-			$articleIssueDAO =& DAORegistry::GetDAO( 'IssueDAO' );
-			$articleIssue =& $articleIssueDAO->getIssueByArticleId( $this->getArticleId() );
-			$journalId = $this->getJournalId();
-
-			if ( $articleIssue === null ) {
-				return $this->getData('pub-id::'.$pubIdType);
-			}
-
-			if (
-				( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
-				( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
-			) {
-				return null;
-			}
-		}
-
 		return $this->getData('pub-id::'.$pubIdType);
 	}
 
@@ -225,6 +326,56 @@ class Article extends Submission {
 	 */
 	function setStoredPubId($pubIdType, $pubId) {
 		return $this->setData('pub-id::'.$pubIdType, $pubId);
+	}
+
+	/**
+	 * Get stored copyright holder for the submission.
+	 * @param $locale string locale
+	 * @return string
+	 */
+	function getStoredCopyrightHolder($locale) {
+		return $this->getData('copyrightHolder', $locale);
+	}
+
+	/**
+	 * Set the stored copyright holder for the submission.
+	 * @param $copyrightHolder string Copyright holder
+	 * @param $locale string locale
+	 */
+	function setStoredCopyrightHolder($copyrightHolder, $locale) {
+		return $this->setData('copyrightHolder', $copyrightHolder, $locale);
+	}
+
+	/**
+	 * Get stored copyright year for the submission.
+	 * @return string
+	 */
+	function getStoredCopyrightYear() {
+		return $this->getData('copyrightYear');
+	}
+
+	/**
+	 * Set the stored copyright year for the submission.
+	 * @param $copyrightYear string Copyright holder
+	 */
+	function setStoredCopyrightYear($copyrightYear) {
+		return $this->setData('copyrightYear', $copyrightYear);
+	}
+
+	/**
+	 * Get stored license URL for the submission content.
+	 * @return string
+	 */
+	function getStoredLicenseURL() {
+		return $this->getData('licenseURL');
+	}
+
+	/**
+	 * Set the stored license URL for the submission content.
+	 * @param $license string License of submission content
+	 */
+	function setStoredLicenseURL($licenseUrl) {
+		return $this->setData('licenseURL', $licenseUrl);
 	}
 
 	/**
@@ -659,6 +810,24 @@ class Article extends Submission {
 		if (!$signoff) return false;
 
 		return $signoff->getUserId();
+	}
+
+	/**
+	 * Get starting page of an article.
+	 * @return int
+	 */
+	function getStartingPage() {
+		preg_match('/^[^\d]*(\d+)\D*(.*)$/', $this->getPages(), $pages);
+		return $pages[1];
+	}
+
+	/**
+	 * Get ending page of an article.
+	 * @return int
+	 */
+	function getEndingPage() {
+		preg_match('/^[^\d]*(\d+)\D*(.*)$/', $this->getPages(), $pages);
+		return $pages[2];
 	}
 }
 

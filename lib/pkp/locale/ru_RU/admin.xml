@@ -4,8 +4,8 @@
 <!--
   * locale/ru_RU/admin.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
@@ -39,6 +39,7 @@
 	<message key="admin.languages.reload">Заново загрузить язык</message>
 	<message key="admin.languages.uninstall">Удалить язык</message>
 	<message key="admin.phpInfo">Расширенная информация PHP</message>
+	<message key="admin.scheduledTask">Запланированная задача</message>
 	<message key="admin.server.apacheVersion">Версия Apache</message>
 	<message key="admin.server.dbDriver">Драйвер базы данных</message>
 	<message key="admin.server.dbVersion">Версия СУБД</message>
@@ -58,6 +59,7 @@
 	<message key="admin.settings.homeHeaderImageInvalid">Неверный формат изображения логотипа сайта. Разрешенные форматы: .gif, .jpg или .png.</message>
 	<message key="admin.settings.introduction">Преамбула</message>
 	<message key="admin.settings.minPasswordLength">Минимальная длина пароля</message>
+	<message key="admin.settings.oneStepReset">Использовать один шаг для сброса пароля?</message>
 	<message key="admin.settings.oaiRegistration">Зарегистрировать сайт для индексации (сбора метаданных)</message>
 	<message key="admin.settings.passwordCharacters">знаков</message>
 	<message key="admin.settings.siteLanguage">Язык сайта</message>
@@ -88,5 +90,5 @@
 	<message key="admin.fileLoader.wrongBasePathLocation">Основной каталог {$path} должен быть внутри каталога с доступными для всех файлами.</message>
 	<message key="admin.fileLoader.pathNotAccessible">Папка {$path} не является каталогом или не доступен для чтения.</message>
 	<message key="admin.fileLoader.moveFileFailed">Файл {$filename} не может быть перемещен из {$currentFilePath} в {$destinationPath}</message>
-	<message key="admin.fileLoader.emailSubject">ID процесса загрузки файлов {$processId}</message>
+	<message key="admin.fileLoader">Загрузчик файлов</message>
 </locale>

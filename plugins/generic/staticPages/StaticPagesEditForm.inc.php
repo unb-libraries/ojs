@@ -3,8 +3,8 @@
 /**
  * @file StaticPagesSettingsForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.staticPages
@@ -75,7 +75,7 @@ class StaticPagesEditForm extends Form {
 			if ($staticPage != null) {
 				$this->_data = array(
 					'staticPageId' => $staticPage->getId(),
- 					'pagePath' => $staticPage->getPath(),
+					'pagePath' => $staticPage->getPath(),
 					'title' => $staticPage->getTitle(null),
 					'content' => $staticPage->getContent(null)
 				);
@@ -159,8 +159,8 @@ class StaticPagesEditForm extends Form {
 		$staticPage->setJournalId($journalId);
 		$staticPage->setPath($this->getData('pagePath'));
 
-		$staticPage->setTitle($this->getData('title'), null); 		// Localized
-		$staticPage->setContent($this->getData('content'), null); 	// Localized
+		$staticPage->setTitle($this->getData('title'), null);		// Localized
+		$staticPage->setContent($this->getData('content'), null);	// Localized
 
 		if (isset($this->staticPageId)) {
 			$staticPagesDao->updateStaticPage($staticPage);

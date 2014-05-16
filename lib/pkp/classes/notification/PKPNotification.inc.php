@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/Notification.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Notification
@@ -30,7 +30,7 @@ define('NOTIFICATION_TYPE_FORBIDDEN',				0x0000004);
 define('NOTIFICATION_TYPE_INFORMATION',				0x0000005);
 define('NOTIFICATION_TYPE_HELP',				0x0000006);
 define('NOTIFICATION_TYPE_FORM_ERROR',				0x0000007);
-define('NOTIFICATION_TYPE_NEW_ANNOUNCEMENT', 		0x0000008);
+define('NOTIFICATION_TYPE_NEW_ANNOUNCEMENT',			0x0000008);
 
 define('NOTIFICATION_TYPE_LOCALE_INSTALLED',			0x4000001);
 

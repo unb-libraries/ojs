@@ -4,8 +4,8 @@
 <!--
   * locale/tr_TR/reader.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the tr_TR (Türkiye Türkçesi) locale.
@@ -13,13 +13,13 @@
   -->
 
 <locale name="tr_TR" full_name = "Türkiye Türkçesi">
-	<message key="comments.anonymous">Anonim Okuyucu</message>
+	<message key="comments.anonymous">Anonim Kullanıcı</message>
 	<message key="comments.anonymousNamed">"{$userName}"</message>
 	<message key="comments.body">Yorumunuz</message>
 	<message key="comments.titleRequired">Yorum başlığı gerekli.</message>
 	<message key="comments.confirmDeleteChildren">Bu yorum ile birlikte, varsa yoruma verilen yanıtlar da silinecek. Bunu yapmak istediğinizden emin misiniz?</message>
 	<message key="comments.delete">Bu yorumu sil</message>
-	<message key="comments.email">Gönderenin e-postası</message>
+	<message key="comments.email">Gönderenin E-Postası</message>
 	<message key="comments.emailReply">E-posta ile yanıt</message>
 	<message key="comments.enterComment">Yorum Giriniz</message>
 	<message key="comments.inResponseTo"><![CDATA[Yanıt olarak: <a href="{$url}">{$title}</a>]]></message>

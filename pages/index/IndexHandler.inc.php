@@ -3,8 +3,8 @@
 /**
  * @file pages/index/IndexHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IndexHandler
@@ -58,9 +58,6 @@ class IndexHandler extends Handler {
 				// The current issue TOC/cover page should be displayed below the custom home page.
 				IssueHandler::_setupIssueTemplate($request, $issue);
 			}
-
-			// Display creative commons logo/licence if enabled
-			$templateMgr->assign('displayCreativeCommons', $journal->getSetting('includeCreativeCommons'));
 
 			$enableAnnouncements = $journal->getSetting('enableAnnouncements');
 			if ($enableAnnouncements) {

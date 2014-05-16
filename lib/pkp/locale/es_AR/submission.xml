@@ -4,8 +4,8 @@
 <!--
   * ../pkp//locale/es_AR/submission.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
@@ -325,7 +325,6 @@
 	<message key="submission.citations.editor.pleaseSelect">Seleccione...</message>
 	<message key="submission.citations.editor.unprocessedCitationsButton">Refrescar la lista de citas</message>
 	<message key="submission.citations.editor.unprocessedCitationsButtonTitle">Clique para refrescar la lista de citas.</message>
-	<message key="submission.uploadSuccessfulContinue">Su fichero ha sido subido. Pulse en continuar para editar los metadaos del fichero.</message>
 	<message key="submission.artworkFileDetails">Detalles del fichero de Artwork.</message>
 	<message key="submission.nameRequired">Se requiere un nombre para este ítem.</message>
 	<message key="submission.date.mmdd">MM-DD</message>

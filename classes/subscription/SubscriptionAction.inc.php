@@ -3,8 +3,8 @@
 /**
  * @file classes/subscription/SubscriptionAction.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionAction
@@ -380,6 +380,33 @@ class SubscriptionAction {
 					return false;
 				}
 			}
+		}
+	}
+
+	/**
+	 * Reset a subscription's reminded date.
+	 */
+	function resetDateReminded($args, $institutional = false) {
+		$journal =& Request::getJournal();
+		$subscriptionId = (int) array_shift($args);
+
+		if ($institutional) {
+			$subscriptionDao =& DAORegistry::getDAO('InstitutionalSubscriptionDAO');
+		} else {
+			$subscriptionDao =& DAORegistry::getDAO('IndividualSubscriptionDAO');
+		}
+
+		if ($subscriptionDao->getSubscriptionJournalId($subscriptionId) == $journal->getId()) {
+			$subscription =& $subscriptionDao->getSubscription($subscriptionId);
+			switch (Request::getUserVar('type')) {
+				case 'before':
+					$subscription->setDateRemindedBefore(null);
+					break;
+				case 'after':
+					$subscription->setDateRemindedAfter(null);
+					break;
+			}
+			$subscriptionDao->updateSubscription($subscription);
 		}
 	}
 

@@ -4,8 +4,8 @@
 <!--
   * locale/ru_RU/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
@@ -91,8 +91,8 @@
 	<message key="manager.people.emailUsers.selectTemplate">Выбрать шаблон</message>
 	<message key="manager.people.enrollExistingUser">Записать существующего пользователя</message>
 	<message key="manager.people.enrollSyncJournal">С журналом</message>
-	<message key="manager.people.mergeUsers.from.description">Выберите пользователя (или нескольких) для слияния в другую учетную запись пользователя (например, когда кто-то завел себе две учетные записи). Учетная запись (записи), выбранная первой, будет удалена, а все связанные с ней статьи, редакционные задания и&nbsp;т.&nbsp;д. будут присоединены к второй учетной записи.</message>
-	<message key="manager.people.mergeUsers.into.description">Выберите пользователя, которому будут переданы авторство предыдущего пользователя, его редакционные задания, и&nbsp;т.&nbsp;д.</message>
+	<message key="manager.people.mergeUsers.from.description">Выберите пользователя (или нескольких) для слияния в другую учетную запись пользователя (например, когда кто-то завел себе две учетные записи). Учетная запись (записи), выбранная первой, будет удалена, а все связанные с ней статьи, редакционные задания и т. д. будут присоединены к второй учетной записи.</message>
+	<message key="manager.people.mergeUsers.into.description">Выберите пользователя, которому будут переданы авторство предыдущего пользователя, его редакционные задания, и т. д.</message>
 	<message key="manager.people.roleEnrollment">Назначить роль «{$role}»</message>
 	<message key="manager.people.syncUserDescription">Синхронизация назначений запишет всех пользователей, которым назначена определенная роль в определенном журнале, на ту же роль в этом журнале. Эта функция позволяет синхронизировать общий набор пользователей (например, рецензентов) между журналами.</message>
 	<message key="manager.plugins.copyError">Копирование плагина завершилось неудачей. Причиной этого может являться проблема с правами. Пожалуйста, убедитесь что веб-сервер может записывать в каталог «plugins» (включая подкаталоги), но не забудьте после этого защитить директорию, задав соответствующие права.</message>
@@ -166,7 +166,7 @@
 	<message key="manager.sections.alertDelete">Перед удалением этого раздела вы должны переместить опубликованные статьи в другие разделы.</message>
 	<message key="manager.sections.create">Создать раздел</message>
 	<message key="manager.sections.disableComments">Выключить комментарии читателей для этого раздела.</message>
-	<message key="manager.section.sectionEditorInstructions">Добавьте редактора раздела в этот раздел, чтобы статьи автоматически назначались редактору раздела (в противном случае, редакторы разделов могут назначаться вручную, после поступления статьи). Если редактор раздела назначен, то он может автоматически назначаться на контроль процесса «РЕЦЕНЗИРОВАНИЕ» и/или процесса «РЕДАКТИРОВАНИЕ» (литературное редактирование, верстка и корректура) для статей, направленных в данный раздел. Редакторы раздела создаются щелчком на ссылке «Редакторы разделов» под заголовком «Роли» в разделе «Управление журналом«.</message>
+	<message key="manager.section.sectionEditorInstructions">Добавьте редактора раздела в этот раздел, чтобы статьи автоматически назначались редактору раздела (в противном случае, редакторы разделов могут назначаться вручную, после поступления статьи). Если редактор раздела назначен, то он может автоматически назначаться на контроль процесса «РЕЦЕНЗИРОВАНИЕ» и/или процесса «РЕДАКТИРОВАНИЕ» (литературное редактирование, верстка и корректура) для статей, направленных в данный раздел. Редакторы раздела создаются щелчком на ссылке «Редакторы разделов» под заголовком «Роли» в разделе «Управление журналом».</message>
 	<message key="manager.sections.editorRestriction">Статьи могут отправляться только редакторами и редакторами разделов.</message>
 	<message key="manager.sections.editors">Редакторы разделов</message>
 	<message key="manager.sections.form.abbrevRequired">Требуется аббревиатура названия для раздела</message>
@@ -211,11 +211,11 @@
 	<message key="manager.setup.appearInAboutJournal">(появится в разделе «О журнале») </message>
 	<message key="manager.setup.authorCopyrightNotice">Условия передачи авторских прав</message>
 	<message key="manager.setup.authorCopyrightNoticeAgree">Требовать от авторов принятия Условий передачи авторских прав в процессе отправки статьи в журнал.</message>
-	<message key="manager.setup.authorCopyrightNoticeDescription"><![CDATA[Введенные ниже Условия передачи авторских прав появятся на странице «О журнале» и в метаданных каждой опубликованной статьи. Хотя определение условий соглашения об авторских правах с авторам является прерогативой журнала, Public Knowledge Project рекомендует использовать лицензию <a href="http://creativecommons.org" target="_new" class="action">Creative Commons</a>. В связи с этим, PKP предоставляет <a href="{$sampleCopyrightWordingUrl}" target="_new" class="action">пример Условий передачи авторских прав</a>, которые можно скопировать и вставить в поле ниже для журналов (a) предоставляющих открытый доступ, (b) предоставляющих отложенный открытый доступ или (c) не предоставляющих открытый доступ.]]></message>
+	<message key="manager.setup.authorCopyrightNoticeDescription"><![CDATA[Условия передачи авторских прав появятся на странице «О нас». Они должны описывать для читателей и авторов, кто является владельцем авторского права: автор, журнал или третьи лица. Условия должны включать дополнительные лицензионные соглашения (например, <a href="http://creativecommons.org" target="_new" class="action">лицензии Creative Commons</a>), которые дают права читателям (смотри <a href="{$sampleCopyrightWordingUrl}" target="_new" class="action">примеры</a>), и они должны, при необходимости, обеспечивать средства для защиты прав для использования контента журнала.]]></message>
 	<message key="manager.setup.authorGuidelines">Руководство для авторов</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Устанавливает для авторов стандарты оформления текста и библиографических ссылок для статей, отправляемых в журнал (например, <em>Publication Manual of the American Psychological Association</em>, 5th edition, 2001). Очень полезно привести здесь примеры оформления ссылок на журналы и книги, которые будут использоваться в статьях. Также укажите типы подходящих дополнительных файлов (например, наборы данных, инструменты для исследования и т. д.), которые авторы могут загрузить в качестве дополнения к своей статье, чтобы увеличить интерес читателей к их работе.]]></message>
 	<message key="manager.setup.competingInterests">Конфликт интересов</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Биомедицинские журналы, как правило, требуют от авторов и рецензентов декларации о наличии/отсутствии конфликта интересов по отношению к их собственным исследованиям (смотрите <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Биомедицинские журналы, как правило, требуют от авторов и рецензентов декларации о наличии/отсутствии конфликта интересов по отношению к их собственным исследованиям (смотрите <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Руководство по заполнению Декларации о конфликте интересов</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Требовать от авторов отправки файла с Декларацией о конфликте интересов при отправке рукописи статьи.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Требовать от рецензентов отправки файла с Декларацией о конфликте интересов с каждой рецензией, отправляемой ими.</message>
@@ -228,6 +228,14 @@
 	<message key="manager.setup.copyediting">Литературные редакторы</message>
 	<message key="manager.setup.copyeditInstructions">Руководство для литературного редактора</message>
 	<message key="manager.setup.copyeditInstructionsDescription">Руководство для литературного редактора будет доступно литературным редакторам, авторам и редакторам разделов на этапе редактирования статьи. Ниже приведен набор инструкций по умолчанию в формате HTML, который может быть изменен или заменен управляющим журнала в любой момент (в формате HTML или простого текста).</message>
+	<message key="manager.setup.permissions.priorAgreement">Предварительное соглашение</message>
+	<message key="manager.setup.permissions.display">Просмотр</message>
+	<message key="manager.setup.licenseURLDescription">Укажите адрес (URL) веб-страницы с лицензией, если она имеется.</message>
+	<message key="manager.setup.includeCopyrightStatement">Показывать строку копирайта с контентом (рекомендуется в случае, когда автор является владельцем авторского права).</message>
+	<message key="manager.setup.includeLicense">Показывать лицензию с опубликованной работой.</message>
+	<message key="manager.setup.resetPermissions">Сбросить разрешения для статей</message>
+	<message key="manager.setup.resetPermissions.description">Строка копирайта и информация о лицензии будет добавлена к опубликованному контенту, чтобы эти данные не могли измениться в случае смены политики журнала по отношению к новым статьям. Для сброса хранящейся информации о разрешениях, уже прикрепленной к опубликованному контенту, воспользуйтесь кнопкой ниже.</message>
+	<message key="manager.setup.confirmResetLicense">Вы уверены, что хотите заменить информацию о лицензии и авторских правах, уже прикрепленную к опубликованному контенту, на лицензию, указанную в разделе «Настройка журнала»?</message>
 	<message key="manager.setup.copyrightNotice">Условия передачи авторских прав</message>
 	<message key="manager.setup.coverage">Охват</message>
 	<message key="manager.setup.coverageChronExamples">(Например, Эпоха Возрожения; Юрский период; Третий триместр; и т. д.)</message>
@@ -297,7 +305,6 @@
 	<message key="manager.setup.guidingSubmissions">Шаг 3. Указания для авторов</message>
 	<message key="manager.setup.homepageImage">Изображение на главной странице</message>
 	<message key="manager.setup.homepageImageDescription">Добавьте изображение в центр страницы.</message>
-	<message key="manager.setup.includeCreativeCommons">Для журналов, предлагающих немедленный или отложенный открытый доступ, включить в соответствующий момент времени лицензию Creative Commons во все опубликованные работы.</message>
 	<message key="manager.setup.information">Информация</message>
 	<message key="manager.setup.information.description">Краткое описание журнала для библиотек, потенциальных авторов и читателей, которое будет доступно а разделе «Информация» боковой панели.</message>
 	<message key="manager.setup.information.forAuthors">Для авторов</message>
@@ -349,7 +356,7 @@
 	<message key="manager.setup.lists">Списки</message>
 	<message key="manager.setup.listsDescription">Введите максимальное количество элементов (например, статей, пользователей или редакционных заданий), которые будут отображаться на каждой странице списка, и количество ссылок на номера страниц, которые будут отображаться на каждой странице.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Включить LOCKSS для хранения и распределения контента журнала по участвующим библиотекам через страницу <a href="{$lockssUrl}" target="_blank">Манифеста издателя</a> LOCKSS. Лицензия LOCKSS появится в разделе «О журнале» под заголовком «Архивация»:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Смотрите <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">другие версии лицензии LOCKSS</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Смотрите <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">другие версии лицензии LOCKSS</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Укажите 6-10 библиотек, которые зарегистрируют и будут хранить кэш журнала. Например, обратитесь к организациям: в которых работают редакторы или члены редакционной коллегии, и/или организациям, уже участвующим в LOCKSS. Смотрите <a href="http://www.lockss.org/community/" target="_blank">«Сообщество LOCKSS»</a>. Используйте подготовленные приглашения для (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">библиотек, участвующих в LOCKSS</a> или (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">библиотек, еще не участвующих в LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Внешний вид журнала</message>
 	<message key="manager.setup.look.description">Верхний колонтитул главной страницы, контент, колонтитулы журнала, панель навигации и таблица стилей.</message>
@@ -382,7 +389,7 @@
 	<message key="manager.setup.openAccessPolicy">Политика открытого доступа</message>
 	<message key="manager.setup.openAccessPolicyDescription">Если журнал предоставляет читателям немедленный свободный доступ ко всему опубликованному контенту, введите Политику открытого доступа, которая появится на странице «О журнале» в разделе «Политики».</message>
 	<message key="manager.setup.pageNumberIdentifier">Настройка нумерации страниц</message>
-	<message key="manager.setup.peerReviewDescription">Опишите политику рецензирования журнала и процесс рецензирования для читателей и авторов, указав количество рецензентов, обычно дающих рецензии на статью, критерии, по которым рецензенты оценивают статьи, стандартное время, которе занимает рецензирование, и принципы подбора рецензентов. Это описание появится на странице «О журнале».</message>
+	<message key="manager.setup.peerReviewDescription">Опишите политику рецензирования журнала и процесс рецензирования для читателей и авторов, указав количество рецензентов, обычно дающих рецензии на статью, критерии, по которым рецензенты оценивают статьи, стандартное время, которое занимает рецензирование, и принципы подбора рецензентов. Это описание появится на странице «О журнале».</message>
 	<message key="manager.setup.peerReviewPolicy">Рецензирование</message>
 	<message key="manager.setup.peerReviewPolicy2">Политика рецензирования</message>
 	<message key="manager.setup.policies">Политики</message>
@@ -467,7 +474,7 @@
 	<message key="manager.setup.subjectProvideExamples">Укажите примеры ключевых слов или тем, на которые могут ориентироваться авторы</message>
 	<message key="manager.setup.submissionGuidelines">Руководство по отправке статьи</message>
 	<message key="manager.setup.submissionPreparationChecklist">Контрольный список подготовки статьи к отправке</message>
-	<message key="manager.setup.submissionPreparationChecklistDescription">При отправке статьи в журнал, авторам будет предложено проверить соответствие их статьи всем пунктам «Контрольного списка подготовки статьи к отправке» и отметить их как выполненные, прежде чем они отпраят статью. Этот контрольный список также отображается в «Руководстве для авторов» на странице «О журнале». Список можно отредактировать ниже, но все пункты этого списка будут отметки, прежде чем авторы смогут продолжить отправку статьи.</message>
+	<message key="manager.setup.submissionPreparationChecklistDescription">При отправке статьи в журнал, авторам будет предложено проверить соответствие их статьи всем пунктам «Контрольного списка подготовки статьи к отправке» и отметить их как выполненные, прежде чем они отправят статью. Этот контрольный список также отображается в «Руководстве для авторов» на странице «О журнале». Список можно отредактировать ниже, но все пункты этого списка будут отметки, прежде чем авторы смогут продолжить отправку статьи.</message>
 	<message key="manager.setup.submissions">Отправка статей</message>
 	<message key="manager.setup.submissions.description">Руководство для авторов, авторские права и индексирование (включая регистрацию).</message>
 	<message key="manager.setup.subscription">Журнал будет требовать подписок для доступа к части или ко всему своему контенту.</message>
@@ -497,8 +504,19 @@
 		результаты поиска. Пожалуйста, выберите одну из настроенных метрик в качестве метрики по умолчанию.
 	</message>
 	<message key="manager.statistics.reports">Генератор отчетов</message>
+	<message key="manager.statistics.reports.aggregationColumns">Агрегировать статистику по:</message>
+	<message key="manager.statistics.reports.defaultReportTemplates">Щаблоны отчетов по умолчанию</message>
+	<message key="manager.statistics.reports.defaultReport.articleDownloads">Скачивания файла статьи</message>
+	<message key="manager.statistics.reports.defaultReport.articleAbstract">Просмотры страницы аннотации статьи</message>
+	<message key="manager.statistics.reports.defaultReport.articleAbstractAndDownloads">Скачивания и просмотры аннотации статьи</message>
+	<message key="manager.statistics.reports.defaultReport.issueDownloads">Скачивания файла выпуска</message>
+	<message key="manager.statistics.reports.defaultReport.issueTableOfContents">Просмотры страницы содержания выпуска</message>
+	<message key="manager.statistics.reports.defaultReport.issueTableOfContentsAndDownloads">Скачивания и просмотры главной страницы выпуска</message>
+	<message key="manager.statistics.reports.defaultReport.journalIndexPageViews">Просмотры главной страницы журнала</message>
 	<message key="manager.statistics.reports.description">OJS генерирует отчеты, которые помогают отследить детали, связанные с обработкой статей в журнале с точки зрения рукописей, редакторов, рецензентов и разделов за заданный период времени. Отчеты генерируются в формате CSV, который требует для просмотра наличия табличного процессора.</message>
 	<message key="manager.statistics.reports.generateReport"> Сгенерировать пользовательский отчет</message>
+	<message key="manager.statistics.reports.advancedOptions">Дополнительные настройки</message>
+	<message key="manager.statistics.reports.advancedOptions.label">Настройка столбцов, фильтров и параметров сортировки. Изменение любой из этих настроек может изменить ожидаемый результат, который выдает шаблон отчета.</message>
 	<message key="manager.statistics.reports.columns">Столбцы</message>
 	<message key="manager.statistics.reports.columns.description">Укажите столбцы, которые будут испоьзоваться для построения отчета. Столбцы, которые вы выберете здесь, не только определяют то, какие данные будут в отчетах, но также определяют уровень агрегирования статистики. Например, если вы выберите столбцы «ID», «Тип» и «Месяц», отчет будет суммировать все просмотры объекта, которые были в один месяц, и представлять данные в одной строке. Если вы выберите «День» вместо «Месяц», каждый объект будет иметь отдельную строку для каждого дня.</message>
 	<message key="manager.statistics.reports.filters">Фильтры</message>
@@ -522,7 +540,7 @@
 	<message key="manager.statistics.reports.filters.byObject">По типу объекта и/или ID объекта</message>
 	<message key="manager.statistics.reports.filters.byObject.description">Фильтровать результаты по типу объекта (журнал, выпуск, статья, гранки в pdf, другие гранки) и/или по одному или нескольким ID объектов.</message>
 	<message key="manager.statistics.reports.filters.byTime">По времени</message>
-	<message key="manager.statistics.reports.filters.byTime.label">Фильтровать результаты по заданной дате или по заданному периоду времени (месяцы или дни).</message>
+	<message key="manager.statistics.reports.filters.byTime.dimensionSelector">Или выбирать диапазон по:</message>
 	<message key="manager.statistics.reports.filters.byLocation">По географическому положению</message>
 	<message key="manager.statistics.reports.filters.byLocation.description">Фильтровать результаты по странам, регионам и/или городам.</message>
 	<message key="manager.statistics.statistics">Статистика журнала</message>
@@ -556,19 +574,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">месяцев с момента публикации.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Пожалуйста, введите правильное значение продолжительности.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Следующая Политика отложенного открытого доступа появится на странице «О журнале» в разделе «Политики».</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Пожалуйста, поставьте галочку.</message>
 	<message key="manager.subscriptionPolicies.expiry">Окончание срока подписки</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">По окончании срока подписки читателям может быть запрещен доступ ко всему контенту, предоставляемому по подписке, или доступ может быть сохранен только к предоставляемому по подписке контенту, который был опубликован до даты окончания срока подписки.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Полное окончание подписки</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">По окончании срока подписки читателям будет запрещен доступ ко всему контенту, предоставляемому по подписке.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Частичное окончание подписки</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">По окончании срока подписки читателям будет запрещен доступ к недавно опубликованному контенту, предоставляемому по подписке, но они сохранят доступ к предоставляемому по подписке контенту, который был опубликован до даты окончания срока подписки.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Уведомить подписчиков по электронной почте через</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">месяцев после окончания срока подписки.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Уведомить подписчиков по электронной почте через</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">недель после окончания срока подписки.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Уведомить подписчиков по электронной почте за</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">месяцев до окончания срока подписки.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Уведомить подписчиков по электронной почте за</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">недель до окончания срока подписки.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Напоминания об окончании срока подписки</message>
@@ -621,6 +634,8 @@
 	<message key="manager.subscriptions.form.typeId">Тип подписки</message>
 	<message key="manager.subscriptions.form.typeIdRequired">Тип подписки обязателен.</message>
 	<message key="manager.subscriptions.form.typeIdValid">Пожалуйста, выберите правильный тип подписки.</message>
+	<message key="manager.subscriptions.form.dateRemindedBefore">Отправка напоминания перед окончанием подписки</message>
+	<message key="manager.subscriptions.form.dateRemindedAfter">Отправка напоминания после окончания подписки</message>
 	<message key="manager.subscriptions.form.dateStart">Дата начала</message>
 	<message key="manager.subscriptions.form.dateStartRequired">Дата начала подписки обязательна.</message>
 	<message key="manager.subscriptions.form.dateStartValid">Пожалуйста, выберите правильную дату начала подписки.</message>

@@ -3,8 +3,8 @@
 /**
  * @file classes/tombstone/DataObjectTombstoneSettingsDAO.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataObjectTombstoneSettingsDAO
@@ -22,10 +22,10 @@ class DataObjectTombstoneSettingsDAO extends DAO {
 	 * @param $locale string optional
 	 */
 	function &getSetting($tombstoneId, $name, $locale = null) {
-		$sql = 'SELECT	setting_value, setting_type	FROM data_object_tombstone_settings	WHERE tombstone_id = ? AND setting_name = ?';
+		$sql = 'SELECT	setting_value, setting_type, locale FROM data_object_tombstone_settings	WHERE tombstone_id = ? AND setting_name = ?';
 		$params = array((int) $tombstoneId, $name);
 		if ($locale !== null) {
-			$sql .= ' AND l.locale = ?';
+			$sql .= ' AND locale = ?';
 			$params[] = $locale;
 		}
 		$result =& $this->retrieve($sql, $params);

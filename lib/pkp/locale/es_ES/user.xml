@@ -4,8 +4,8 @@
 <!--
   * locale/es_ES/user.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_ES (Español) locale.
@@ -124,4 +124,5 @@
 	<message key="user.profile.form.passwordSameAsOld">La nueva contraseña es la misma que la antigua.</message>
 	<message key="user.profile.form.usergroupRequired">Es necesario un grupo de usuarios.</message>
 	<message key="user.suffix">Sufijo</message>
+	<message key="user.profile.form.hashInvalid">El hash de reinicio de contraseña que intentó utilizar es inválido.</message>
 </locale> 

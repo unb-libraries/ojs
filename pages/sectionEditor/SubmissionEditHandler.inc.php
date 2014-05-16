@@ -3,8 +3,8 @@
 /**
  * @file pages/sectionEditor/SubmissionEditHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionEditHandler
@@ -191,7 +191,6 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
 		$reviewAssignmentDao =& DAORegistry::getDAO('ReviewAssignmentDAO');
-		$reviewFormDao =& DAORegistry::getDAO('ReviewFormDAO');
 
 		// Setting the round.
 		$round = isset($args[1]) ? $args[1] : $submission->getCurrentRound();
@@ -225,9 +224,6 @@ class SubmissionEditHandler extends SectionEditorHandler {
 				}
 			}
 		}
-
-		// get journal published review form titles
-		$reviewFormTitles =& $reviewFormDao->getTitlesByAssocId(ASSOC_TYPE_JOURNAL, $journal->getId(), 1);
 
 		$reviewFormResponseDao =& DAORegistry::getDAO('ReviewFormResponseDAO');
 		$reviewFormResponses = array();
@@ -324,6 +320,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		$templateMgr->assign('useLayoutEditors', $useLayoutEditors);
 		$templateMgr->assign('useProofreaders', $useProofreaders);
 		$templateMgr->assign('submissionAccepted', $submissionAccepted);
+		$templateMgr->assign('templates', $journal->getSetting('templates'));
 
 		// Set up required Payment Related Information
 		import('classes.payment.ojs.OJSPaymentManager');
@@ -951,7 +948,7 @@ class SubmissionEditHandler extends SectionEditorHandler {
 			$userId = (int) $userId;
 			$user = $userDao->getUser($userId);
 		} else {
-			$user = $userDao->getUserByUsername($userId);
+			$user = $userDao->getByUsername($userId);
 		}
 
 
@@ -2749,6 +2746,27 @@ class SubmissionEditHandler extends SectionEditorHandler {
 		} else {
 			$request->redirect(null, null, 'submission', array($articleId));
 		}
+	}
+
+	/**
+	 * Download a layout template.
+	 * @param $args array
+	 * @param $request PKPRequest
+	 */
+	function downloadLayoutTemplate($args, &$request) {
+		$articleId = (int) array_shift($args);
+		$this->validate($articleId, SECTION_EDITOR_ACCESS_EDIT);
+
+		$journal =& $request->getJournal();
+		$templates = $journal->getSetting('templates');
+		import('classes.file.JournalFileManager');
+		$journalFileManager = new JournalFileManager($journal);
+		$templateId = (int) array_shift($args);
+		if ($templateId >= count($templates) || $templateId < 0) $request->redirect(null, 'index');
+		$template =& $templates[$templateId];
+
+		$filename = "template-$templateId." . $journalFileManager->parseFileExtension($template['originalFilename']);
+		$journalFileManager->downloadFile($filename, $template['fileType']);
 	}
 }
 

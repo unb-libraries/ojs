@@ -1,8 +1,8 @@
 {**
  * templates/author/submission/copyedit.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate defining the copyediting table.
@@ -10,6 +10,10 @@
  *}
 <div id="copyedit">
 <h3>{translate key="submission.copyediting"}</h3>
+
+{if $currentJournal->getLocalizedSetting('copyeditInstructions') != ''}
+<p><a href="javascript:openHelp('{url op="instructions" path="copy"}')" class="action">{translate key="submission.copyedit.instructions"}</a></p>
+{/if}
 
 {if $useCopyeditors}
 <table class="data" width="100%">
@@ -117,10 +121,5 @@
 	<a href="javascript:openComments('{url op="viewCopyeditComments" path=$submission->getId() anchor=$comment->getId()}');" class="icon">{icon name="comment"}</a>{$comment->getDatePosted()|date_format:$dateFormatShort}
 {else}
 	<a href="javascript:openComments('{url op="viewCopyeditComments" path=$submission->getId()}');" class="icon">{icon name="comment"}</a>{translate key="common.noComments"}
-{/if}
-
-{if $currentJournal->getLocalizedSetting('copyeditInstructions') != ''}
-&nbsp;&nbsp;
-<a href="javascript:openHelp('{url op="instructions" path="copy"}')" class="action">{translate key="submission.copyedit.instructions"}</a>
 {/if}
 </div>

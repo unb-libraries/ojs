@@ -3,8 +3,8 @@
 /**
  * @file plugins/pubIds/doi/DOIPubIdPlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DOIPubIdPlugin
@@ -96,22 +96,6 @@ class DOIPubIdPlugin extends PubIdPlugin {
 		// Check whether DOIs are enabled for the given object type.
 		$doiEnabled = ($this->getSetting($journalId, "enable${pubObjectType}Doi") == '1');
 		if (!$doiEnabled) return null;
-
-		// Temporary work-around to not display DOIs for articles that haven't yet registered with Crossref
-		if( is_a( $pubObject, 'Article' ) ) {
-			$articleIssueDAO =& DAORegistry::GetDAO( 'IssueDAO' ); 
-			$articleIssue =& $articleIssueDAO->getIssueByArticleId( $article->getArticleId() ); 
-
-			if( is_object( $articleIssue ) ) {
-				if (
-					( $journalId == '20' && $articleIssue->getYear() < 2013 ) || // GC
-					( $journalId == '9' && $articleIssue->getYear() < 2009 )     // ag
-				) {
-					return null;
-				}
-			}
-
-		}
 
 		// If we already have an assigned DOI, use it.
 		$storedDOI = $pubObject->getStoredPubId('doi');
@@ -208,7 +192,7 @@ class DOIPubIdPlugin extends PubIdPlugin {
 				}
 
 				if ($article) {
- 					$doiSuffix .= '.' . $article->getId();
+					$doiSuffix .= '.' . $article->getId();
 				}
 
 				if ($galley) {

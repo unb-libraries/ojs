@@ -3,8 +3,8 @@
 /**
  * @file pages/manager/ManagerHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ManagerHandler
@@ -132,7 +132,7 @@ class ManagerHandler extends Handler {
 	function &retrieveRoleAssignmentPreferences($journalId) {
 		$journalSettingsDao =& DAORegistry::getDAO('JournalSettingsDAO');
 		$journalSettings = $journalSettingsDao->getJournalSettings($journalId);
-  		$returner = array('useLayoutEditors'=>0,'useCopyeditors'=>0,'useProofreaders'=>0);
+ 		$returner = array('useLayoutEditors'=>0,'useCopyeditors'=>0,'useProofreaders'=>0);
 
 		foreach($returner as $specific=>$value) {
 			if(isset($journalSettings[$specific])) {

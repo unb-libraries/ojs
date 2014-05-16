@@ -1,8 +1,8 @@
 {**
  * templates/manager/people/userProfileForm.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User profile form under journal management.
@@ -84,7 +84,7 @@
 <table width="100%" class="data">
 {if count($formLocales) > 1}
 	 <tr valign="top">
-	 	<td width="20%" class="label">{fieldLabel name="formLocale" key="form.formLanguage"}</td>
+		<td width="20%" class="label">{fieldLabel name="formLocale" key="form.formLanguage"}</td>
 		<td width="80%" class="value">
 			{url|assign:"userFormUrl" page="manager" op="editUser" path=$userId escape=false}
 			{form_language_chooser form="userForm" url=$userFormUrl}
@@ -203,6 +203,10 @@
 	<tr valign="top">
 		<td class="label">{fieldLabel name="email" required="true" key="user.email"}</td>
 		<td class="value"><input type="text" name="email" id="email" value="{$email|escape}" size="30" maxlength="90" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{fieldLabel name="orcid" key="user.orcid"}</td>
+		<td class="value"><input type="text" name="orcid" id="orcid" value="{$orcid|escape}" size="30" maxlength="255" class="textField" /></td>
 	</tr>
 	<tr valign="top">
 		<td class="label">{fieldLabel name="userUrl" key="user.url"}</td>

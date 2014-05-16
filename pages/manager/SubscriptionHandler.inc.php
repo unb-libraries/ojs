@@ -3,8 +3,8 @@
 /**
  * @file pages/manager/SubscriptionHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionHandler
@@ -198,6 +198,33 @@ class SubscriptionHandler extends ManagerHandler {
 		} elseif ($updateSuccess) {
 			Request::redirect(null, null, 'subscriptions', $redirect);
 		}
+	}
+
+	/**
+	 * Reset a subscription reminder date.
+	 */
+	function resetDateReminded($args, &$request) {
+		if (isset($args) && !empty($args)) {
+			if ($args[0] == 'individual') {
+				$institutional  = false;
+				$redirect = 'individual';
+			} else {
+				$institutional = true;
+				$redirect = 'institutional';
+			}
+		} else {
+			Request::redirect(null, 'manager');
+		}
+
+		$this->validate();
+		$this->setupTemplate(true, $institutional);
+
+		array_shift($args);
+		$subscriptionId = (int) $args[0];
+		import('classes.subscription.SubscriptionAction');
+		SubscriptionAction::resetDateReminded($args, $institutional);
+
+		Request::redirect(null, null, 'editSubscription', array($redirect, $subscriptionId));
 	}
 
 	/**

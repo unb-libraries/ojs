@@ -3,8 +3,8 @@
 /**
  * @file pages/user/RegistrationHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RegistrationHandler
@@ -136,7 +136,7 @@ class RegistrationHandler extends UserHandler {
 
 		$journal =& $request->getJournal();
 		$userDao =& DAORegistry::getDAO('UserDAO');
-		$user =& $userDao->getUserByUsername($username);
+		$user =& $userDao->getByUsername($username);
 		if (!$user) $request->redirect(null, 'login');
 
 		// Checks user & token

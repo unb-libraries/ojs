@@ -3,8 +3,8 @@
 /**
  * @file classes/webservice/WebServiceRequest.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WebServiceRequest
@@ -18,7 +18,7 @@ class WebServiceRequest {
 	/** @var string */
 	var $_url;
 
-	/** @var array key value pairs */
+	/** @var mixed array (key value pairs) or string */
 	var $_params;
 
 	/** @var string HTTP request method */
@@ -38,8 +38,12 @@ class WebServiceRequest {
 
 	/**
 	 * Constructor
+	 *
+	 * @param $url string The request URL
+	 * @param $params mixed array (key value pairs) or string request parameters
+	 * @param $method string GET or POST
 	 */
-	function WebServiceRequest($url, $params = array(), $method = 'GET') {
+	function WebServiceRequest($url, $params, $method = 'GET') {
 		$this->_url = $url;
 		$this->_params = $params;
 		$this->_method = $method;
@@ -67,7 +71,7 @@ class WebServiceRequest {
 
 	/**
 	 * Get the request parameters
-	 * @return array
+	 * @return mixed array (key value pairs) or string
 	 */
 	function &getParams() {
 		return $this->_params;
@@ -75,7 +79,7 @@ class WebServiceRequest {
 
 	/**
 	 * Set the request parameters
-	 * @param $params array
+	 * @param $params mixed array (key value pairs) or string
 	 */
 	function setParams(&$params) {
 		$this->_params =& $params;

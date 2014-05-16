@@ -3,8 +3,8 @@
 /**
  * @file classes/security/Validation.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Validation
@@ -38,7 +38,7 @@ class Validation {
 
 				// Call the implicitAuth hook. It will set user.
 
-			 	HookRegistry::call('ImplicitAuthPlugin::implicitAuth', array(&$user));
+				HookRegistry::call('ImplicitAuthPlugin::implicitAuth', array(&$user));
 
 				$valid=true;
 			}
@@ -158,7 +158,7 @@ class Validation {
 	 */
 	function checkCredentials($username, $password) {
 		$userDao =& DAORegistry::getDAO('UserDAO');
-		$user =& $userDao->getUserByUsername($username, false);
+		$user =& $userDao->getByUsername($username, false);
 
 		$valid = false;
 		if (isset($user)) {

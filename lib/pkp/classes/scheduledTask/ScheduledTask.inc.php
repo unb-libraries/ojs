@@ -3,8 +3,8 @@
 /**
  * @file classes/scheduledTask/ScheduledTask.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ScheduledTask
@@ -46,7 +46,7 @@ class ScheduledTask {
 		$this->_adminEmail = $site->getLocalizedContactEmail();
 		$this->_adminName = $site->getLocalizedContactName();
 
-		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_ADMIN);
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_ADMIN, LOCALE_COMPONENT_PKP_COMMON);
 	}
 
 

@@ -3,8 +3,8 @@
 /**
  * @file pages/sectionEditor/SectionEditorHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SectionEditorHandler
@@ -209,7 +209,7 @@ class SectionEditorHandler extends Handler {
 	function instructions($args, &$request) {
 		$this->setupTemplate();
 		import('classes.submission.proofreader.ProofreaderAction');
-		if (!isset($args[0]) || !ProofreaderAction::instructions($args[0], array('copy', 'proof', 'referenceLinking'))) {
+		if (!isset($args[0]) || !ProofreaderAction::instructions($args[0], array('copy', 'layout', 'proof', 'referenceLinking'))) {
 			$request->redirect(null, null, 'index');
 		}
 	}

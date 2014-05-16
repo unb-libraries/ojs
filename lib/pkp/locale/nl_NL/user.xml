@@ -4,8 +4,8 @@
 <!--
   * locale/nl_NL/user.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the nl_NL (Nederlands) locale.
@@ -126,4 +126,5 @@
 	<message key="user.group">Gebruikersgroep</message>
 	<message key="user.profile.form.usergroupRequired">Een gebruikersgroep is verplicht.</message>
 	<message key="user.authorization.pressManagerRequired">Een gebruiker met de rol Perscontact  (zoals Pers of Productieredacteur) moet aan dit stadium toegekend zijn voor u verder kunt gaan.</message>
+	<message key="user.profile.form.hashInvalid">De hash voor het terugzetten van het wachtwoord die u probeerde te gebruiken is niet geldig.</message>
 </locale>

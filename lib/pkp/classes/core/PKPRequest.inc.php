@@ -3,8 +3,8 @@
 /**
  * @file classes/core/PKPRequest.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPRequest
@@ -162,7 +162,7 @@ class PKPRequest {
 		$_this =& PKPRequest::_checkThis();
 
 		if (!isset($_this->_basePath)) {
-			$path = parse_url(dirname($_SERVER['SCRIPT_NAME']), PHP_URL_PATH);
+			$path = preg_replace('#/[^/]*$#', '', $_SERVER['SCRIPT_NAME']);
 
 			// Encode charcters which need to be encoded in a URL.
 			// Simply using rawurlencode() doesn't work because it
@@ -268,7 +268,9 @@ class PKPRequest {
 	}
 
 	/**
-	 * Get the complete set of URL parameters to the current request as an associative array.
+	 * Get the complete set of URL parameters to the current request as an
+	 * associative array. (Excludes reserved parameters, such as "path",
+	 * which are used by disable_path_info mode.)
 	 * @return array
 	 */
 	function getQueryArray() {
@@ -279,6 +281,11 @@ class PKPRequest {
 
 		if (isset($queryString)) {
 			parse_str($queryString, $queryArray);
+		}
+
+		// Filter out disable_path_info reserved parameters
+		foreach (array_merge(Application::getContextList(), array('path', 'page', 'op')) as $varName) {
+			if (isset($queryArray[$varName])) unset($queryArray[$varName]);
 		}
 
 		return $queryArray;

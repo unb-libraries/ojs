@@ -1,8 +1,8 @@
 {**
  * templates/rt/metadata.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Article reading tools -- article metadata page.
@@ -194,7 +194,14 @@
 	<td>15.</td>
 	<td>{translate key="rt.metadata.dublinCore.rights"}</td>
 	<td>{translate key="rt.metadata.pkp.copyright"}</td>
-	<td>{$currentJournal->getLocalizedSetting('copyrightNotice')|nl2br}</td>
+	<td>
+		{translate key="submission.copyrightStatement" copyrightHolder=$article->getLocalizedCopyrightHolder()|escape copyrightYear=$article->getCopyrightYear()|escape}<br/>
+		{if $ccLicenseBadge}
+			{$ccLicenseBadge}
+		{elseif $article->getLicenseURL()}
+			<a href="{$article->getLicenseURL()|escape}">{$article->getLicenseURL()|escape}</a>
+		{/if}
+	</td>
 </tr>
 </table>
 

@@ -1,8 +1,8 @@
 {**
  * templates/sectionEditor/submission/rounds.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Subtemplate displaying past rounds for a submission.
@@ -155,7 +155,7 @@
 			{/if}
 		</td>
 	</tr>
- 	<tr valign="top">
+	<tr valign="top">
 		<td class="label">{translate key="reviewer.article.uploadedFile"}</td>
 		<td colspan="4">
 			<table width="100%" class="data">

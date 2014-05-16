@@ -5,7 +5,7 @@
   * locale/fr_CA/admin.xml
   *
   * Copyright (c) 2000-2013 Simon Fraser University Library
-  * Copyright (c) 2000-2003-2013 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
@@ -87,4 +87,7 @@
 	<message key="admin.fileLoader.wrongBasePathLocation">Le chemin de base {$path} doit être à l'intérieur du répertoire des fichiers publics</message>
 	<message key="admin.fileLoader.pathNotAccessible">Le dossier {$path} n'est pas dans un répertoire ou n'est pas en mode lecture autorisé.</message>
 	<message key="admin.fileLoader.moveFileFailed">Le fichier {$filename} n'a pu être déplacé de {$currentFilePath} à {$destinationPath}</message>
+	<message key="admin.scheduledTask">Tâche programmée</message>
+	<message key="admin.settings.oneStepReset">Effectuer la réinitialisation de mot de passe en une étape?</message>
+	<message key="admin.fileLoader">Chargeur de fichier</message>
 </locale>

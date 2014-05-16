@@ -3,8 +3,8 @@
 /**
  * @file plugins/oaiMetadataFormats/marc/OAIMetadataFormat_MARC.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OAIMetadataFormat_MARC
@@ -95,7 +95,7 @@ class OAIMetadataFormat_MARC extends OAIMetadataFormat {
 			$this->formatElement('546', ' ', ' ', 'a', $article->getLanguage()) .
 			$this->formatElement('787', '0', ' ', 'n', $relation) .
 			$this->formatElement('500', ' ', ' ', 'a', $coverage) .
-			$this->formatElement('540', ' ', ' ', 'a', strip_tags($journal->getLocalizedSetting('copyrightNotice'))) .
+			$this->formatElement('540', ' ', ' ', 'a', __('submission.copyrightStatement', array('copyrightYear' => $article->getCopyrightYear(), 'copyrightHolder' => $article->getLocalizedCopyrightHolder()))) .
 			"</oai_marc>\n";
 
 		return $response;

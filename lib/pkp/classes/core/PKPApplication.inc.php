@@ -3,8 +3,8 @@
 /**
  * @file classes/core/PKPApplication.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPApplication
@@ -73,18 +73,6 @@ class PKPApplication {
 			// Try to switch off normal error display when error display
 			// is being managed by us.
 			@ini_set('display_errors', false);
-		}
-
-		if (Config::getVar('debug', 'deprecation_warnings')) {
-			// Switch deprecation warnings back on. This can only be done
-			// after declaring the Config class as we need access to the
-			// configuration and we cannot declare the Config class before
-			// we've switched of deprecation warnings as its declaration
-			// causes warnings itself.
-			// FIXME: When we drop PHP4 support and can declare static methods
-			// as such then we can also include E_STRICT/E_DEPRECATED here as
-			// nearly all strict/deprecated warnings concern PHP4 support.
-			@error_reporting($errorReportingLevel);
 		}
 
 		Registry::set('application', $this);

@@ -1,8 +1,8 @@
 {**
  * header.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common site header.
@@ -71,15 +71,6 @@
 		{include file="common/minifiedScripts.tpl"}
 	{/if}
 
-	<!-- Add javascript required for font sizer -->
-	<script type="text/javascript">{literal}
-		<!--
-		$(function(){
-			fontSize("#sizer", "body", 9, 16, 32, "{/literal}{$basePath|escape:"javascript"}{literal}"); // Initialize the font sizer
-		});
-		// -->
-	{/literal}</script>
-
 	<!-- Form validation -->
 	<script type="text/javascript" src="{$baseUrl}/lib/pkp/js/lib/jquery/plugins/validate/jquery.validate.js"></script>
 	<script type="text/javascript">
@@ -130,7 +121,7 @@
 
 	{$additionalHeadData}
 </head>
-<body>
+<body id="pkp-{$pageTitle|replace:'.':'-'}">
 <div id="container">
 
 <div id="header">

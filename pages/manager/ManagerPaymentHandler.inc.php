@@ -3,8 +3,8 @@
 /**
  * @file pages/manager/ManagerPaymentHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ManagerPaymentHandler
@@ -46,7 +46,7 @@ class ManagerPaymentHandler extends ManagerHandler {
 		$success = OJSPaymentAction::savePaymentSettings($args);
 
 		if ($success) {
- 			$templateMgr =& TemplateManager::getManager();
+			$templateMgr =& TemplateManager::getManager();
 			$templateMgr->assign(array(
 				'currentUrl' => Request::url(null, null, 'payments'),
 				'pageTitle' => 'manager.payment.feePaymentOptions',
@@ -102,7 +102,7 @@ class ManagerPaymentHandler extends ManagerHandler {
 		$success = OJSPaymentAction::savePayMethodSettings();
 
 		if ($success) {
- 			$templateMgr =& TemplateManager::getManager();
+			$templateMgr =& TemplateManager::getManager();
 			$templateMgr->assign(array(
 				'currentUrl' => Request::url(null, null, 'payMethodSettings'),
 				'pageTitle' => 'manager.payment.paymentMethods',

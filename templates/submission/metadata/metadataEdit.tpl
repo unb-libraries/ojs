@@ -1,8 +1,8 @@
 {**
  * templates/submission/metadata/metadataEdit.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for changing metadata of an article (used in MetadataForm)
@@ -95,6 +95,10 @@ function moveAuthor(dir, authorIndex) {
 	<tr valign="top">
 		<td class="label">{fieldLabel name="authors-$authorIndex-email" required="true" key="user.email"}</td>
 		<td class="value"><input type="text" name="authors[{$authorIndex|escape}][email]" id="authors-{$authorIndex|escape}-email" value="{$author.email|escape}" size="30" maxlength="90" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{fieldLabel name="authors-$authorIndex-orcid" key="user.orcid"}</td>
+		<td class="value"><input type="text" name="authors[{$authorIndex|escape}][orcid]" id="authors-{$authorIndex|escape}-orcid" value="{$author.orcid|escape}" size="30" maxlength="90" class="textField" /><br />{translate key="user.orcid.description"}</td>
 	</tr>
 	<tr valign="top">
 		<td class="label">{fieldLabel name="authors-$authorIndex-url" key="user.url"}</td>
@@ -215,7 +219,7 @@ function moveAuthor(dir, authorIndex) {
 <table width="100%" class="data">
 	<tr>
 		<td width="20%" class="label">{fieldLabel name="title" required="true" key="article.title"}</td>
-		<td width="80%" class="value"><input type="text" name="title[{$formLocale|escape}]" id="title" value="{$title[$formLocale]|escape}" size="60" maxlength="512" class="textField" /></td>
+		<td width="80%" class="value"><input type="text" name="title[{$formLocale|escape}]" id="title" value="{$title[$formLocale]|escape}" size="60" maxlength="255" class="textField" /></td>
 	</tr>
 
 	<tr>
@@ -453,10 +457,29 @@ function moveAuthor(dir, authorIndex) {
 	</tr>
 </table>
 </div>
-{/if}
+
+<div id="permissions">
+<h3>{translate key="submission.permissions"}</h3>
+<table width="100%" class="data">
+	<tr valign="top">
+		<td width="20%" class="label">{fieldLabel name="copyrightHolder" key="submission.copyrightHolder"}</td>
+		<td width="80%" class="value"><input type="text" name="copyrightHolder[{$formLocale|escape}]" id="copyrightHolder" value="{$copyrightHolder[$formLocale]|escape}" size="60" maxlength="255" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{fieldLabel name="copyrightYear" key="submission.copyrightYear"}</td>
+		<td class="value"><input type="text" name="copyrightYear" id="copyrightYear" value="{$copyrightYear|escape}" size="10" maxlength="255" class="textField" /></td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{fieldLabel name="licenseURL" key="submission.licenseURL"}</td>
+		<td class="value"><input type="text" name="licenseURL" id="licenseURL" value="{$licenseURL|escape}" size="60" maxlength="255" class="textField" /></td>
+	</tr>
+</table>
+
+</div>
 
 <div class="separator"></div>
 
+{/if}{* $isEditor *}
 
 <p><input type="submit" value="{translate key="submission.saveMetadata"}" class="button defaultButton"/> <input type="button" value="{translate key="common.cancel"}" class="button" onclick="history.go(-1)" /></p>
 

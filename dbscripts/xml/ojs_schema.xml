@@ -4,8 +4,8 @@
 <!--
   * ojs_schema.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * OJS database schema in XML.
@@ -1266,6 +1266,10 @@
 		<field name="date_start" type="D">
 		</field>
 		<field name="date_end" type="T">
+		</field>
+		<field name="date_reminded_before" type="T">
+		</field>
+		<field name="date_reminded_after" type="T">
 		</field>
 		<field name="status" type="I1">
 			<NOTNULL/>

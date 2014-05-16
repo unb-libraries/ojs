@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/browse/BrowsePlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BrowsePlugin
@@ -147,14 +147,14 @@ class BrowsePlugin extends GenericPlugin {
 		return parent::getManagementVerbs($verbs);
 	}
 
- 	/*
- 	 * Execute a management verb on this plugin
- 	 * @param $verb string
- 	 * @param $args array
+	/**
+	 * Execute a management verb on this plugin
+	 * @param $verb string
+	 * @param $args array
 	 * @param $message string Location for the plugin to put a result msg
 	 * @param $messageParams array
- 	 * @return boolean
- 	 */
+	 * @return boolean
+	 */
 	function manage($verb, $args, &$message, &$messageParams) {
 		if (!parent::manage($verb, $args, $message, $messageParams)) return false;
 

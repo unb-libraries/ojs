@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/customBlockManager/CustomBlockEditForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @package plugins.generic.customBlockManager
@@ -80,7 +80,7 @@ class CustomBlockEditForm extends Form {
 			theme_advanced_toolbar_location : "bottom",
 			theme_advanced_toolbar_align : "left",
 			content_css : "' . Request::getBaseUrl() . '/styles/common.css", 
-			relative_urls : false, 		
+			relative_urls : false,
 			document_base_url : "'. Request::getBaseUrl() .'/'.$publicFileManager->getJournalFilesPath($journalId) .'/", 
 			extended_valid_elements : "span[*], div[*]"
 			});

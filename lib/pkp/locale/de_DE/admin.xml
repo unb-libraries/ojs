@@ -4,11 +4,11 @@
 <!--
   * locale/de_DE/admin.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
-  *
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
+  * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
   *
   -->
 
@@ -39,6 +39,7 @@
 	<message key="admin.languages.reload">Regionaleinstellung neu laden</message>
 	<message key="admin.languages.uninstall">Regionaleinstellung deinstallieren</message>
 	<message key="admin.phpInfo">Ausführliche Informationen zu PHP</message>
+	<message key="admin.scheduledTask">Geplante Aufgabe</message>
 	<message key="admin.server.apacheVersion">Apache-Version</message>
 	<message key="admin.server.dbDriver">Datenbanktreiber</message>
 	<message key="admin.server.dbVersion">Version des Datenbankservers</message>
@@ -58,6 +59,7 @@
 	<message key="admin.settings.homeHeaderImageInvalid">Ungültiges Bildformat für das Logo der Website. Gültige Formate sind .gif, .jpg oder .png.</message>
 	<message key="admin.settings.introduction">Einleitung</message>
 	<message key="admin.settings.minPasswordLength">Mindestlänge des Passworts</message>
+	<message key="admin.settings.oneStepReset">Passwort in einem einzigen Schritt zurücksetzen?</message>
 	<message key="admin.settings.oaiRegistration">Registrieren Sie die Website für die Indizierung (Metadaten-Harvesting).</message>
 	<message key="admin.settings.passwordCharacters">Zeichen</message>
 	<message key="admin.settings.siteLanguage">Sprache der Website</message>
@@ -88,5 +90,5 @@
 	<message key="admin.fileLoader.wrongBasePathLocation">Der Basispfad {$path} muss im Verzeichnis der öffentlichen Dateien liegen.</message>
 	<message key="admin.fileLoader.pathNotAccessible">Der Ordner {$path} ist kein Verzeichnis oder ist nicht lesbar.</message>
 	<message key="admin.fileLoader.moveFileFailed">Die Datei {$filename} konnte nicht von {$currentFilePath} nach {$destinationPath} verschoben werden</message>
-	<message key="admin.fileLoader.emailSubject">Process ID des Fileloaders {$processId}</message>
+	<message key="admin.fileLoader">Fileloader</message>
 </locale>

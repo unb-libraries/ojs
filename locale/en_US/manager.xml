@@ -4,8 +4,8 @@
 <!--
   * locale/en_US/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -209,12 +209,12 @@
 	<message key="manager.setup.announcementsIntroductionDescription">Enter any additional information that should be displayed to readers on the Announcements page.</message>
 	<message key="manager.setup.appearInAboutJournal">(To appear in About the Journal) </message>
 	<message key="manager.setup.authorCopyrightNotice">Copyright Notice</message>
-	<message key="manager.setup.authorCopyrightNoticeAgree">Require authors to agree to Copyright Notice as part of the submission process.</message>
-	<message key="manager.setup.authorCopyrightNoticeDescription"><![CDATA[The Copyright Notice entered below will appear in About the Journal and in each published item's metadata. While it is up to the journal to determine the nature of its copyright agreement with authors, the Public Knowledge Project recommends the use of the <a href="http://creativecommons.org" target="_new" class="action">Creative Commons</a> license. To that end, it provides <a href="{$sampleCopyrightWordingUrl}" target="_new" class="action">sample Copyright Notice wording</a> that can be cut and pasted into the space below for journals that (a) offer open access, (b) offer delayed open access, or (c) do not offer open access.]]></message>
+	<message key="manager.setup.authorCopyrightNoticeAgree">Require authors to agree to the Copyright Notice in the submission process.</message>
+	<message key="manager.setup.authorCopyrightNoticeDescription"><![CDATA[The Copyright Notice will appear in About the Journal. It should describe for readers and authors whether the copyright holder is the author, journal, or a third party. It should include additional licensing agreements (e.g. <a href="http://creativecommons.org" target="_new" class="action">Creative Commons</a> licenses) that grant rights to readers (see <a href="{$sampleCopyrightWordingUrl}" target="_new" class="action">examples</a>), and it should provide the means for securing permissions, if necessary, for the use of the journal's content.]]></message>
 	<message key="manager.setup.authorGuidelines">Author Guidelines</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Set out for authors the bibliographic and formatting standards used for items submitted to the journal (e.g., <em>Publication Manual of the American Psychological Association</em>, 5th edition, 2001). It is often helpful to provide examples of the common citation formats for journals and books to be used in submissions. Also identify the types of appropriate Supplementary Files (e.g., data-sets, research instruments, etc.) which authors should be encouraged to upload, in addition to their submission, to enhance readers' engagement with their work.]]></message>
 	<message key="manager.setup.competingInterests">Competing Interests</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Biomedical journals typically require authors and reviewers to declare if they have any competing interests with regard to their research (see <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Biomedical journals typically require authors and reviewers to declare if they have any competing interests with regard to their research (see <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Guidelines for filing a Competing Interest statement</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Require submitting Authors to file a Competing Interest (CI) statement with their submission.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Require Reviewers to file a CI statement with each peer review they submit.</message>
@@ -227,6 +227,14 @@
 	<message key="manager.setup.copyediting">Copyeditors</message>
 	<message key="manager.setup.copyeditInstructions">Copyedit Instructions</message>
 	<message key="manager.setup.copyeditInstructionsDescription">The Copyedit Instructions will be made available to Copyeditors, Authors, and Section Editors in the Submission Editing stage. Below is a default set of instructions in HTML, which can be modified or replaced by the Journal Manager at any point (in HTML or plain text).</message>
+	<message key="manager.setup.permissions.priorAgreement">Prior Agreement</message>
+	<message key="manager.setup.permissions.display">Display</message>
+	<message key="manager.setup.licenseURLDescription">Provide URL for license webpage, if available.</message>
+	<message key="manager.setup.includeCopyrightStatement">Display the copyright statement with content (advisable for asserting an author-held copyright).</message>
+	<message key="manager.setup.includeLicense">Display the license with published work.</message>
+	<message key="manager.setup.resetPermissions">Reset Article Permissions</message>
+	<message key="manager.setup.resetPermissions.description">Copyright statement and license information will be permanently attached to published content, ensuring that this data will not change in the case of a journal changing policies for new submissions. To reset stored permissions information already attached to published content, use the button below.</message>
+	<message key="manager.setup.confirmResetLicense">Are you sure you wish to reset the license and copyright information attached to published content to the license configured in Journal Setup?</message>
 	<message key="manager.setup.copyrightNotice">Copyright notice</message>
 	<message key="manager.setup.coverage">Coverage</message>
 	<message key="manager.setup.coverageChronExamples">(E.g., European Renaissance; Jurassic Period; Third Trimester; etc.)</message>
@@ -296,7 +304,6 @@
 	<message key="manager.setup.guidingSubmissions">Step 3. Guiding Submissions</message>
 	<message key="manager.setup.homepageImage">Homepage image</message>
 	<message key="manager.setup.homepageImageDescription">Add an image or graphic file to the middle of the page.</message>
-	<message key="manager.setup.includeCreativeCommons">For journals that offer immediate or delayed open access, include a Creative Commons license with all published work at the appropriate time.</message>
 	<message key="manager.setup.information">Information</message>
 	<message key="manager.setup.information.description">Brief descriptions of the journal for librarians and prospective authors and readers are available in the "Information" section of the sidebar.</message>
 	<message key="manager.setup.information.forAuthors">For Authors</message>
@@ -348,7 +355,7 @@
 	<message key="manager.setup.lists">Lists</message>
 	<message key="manager.setup.listsDescription">Enter the maximum number of items (for example, submissions, users, or editing assignments) that appear on each page of a list, and the number of pages links to display on each page.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Enable LOCKSS to store and distribute journal content at participating libraries via a LOCKSS <a href="{$lockssUrl}" target="_blank">Publisher Manifest</a> page. A LOCKSS license will appear in About the Journal under Archiving:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[See <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">other versions of a LOCKSS license</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[See <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">other versions of a LOCKSS license</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identify 6-10 libraries that will register and cache the journal. For example, turn to institutions where editors or Board members work and/or institutions already participating in LOCKSS. See <a href="http://www.lockss.org/community/" target="_blank">the LOCKSS community</a>. Use the prepared invitations for (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">libraries participating in LOCKSS</a> or (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">libraries not yet participating in LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">The Look</message>
 	<message key="manager.setup.look.description">Homepage header, content, journal header, footer, navigation bar, and style sheet.</message>
@@ -566,19 +573,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">month(s) after an issue is published.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Please select a valid duration length.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">The following Delayed Open Access Policy will be posted in About the Journal under Policies.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Please use the checkbox provided.</message>
 	<message key="manager.subscriptionPolicies.expiry">Subscription Expiry</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Upon subscription expiry, readers may be denied access to all subscription content or may continue to retain access to subscription content published prior to the subscription expiry date.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Full expiry</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Readers are denied access to all subscription content upon subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Partial expiry</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Readers are denied access to recently published subscription content, but retain access to subscription content published prior to the subscription expiry date.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Notify subscribers by email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">month(s) after subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Notify subscribers by email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">week(s) after subscription expiry.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Notify subscribers by email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">month(s) before subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Notify subscribers by email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">week(s) before subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Subscription Expiry Reminders</message>
@@ -631,6 +633,8 @@
 	<message key="manager.subscriptions.form.typeId">Subscription type</message>
 	<message key="manager.subscriptions.form.typeIdRequired">A subscription type is required.</message>
 	<message key="manager.subscriptions.form.typeIdValid">Please select a valid subscription type.</message>
+	<message key="manager.subscriptions.form.dateRemindedBefore">Pre-expiry Reminder Sent</message>
+	<message key="manager.subscriptions.form.dateRemindedAfter">Post-expiry Reminder Sent</message>
 	<message key="manager.subscriptions.form.dateStart">Start date</message>
 	<message key="manager.subscriptions.form.dateStartRequired">A subscription start date is required.</message>
 	<message key="manager.subscriptions.form.dateStartValid">Please select a valid subscription start date.</message>

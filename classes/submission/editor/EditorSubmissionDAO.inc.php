@@ -3,8 +3,8 @@
 /**
  * @file classes/editor/EditorSubmissionDAO.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class EditorSubmissionDAO
@@ -323,7 +323,7 @@ class EditorSubmissionDAO extends DAO {
 		}
 
 		if ($editorId) {
-			$searchSql .= ' AND ea.editor_id = ?';
+			$searchSql .= ' AND e.editor_id = ?';
 			$params[] = $editorId;
 		}
 

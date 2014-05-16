@@ -1,8 +1,8 @@
 {**
  * templates/index/site.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Site index.
@@ -17,7 +17,7 @@
 
 <br />
 
-{if $intro}{$intro|nl2br}{/if}
+{if $intro}<div id="intro">{$intro|nl2br}</div>{/if}
 
 <a name="journals"></a>
 

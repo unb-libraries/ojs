@@ -1,8 +1,8 @@
 {**
  * templates/copyeditor/active.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Show copyeditor's active submissions.
@@ -13,7 +13,7 @@
 	<tr><td class="headseparator" colspan="6">&nbsp;</td></tr>
 	<tr class="heading" valign="bottom">
 		<td width="5%">{sort_heading key="common.id" sort="id"}</td>
-		<td width="5%"><span class="disabled">{translate key="submission.date.mmdd"}</span><br />{sort_heading key="common.assign" sort="assignDate"}</td>
+		<td width="5%"><span class="disabled">{translate key="submission.date.mmdd"}</span><br />{sort_heading key="common.assigned" sort="assignDate"}</td>
 		<td width="5%">{sort_heading key="submissions.sec" sort="section"}</td>
 		<td width="30%">{sort_heading key="article.authors" sort="authors"}</td>
 		<td width="35%">{sort_heading key="article.title" sort="title"}</td>

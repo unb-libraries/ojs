@@ -7,8 +7,8 @@
 /**
  * @file classes/form/Form.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Form
@@ -40,6 +40,7 @@ import('lib.pkp.classes.form.validation.FormValidatorUri');
 import('lib.pkp.classes.form.validation.FormValidatorUrl');
 import('lib.pkp.classes.form.validation.FormValidatorLocaleUrl');
 import('lib.pkp.classes.form.validation.FormValidatorISSN');
+import('lib.pkp.classes.form.validation.FormValidatorORCID');
 
 class Form {
 
@@ -457,11 +458,11 @@ class Form {
 		}
 
 		// Display the language selector widget.
-		$returner .= '<div id="languageSelector"><select size="1" name="formLocale" id="formLocale" onchange="changeFormAction(\'' . htmlentities($params['form'], ENT_COMPAT, LOCALE_ENCODING) . '\', \'' . htmlentities($params['url'], ENT_QUOTES, LOCALE_ENCODING) . '\')" class="selectMenu">';
+		$returner .= '<div id="languageSelector"><select size="1" name="formLocale" id="formLocale" class="selectMenu">';
 		foreach ($this->supportedLocales as $locale => $name) {
 			$returner .= '<option ' . ($locale == $formLocale?'selected="selected" ':'') . 'value="' . htmlentities($locale, ENT_COMPAT, LOCALE_ENCODING) . '">' . htmlentities($name, ENT_COMPAT, LOCALE_ENCODING) . '</option>';
 		}
-		$returner .= '</select></div>';
+		$returner .= '</select><input type="submit" class="button" value="'. __('form.submit'). '" onclick="changeFormAction(\'' . htmlentities($params['form'], ENT_COMPAT, LOCALE_ENCODING) . '\', \'' . htmlentities($params['url'], ENT_QUOTES, LOCALE_ENCODING) . '\'); return false" /></div>';
 		return $returner;
 	}
 

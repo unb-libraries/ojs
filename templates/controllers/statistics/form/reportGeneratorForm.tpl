@@ -1,8 +1,8 @@
 {**
  * templates/controllers/statistics/form/reportGeneratorForm.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Report generator form template.
@@ -47,9 +47,9 @@
 <form class="pkp_form" id="reportGeneratorForm" method="post" action="{url op="saveReportGenerator"}">
 	{if $metricTypeOptions}
 		{fbvFormArea id="columnsFormArea" title="defaultMetric.availableMetrics"}
-			{fbvSection inline=true size=$fbvStyles.size.SMALL}
+			{fbvFormSection inline=true size=$fbvStyles.size.SMALL}
 				{fbvElement type="select" name="metricType" id="metricType" from=$metricTypeOptions selected=$metricType translate=false}
-			{/fbvSection}
+			{/fbvFormSection}
 		{/fbvFormArea}
 	{else}
 		{fbvElement type="hidden" name="metricType" id="metricType" value=$metricType}

@@ -3,8 +3,8 @@
 /**
  * @file AbntSettingsForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Contributed by Lepidus Tecnologia
  *
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
@@ -45,7 +45,7 @@ class AbntSettingsForm extends Form {
 		$plugin =& $this->plugin;
 
 		$this->_data = array(
- 			'location' => $plugin->getSetting($journalId, 'location')
+			'location' => $plugin->getSetting($journalId, 'location')
 		);
 	}
 
@@ -61,7 +61,7 @@ class AbntSettingsForm extends Form {
 	 * Assign form data to user-submitted data.
 	 */
 	function readInputData() {
- 		$this->readUserVars(array('location'));
+		$this->readUserVars(array('location'));
 	}
 
 	/**

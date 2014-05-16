@@ -3,8 +3,8 @@
 /**
  * @file pages/issue/IssueHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueHandler
@@ -63,8 +63,6 @@ class IssueHandler extends Handler {
 			$issueHeadingTitle = __('current.noCurrentIssue');
 		}
 
-		// Display creative commons logo/licence if enabled
-		$templateMgr->assign('displayCreativeCommons', $journal->getSetting('includeCreativeCommons'));
 		$templateMgr->assign('pageHierarchy', array(array($request->url(null, 'issue', 'current'), 'current.current')));
 		$templateMgr->assign('helpTopicId', 'user.currentAndArchives');
 		// consider public identifiers
@@ -88,10 +86,8 @@ class IssueHandler extends Handler {
 
 		$templateMgr =& TemplateManager::getManager();
 		$this->_setupIssueTemplate($request, $issue, ($showToc == 'showToc') ? true : false);
-		$templateMgr->assign('issueId', $issue->getBestIssueId());
+		if ($issue) $templateMgr->assign('issueId', $issue->getBestIssueId());
 
-		// Display creative commons logo/licence if enabled
-		$templateMgr->assign('displayCreativeCommons', $journal->getSetting('includeCreativeCommons'));
 		$templateMgr->assign('pageHierarchy', array(array($request->url(null, 'issue', 'archive'), 'archive.archives')));
 		$templateMgr->assign('helpTopicId', 'user.currentAndArchives');
 		// consider public identifiers
@@ -498,7 +494,7 @@ class IssueHandler extends Handler {
 			$issueHeadingTitle = __('archive.issueUnavailable');
 		}
 
-		if ($styleFileName = $issue->getStyleFileName()) {
+		if ($issue && $styleFileName = $issue->getStyleFileName()) {
 			import('classes.file.PublicFileManager');
 			$publicFileManager = new PublicFileManager();
 			$templateMgr->addStyleSheet(

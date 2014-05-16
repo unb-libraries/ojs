@@ -4,8 +4,8 @@
 <!--
   * locale/hr_HR/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the hr_HR (Hrvatski) locale.
@@ -165,7 +165,7 @@
 	<message key="manager.setup.authorGuidelines">Smjernice za autore</message>
 	<message key="manager.setup.authorGuidelinesDescription">Ovim tekstom autori se upoznaju sa standardima citiranja i opreme teksta koji se očekuju od priloga prijavljenih za časopis.  Od velike je pomoći ukoliko se prilože i konkretni primjeri označavanja referenci za knjige, časopise i druge izvore. Također, ovdje se mogu naznačiti i prikladni tipovi dopunskih datoteka (npr. baze podataka, istraživački instrumenti itd.) koje autori mogu priložiti uz svoje prijave.</message>
 	<message key="manager.setup.competingInterests">Sukob interesa</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Časopisi iz područja biomedicinskih znanosti obično traže od autora i recenzenata da obznane ukoliko imaju ikakvih sukoba interesa vezanih uz svoje istraživanje (vidi <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Časopisi iz područja biomedicinskih znanosti obično traže od autora i recenzenata da obznane ukoliko imaju ikakvih sukoba interesa vezanih uz svoje istraživanje (vidi <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Smjernice za izjavu o sukobu interesa</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Zahtijevaj od autora da prilikom prijave svog rukopisa ispune izjavu o sukobu interesa.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Zahtijevaj od recenzenata da prilikom izrade svake recenzije ispune izjavu o sukobu interesa.</message>
@@ -243,7 +243,6 @@
 	<message key="manager.setup.guidelines">Smjernice</message>
 	<message key="manager.setup.homepageImage">Slika naslovne stranice</message>
 	<message key="manager.setup.homepageImageDescription">Dodajte sliku ili grafičku datoteku na sredini stranice.</message>
-	<message key="manager.setup.includeCreativeCommons">Ukoliko časopis omogućuje trenutni ili odgođen otvoren pristup, pravovremeno priloži Creative Commons licencu uz sve objavljene priloge.</message>
 	<message key="manager.setup.information">Informacije</message>
 	<message key="manager.setup.information.description">Kratak opis časopisa za knjižničare, buduće autore i čitatelje dostupan je svim posjetiteljima stranice pod odjeljkom "informacije" koji se nalazi u rubnom stupcu.</message>
 	<message key="manager.setup.information.forAuthors">Za autore</message>
@@ -289,7 +288,7 @@
 	<message key="manager.setup.lists">Ispis popisa</message>
 	<message key="manager.setup.listsDescription">Unesite maksimalan broj stavki koji se može pojaviti na pojedinoj stranici raznih popisa koje generira časopis (na primjer, arhiv izdanja, kazalo autora, popis prijava, korisnika ili uređivanje zaduženja), te broj poveznica na prethodne odnosno slijedeće stranice popisa koji se može prikazati ispod popisa.</message>
 	<message key="manager.setup.lockssEnable">Omogućite LOCKSS-u da u krugu knjižnica koje sudjeluju pohranjuje i distribuira sadržaj vašeg časopisa. LOCKSS-ova licenca će se pojaviti u rubrici "o časopisu" unutar "arhiviranje":</message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Pogledajte <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">ostale verzije LOCKSS licence</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Pogledajte <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">ostale verzije LOCKSS licence</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identificirajte 6-10 knjižnica koje će evidentirati i arhivirati sadržaj časopisa. Na primjer, institucije gdje urednici ili članovi uredništva rade i/ili druge institucije koje već sudjeluju u LOCKSS-u. Pogledajte <a href="http://www.lockss.org/community/" target="_blank">knjižnice koje sudjeluju</a>. Koristite pripremljene pozivnice za (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">knjižnice koje sudjeluju u LOCKSS-u</a> ili (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">knjižnice koje još ne sudjeluju u LOCKSS-u</a>.]]></message>
 	<message key="manager.setup.look">Izgled</message>
 	<message key="manager.setup.look.description">Zaglavlje i sadržaj naslovne stranice, zaglavlje i podnožje stranica časopisa, navigacijska traka, CSS, način prikaza popisa.</message>
@@ -460,19 +459,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mjesec(i) nakon što je broj časopisa objavljen.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Molimo odaberite ispravnu duljinu trajanja.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Sljedeća izjava o odgođenom otvorenom pristupu bit će postavljena u rubrici "uređivačka politika" pod poveznicom "o časopisu".</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Molimo koristite predviđeni okvir za izbor.</message>
 	<message key="manager.subscriptionPolicies.expiry">Istek pretplate</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Nakon isteka pretplate, čitatelju može biti uskraćen pristup cjelokupnom pretplatničkom sadržaju ili može zadržati pristup pretplatničkom sadržaju na koji je objavljen prije isteka pretplate.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Potpuni istek</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Čitateljima je uskraćen pristup cjelokupnom pretplatničkom sadržaju nakon isteka pretplate.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Djelomičan istek</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Čitateljima je uskraćen pristup novom pretplatničkom sadržaju, ali zadržavaju pristup pretplatničkom sadržaju na koji je objavljen prije isteka pretplate</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Obavijesti pretplatnike putem e-pošte</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">mjesec(i) nakon isteka pretplate.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Obavijesti pretplatnike putem e-pošte</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">tjedan(a) nakon isteka pretplate.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Obavijesti sve pretplatnike e-poštom</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">mjesec(i) prije isteka pretplate.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Obavijesti pretplatnike putem e-pošte</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">tjedan(a) prije isteka pretplate.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Podsjetnici o isteku pretplate</message>

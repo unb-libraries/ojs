@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/copyeditor/CopyeditorAction.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CopyeditorAction
@@ -407,7 +407,7 @@ class CopyeditorAction extends Action {
 		} else if ($copyeditorSubmission->getFileBySignoffType('SIGNOFF_COPYEDITING_AUTHOR', true) == $fileId) {
 			$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 			$authorSignoff = $signoffDao->build('SIGNOFF_COPYEDITING_AUTHOR', ASSOC_TYPE_ARTICLE, $copyeditorSubmission->getId());
-		 	if($authorSignoff->getDateCompleted() != null) {
+			if($authorSignoff->getDateCompleted() != null) {
 				$canDownload = true;
 			}
 		} else if ($copyeditorSubmission->getFileBySignoffType('SIGNOFF_COPYEDITING_FINAL', true) == $fileId) {

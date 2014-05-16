@@ -1,8 +1,8 @@
 {**
  * templates/subscription/subscriptionForm.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common subscription fields
@@ -101,3 +101,26 @@ function chooseEndDate() {
 		<input type="text" name="referenceNumber" value="{$referenceNumber|escape}" id="referenceNumber" size="30" maxlength="40" class="textField" />
 	</td>
 </tr>
+{if $subscriptionId}
+	{if is_a($subscription,'InstitutionalSubscription')}
+		{assign var=subscriptionClass value="institutional"}
+	{else}
+		{assign var=subscriptionClass value="individual"}
+	{/if}
+	<tr valign="top">
+		<td class="label">{translate key="manager.subscriptions.form.dateRemindedBefore"}</td>
+		<td class="value">
+			{$dateRemindedBefore|date_format:$dateFormatShort|default:"&mdash;"}
+			&nbsp;
+			<a href="{url op="resetDateReminded" type="before" path=$subscriptionClass|to_array:$subscriptionId}" class="action">{translate key="common.reset"}</a>
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="label">{translate key="manager.subscriptions.form.dateRemindedAfter"}</td>
+		<td class="value">
+			{$dateRemindedAfter|date_format:$dateFormatShort|default:"&mdash;"}
+			&nbsp;
+			<a href="{url op="resetDateReminded" type="after" path=$subscriptionClass|to_array:$subscriptionId}" class="action">{translate key="common.reset"}</a>
+		</td>
+	</tr>
+{/if}

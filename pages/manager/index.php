@@ -7,8 +7,8 @@
 /**
  * @file pages/manager/index.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup pages_manager
@@ -24,6 +24,7 @@ switch ($op) {
 	case 'saveSetup':
 	case 'setupSaved':
 	case 'downloadLayoutTemplate':
+	case 'resetPermissions':
 		define('HANDLER_CLASS', 'SetupHandler');
 		import('pages.manager.SetupHandler');
 		break;
@@ -143,6 +144,7 @@ switch ($op) {
 	case 'createSubscription':
 	case 'editSubscription':
 	case 'updateSubscription':
+	case 'resetDateReminded':
 		define('HANDLER_CLASS', 'SubscriptionHandler');
 		import('pages.manager.SubscriptionHandler');
 		break;

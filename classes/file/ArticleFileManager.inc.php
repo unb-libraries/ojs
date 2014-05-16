@@ -3,8 +3,8 @@
 /**
  * @file classes/file/ArticleFileManager.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleFileManager
@@ -507,7 +507,11 @@ class ArticleFileManager extends FileManager {
 			$articleFile->setDateModified(Core::getCurrentDate());
 		}
 
-		$articleFile->setFileType($this->getUploadedFileType($fileName));
+		if (preg_match('/\.css$/', $_FILES[$fileName]['name'])) {
+			$articleFile->setFileType('text/css');
+		} else {
+			$articleFile->setFileType($this->getUploadedFileType($fileName));
+		}
 		$articleFile->setFileSize($_FILES[$fileName]['size']);
 		$articleFile->setOriginalFileName($this->truncateFileName($_FILES[$fileName]['name'], 127));
 		$articleFile->setFileStage($fileStage);

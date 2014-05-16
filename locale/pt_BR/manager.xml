@@ -4,8 +4,8 @@
 <!--
   * locale/pt_BR/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português (Brasil)) locale.
@@ -169,7 +169,7 @@
 	<message key="manager.setup.authorGuidelines">Diretrizes para autores</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Definição dos padrões bibliográficos e padrões de formatação de texto da revista (Ex.: <em>Publication Manual of the American Psychological Association</em>, 5th edition, 2001). Recomenda-se oferecer exemplos de formatos de citação comuns para revistas e livros para uso nas submissões. É importante também identificar os tipos apropriados de Documentos Suplementares (Ex.: conjuntos de dados, instrumentos de pesquisas, entre outros) que os autores deveriam ser estimulados a enviar, além do documento de submissão, para aumentar o interesse dos leitores com o trabalho.]]></message>
 	<message key="manager.setup.competingInterests">Conflito de interesses</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Periódicos da bio-medicina geralmente exigem que autores e avaliadores declarem se há qualquer possibilidade de conflito de interesses com relação à pesquisa (veja <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">Política PLoS</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Periódicos da bio-medicina geralmente exigem que autores e avaliadores declarem se há qualquer possibilidade de conflito de interesses com relação à pesquisa (veja <a href="http://www.plosbiology.org/static/competing.action" target="_new">Política PLoS</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Diretrizes para registro de conflito de interesses</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Exigir dos autores o registro de conflito de interesses (CI) junto com a submissão.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Exigir dos avaliadores registro de conflito de interesses com cada avaliação realizada.</message>
@@ -253,7 +253,6 @@ Exemplo:
 	<message key="manager.setup.guidingSubmissions">Passo 3. Diretrizes para submissão</message>
 	<message key="manager.setup.homepageImage">Capa/imagem para a página inicial</message>
 	<message key="manager.setup.homepageImageDescription">Inclua uma imagem para exibição no centro da página.</message>
-	<message key="manager.setup.includeCreativeCommons">Para periódicos que oferecem acesso livre imediato ou adiado, inclua uma licença Creative Commons com todo o material na data de publicação.</message>
 	<message key="manager.setup.information">Informação</message>
 	<message key="manager.setup.information.description">Informações breves sobre a revista para bibliotecários, autores em potencial e leitores estão disponíveis na seção Informação na barra de ferramentas lateral.</message>
 	<message key="manager.setup.information.forAuthors">Para Autores</message>
@@ -301,7 +300,7 @@ Exemplo:
 	<message key="manager.setup.lists">Listas</message>
 	<message key="manager.setup.listsDescription">Informe o número máximo de itens (por exemplo, submissões, usuários, ou tarefas editoriais) que aparecem em toda página de listagem, e o número de links por página a serem exibidos.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Permitir ao LOCKSS armazenar e distribuir o conteúdo da revista a bibliotecas participantes por meio do <a href="{$lockssUrl}" target="_blank">Manifesto de Publicação</a> do LOCKSS. Uma licença LOCKSS aparecerá na página  Sobre a revista na seção Arquivamento:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Veja <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">outras versões da licença LOCKSS</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Veja <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">outras versões da licença LOCKSS</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identifique 6 a 10 bibliotecas que cadastrarão e guardarão o cache da revista. Por exemplo, escolha instituições às quais os editores ou Membros do Comitê já sejam associados, e/ou instituições já participantes do LOCKSS. Visite <a href="http://www.lockss.org/community/" target="_blank">bibliotecas participantes</a>. Utilize o convite preparado para (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">Bibliotecas participantes do LOCKSS</a> ou (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">Bibliotecas NÃO participantes do LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Visual</message>
 	<message key="manager.setup.look.description">Cabeçalho da capa, conteúdo, cabeçalho da revista, rodapé, barra de navegação e folha de estilo.</message>
@@ -471,19 +470,14 @@ Exemplo:
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mês(es) após a pulicação da edição.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Escolha um tempo de duração válido.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">O texto a seguir será exibido na página Sobre a revista, no item Acesso Livre adiado.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Habilite a caixa de opção disponível.</message>
 	<message key="manager.subscriptionPolicies.expiry">Expiração da assinatura</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Leitores podem perder acesso ao conteúdo exclusivo a assinantes na data do expiração da assinatura, ou podem manter acesso a conteúdo publicado anteriormente à expiração.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Expiração total</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Leitores perdem acesso a todo o conteúdo exclusivo a assinantes na data de expiração.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Expiração parcial</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Leitores mantém acesso apenas a conteúdo publicado anteriormente à expiração. Novas publicação não permitirão acesso ao conteúdo exclusivo a assinantes.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Notificar assinantes via e-mail</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">mês(es) após a expiração da assinatura.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Notificar assinantes via e-mail</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">semana(s) depois da expiração da assinatura.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Notificar assinantes via e-mail</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">mês(es) antes da expiração da assinatura.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Notificar assinantes via e-mail</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">semana(s) antes da expiração da assinatura.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Lembretes de expiração de assinatura</message>

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/xmlGalley/XMLGalleySettingsForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XMLGalleySettingsForm
@@ -97,9 +97,9 @@ class XMLGalleySettingsForm extends Form {
 
 		// get existing settings to see if any are changing that will affect the cache
 		$flushCache = false;
- 		foreach ($this->_data as $setting => $value) {
+		foreach ($this->_data as $setting => $value) {
 			if ($plugin->getSetting($journalId, $setting) != $value) $flushCache = true;
- 		}
+		}
 
 		// if there are changes, flush the XSLT cache
 		if ($flushCache == true) {

@@ -4,8 +4,8 @@
 <!--
   * locale/ja_JP/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ja_JP (日本語) locale.
@@ -126,7 +126,7 @@
 	<message key="manager.setup.authorCopyrightNoticeAgree">投稿プロセスの一部として著者に著作権表示への同意を要求する。</message>
 	<message key="manager.setup.authorGuidelines">著者の手引き（執筆要項）</message>
 	<message key="manager.setup.competingInterests">利害の競合</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[生物学系の雑誌は、通常著者と査読者に対して、研究上の利害の競合があるか否かを宣言することを要求しています（see <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoSポリシー</a>を参照のこと）。]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[生物学系の雑誌は、通常著者と査読者に対して、研究上の利害の競合があるか否かを宣言することを要求しています（see <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoSポリシー</a>を参照のこと）。]]></message>
 	<message key="manager.setup.competingInterests.guidelines">利害の競合声明添付のガイドライン</message>
 	<message key="manager.setup.competingInterests.requireAuthors">著者に投稿物に利害の競合（CI）声明を添付することを求める。</message>
 	<message key="manager.setup.competingInterests.requireReviewers">査読者に彼らが行う各査読に利害の競合（CI）声明を添付することを求める。</message>
@@ -202,7 +202,6 @@
 	<message key="manager.setup.guidingSubmissions">ステップ 3. 投稿の手引き</message>
 	<message key="manager.setup.homepageImage">ホームページ画像</message>
 	<message key="manager.setup.homepageImageDescription">ページの中央に画像または図形を追加する。</message>
-	<message key="manager.setup.includeCreativeCommons">オープンアクセスを提供する（エンバーゴ付きを含む）雑誌については、適当な時点で発表される全ての作品にクリエイティブ･コモンズライセンスを与えてください。</message>
 	<message key="manager.setup.information">ご案内</message>
 	<message key="manager.setup.information.description">図書館員、潜在的著者および読者向けの雑誌に関する簡潔な説明で、サイドバーの"ご案内"欄に表示されます。</message>
 	<message key="manager.setup.information.forAuthors">著者向け</message>
@@ -410,13 +409,8 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">ヵ月からオープンアクセスで利用できるようにする。</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">正式なエンバーゴ期間を選択してください。</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">次の文が、エンバーゴ付きオープンアクセス雑誌の「この雑誌について」ページに表示されます。</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">チェックボックスをチェックしてください。</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">購読期間満了</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">ヶ月後に購読者にメールで通知する。</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">購読期間満了</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">週間後に購読者にメールで通知する。</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">購読期間満了</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">ヶ月前に購読者にメールで通知する。</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">購読期間満了</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">週間前に購読者にメールで通知する。</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">購読期間満了通知</message>
@@ -592,7 +586,7 @@
 	<message key="manager.setup.doiSuffixDescription">DOI サフィックスはどのような形式でも構いませんが，出版アイテムごとにユニークなものでなければなりません。</message>
 	<message key="manager.setup.doiSuffixPublisherId">出版アイテムに対してDOI サフィックスのような「カスタム識別子」を使用することができます（Step 4で有効にする必要があります）。</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[LOCKSS を有効にする。LOCKSS の<a href="{$lockssUrl}" target="_blank">出版者マニュフェスト</a>ページを通じてLOCKSSを有効にし、参加図書館にある雑誌コンテンツを保管・配布します。LOCKSSライセンスはアーカイブの「この雑誌について」ページに表示されます。]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[<a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">LOCKSS ライセンスのその他のバージョンはここ</a>を参照してください。]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[<a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">LOCKSS ライセンスのその他のバージョンはここ</a>を参照してください。]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[雑誌を登録･キャッシュする図書館を6館から10館見つけます。例えば、編集者や雑誌委員会委員が勤務する機関や既にLOCKSSに参加している機関に問い合わせてください。<a href="http://www.lockss.org/community/" target="_blank">参加図書館はここ</a>を参照してください。あらかじめ用意されている(1) <a href="{$lockssExistingArchiveUrl}" target="_blank">LOCKSS参加図書館向け</a>、または、(2) <a href="{$lockssNewArchiveUrl}" target="_blank">LOCKSS未参加図書館向け</a> の招待状を使用してください。]]></message>
 	<message key="manager.setup.journalFavicon">雑誌ファビコン</message>
 	<message key="manager.setup.journalFaviconDescription">ユーザがあなたのサイトを訪れた際にナビゲーションバーに表示させるこの雑誌のファビコンを追加します。</message>

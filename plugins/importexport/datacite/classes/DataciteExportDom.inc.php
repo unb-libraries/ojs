@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/datacite/classes/DataciteExportDom.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataciteExportDom
@@ -167,15 +167,11 @@ class DataciteExportDom extends DOIExportDom {
 		if (!empty($articleFile)) XMLCustomWriter::appendChild($rootElement, $this->_formatsElement($articleFile));
 
 		// Rights
-		$rights = $this->getPrimaryTranslation($journal->getSetting('copyrightNotice', null), $objectLocalePrecedence);
-		if (!empty($rights)) {
-			$request = $this->_request;
-			$rightsURI = $request->url(null, 'about', 'submissions', null, null, 'copyrightNotice');
-			$rightsListElement =& XMLCustomWriter::createElement($this->getDoc(), 'rightsList');
-			$rightsElement = $this->createElementWithText('rights', String::html2text($rights), array('rightsURI' => $rightsURI));
-			XMLCustomWriter::appendChild($rightsListElement, $rightsElement);
-			XMLCustomWriter::appendChild($rootElement, $rightsListElement);
-		}
+		$rightsURL = $article->getLicenseURL();
+		$rightsListElement =& XMLCustomWriter::createElement($this->getDoc(), 'rightsList');
+		$rightsElement = $this->createElementWithText('rights', strip_tags(Application::getCCLicenseBadge($rightsURL)), array('rightsURI' => $rightsURL));
+		XMLCustomWriter::appendChild($rightsListElement, $rightsElement);
+		XMLCustomWriter::appendChild($rootElement, $rightsListElement);
 
 		// Descriptions
 		$descriptionsElement =& $this->_descriptionsElement($issue, $article, $suppFile, $objectLocalePrecedence, $articlesByIssue);
@@ -215,8 +211,8 @@ class DataciteExportDom extends DOIExportDom {
 	function &retrievePublicationObjects(&$object) {
 		// Initialize local variables.
 		$nullVar = null;
- 		$journal =& $this->getJournal();
- 		$cache =& $this->getCache();
+		$journal =& $this->getJournal();
+		$cache =& $this->getCache();
 
 		// Retrieve basic OJS objects.
 		$publicationObjects = parent::retrievePublicationObjects($object);

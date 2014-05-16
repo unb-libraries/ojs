@@ -3,8 +3,8 @@
 /**
  * @file classes/install/Upgrade.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Upgrade
@@ -172,7 +172,7 @@ class Upgrade extends Installer {
 				case 3: // ISSUE_LABEL_YEAR
 					$settings['publicationFormatYear'] = true;
 					break;
- 				case 2: // ISSUE_LABEL_VOL_YEAR
+				case 2: // ISSUE_LABEL_VOL_YEAR
 					$settings['publicationFormatVolume'] = true;
 					$settings['publicationFormatYear'] = true;
 					break;
@@ -304,7 +304,6 @@ class Upgrade extends Installer {
 			'metaCoverageChronExamples' => 'metaCoverageChronExamples',
 			'metaCoverageResearchSampleExamples' => 'metaCoverageResearchSampleExamples',
 			'metaTypeExamples' => 'metaTypeExamples',
-			'metaCitations' => 'metaCitations',
 			// Setup page 4
 			'pubFreqPolicy' => 'pubFreqPolicy',
 			'copyeditInstructions' => 'copyeditInstructions',
@@ -1100,6 +1099,8 @@ class Upgrade extends Installer {
 
 		while(!$result->EOF) {
 			$row =& $result->GetRowAssoc(false);
+			$result->MoveNext();
+
 			list($countryId, $cityName, $region) = $geoLocationTool->getGeoLocation($row['ip_address']);
 			$fileType = null;
 			if ($row['galley_id']) {
@@ -1122,7 +1123,6 @@ class Upgrade extends Installer {
 
 			$day = date('Ymd', strtotime($row['date']));
 			$tempStatsDao->insert($assocType, $assocId, $day, $countryId, $region, $cityName, $fileType, $loadId);
-			$result->MoveNext();
 		}
 
 		switch (Config::getVar('database', 'driver')) {

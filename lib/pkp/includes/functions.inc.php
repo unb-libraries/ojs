@@ -3,8 +3,8 @@
 /**
  * @file includes/functions.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup index
@@ -22,10 +22,11 @@
 if (!function_exists('import')) {
 	function import($class) {
 		static $deprecationWarning = null;
-
 		// Try to bypass include path for best performance
 		$filePath = str_replace('.', '/', $class) . '.inc.php';
-		if((@include_once BASE_SYS_DIR.'/'.$filePath) === false) {
+		if (file_exists(BASE_SYS_DIR.'/'.$filePath)) {
+			include_once BASE_SYS_DIR.'/'.$filePath;
+		} else {
 			// Oops, we found a legacy include statement,
 			// let's try the include path then.
 			require_once($filePath);

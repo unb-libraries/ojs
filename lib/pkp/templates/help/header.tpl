@@ -1,8 +1,8 @@
 {**
  * templates/help/header.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common header for help pages.
@@ -65,6 +65,7 @@ if (self.blur) { self.focus(); }
 {/literal}
 
 <div id="container">
+<body id="body" class="pkp-{$pageTitle|replace:'.':' pkp-'}">
 <div id="body">
 <div id="top"></div>
 

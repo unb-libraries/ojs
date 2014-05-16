@@ -1,8 +1,8 @@
 {**
  * plugins/generic/thesisFeed/templates/atom.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Atom feed template
@@ -43,7 +43,7 @@
 		<id>{url page="thesis" op="view" path=$thesis->getId()}</id>
 		<title>{$thesis->getTitle()|strip|escape:"html"}</title>
 		<updated>{$thesis->getDateSubmitted()|date_format:"%Y-%m-%dT%T%z"|regex_replace:"/00$/":":00"}</updated>
-	  	<author>
+	 	<author>
 			<name>{$thesis->getStudentFullName()|strip|escape:"html"}</name>
         </author>
 		<link rel="alternate" href="{url page="thesis" op="view" path=$thesis->getId()}" />

@@ -4,8 +4,8 @@
 <!--
   * locale/sv_SE/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the sv_SE (Swedish) locale.
@@ -144,7 +144,7 @@
 	<message key="manager.setup.authorGuidelines">Författarinstruktioner</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Fastställ de bibliografiska riktlinjerna för författarnas manuskript. (ex., <i>Publication Manual of the American Psychological Association</i>, 5th edition, 2001). Gör också klart vilka typer av kompletterande filer författaren kan ladda upp för att öka förståelsen hos läsaren (ex.: rådata, forskningsinstrument, dokumentation etc.)]]></message>
 	<message key="manager.setup.competingInterests">Intressekonflikter</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[När det gäller biomedicinska tidskrifter brukar ofta författare och granskare behöva intyga att det inte föreligger några intressekonflikter i samband med forskningen (se: <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[När det gäller biomedicinska tidskrifter brukar ofta författare och granskare behöva intyga att det inte föreligger några intressekonflikter i samband med forskningen (se: <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Instruktioner för hur man fyller i Intressekonfliktsförklaringen.</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Författare måste göra en Intressekonfliktsförklaring i samband med att manuskriptet skickas in.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Granskare måste göra en Intressekonfliktsförklaring i samband med varje granskning som görs.</message>
@@ -226,7 +226,6 @@
 	<message key="manager.setup.homepageImage">Hemsidebild</message>
 	<message key="manager.setup.homepageImageDescription">Lägg till en bild till mitten av sidan</message>
 	<message key="manager.setup.htmlSetupInstructions"><![CDATA[HTML kan användas i fälten för textredigering (fontstorlek, färg etc.), observera att "return" behandlas som <tt>&lt;br&gt;</tt>; HTML redigerare fungerar med Firefox.]]></message>
-	<message key="manager.setup.includeCreativeCommons">För tidskrifter som stöder omedelbar eller försenad Open Access, lägg till en Creatice Commons-licens till publikationerna.</message>
 	<message key="manager.setup.information">Information</message>
 	<message key="manager.setup.information.description">En kortfattad beskrivning av tidskriftens innehåll för bibliotekarier, potentiella författare och läsare finns under "Information" i sidomenyn.</message>
 	<message key="manager.setup.information.forAuthors">För författare</message>
@@ -446,13 +445,8 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">månad(er)efter att ett nummer har publicerats.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Vänligen välj en giltig tidsperiod.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Följande Försenad Open Access-Policy kommer att synas under Policies under Om tidskriften.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Vänligen klicka i obligatorisk checkbox.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Meddela abonnenter via E-post</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">månad(er) kvar av abonnemanget.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Meddela abonnenter via E-post</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">vecka/veckor kvar av abonnemanget.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Meddela abonnenter via E-post</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">månad(er) innan abonnemanget upphör.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Meddela abonnenter via E-post</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">vecka/veckor innan abonnemanget upphör.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Påminnelse om upphörande av abonnemang</message>

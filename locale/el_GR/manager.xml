@@ -4,8 +4,8 @@
 <!--
   * locale/el_GR/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the el_GR (Greek) locale.
@@ -131,7 +131,7 @@
 	<message key="manager.setup.authorGuidelines">Οδηγίες για τους συγγραφείς</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Διατυπώστε τα πρότυπα βιλιογραφίας και μορφοποίησης που θα πρέπει να ακολουθούν οι συγγραφείς, όταν υποβάλλουν  τεκμήρια στο περιοδικό (π.χ., <em>Εγχειρίδιο έκδοσης της Αμερικανικής Ένωσης Ψυχολόγων</em>,  5η έκδοση, 2001). Ιδιαίτερα βοηθητική είναι η παροχή παραδειγμάτων κοινών μορφών αναφορών και μορφοποίησης για περιοδικά και βιβλία. Επίσης, προσδιορίστε τους κατάλληλους τύπους «Συμπληρωματικών αρχείων» (π.χ., σύνολα δεδομένων, όργανα έρευνας, κτλ.) τα οποία οι συγγραφείς ενθαρρύνονται να μεταφορτώσουν μαζί με την υποβολή τους, ώστε να ενισχυθεί η ενασχόληση των αναγνωστών με το έργο τους.]]></message>
 	<message key="manager.setup.competingInterests">Συγκρουόμενα Συμφέροντα</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Τα βιοϊατρικά περιοδικά συνήθως απαιτούν από τους συγγραφείς και τους αξιολογητές να δηλώσουν αν υπάρχουν συγκρουόμενα συμφέροντα αναφορικά με τις ερευνητικές τους δραστηριότητες (δείτε  το <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Τα βιοϊατρικά περιοδικά συνήθως απαιτούν από τους συγγραφείς και τους αξιολογητές να δηλώσουν αν υπάρχουν συγκρουόμενα συμφέροντα αναφορικά με τις ερευνητικές τους δραστηριότητες (δείτε  το <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Οδηγίες για την συμπλήρωση μιας Δήλωσης Συγκρουόμενων Συμφερόντων.</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Απαιτείται από τους Συγγραφείς να συμπεριλαμβάνουν μια Δήλωση Συγκρουόμενων Συμφερόντων μαζί με την υποβολή τους.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Απαιτείται από τους Αξιολογητές να συμπεριλαμβάνουν  μια Δήλωση Συγκρουόμενων Συμφερόντων μαζί με κάθε αξιολόγηση που διεκπεραιώνουν και υποβάλλουν.</message>
@@ -211,7 +211,6 @@
 	<message key="manager.setup.guidingSubmissions">Βήμα 3. Οδηγίες υποβολής</message>
 	<message key="manager.setup.homepageImage">Εικόνα αρχικής σελίδας</message>
 	<message key="manager.setup.homepageImageDescription">Προσθήκη εικόνας ή αρχείου γραφικών στο μέσο της σελίδας.</message>
-	<message key="manager.setup.includeCreativeCommons">Για τα περιοδικά που προσφέρουν άμεση ή καθυστερημένη ανοικτή πρόσβαση στα περιεχόμενα τους, συμπεριλάβετε μια άδεια Creative Commons με το σύνολο του δημοσιευμένου έργου την κατάλληλη χρονική στιγμή.</message>
 	<message key="manager.setup.information">Πληροφορίες</message>
 	<message key="manager.setup.information.description">Σύντομες περιγραφές του περιοδικού για τους βιβλιοθηκονόμους, τους πιθανούς συγγραφείς και τους αναγνώστες είναι διαθέσιμες στην ενότητα “Πληροφορίες” στην δεξιά πλαϊνή στήλη της ιστοσελίδας.</message>
 	<message key="manager.setup.information.forAuthors">Για συγγραφείς</message>
@@ -257,7 +256,7 @@
 	<message key="manager.setup.lists">Λίστες</message>
 	<message key="manager.setup.listsDescription">Εισαγάγετε τον μέγιστο αριθμό τεκμηρίων (για παράδειγμα, υποβολές, χρήστες, ή αναθέσεις επιμέλειας) που εμφανίζονται σε κάθε σελίδα μιας λίστας, και τον αριθμό των συνδέσμων προς σελίδες που θα εμφανίζονται σε κάθε σελίδα.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Ενεργοποίηση του LOCKSS για αποθήκευση και διανομή περιεχομένου περιοδικού σε βιβλιοθήκες που συμμετέχουν στο σύστημα σύμφωνα με το LOCKSS <a  href="{$lockssUrl}" target="_blank">Μανιφέστο του Εκδότη</a>. Τα στοιχεία της άδειας LOCKSS θα εμφανίζονται κάτω από την κεφαλίδα «Αρχειοθέτηση περιοδικού» στην σελίδα «Σχετικά με το περιοδικό»:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Ανατρέξτε στο <a  href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">λοιπές εκδόσεις της άδειας του LOCKSS</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Ανατρέξτε στο <a  href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">λοιπές εκδόσεις της άδειας του LOCKSS</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Προσδιορίστε 6-10 βιβλιοθήκες που θα καταχωρίσουν και θα αποθηκεύσουν το περιοδικό στην κρυφή μνήμη τους. Για παράδειγμα, απευθυνθείτε σε ιδρύματα όπου οι επιμελητές ή τα μέλη της επιτροπής εργάζονται ή/και σε ιδρύματα τα οποία συμμετέχουν ήδη στο   LOCKSS.  Ανατρέξτε <a href="http://www.lockss.org/community/"  target="_blank">για τις βιβλιοθήκες που συμμετέχουν</a>. Χρησιμοποιήστε τις έτοιμες προσκλήσεις για (i)  <a href="{$lockssExistingArchiveUrl}" target="_blank"> βιβλιοθήκες που συμμετέχουν στο  LOCKSS</a> ή (ii) <a href="{$lockssNewArchiveUrl}" target="_blank"> βιβλιοθήκες που δεν συμμετέχουν στο LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Όψη Περιοδικού</message>
 	<message key="manager.setup.look.description">Κεφαλίδα αρχικής σελίδας, περιεχόμενο, κεφαλίδα περιοδικού, υποσέλιδο, γραμμή πλοήγησης και αρχείο στυλ.</message>
@@ -429,13 +428,8 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">μήνας (-ες) μετά από την έκδοση ενός τεύχους.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Επιλέξτε μια έγκυρη χρονική διάρκεια.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Η ακόλουθη πολιτική Καθυστερημένης ανοικτής πρόσβασης θα καταχωρηθεί στην ενότητα "Πολιτικές" της σελίδας "Σχετικά με το περιοδικό".</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Χρησιμοποιήστε το κουτί επιλογής που παρέχεται.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Υπενθύμιση συνδρομητών μέσω email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">μήνα (-ες) μετά από τη λήξη της συνδρομής.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Υπενθύμιση συνδρομητών μέσω email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">εβδομάδα (-ες) μετά από τη λήξη της συνδρομής.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Υπενθύμιση συνδρομητών μέσω email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">μήνα (-ες) πριν από τη λήξη της συνδρομής.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Υπενθύμιση συνδρομητών μέσω email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">εβδομάδα (-ες) πριν από τη λήξη της συνδρομής.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Υπενθυμίσεις λήξης συνδρομής</message>

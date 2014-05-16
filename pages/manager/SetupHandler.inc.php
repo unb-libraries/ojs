@@ -3,8 +3,8 @@
 /**
  * @file pages/manager/SetupHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SetupHandler
@@ -365,6 +365,7 @@ class SetupHandler extends ManagerHandler {
 	}
 
 	/**
+	 * Download a layout template.
 	 * @param $args array
 	 * @param $request Request
 	 */
@@ -381,6 +382,22 @@ class SetupHandler extends ManagerHandler {
 
 		$filename = "template-$templateId." . $journalFileManager->parseFileExtension($template['originalFilename']);
 		$journalFileManager->downloadFile($filename, $template['fileType']);
+	}
+
+	/**
+	 * Reset the license attached to article content.
+	 * @param $args array
+	 * @param $request Request
+	 */
+	function resetPermissions($args, &$request) {
+		$this->validate();
+		$router =& $request->getRouter();
+		$journal =& $router->getContext($request);
+
+		$articleDao =& DAORegistry::getDAO('ArticleDAO');
+		$articleDao->deletePermissions($journal->getId());
+
+		$request->redirect(null, null, 'setup', array('3'));
 	}
 }
 ?>

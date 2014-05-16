@@ -4,8 +4,8 @@
 <!--
   * locale/da_DK/user.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the da_DK (Danish) locale.
@@ -126,4 +126,5 @@
 	<message key="user.profile.form.usergroupRequired">En brugergruppe er påkrævet.</message>
 	<message key="user.suffix">Suffiks</message>
 	<message key="user.authorization.pressManagerRequired">En bruger med rollen som pressechef (f.eks. presse- eller produktionsredaktør) skal være knyttet til forløbet, førend du kan fortsætte</message>
+	<message key="user.profile.form.hashInvalid">Det tegn du anvendte i dit nye password er ikke gyldigt.</message>
 </locale>

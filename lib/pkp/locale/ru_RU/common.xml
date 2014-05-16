@@ -4,8 +4,8 @@
 <!--
   * locale/ru_RU/common.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
@@ -36,7 +36,7 @@
 	<message key="common.acknowledged">Признано</message>
 	<message key="common.action">Действие</message>
 	<message key="common.activate">Активировать</message>
-	<message key="common.active">Активный</message>
+	<message key="common.active">Активны</message>
 	<message key="common.add">Добавить</message>
 	<message key="common.addSelf">Добавить себя</message>
 	<message key="common.all">Все</message>
@@ -220,6 +220,7 @@
 	<message key="common.loading">Загрузка...</message>
 	<message key="common.plugins">Плагины</message>
 	<message key="common.metric">Метрика</message>
+	<message key="common.count">Счетчик</message>
 	<message key="debug.databaseQueries">Количество запросов к БД</message>
 	<message key="debug.executionTime">Страница создана за</message>
 	<message key="debug.memoryUsage">Использование памяти</message>
@@ -258,7 +259,7 @@
 	<message key="form.confirmSubmit.title">Подтвердить</message>
 	<message key="form.emailRequired">Адрес электронной почты обязателен.</message>
 	<message key="form.dataHasChanged">Данные этой формы были изменены. Все равно продолжить?</message>
-	<message key="form.errorsOccurred">При обработки этой формы произошли ошибки</message>
+	<message key="form.errorsOccurred">При обработке этой формы произошли ошибки</message>
 	<message key="form.formLanguage.description">Сначала выберите язык, чтобы ввести ниже информацию на других языках.</message>
 	<message key="form.formLanguage">Язык формы</message>
 	<message key="form.contains">содержит</message>

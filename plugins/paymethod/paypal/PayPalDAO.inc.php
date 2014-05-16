@@ -3,7 +3,7 @@
 /**
  * @file plugins/paymethod/paypal/PayPalDAO.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
+ * Copyright (c) 2013-2014 Simon Fraser University Library
  * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -67,7 +67,7 @@ class PayPalDAO extends DAO {
 
 	/**
 	 * Check whether a given transaction exists.
- 	 * @param $txnId string
+	 * @param $txnId string
 	 * @return boolean
 	 */
 	function transactionExists($txnId) {

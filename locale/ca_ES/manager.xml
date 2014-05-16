@@ -4,8 +4,8 @@
 <!--
   * locale/ca_ES/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ca_ES (Català) locale.
@@ -206,7 +206,7 @@
 	<message key="manager.setup.authorGuidelines">Indicacions per a l'autor/a</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Indiqueu als autors/ores les normes bibliogràfiques i de formatació que s'utilitzaran per als elements tramesos a la revista (p. ex. <em>Publication Manual of the American Psychological Association</em>, 5a edició, 2001). Sovint resulta útil indicar exemples dels formats de citació de revistes i llibres que s'utilitzen més habitualment a les trameses. També podeu identificar els tipus de fitxers addicionals (com ara conjunts de dades, instruments de recerca, etc.) que es recomana als autors/ores de penjar juntament amb les trameses, amb l'objectiu d'augmentar el compromís dels lectors/ores amb la seva obra.]]></message>
 	<message key="manager.setup.competingInterests">Conflicte d'interessos</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Les revistes biomèdiques solen demanar als autors/ores i revisors/ores que declarin si hi pot haver algun conflicte d'interessos relacionat amb la seva recerca (vegeu <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>, en anglès).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Les revistes biomèdiques solen demanar als autors/ores i revisors/ores que declarin si hi pot haver algun conflicte d'interessos relacionat amb la seva recerca (vegeu <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>, en anglès).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Indicacions per a la presentació d'una declaració de conflicte d'interessos</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Demana als autors/ores que incloguin una declaració de conflictes d'interessos (CI) juntament amb la tramesa.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Demana als revisors/ores que incloguin una declaració de CI per cada revisió de persones expertes que trametin.</message>
@@ -288,7 +288,6 @@
 	<message key="manager.setup.guidingSubmissions">Pas 3. Guia per a les trameses</message>
 	<message key="manager.setup.homepageImage">Imatge per a la pàgina inicial</message>
 	<message key="manager.setup.homepageImageDescription">Afegiu una imatge o un fitxer gràfic per a la pàgina.</message>
-	<message key="manager.setup.includeCreativeCommons">Per a les revistes que ofereixin accés obert immediat o diferit, inclou una llicència de Creative Commons per a totes les obres publicades quan escaigui.</message>
 	<message key="manager.setup.information">Informació</message>
 	<message key="manager.setup.information.description">La secció «Informació» de la barra lateral inclou descripcions breus de la revista per a bibliotecaris/àries i per a autors/ores i lectors/ores potencials.</message>
 	<message key="manager.setup.information.forAuthors">Per a autors/ores</message>
@@ -339,7 +338,7 @@
 	<message key="manager.setup.lists">Llistes</message>
 	<message key="manager.setup.listsDescription">Introduïu el nombre màxim d'elements (per exemple, trameses, usuaris/àries o assignacions d'edició) que apareixeran a cada pàgina d'una llista, i també el nombre d'enllaços que es mostraran en cada pàgina.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Permetre al LOCKSS que emmagatzemi els continguts de la revista i els distribueixi a les biblioteques participants a través d'una pàgina del <a href="{$lockssUrl}" target="_blank">LOCKSS Publisher Manifest</a>. Es mostrarà una llicència LOCKSS a la secció «Sobre la revista», a «Arxivament»:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Vegeu <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">altres versions d'una llicència LOCKSS</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Vegeu <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">altres versions d'una llicència LOCKSS</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identificar entre 6 i 10 biblioteques que registraran la revista i l'emmagatzemaran a la memòria cau. Per exemple, cerqueu institucions on treballin els editors/ores o altres membres de l'equip editorial o bé institucions que ja participin en el LOCKSS. Vegeu les <a href="http://www.lockss.org/community/" target="_blank">biblioteques que participen</a> i utilitzeu les invitacions predefinides per a les (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">biblioteques que participen en el LOCKSS</a> o bé per a les (ii) <a href="{$lockssNewArchiveUrl}" target="_blank"> biblioteques que encara no participen en el LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Aparença</message>
 	<message key="manager.setup.look.description">Capçalera, contingut, capçalera de revistes, peu, barra de navegació i full d'estil per a la pàgina inicial.</message>
@@ -512,19 +511,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">mes(os) després de la publicació d'un número.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Seleccioneu una durada vàlida.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">La política següent per a l'accés obert diferit es publicarà a la secció «Polítiques» de la pàgina «Sobre la revista».</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Utilitzeu la casella de selecció.</message>
 	<message key="manager.subscriptionPolicies.expiry">Venciment de la subscripció</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Després que venci la subscripció, podeu denegar l'accés als lectors/ores a tot el contingut amb subscripció, o bé podeu triar que continuïn tenint accés als continguts amb subscripció que s'hagin publicat abans de la data de venciment.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Venciment total</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Després que venci la subscripció, els lectors/ores ja no tindran accés als continguts amb subscripció.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Venciment parcial</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Els lectors/ores ja no tindran accés al contingut amb subscripció que s'hagi publicat recentment, però sí que podran accedir al contingut amb subscripció que s'hagi publicat abans de la data de venciment.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Notifica als subscriptors/ores per correu electrònic</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">mes(os) després del venciment de la subscripció.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Notifica als subscriptors/ores per correu electrònic</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">setmana/es després del venciment de la subscripció.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Notifica als subscriptors/ores per correu electrònic</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">mes(os) abans del venciment de la subscripció.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Notifica als subscriptors/ores per correu electrònic</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">setmana/es abans del venciment de la subscripció.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Recordatoris per al venciment de les subscripcions</message>

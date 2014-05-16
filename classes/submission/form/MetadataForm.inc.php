@@ -3,8 +3,8 @@
 /**
  * @file classes/submission/form/MetadataForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class MetadataForm
@@ -85,6 +85,11 @@ class MetadataForm extends Form {
 			$this->addCheck(new FormValidatorArray($this, 'authors', 'required', 'author.submit.form.authorRequiredFields', array('firstName', 'lastName')));
 			$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'author.submit.form.authorRequiredFields', create_function('$email, $regExp', 'return String::regexp_match($regExp, $email);'), array(ValidatorEmail::getRegexp()), false, array('email')));
 			$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.urlInvalid', create_function('$url, $regExp', 'return empty($url) ? true : String::regexp_match($regExp, $url);'), array(ValidatorUrl::getRegexp()), false, array('url')));
+
+			// Add ORCiD validation
+			import('lib.pkp.classes.validation.ValidatorORCID');
+			$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.orcidInvalid', create_function('$orcid', '$validator = new ValidatorORCID(); return empty($orcid) ? true : $validator->isValid($orcid);'), array(), false, array('orcid')));
+
 		} else {
 			parent::Form('submission/metadata/metadataView.tpl');
 		}
@@ -157,6 +162,7 @@ class MetadataForm extends Form {
 						'country' => $authors[$i]->getCountry(),
 						'countryLocalized' => $authors[$i]->getCountryLocalized(),
 						'email' => $authors[$i]->getEmail(),
+						'orcid' => $authors[$i]->getData('orcid'),
 						'url' => $authors[$i]->getUrl(),
 						'competingInterests' => $authors[$i]->getCompetingInterests(null), // Localized
 						'biography' => $authors[$i]->getBiography(null) // Localized
@@ -165,6 +171,11 @@ class MetadataForm extends Form {
 				if ($authors[$i]->getPrimaryContact()) {
 					$this->setData('primaryContact', $i);
 				}
+			}
+			if ($this->isEditor) {
+				$this->setData('copyrightHolder', $article->getCopyrightHolder(null));
+				$this->setData('copyrightYear', $article->getCopyrightYear());
+				$this->setData('licenseURL', $article->getLicenseURL());
 			}
 		}
 		return parent::initData();
@@ -177,7 +188,8 @@ class MetadataForm extends Form {
 	function getLocaleFieldNames() {
 		return array(
 			'title', 'abstract', 'coverPageAltText', 'showCoverPage', 'hideCoverPageToc', 'hideCoverPageAbstract', 'originalFileName', 'fileName', 'width', 'height',
-			'discipline', 'subjectClass', 'subject', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'sponsor', 'citations'
+			'discipline', 'subjectClass', 'subject', 'coverageGeo', 'coverageChron', 'coverageSample', 'type', 'sponsor', 'citations',
+			'copyrightHolder'
 		);
 	}
 
@@ -258,6 +270,9 @@ class MetadataForm extends Form {
 				'hideAuthor'
 			)
 		);
+		if ($this->isEditor) {
+			$this->readUserVars(array('copyrightHolder', 'copyrightYear', 'licenseURL'));
+		}
 		// consider the additional field names from the public identifer plugins
 		import('classes.plugins.PubIdPluginHelper');
 		$pubIdPluginHelper = new PubIdPluginHelper();
@@ -406,6 +421,7 @@ class MetadataForm extends Form {
 				$author->setAffiliation($authors[$i]['affiliation'], null); // Localized
 				$author->setCountry($authors[$i]['country']);
 				$author->setEmail($authors[$i]['email']);
+				$author->setData('orcid', $authors[$i]['orcid']);
 				$author->setUrl($authors[$i]['url']);
 				if (array_key_exists('competingInterests', $authors[$i])) {
 					$author->setCompetingInterests($authors[$i]['competingInterests'], null); // Localized
@@ -429,6 +445,12 @@ class MetadataForm extends Form {
 		$deletedAuthors = preg_split('/:/', $this->getData('deletedAuthors'), -1, PREG_SPLIT_NO_EMPTY);
 		for ($i=0, $count=count($deletedAuthors); $i < $count; $i++) {
 			$authorDao->deleteAuthorById($deletedAuthors[$i], $article->getId());
+		}
+
+		if ($this->isEditor) {
+			$article->setStoredCopyrightHolder($this->getData('copyrightHolder'), null);
+			$article->setStoredCopyrightYear($this->getData('copyrightYear'));
+			$article->setStoredLicenseURL($this->getData('licenseURL'));
 		}
 
 		parent::execute();

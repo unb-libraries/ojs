@@ -4,8 +4,8 @@
 <!--
   * locale/da_DK/admin.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2000-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2000-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the da_DK (Danish) locale.
@@ -84,4 +84,10 @@
 	<message key="admin.settings">Indstillinger</message>
 	<message key="admin.settings.siteTheme">Website tema</message>
 	<message key="admin.siteSetup">Website opsætning</message>
+	<message key="admin.scheduledTask">Planlagte opgaver</message>
+	<message key="admin.settings.oneStepReset">Use a single step for password resets?</message>
+	<message key="admin.fileLoader.wrongBasePathLocation">Basisstien {$path} skal placeres under mappen 'public'</message>
+	<message key="admin.fileLoader.pathNotAccessible">{$path} er ikke en mappe eller er ikke læselig.</message>
+	<message key="admin.fileLoader.moveFileFailed">Filen {$filename} kunne ikke flyttes fra {$currentFilePath} til {$destinationPath}</message>
+	<message key="admin.fileLoader">File loader</message>
 </locale>

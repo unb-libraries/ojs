@@ -3,8 +3,8 @@
 /**
  * @file pages/article/ArticleHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleHandler
@@ -56,7 +56,7 @@ class ArticleHandler extends Handler {
 		$journal =& $this->journal;
 		$issue =& $this->issue;
 		$article =& $this->article;
-		$this->setupTemplate();
+		$this->setupTemplate($request);
 
 		$rtDao =& DAORegistry::getDAO('RTDAO');
 		$journalRt = $rtDao->getJournalRTByJournal($journal);
@@ -237,7 +237,7 @@ class ArticleHandler extends Handler {
 		$journal =& $this->journal;
 		$issue =& $this->issue;
 		$article =& $this->article;
-		$this->setupTemplate();
+		$this->setupTemplate($request);
 
 		if (!$galley) {
 			$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
@@ -273,7 +273,7 @@ class ArticleHandler extends Handler {
 		$journal =& $this->journal;
 		$issue =& $this->issue;
 		$article =& $this->article;
-		$this->setupTemplate();
+		$this->setupTemplate($request);
 
 		if (!$galley) {
 			$galleyDao =& DAORegistry::getDAO('ArticleGalleyDAO');
@@ -390,7 +390,7 @@ class ArticleHandler extends Handler {
 			$suppFile =& $suppFileDao->getSuppFile((int) $suppId, $article->getId());
 		}
 
-		if ($article && $suppFile) {
+		if ($article && $suppFile && !HookRegistry::call('ArticleHandler::downloadSuppFile', array(&$article, &$suppFile))) {
 			import('classes.file.ArticleFileManager');
 			$articleFileManager = new ArticleFileManager($article->getId());
 			if ($suppFile->getRemoteURL()) {
@@ -533,9 +533,17 @@ class ArticleHandler extends Handler {
 		return true;
 	}
 
-	function setupTemplate() {
+	/**
+	 * Set up the template
+	 * @param $request PKPRequest
+	 */
+	function setupTemplate($request) {
 		parent::setupTemplate();
 		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_READER, LOCALE_COMPONENT_PKP_SUBMISSION);
+		if ($this->article) {
+			$templateMgr =& TemplateManager::getManager($request);
+			$templateMgr->assign('ccLicenseBadge', Application::getCCLicenseBadge($this->article->getLicenseURL()));
+		}
 	}
 }
 

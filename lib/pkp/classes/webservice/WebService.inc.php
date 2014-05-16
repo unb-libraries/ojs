@@ -3,8 +3,8 @@
 /**
  * @file classes/citation/WebService.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2000-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2000-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class WebService
@@ -124,6 +124,12 @@ class WebService {
 		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
+
+		// Bug #8518 safety work-around
+		if (is_array($postOptions)) foreach ($postOptions as $paramValue) {
+			if ($paramValue[0] == '@') die('CURL parameters may not begin with @.');
+		}
+
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $postOptions);
 
 		// Set up basic authentication if required.

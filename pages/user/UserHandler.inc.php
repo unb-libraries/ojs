@@ -3,8 +3,8 @@
 /**
  * @file pages/user/UserHandler.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserHandler
@@ -602,7 +602,7 @@ class UserHandler extends Handler {
 
 	/**
 	 * Pay for a subscription purchase.
- 	 * @param $args array
+	 * @param $args array
 	 * @param $request PKPRequest
 	 */
 	function payPurchaseSubscription($args, &$request) {

@@ -3,8 +3,8 @@
 /**
  * @file classes/manager/form/JournalSiteSettingsForm.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSiteSettingsForm
@@ -101,6 +101,7 @@ class JournalSiteSettingsForm extends Form {
 	 * Save journal settings.
 	 */
 	function execute() {
+		$site =& Request::getSite();
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 
 		if (isset($this->journalId)) {
@@ -120,7 +121,6 @@ class JournalSiteSettingsForm extends Form {
 			$section = null;
 		} else {
 			$isNewJournal = true;
-			$site =& Request::getSite();
 
 			// Give it a default primary locale
 			$journal->setPrimaryLocale ($site->getPrimaryLocale());
@@ -178,6 +178,7 @@ class JournalSiteSettingsForm extends Form {
 			$section->setHideTitle(false);
 			$sectionDao->insertSection($section);
 		}
+		$journal->updateSetting('supportedLocales', $site->getSupportedLocales());
 		$journal->updateSetting('title', $this->getData('title'), 'string', true);
 		$journal->updateSetting('description', $this->getData('description'), 'string', true);
 

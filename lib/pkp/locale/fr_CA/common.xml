@@ -5,7 +5,7 @@
   * locale/fr_CA/common.xml
   *
   * Copyright (c) 2000-2013 Simon Fraser University Library
-  * Copyright (c) 2000-2003-2013 John Willinsky
+  * Copyright (c) 2000-2013 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA (Français (Canada)) locale.
@@ -387,4 +387,8 @@
 	<message key="search.cli.rebuildIndex.unknownJournal">Le chemin d'accès suivant "{$journalPath}" n'a pu être rattaché à une revue.</message>
 	<message key="search.deleteFilter">Effacer</message>
 	<message key="search.indexTermsLong">Tous les champs d'index</message>
+	<message key="common.metric">Métrique</message>
+	<message key="common.count">Décompte</message>
+	<message key="defaultMetric.title">Métrique (par défaut)</message>
+	<message key="defaultMetric.availableMetrics">Métriques</message>
 </locale>

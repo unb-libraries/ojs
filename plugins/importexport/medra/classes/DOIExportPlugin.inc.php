@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/.../classes/DOIExportPlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DOIExportPlugin
@@ -765,7 +765,7 @@ class DOIExportPlugin extends ImportExportPlugin {
 	 * @param $object Issue|PublishedArticle|ArticleGalley|SuppFile
 	 * @parem $testPrefix string
 	 */
-	function markRegistered(&$request, &$object, $testPrefix) {
+	function markRegistered(&$request, &$object, $testPrefix = '10.1234') {
 		$registeredDoi = $object->getPubId('doi');
 		assert(!empty($registeredDoi));
 		if ($this->isTestMode($request)) {

@@ -1,8 +1,8 @@
 {**
  * templates/editor/submissions.tpl
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Editor submissions page(s).
@@ -42,7 +42,7 @@
 {literal}
 <!--
 function sortSearch(heading, direction) {
- 	var submitForm = document.getElementById('submit');
+	var submitForm = document.getElementById('submit');
 	submitForm.sort.value = heading;
 	submitForm.sortDirection.value = direction;
 	submitForm.submit();

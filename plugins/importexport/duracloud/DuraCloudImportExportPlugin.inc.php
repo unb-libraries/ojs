@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/duracloud/DuraCloudImportExportPlugin.inc.php
  *
- * Copyright (c) 2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DuraCloudImportExportPlugin
@@ -313,7 +313,7 @@ class DuraCloudImportExportPlugin extends ImportExportPlugin {
 		switch ($command) {
 			case 'importIssues':
 				$userName = array_shift($args);
-				$user =& $userDao->getUserByUsername($userName);
+				$user =& $userDao->getByUsername($userName);
 
 				if (!$user) {
 					if ($userName != '') {

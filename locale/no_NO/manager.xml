@@ -4,8 +4,8 @@
 <!--
   * locale/no_NO/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the no_NO (Norwegian) locale.
@@ -189,7 +189,7 @@
 	<message key="manager.setup.lists">Lister</message>
 	<message key="manager.setup.listsDescription">Skriv inn maksimalt antall elementer (for eksempel manuskript, brukere, eller redigeringsoppdrag) som skal vises på hver side av en liste, og antallet sider lenker som skal vises på hver side.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Tillat LOCKSS å lagre og distribuere tidsskriftinnholdet hos tilsluttete bibliotek via et LOCKSS <a href="{$lockssUrl}" target="_blank">Utgivermanifest</a>. En LOCKSS-lisens vil i så fall bli vist i 'Om' tidsskriftet, under Arkivering:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Se <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">andre versjoner av LOCKSS-lisensen</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Se <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">andre versjoner av LOCKSS-lisensen</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identifiser 6-10 bibliotek som vil registrere og cache tidsskriftet. Du kan for eksempel henvende deg til institusjoner hvor redaktører eller rådsmedlemmer arbeider og/eller institusjoner som allerede deltar i LOCKSS. Se <a href="http://www.lockss.org/community/" target="_blank">tilsluttete bibliotek</a>. Bruk de forberedte invitasjonene til (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">bibliotek tilsluttet LOCKSS</a> eller (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">bibliotek som ennå ikke er tilsluttet LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Utseendet</message>
 	<message key="manager.setup.look.description">Hjemmesidetopptekst, innhold, tidsskrift-topptekst, bunntekst, navigasjonsfelt, og stylesheet.</message>
@@ -348,13 +348,8 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">måned(er) etter en utgave er publisert.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Vennligst velg en gyldig varighet.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Følgende erklæring vil bli skrevet inn i 'Om' tidsskriftet under Utsatt Open Access.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Vennligst bruk avkrysningsboksen.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Send beskjed til abonnenter med e-post</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">måned(er) etter at abonnementet utløper.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Send beskjed til abonnenter med e-post</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">uke(r) etter at abonnementet utløper.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Send beskjed til abonnenter med e-post</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">måned(er) før abonnementet utløper.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Send beskjed til abonnenter med e-post</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">uke(r) før abonnementet utløper.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Varsel om abonnementsutløp</message>
@@ -547,7 +542,7 @@
 	<message key="manager.sections.hideTocAuthor">Utelat forfatternavn for seksjonselementer fra utgavens innholdsoversikt.</message>
 	<message key="manager.setup.addReviewerDatabaseLink">Legg til en ny databaselenke</message>
 	<message key="manager.setup.competingInterests">Erklæring om interessekonflikter</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[I biomedisinske tidsskrift er det vanlig å kreve at både forfattere og fagkonsulenter avgir en erklæring om de befinner seg i roller eller posisjoner som kan føre til motstridende interesser eller interessekonflikter knyttet til forskningsarbeidet (se <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[I biomedisinske tidsskrift er det vanlig å kreve at både forfattere og fagkonsulenter avgir en erklæring om de befinner seg i roller eller posisjoner som kan føre til motstridende interesser eller interessekonflikter knyttet til forskningsarbeidet (se <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines"><![CDATA[Retningslinjer for innsending av en <I>Erklæring om interessekonflikter</I>.]]></message>
 	<message key="manager.setup.competingInterests.requireAuthors"><![CDATA[Krev at forfattere som sender inn manuskript samtidig sender inn en <I>Erklæring om interessekonflikter</I>.]]></message>
 	<message key="manager.setup.competingInterests.requireReviewers"><![CDATA[Krev at fagkonsulenter sender inn en <I>Erklæring om interessekonflikter</I> sammen med hver fagvurdering de sender inn.]]></message>
@@ -556,7 +551,6 @@
 	<message key="manager.setup.enableUserRegistration.author">Forfattere (kan sende inn bidrag og tilleggsmateriell til tidsskriftet)</message>
 	<message key="manager.setup.enableUserRegistration.reader">Lesere (vil motta varslinger og bli tellet på linje med abonnenter)</message>
 	<message key="manager.setup.enableUserRegistration.reviewer">Fagkonsulenter (tilgjengelige for vurderingsoppdrag)</message>
-	<message key="manager.setup.includeCreativeCommons"><![CDATA[Inkluder en <i>Creative Commons</i>-lisens i alt som publiseres i tidsskriftet når de enten gir umiddelbar eller utsatt <i>Open Access</i>.]]></message>
 	<message key="manager.setup.journalHomepageHeader.altText">Tidsskrifthjemmeside topptekst</message>
 	<message key="manager.setup.journalLayout">Tidsskriftnettsidenes layout</message>
 	<message key="manager.setup.journalLayoutDescription">Velg et designtema og velg layout-komponenter her. Det går også an å laste opp et egenprodusert stilark for tidsskriftet (CSS-stylesheet). Dette kan i så fall overstyre både stildata i systemet og tema-stilark for designtema (hvis et tema er valgt).</message>

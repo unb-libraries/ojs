@@ -2,8 +2,8 @@
 <!DOCTYPE locale SYSTEM "../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Plik językowy dla pl_PL
@@ -298,7 +298,6 @@
 	<message key="manager.setup.guidingSubmissions">Krok 3. Przesyłanie tekstów</message>
 	<message key="manager.setup.homepageImage">Obraz strony głównej</message>
 	<message key="manager.setup.homepageImageDescription">Dodaj grafikę dla strony głownej.</message>
-	<message key="manager.setup.includeCreativeCommons">Dla czasopism, które oferują dostęp na zasadach open access: dołącz licencję Creative Commons dla wszystkich opublikowanych tekstów.</message>
 	<message key="manager.setup.information">Informacje</message>
 	<message key="manager.setup.information.description">Krótki opis czasopisma dla bibliotekarzy oraz ewentualnych autorów i czytelników, dostępny w dziale "Informacje" panelu bocznego.</message>
 	<message key="manager.setup.information.forAuthors">dla autorów</message>
@@ -349,7 +348,7 @@
 	<message key="manager.setup.lists">Listy</message>
 	<message key="manager.setup.listsDescription">Podaj maksymalną liczbę elementów która będzie widoczna na każdej stronie listy, oraz liczbę łącz wyświetlanych na każdej stronie.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Enable LOCKSS to store and distribute journal content at participating libraries via a LOCKSS <a href="{$lockssUrl}" target="_blank">Publisher Manifest</a> page. A LOCKSS license will appear in About the Journal under Archiving:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[See <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">other versions of a LOCKSS license</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[See <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">other versions of a LOCKSS license</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Identify 6-10 libraries that will register and cache the journal. For example, turn to institutions where editors or Board members work and/or institutions already participating in LOCKSS. See <a href="http://www.lockss.org/community/" target="_blank">participating libraries</a>. Use the prepared invitations for (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">libraries participating in LOCKSS</a> or (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">libraries not yet participating in LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Wygląd</message>
 	<message key="manager.setup.look.description">Nagłówek strony głównej, zawartość, nagłówek czasopisma, stopka, nawigacja oraz szablon styli.</message>
@@ -524,19 +523,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">month(s) after an issue is published.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Please select a valid duration length.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">The following Delayed Open Access Policy will be posted in About the Journal under Policies.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Please use the checkbox provided.</message>
 	<message key="manager.subscriptionPolicies.expiry">Subscription Expiry</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">Upon subscription expiry, readers may be denied access to all subscription content or may continue to retain access to subscription content published prior to the subscription expiry date.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Full expiry</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Readers are denied access to all subscription content upon subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Partial expiry</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Readers are denied access to recently published subscription content, but retain access to subscription content published prior to the subscription expiry date.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Notify subscribers by email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">month(s) after subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Notify subscribers by email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">week(s) after subscription expiry.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Notify subscribers by email</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">month(s) before subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Notify subscribers by email</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">week(s) before subscription expiry.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Subscription Expiry Reminders</message>

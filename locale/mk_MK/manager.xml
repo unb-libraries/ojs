@@ -4,8 +4,8 @@
 <!--
   * locale/mk_MK/manager.xml
   *
-  * Copyright (c) 2013 Simon Fraser University Library
-  * Copyright (c) 2003-2013 John Willinsky
+  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2003-2014 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -214,7 +214,7 @@
 	<message key="manager.setup.authorGuidelines">Упатство за авторот</message>
 	<message key="manager.setup.authorGuidelinesDescription"><![CDATA[Утврдени се библиографски и форматирани стандарди за авторите на кои се користат за доставени предмети во списанието (на пример, <em>Прирачник за објавување на Американската психолошка асоцијација</ em>, 5th Edition, 2001). Тоа е најчесто корисно за да се обезбеди примери за заеднички цитат на списанија и книги кои се користат во подесувањата. Исто така се идентификуваат видовите на соодветните дополнителни датотеки (на пример, сет на податоци, истражувачки инструменти, итн.) со кои авторите треба да бидат охрабрени да прикачат, во прилог на нивното поднесување, за подобрување на работата на читателите.]]></message>
 	<message key="manager.setup.competingInterests">Конкурентни интереси</message>
-	<message key="manager.setup.competingInterests.description"><![CDATA[Биомедицински списанија обично бараат авторите и рецензентите да се изјаснат дали тие имаат конкурентски интереси во однос на нивните истражувања (види <a href="http://journals.plos.org/plosclinicaltrials/competing.php" target="_new">PLoS Policy</a>).]]></message>
+	<message key="manager.setup.competingInterests.description"><![CDATA[Биомедицински списанија обично бараат авторите и рецензентите да се изјаснат дали тие имаат конкурентски интереси во однос на нивните истражувања (види <a href="http://www.plosbiology.org/static/competing.action" target="_new">PLoS Policy</a>).]]></message>
 	<message key="manager.setup.competingInterests.guidelines">Упатства за поднесување на натпреварувачки интереси</message>
 	<message key="manager.setup.competingInterests.requireAuthors">Барање за внесување на автори во датотеки за (CI) состојба со нивното поднесување.</message>
 	<message key="manager.setup.competingInterests.requireReviewers">Потребенно е рецензентите да поднесат изјава за CI со секој преглед.</message>
@@ -296,7 +296,6 @@
 	<message key="manager.setup.guidingSubmissions">Чекор 3. Поднесувања</message>
 	<message key="manager.setup.homepageImage">Почетна слика</message>
 	<message key="manager.setup.homepageImageDescription">Додадете слика или графичка датотека во средината на оваа страница.</message>
-	<message key="manager.setup.includeCreativeCommons">За списанија кои нудат непосреден или одложен отворен пристап, вклучуваат Creative Commons лиценца со сите објавени работи во соодветно време.</message>
 	<message key="manager.setup.information">Информации</message>
 	<message key="manager.setup.information.description">Кратки описи на списанието за библиотекарите и потенцијалните автори и читатели се достапни во "Информации" делот од страничната лента.</message>
 	<message key="manager.setup.information.forAuthors">За авторите</message>
@@ -348,7 +347,7 @@
 	<message key="manager.setup.lists">Листи</message>
 	<message key="manager.setup.listsDescription">Внесете го максималниот број на предмети (на пример, поднесувања, корисници, или уредување на задачи), кои се појавуваат на секоја страница на листата, како и линкови со бројот на страници за прикажување на секоја страница.</message>
 	<message key="manager.setup.lockssEnable"><![CDATA[Овозможи LOCKSS за чување и дистрибуција на содржината на списанието на библиотеките учеснички преку LOCKSS <a href="{$lockssUrl}" target="_blank">Издавач на манифест</a> страниаца. LOCKSS лиценца ќе се појави во За списанието под Архивирање:]]></message>
-	<message key="manager.setup.lockssLicenses"><![CDATA[Види <a href="http://lockss.org/lockss/Publishers_and_Titles" target="_blank">други верзии на LOCKSS лиценца</a>.]]></message>
+	<message key="manager.setup.lockssLicenses"><![CDATA[Види <a href="http://www.lockss.org/community/publishers-titles-gln/" target="_blank">други верзии на LOCKSS лиценца</a>.]]></message>
 	<message key="manager.setup.lockssRegister"><![CDATA[Идентификувајте 6-10 библиотеки, кои ќе се регистрираат и кешираат на содржината на списанието. На пример, се сврти кон институциите каде уредници или членовите на Одборот работат и / или институциите веќе се вклучени во LOCKSS. Види ги<a href="http://www.lockss.org/community/" target="_blank">библиотеките учеснички</a>. Користете подготвени повици за (i) <a href="{$lockssExistingArchiveUrl}" target="_blank">библиотеките учество во LOCKSS</a> или (ii) <a href="{$lockssNewArchiveUrl}" target="_blank">библиотеките кои сеуште не учествувале во LOCKSS</a>.]]></message>
 	<message key="manager.setup.look">Изглед</message>
 	<message key="manager.setup.look.description">Наслов на почетната страница, насловот на списанието, footer, лента за навигација и стил.</message>
@@ -523,19 +522,14 @@
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDescription2">месец(и) после ова прашање е објавен.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessDurationValid">Ве молиме изберете валидно времетраење на должина.</message>
 	<message key="manager.subscriptionPolicies.delayedOpenAccessPolicyDescription">Следниов одложен отворен пристап за приватност ќе биде објавен во За списанието под Приватности.</message>
-	<message key="manager.subscriptionPolicies.enableSubscriptionExpiryReminderBeforeMonthsValid">Ве молиме користете го полето што е предвидено.</message>
 	<message key="manager.subscriptionPolicies.expiry">Претплатнички рок</message>
 	<message key="manager.subscriptionPolicies.expiryDescription">По истекот на претплата, читателите може да немаат пристап до сите содржини или може да продолжат со пристап до содржините кои се објавуваат пред истекот на рокот на претплата.</message>
 	<message key="manager.subscriptionPolicies.expiryFull">Комплетен истек на рокот за претплата</message>
 	<message key="manager.subscriptionPolicies.expiryFullDescription">Читателите немаат пристап до сите содржини по истекувањето на рокот.</message>
 	<message key="manager.subscriptionPolicies.expiryPartial">Делумно истекувањето на рокот</message>
 	<message key="manager.subscriptionPolicies.expiryPartialDescription">Читателите немаат пристап до неодамна објавената содржина, но може да се задржи пристап до содржините кои се објавуваат пред истекот на рокот на претплата.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths1">Информирање на претплатниците преку е-маил</message>
-	<message key="manager.subscriptionPolicies.expiryReminderAfterMonths2">месец(и), после истекувањето на рокот.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks1">Информирање на претплатниците преку е-маил</message>
 	<message key="manager.subscriptionPolicies.expiryReminderAfterWeeks2">недела(и), после истекувањето на рокот.</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths1">Информирање на претплатниците преку е-маил</message>
-	<message key="manager.subscriptionPolicies.expiryReminderBeforeMonths2">месец(и) пред истекувањето на рокот.</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks1">Информирање на претплатниците преку е-маил</message>
 	<message key="manager.subscriptionPolicies.expiryReminderBeforeWeeks2">недела(и) пред истекувањето на рокот.</message>
 	<message key="manager.subscriptionPolicies.expiryReminders">Претплатнички рок на потсетници</message>
