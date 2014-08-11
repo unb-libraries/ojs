@@ -16,7 +16,7 @@
 ########################################################################
 
   # define a path to a generic style sheet if none is provided
-  XSLT_SHEET=/srv/www/journals.hil.unb.ca/etcscripts/render/erudit-to-html.xsl;
+  XSLT_SHEET=/var/www/journals.hil.unb.ca/htdocs/etcscripts/render/erudit-to-html.xsl;
   
   # define our path to our java binary
   JAVA=/usr/bin/java;

@@ -3,7 +3,7 @@
 use strict;
 use DBI;
 
-require '/srv/www/journals.hil.unb.ca/etcscripts/crkn/fiche/db_auth.pl';
+require '/var/www/journals.hil.unb.ca/htdocs/etcscripts/crkn/fiche/db_auth.pl';
 our $ojs_db_conn;
 our $ojs_db_user;
 our $ojs_db_password;
