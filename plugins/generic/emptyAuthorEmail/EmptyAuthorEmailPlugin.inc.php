@@ -33,17 +33,13 @@ class EmptyAuthorEmailPlugin extends GenericPlugin {
   function callbackSaveMetadata($hookName, $params) {
     $metadataForm =& $params[0];
     
-    if (isset($metadataForm->errorFields['authors[0][email]'])) {
-      $errorIndex = 0;
-      foreach ($metadataForm->_errors as $field => $formError) {
-
-        if (preg_match("{authors.*email}", $formError->field)){
-          unset($metadataForm->_errors[$errorIndex]);
-        }
-        $errorIndex++;
+    $errorIndex = 0;
+    foreach ($metadataForm->_errors as $field => $formError) {
+      if (preg_match("{authors.*email}", $formError->field)){
+        unset($metadataForm->_errors[$errorIndex]);
       }
+      $errorIndex++;
     }
-    return false;
   }
 }
 ?>
