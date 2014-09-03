@@ -101,7 +101,7 @@ my $image_file_path;
   # store journal source files. Get the directory of the current XML file & 
   # do a quick assessment of its validity.  If it seems ok, convert it from
   # a source file path to an image file path.
-  if (File::Spec->rel2abs(dirname($xml_file)) =~ /^\/mnt\/journals_cifs\/etc_journals\/(.*?)\/XML/) {
+  if (File::Spec->rel2abs(dirname($xml_file)) =~ /\/journals\/etc_journals\/(.*?)\/XML/) {
     $image_file_path = "/journalimages/$1";
   }
   else {
