@@ -7,6 +7,9 @@
  * Copyright (c) 2003-2014 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
+ * With contributions from:
+ *  - 2014 Instituto Nacional de Investigacion y Tecnologia Agraria y Alimentaria
+ *
  * @class LayoutEditorSubmissionDAO
  * @ingroup submission_layoutEditor
  * @see LayoutEditorSubmission
@@ -135,8 +138,11 @@ class LayoutEditorSubmissionDAO extends DAO {
 			$primaryLocale,
 			'abbrev',
 			$locale,
-			'cleanTitle', // Article title
+			'cleanTitle', // Article clean title
 			'cleanTitle',
+			$locale,
+			'title', // Article title
+			'title',
 			$locale,
 			ASSOC_TYPE_ARTICLE,
 			'SIGNOFF_COPYEDITING_FINAL',
@@ -154,8 +160,22 @@ class LayoutEditorSubmissionDAO extends DAO {
 
 		if (!empty($search)) switch ($searchField) {
 			case SUBMISSION_FIELD_ID:
-				$params[] = (int) $search;
-				$searchSql = ' AND a.article_id = ?';
+				switch ($searchMatch) {
+					case 'is':
+						$params[] = (int) $search;
+						$searchSql = ' AND a.article_id = ?';
+						break;
+					case 'contains':
+						$search = '%' . $search . '%';
+						$params[] = $search;
+						$searchSql = ' AND CONCAT(a.article_id) LIKE ?';
+						break;
+					case 'startsWith':
+						$search = $search . '%';
+						$params[] = $search;
+						$searchSql = 'AND CONCAT(a.article_id) LIKE ?';
+						break;
+				}
 				break;
 			case SUBMISSION_FIELD_TITLE:
 				if ($searchMatch === 'is') {
@@ -217,7 +237,7 @@ class LayoutEditorSubmissionDAO extends DAO {
 				sle.date_notified AS notified_date,
 				sle.date_completed AS completed_date,
 				aap.last_name AS author_name,
-				SUBSTRING(COALESCE(atl.setting_value, atpl.setting_value) FROM 1 FOR 255) AS submission_title,
+				SUBSTRING(COALESCE(atl.setting_value, atpl.setting_value) FROM 1 FOR 255) AS submission_clean_title,
 				SUBSTRING(COALESCE(stl.setting_value, stpl.setting_value) FROM 1 FOR 255) AS section_title,
 				SUBSTRING(COALESCE(sal.setting_value, sapl.setting_value) FROM 1 FOR 255) AS section_abbrev
 			FROM	articles a
@@ -230,6 +250,8 @@ class LayoutEditorSubmissionDAO extends DAO {
 				LEFT JOIN section_settings stl ON (s.section_id = stl.section_id AND stl.setting_name = ? AND stl.locale = ?)
 				LEFT JOIN section_settings sapl ON (s.section_id = sapl.section_id AND sapl.setting_name = ? AND sapl.locale = ?)
 				LEFT JOIN section_settings sal ON (s.section_id = sal.section_id AND sal.setting_name = ? AND sal.locale = ?)
+				LEFT JOIN article_settings actpl ON (actpl.article_id = a.article_id AND actpl.setting_name = ? AND actpl.locale = a.locale)
+				LEFT JOIN article_settings actl ON (a.article_id = actl.article_id AND actl.setting_name = ? AND actl.locale = ?)
 				LEFT JOIN article_settings atpl ON (atpl.article_id = a.article_id AND atpl.setting_name = ? AND atpl.locale = a.locale)
 				LEFT JOIN article_settings atl ON (a.article_id = atl.article_id AND atl.setting_name = ? AND atl.locale = ?)
 				LEFT JOIN signoffs scpf ON (a.article_id = scpf.assoc_id AND scpf.assoc_type = ? AND scpf.symbolic = ?)
@@ -283,35 +305,13 @@ class LayoutEditorSubmissionDAO extends DAO {
 	 * @param editorId int
 	 * @param journalId int
 	 */
-	function getSubmissionsCount($editorId, $journalId) {
-		$submissionsCount = array();
-		$submissionsCount[0] = 0;
-		$submissionsCount[1] = 0;
-
-		$sql = 'SELECT
-					a.status
-				FROM
-					articles a
-					LEFT JOIN signoffs sl ON (a.article_id = sl.assoc_id AND sl.assoc_type = ? AND sl.symbolic = ?)
-					LEFT JOIN signoffs spl ON (a.article_id = spl.assoc_id AND spl.assoc_type = ? AND spl.symbolic = ?)
-					LEFT JOIN sections s ON (s.section_id = a.section_id)
-				WHERE
-					sl.user_id = ? AND a.journal_id = ? AND sl.date_notified IS NOT NULL';
-
-		$result =& $this->retrieve($sql, array(ASSOC_TYPE_ARTICLE, 'SIGNOFF_LAYOUT', ASSOC_TYPE_ARTICLE, 'SIGNOFF_PROOFREADING_LAYOUT', $editorId, $journalId));
-		while (!$result->EOF) {
-			if ($result->fields['status'] == STATUS_QUEUED) {
-				$submissionsCount[0] += 1;
-			} else {
-				$submissionsCount[1] += 1;
-			}
-			$result->moveNext();
-		}
-
-		$result->Close();
-		unset($result);
-
-		return $submissionsCount;
+	function getSubmissionsCount($layoutEditorId, $journalId) {
+		$sectionEditorSubmissionDao =& DAORegistry::getDAO('SectionEditorSubmissionDAO');
+		$stats = $sectionEditorSubmissionDao->getLayoutEditorStatistics($journalId, $layoutEditorId);
+		return array(
+			0 => isset($stats[$layoutEditorId]['incomplete'])?$stats[$layoutEditorId]['incomplete']:0,
+			1 => isset($stats[$layoutEditorId]['complete'])?$stats[$layoutEditorId]['complete']:0
+		);
 	}
 
 	function getProofedArticlesByIssueId($issueId) {
@@ -346,7 +346,7 @@ class LayoutEditorSubmissionDAO extends DAO {
 			case 'assignDate': return 'notified_date';
 			case 'section': return 'section_abbrev';
 			case 'authors': return 'author_name';
-			case 'title': return 'submission_title';
+			case 'title': return 'submission_clean_title';
 			case 'dateCompleted': return 'completed_date';
 			case 'status': return 'a.status';
 			default: return null;

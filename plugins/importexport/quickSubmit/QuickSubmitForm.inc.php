@@ -242,7 +242,7 @@ class QuickSubmitForm extends Form {
 
 		// Set some default values so the ArticleDAO doesn't complain when adding this article
 		$article->setDateSubmitted(Core::getCurrentDate());
-		$article->setStatus(STATUS_PUBLISHED);
+		$article->setStatus($this->getData('destination') == 'queue' ? STATUS_QUEUED : STATUS_PUBLISHED);
 		$article->setSubmissionProgress(0);
 		$article->stampStatusModified();
 		$article->setCurrentRound(1);
@@ -291,6 +291,10 @@ class QuickSubmitForm extends Form {
 				}
 			}
 		}
+
+		// Setup default copyright/license metadata after status is set and authors are attached.
+		$article->initializePermissions();
+		$articleDao->updateLocaleFields($article);
 
 		// Add the submission files as galleys
 		import('classes.file.TemporaryFileManager');
@@ -478,11 +482,19 @@ class QuickSubmitForm extends Form {
 
 		if ($issue && $issue->getPublished()) {
 			$submission->setStatus(STATUS_PUBLISHED);
+			if ($submission && !$submission->getDatePublished()) {
+				$submission->setDatePublished($issue->getDatePublished());
+			}
 		} else {
 			$submission->setStatus(STATUS_QUEUED);
 		}
 
 		$sectionEditorSubmissionDao->updateSectionEditorSubmission($submission);
+		// Call initialize permissions again to check if copyright year needs to be initialized.
+		$articleDao =& DAORegistry::getDAO('ArticleDAO');
+		$article = $articleDao->getArticle($articleId);
+		$article->initializePermissions();
+		$articleDao->updateLocaleFields($article);
 	}
 }
 

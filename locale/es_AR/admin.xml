@@ -25,6 +25,7 @@
 	<message key="admin.languages.downloadFailed">Falló la descarga del archivo de localizaciones. El mensaje de error siguiente describe el fallo.</message>
 	<message key="admin.languages.localeInstalled">El archivo de localización "{$locale}" ha sido instalado.</message>
 	<message key="admin.languages.download">Descargar archivo de localización</message>
+	<message key="admin.languages.reloadDefaultEmailTemplates">Actualizar Defecto Plantillas de correo electrónico</message>
 	<message key="admin.languages.download.cannotOpen">No es posible abrir el descriptor del idioma desde la web de PKP.</message>
 	<message key="admin.languages.download.cannotModifyRegistry">No se puede añadir el nuevo archivo de traducción al directorio de registro de idiomas, normalmente en "registry/locales.xml".</message>
 	<message key="admin.auth.ojs">Base de datos usuarios/as OJS</message>
@@ -91,4 +92,6 @@ Uso (procesamiento de todos los archivos en un directorio): {$scriptName} ruta/a
 	<message key="admin.copyAccessLogFileTool.error.deletingFile">Error: no se puede eliminar el archivo {$tmpFilePath}</message>
 	<message key="admin.copyAccessLogFileTool.warning.fileAlreadyExists">Alerta: el archivo {$filePath} ya existe dentro del directorio de estadísticas de uso.</message>
 	<message key="admin.copyAccessLogFileTool.success">Éxito: {$filePath} hacia {$destinationPath}</message>
+	<message key="admin.settings.security">Seguridad</message>
+	<message key="admin.settings.security.plugins">Prevee que el gestor de la revista pueda instalar, actualizar o borrar plugins</message>
 </locale>
