@@ -2,8 +2,8 @@ CRKN harvests journal content from an OAI dissemination of Erudit-encoded
 metadata.  This README describes how we used to provide CRKN with journals,
 before the OAI service was implemented.
 
-1. Journal editor identifies new journal issues to be included in the submission
-   to Erudit.
+1.  Journal editor identifies new journal issues to be included in the submission
+    to Erudit.
 
 2.  Journals are copied from [journals-dir] into a new directory that mirrors
     the structure.  Only XML/ subdirectories are included. We do not submit HTML
@@ -16,11 +16,30 @@ before the OAI service was implemented.
     [crkn-dir]/ACADIENSIS/2009/Vol_38/No_02/XML
 
     with XML copied into the new directory.
+    
+      (NOTE: Brian determined a way to move content over using rsync:
+    
+      rsync -am --include="XML/*.xml" --include="*/" --exclude="*" ACADIENSIS/2012/ ~/tmp/
+
+      which means:
+
+      -a = “archive” which means it copies everything recursively and retains things like user/group, 
+      etc (it’s an alias for: -rlptgoD)
+      -m = prune empty dirs (so we don’t get a bunch of other empty dirs with our xml dir)
+
+      —include=“XML/*.xml” = that’s the stuff you want
+      —include=“*/“ = don’t miss dirs that might have the XML dir in it
+      —exclude=“*” = exclude everything else
+
+      then a SOURCE and DESTINATION.
+
+      The only downside is that the destination won’t have the “ACADIENSIS/2012/“ it will 
+      start with “Vol_” whatever.)
 
 3.  From [crkn-dir], run Perl script called 'buildFicheFile'.  It accepts the
     path to an XML file as an argument.  Run the script as part of a find command:
 
-    find . -name "*.xml" -exec perl /usr/local/bin/buildFicheFile {} \;
+    find . -name "*.xml" -exec perl ~/bin/crkn/fiche/buildFicheFile {} \;
 
 4.  The Perl scripts creates a file in the XML directory for each article to be
     sent to CRKN, with a Fiche.xml extension. E.g., for an article file named
@@ -32,4 +51,3 @@ before the OAI service was implemented.
     acad38_2art01Fiche.xml
 
 5.  Tar or zip up the [crkn-dir] directory and make it available for download by Erudit.
-
