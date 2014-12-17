@@ -1,3 +1,2 @@
 journals
-site/*
-!site/sitestyle.css
+site
