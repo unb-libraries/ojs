@@ -153,6 +153,10 @@ my $log = Log::Handler->new(
     # store IP data in hash
     push( @{$subscriber_data->{$child_nodes->{'abonne'}}}, $ip_data);
   }
+
+  # fail for empty data
+  $log->critical('CRKN subscriber data is empty')
+    and die unless keys %$subscriber_data;
   
   # closure to fetch subscriber data
   sub subscriber_data { return $subscriber_data; }
