@@ -10,7 +10,7 @@
 {assign var="pageTitle" value="manager.setup.guidingSubmissions"}
 {include file="manager/setup/setupHeader.tpl"}
 
-<form id="setupForm" method="post" action="{url op="saveSetup" path="3"}">
+<form name="setupForm" id="setupForm" method="post" action="{url op="saveSetup" path="3"}">
 {include file="common/formErrors.tpl"}
 
 {if count($formLocales) > 1}
@@ -99,6 +99,19 @@
 		</td>
 	</tr>
 	<tr valign="top">
+		<td width="20%" class="label" rowspan="2">
+			{translate key="manager.setup.copyrightYearBasis"}
+		</td>
+		<td width="80%" class="data">
+			<input type="radio" value="issue" name="copyrightYearBasis" {if $copyrightYearBasis=="issue"}checked="checked" {/if}id="copyrightYearBasis-issue" />&nbsp;<label for="copyrightYearBasis-issue">{translate key="issue.issue"}</label> ({translate key="manager.setup.copyrightYearBasis.Issue"})
+		</td>
+	</tr>
+	<tr valign="top">
+		<td class="data">
+			<input type="radio" value="article" name="copyrightYearBasis" {if $copyrightYearBasis=="article"}checked="checked" {/if}id="copyrightYearBasis-article" />&nbsp;<label for="copyrightYearBasis-article">{translate key="article.article"}</label> ({translate key="manager.setup.copyrightYearBasis.Article"})
+		</td>
+	</tr>
+	<tr valign="top">
 		<td class="label">{translate key="manager.setup.permissions.priorAgreement"}</td>
 		<td class="label">
 			<input type="checkbox" name="copyrightNoticeAgree" id="copyrightNoticeAgree" value="1"{if $copyrightNoticeAgree} checked="checked"{/if} />&nbsp;<label for="copyrightNoticeAgree">{translate key="manager.setup.authorCopyrightNoticeAgree"}</label>
@@ -138,7 +151,7 @@
 </table>
 
 <p>{translate key="manager.setup.resetPermissions.description"}</p>
-<p><input type="button" value="{translate key="manager.setup.resetPermissions"}" class="button" onclick="confirmAction('{url op="resetPermissions"}', '{translate|escape:"jsparam" key="manager.setup.confirmResetLicense"}')" /></p>
+<p><input id="resetPermissionsButton" type="button" value="{translate key="manager.setup.resetPermissions"}" class="button" /></p>
 </div>
 
 <div class="separator"></div>
@@ -191,7 +204,7 @@
 			<span class="instruct">{translate key="manager.setup.disciplineDescription"}</span><br/>
 			<span class="instruct">{translate key="manager.setup.disciplineProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaDisciplineExamples[{$formLocale|escape}]" id="metaDisciplineExamples" value="{$metaDisciplineExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaDisciplineExamples[{$formLocale|escape}]" id="metaDisciplineExamples" value="{$metaDisciplineExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.disciplineExamples"}</span>
 		</td>
@@ -213,11 +226,11 @@
 			<table width="100%">
 				<tr valign="top">
 					<td width="10%">{fieldLabel name="metaSubjectClassTitle" key="common.title"}</td>
-					<td width="90%"><input type="text" name="metaSubjectClassTitle[{$formLocale|escape}]" id="metaSubjectClassTitle" value="{$metaSubjectClassTitle[$formLocale]|escape}" size="40" maxlength="255" class="textField" /></td>
+					<td width="90%"><input type="text" name="metaSubjectClassTitle[{$formLocale|escape}]" id="metaSubjectClassTitle" value="{$metaSubjectClassTitle[$formLocale]|escape}" size="40" class="textField" /></td>
 				</tr>
 				<tr valign="top">
 					<td width="10%">{fieldLabel name="metaSubjectClassUrl" key="common.url"}</td>
-					<td width="90%"><input type="text" name="metaSubjectClassUrl[{$formLocale|escape}]" id="metaSubjectClassUrl" value="{$metaSubjectClassUrl[$formLocale]|escape}" size="40" maxlength="255" class="textField" /></td>
+					<td width="90%"><input type="text" name="metaSubjectClassUrl[{$formLocale|escape}]" id="metaSubjectClassUrl" value="{$metaSubjectClassUrl[$formLocale]|escape}" size="40" class="textField" /></td>
 				</tr>
 			</table>
 			<span class="instruct">{translate key="manager.setup.subjectClassificationExamples"}</span>
@@ -239,7 +252,7 @@
 		<td class="value">
 			<span class="instruct">{translate key="manager.setup.subjectProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaSubjectExamples[{$formLocale|escape}]" id="metaSubjectExamples" value="{$metaSubjectExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaSubjectExamples[{$formLocale|escape}]" id="metaSubjectExamples" value="{$metaSubjectExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.subjectExamples"}</span>
 		</td>
@@ -264,7 +277,7 @@
 			<span class="instruct">{translate key="manager.setup.coverageDescription"}</span><br/>
 			<span class="instruct">{translate key="manager.setup.coverageGeoProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaCoverageGeoExamples[{$formLocale|escape}]" id="metaCoverageGeoExamples" value="{$metaCoverageGeoExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaCoverageGeoExamples[{$formLocale|escape}]" id="metaCoverageGeoExamples" value="{$metaCoverageGeoExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.coverageGeoExamples"}</span>
 		</td>
@@ -277,7 +290,7 @@
 		<td class="value">
 			<span class="instruct">{translate key="manager.setup.coverageChronProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaCoverageChronExamples[{$formLocale|escape}]" id="metaCoverageChronExamples" value="{$metaCoverageChronExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaCoverageChronExamples[{$formLocale|escape}]" id="metaCoverageChronExamples" value="{$metaCoverageChronExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.coverageChronExamples"}</span>
 		</td>
@@ -290,7 +303,7 @@
 		<td class="value">
 			<span class="instruct">{translate key="manager.setup.coverageResearchSampleProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaCoverageResearchSampleExamples[{$formLocale|escape}]" id="metaCoverageResearchSampleExamples" value="{$metaCoverageResearchSampleExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaCoverageResearchSampleExamples[{$formLocale|escape}]" id="metaCoverageResearchSampleExamples" value="{$metaCoverageResearchSampleExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.coverageResearchSampleExamples"}</span>
 		</td>
@@ -311,7 +324,7 @@
 		<td class="value">
 			<span class="instruct">{translate key="manager.setup.typeProvideExamples"}:</span>
 			<br />
-			<input type="text" name="metaTypeExamples[{$formLocale|escape}]" id="metaTypeExamples" value="{$metaTypeExamples[$formLocale]|escape}" size="60" maxlength="255" class="textField" />
+			<input type="text" name="metaTypeExamples[{$formLocale|escape}]" id="metaTypeExamples" value="{$metaTypeExamples[$formLocale]|escape}" size="60" class="textField" />
 			<br />
 			<span class="instruct">{translate key="manager.setup.typeExamples"}</span>
 		</td>
@@ -410,6 +423,48 @@
 				if (checkboxState !== toggleState) {
 					$metaCitationsSetupBox.toggle(300);
 				}
+			});
+		});
+		
+		function permissionsValues() {
+			perm = ':';
+			licenseNames = ["copyrightYearBasis", "copyrightHolderType"];
+			for (l = 0; l < licenseNames.length; l++) {
+				ele = document.getElementsByName(licenseNames[l]);
+				for (i = 0; i < ele.length; i++) {
+					if (ele[i].type == 'radio') {
+						if (ele[i].checked) {
+							perm += ele[i].value + ':';
+							break;
+						}
+					} else {
+						perm += ele[i].value + ':';
+					}
+				}
+			};
+			licenseIds = ["copyrightHolderOther", "licenseURL"];
+			for (l = 0; l < licenseIds.length; l++) {
+				ele = document.getElementById(licenseIds[l]);
+				if (ele) {
+					perm += ele.value + ':';
+				}
+			}
+			return perm;
+		}
+		var resetValues;
+		$(document).ready( function () {
+			resetValues = permissionsValues();
+			$('#resetPermissionsButton').click( function ( event ) {
+				if (resetValues == permissionsValues()) {
+					{/literal}
+					confirmAction('{url op="resetPermissions"}', '{translate|escape:"jsparam" key="manager.setup.confirmResetLicense"}');
+					{literal}
+				} else {
+					{/literal}
+					window.alert('{translate|escape:"jsparam" key="manager.setup.confirmResetLicenseChanged"}')
+					{literal}
+				}
+				event.preventDefault();
 			});
 		});
 	</script>{/literal}

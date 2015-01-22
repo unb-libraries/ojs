@@ -235,7 +235,11 @@
 	<message key="manager.setup.resetPermissions">Reset Article Permissions</message>
 	<message key="manager.setup.resetPermissions.description">Copyright statement and license information will be permanently attached to published content, ensuring that this data will not change in the case of a journal changing policies for new submissions. To reset stored permissions information already attached to published content, use the button below.</message>
 	<message key="manager.setup.confirmResetLicense">Are you sure you wish to reset the license and copyright information attached to published content to the license configured in Journal Setup?</message>
+	<message key="manager.setup.confirmResetLicenseChanged">You have changed the license and copyright information in Journal Setup. Please save these changes before resetting the permissions.</message>
 	<message key="manager.setup.copyrightNotice">Copyright notice</message>
+	<message key="manager.setup.copyrightYearBasis">Base new article's copyright year on</message>
+	<message key="manager.setup.copyrightYearBasis.Article">Default year will be drawn from the article's publication date, as in "publish-as-you-go".</message>
+	<message key="manager.setup.copyrightYearBasis.Issue">Default year will be drawn from the issue's publication date.</message>
 	<message key="manager.setup.coverage">Coverage</message>
 	<message key="manager.setup.coverageChronExamples">(E.g., European Renaissance; Jurassic Period; Third Trimester; etc.)</message>
 	<message key="manager.setup.coverageChronProvideExamples">Provide examples of relevant chronological or historical terms for this field</message>
@@ -519,6 +523,7 @@
 	<message key="manager.statistics.reports.columns">Columns</message>
 	<message key="manager.statistics.reports.columns.description">Define the columns that will be used to build the report. The columns you select here not only define which data will be presented inside the reports, but also defines the aggregation level of the statistics. For example, if you choose ID, Type and Month columns, the report will sum all views from an object from one month and will present that data in one row. If you choose Day instead of Month, each object will have a row for each day.</message>
 	<message key="manager.statistics.reports.filters">Filters</message>
+	<message key="manager.statistics.reports.objectNotFound">Object not found in database</message>
 	<message key="manager.statistics.reports.objectType">Object Type</message>
 	<message key="manager.statistics.reports.objectId">Object id</message>
 	<message key="manager.statistics.reports.objectId.label">Define one or more object ids, comma separated (e.g. 1,2,3,4,5).</message>

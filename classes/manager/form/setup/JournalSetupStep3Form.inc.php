@@ -34,6 +34,7 @@ class JournalSetupStep3Form extends JournalSetupForm {
 				'copyrightNoticeAgree' => 'bool',
 				'copyrightHolderType' => 'string',
 				'copyrightHolderOther' => 'string',
+				'copyrightYearBasis' => 'string',
 				'requireAuthorCompetingInterests' => 'bool',
 				'requireReviewerCompetingInterests' => 'bool',
 				'competingInterestGuidelines' => 'string',
@@ -59,7 +60,8 @@ class JournalSetupStep3Form extends JournalSetupForm {
 		);
 
 		$this->addCheck(new FormValidatorEmail($this, 'copySubmissionAckAddress', 'optional', 'user.profile.form.emailRequired'));
-		$this->addCheck(new FormValidatorLocaleURL($this, 'metaSubjectClassUrl', 'optional', 'manager.setup.subjectClassificationURLValid'));
+		// Only check the subject classification URL if the subject classification is enabled
+		$this->addCheck(new FormValidatorCustom($this, 'metaSubjectClassUrl', 'optional', 'manager.setup.subjectClassificationURLValid', create_function('$localeUrl, $form, $field, $type, $message', 'if (!$form->getData("metaSubjectClass")) return true; $f = new FormValidatorLocaleUrl($form, $field, $type, $message); return $f->isValid();'), array($this, 'metaSubjectClassUrl', 'optional', 'manager.setup.subjectClassificationURLValid')));
 		$this->addCheck(new FormValidatorURL($this, 'licenseURL', 'optional', 'submission.licenseURLValid'));
 	}
 

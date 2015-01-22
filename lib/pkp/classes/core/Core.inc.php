@@ -137,11 +137,13 @@ class Core {
 	 */
 	function isUserAgentBot($userAgent, $botRegexpsFile = USER_AGENTS_FILE) {
 		static $botRegexps;
+		Registry::set('currentUserAgentsFile', $botRegexpsFile);
 
 		if (!isset($botRegexps[$botRegexpsFile])) {
+			$botFileCacheId = md5($botRegexpsFile);
 			$cacheManager =& CacheManager::getManager();
-			$cache =& $cacheManager->getCache('core', $botRegexpsFile, array('Core', '_botFileListCacheMiss'), CACHE_TYPE_FILE);
-			$botRegexps[$botRegexpsFile] = $cache->getContents($botRegexpsFile);
+			$cache =& $cacheManager->getCache('core', $botFileCacheId, array('Core', '_botFileListCacheMiss'), CACHE_TYPE_FILE);
+			$botRegexps[$botRegexpsFile] = $cache->getContents();
 		}
 
 		foreach ($botRegexps[$botRegexpsFile] as $regexp) {
@@ -417,7 +419,7 @@ class Core {
 	 */
 	function _botFileListCacheMiss(&$cache) {
 		$id = $cache->getCacheId();
-		$botRegexps = array_filter(file($id),
+		$botRegexps = array_filter(file(Registry::get('currentUserAgentsFile')),
 			array('Core', '_filterBotRegexps'));
 
 		$cache->setEntireCache($botRegexps);
