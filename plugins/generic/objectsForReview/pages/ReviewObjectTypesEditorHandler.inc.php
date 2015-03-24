@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/objectsForReview/pages/ReviewObjectTypesEditorHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ReviewObjectTypesEditorHandler
@@ -52,7 +52,7 @@ class ReviewObjectTypesEditorHandler extends Handler {
 	 * @param $request PKPRequest
 	 */
 	function createReviewObjectType($args, &$request) {
-		$this->editReviewObjectType($args, &$request);
+		$this->editReviewObjectType($args, $request);
 	}
 
 	/**

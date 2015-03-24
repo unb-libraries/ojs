@@ -4,13 +4,13 @@
 <!--
   * @file plugins/pubIds/urn/locale/fr_FR/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * URN plugin localization strings
   -->
- 
+
 <locale name="fr_FR" full_name="Français">
 	<message key="plugins.pubIds.urn.urns">URNs</message>
 
@@ -33,8 +33,7 @@
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.pattern.suppFiles">pour les fichiers supplémentaires.</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.patternExample">Par exemple, vol%viss%ipp%p Peut créer le suffixe URN "vol3iss2pp230".</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.description">Un suffixe URN peut prendre n'import quelle forme, mais il doit être unique pour chaque élément publié.</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.publisherId">Utilisez "l'identifiant personnalisé" pour des éléments publiés comme suffixe URN (cela doit être activé à l'étape 4.3). C'est le même identifiant qui sera utilisé pour des URLs publiques.</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">Entrez un suffixe individuel pour chaque élément publié indépendant et différent de "l'identifiant personnalisé" mentionné dans l'option précédente. Vous trouverez un champ de saisie URN supplémentaire dans chaque page de métadonnées de l'élément.</message>
+	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">Entrez un suffixe individuel pour chaque élément publié. Vous trouverez un champ de saisie URN supplémentaire dans chaque page de métadonnées de l'élément.</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs">Effacer les URNs</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.description">Si vous changez votre configuration URN, les URNs qui auront déjà été assignés ne seront pas affectés. Une fois que les changements dans la configuration sont sauvegardés, utilisez le bouton pour effacer tous les URNs existants pour que la nouvelle configuration prenne effet avec les objets existants.</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.confirm">Êtes vous sûr de vouloir effacer tous les URNs existants?</message>
@@ -81,4 +80,11 @@
 	<message key="plugins.pubIds.urn.editor.urnObjectTypeGalley">épreuve</message>
 	<message key="plugins.pubIds.urn.editor.urnObjectTypeSuppFile">fichier supplémentaire</message>
 	<message key="plugins.pubIds.urn.editor.urnNotYetGenerated">Cet aperçu du nom uniforme de ressource (URN) pourrait être incomplet. Aucun URN n'a été créé. Un URN unique pour {$pubObjectType} sera créé de façon automatique si vous publiez le numéro et visualisez la page publique {$pubObjectType}.</message>
+	<message key="plugins.pubIds.urn.editor.excludePubObject">Exclure ce {$pubObjectType} en lui assignant un URN.</message>
+	<message key="plugins.pubIds.urn.editor.urnClear">Effacer l'URN</message>
+	<message key="plugins.pubIds.urn.editor.urnClear.description">Sélectionner la case pour effacer l'URN existant de ce {$pubObjectType}.</message>
+	<message key="plugins.pubIds.urn.editor.excludeIssueObjectsURN">Exclure l'URN de cet objet</message>
+	<message key="plugins.pubIds.urn.editor.clearIssueObjectsURN">Effacer les URNs des objets du numéro</message>
+	<message key="plugins.pubIds.urn.editor.clearIssueObjectsURN.description">Utiliser ce bouton pour effacer les URNs des objets (articles, épreuves et fichiers supplémentaires) actuellement programmé dans ce numéro.</message>
+	<message key="plugins.pubIds.urn.editor.excludeIssueObjectsURN.description">Utiliser ce bouton pour exclure les objets (articles, épreuves et fichiers supplémentaires) actuellement programmés dans ce numéro en leur attribuant un URN. Noter que les objets ajoutés/programmés plus tard ne seront pas affectés. Vous aurez toujours la possibilité d'utiliser plus tard l'option d'exclusion d'un objet unique.</message>
 </locale>

@@ -3,8 +3,8 @@
 /**
  * @file controllers/grid/citation/PKPCitationGridHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPCitationGridHandler
@@ -486,10 +486,6 @@ class PKPCitationGridHandler extends GridHandler {
 		// Instantiate the email to the author.
 		import('lib.pkp.classes.mail.Mail');
 		$mail = new Mail();
-
-		// Sender
-		$user =& $request->getUser();
-		$mail->setFrom($user->getEmail(), $user->getFullName());
 
 		// Recipient
 		$assocObject =& $this->getAssocObject();

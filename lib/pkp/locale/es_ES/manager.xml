@@ -3,8 +3,8 @@
 <!--
   * locale/es_ES/manager.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -236,4 +236,4 @@
 	<message key="plugins.categories.themes">Módulos de tema</message>
 	<message key="manager.announcements.form.notificationToggle">Enviar notificación</message>
 	<message key="manager.announcements.form.notificationToggleInstructions">Crear una nueva notificación al guardar este anuncio.</message>
-</locale> 
+</locale>

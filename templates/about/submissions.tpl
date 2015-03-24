@@ -1,8 +1,8 @@
 {**
  * templates/about/submissions.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * About the Journal / Submissions.
@@ -18,27 +18,30 @@
 	{assign var="authorFees" value=1}
 {/if}
 
-<ul class="plain">
-	<li>&#187; <a href="{url page="about" op="submissions" anchor="onlineSubmissions"}">{translate key="about.onlineSubmissions"}</a></li>
-	{if $currentJournal->getLocalizedSetting('authorGuidelines') != ''}<li>&#187; <a href="{url page="about" op="submissions" anchor="authorGuidelines"}">{translate key="about.authorGuidelines"}</a></li>{/if}
-	{if $currentJournal->getLocalizedSetting('copyrightNotice') != ''}<li>&#187; <a href="{url page="about" op="submissions" anchor="copyrightNotice"}">{translate key="about.copyrightNotice"}</a></li>{/if}
-	{if $currentJournal->getLocalizedSetting('privacyStatement') != ''}<li>&#187; <a href="{url page="about" op="submissions" anchor="privacyStatement"}">{translate key="about.privacyStatement"}</a></li>{/if}
-	{if $authorFees}<li>&#187; <a href="{url page="about" op="submissions" anchor="authorFees"}">{translate key="about.authorFees"}</a></li>{/if}	
+<ul>
+	{if !$currentJournal->getSetting('disableUserReg')}<li id="linkDisableUserReg"><a href="{url page="about" op="submissions" anchor="onlineSubmissions"}">{translate key="about.onlineSubmissions"}</a></li>{/if}
+	{if $currentJournal->getLocalizedSetting('authorGuidelines') != ''}<li id="linkAuthorGuidelines"><a href="{url page="about" op="submissions" anchor="authorGuidelines"}">{translate key="about.authorGuidelines"}</a></li>{/if}
+	{if $currentJournal->getLocalizedSetting('copyrightNotice') != ''}<li id="linkCopyrightNotice"><a href="{url page="about" op="submissions" anchor="copyrightNotice"}">{translate key="about.copyrightNotice"}</a></li>{/if}
+	{if $currentJournal->getLocalizedSetting('privacyStatement') != ''}<li id="linkPrivacyStatement"><a href="{url page="about" op="submissions" anchor="privacyStatement"}">{translate key="about.privacyStatement"}</a></li>{/if}
+	{if $authorFees}<li id="linkAuthorFees"><a href="{url page="about" op="submissions" anchor="authorFees"}">{translate key="about.authorFees"}</a></li>{/if}
 </ul>
 
-<div id="onlineSubmissions"><h3>{translate key="about.onlineSubmissions"}</h3>
-<p>
-	{translate key="about.onlineSubmissions.haveAccount" journalTitle=$siteTitle|escape}<br />
-	<a href="{url page="login"}" class="action">{translate key="about.onlineSubmissions.login"}</a>
-</p>
-<p>
-	{translate key="about.onlineSubmissions.needAccount"}<br />
-	<a href="{url page="user" op="register"}" class="action">{translate key="about.onlineSubmissions.registration"}</a>
-</p>
-<p>{translate key="about.onlineSubmissions.registrationRequired"}</p>
+{if !$currentJournal->getSetting('disableUserReg')}
+	<div id="onlineSubmissions">
+		<h3>{translate key="about.onlineSubmissions"}</h3>
+		<p>
+			{translate key="about.onlineSubmissions.haveAccount" journalTitle=$siteTitle|escape}<br />
+			<a href="{url page="login"}" class="action">{translate key="about.onlineSubmissions.login"}</a>
+		</p>
+		<p>
+			{translate key="about.onlineSubmissions.needAccount"}<br />
+			<a href="{url page="user" op="register"}" class="action">{translate key="about.onlineSubmissions.registration"}</a>
+		</p>
+		<p>{translate key="about.onlineSubmissions.registrationRequired"}</p>
+	</div>
+{/if}
 
 <div class="separator">&nbsp;</div>
-</div>
 
 {if $currentJournal->getLocalizedSetting('authorGuidelines') != ''}
 <div id="authorGuidelines"><h3>{translate key="about.authorGuidelines"}</h3>
@@ -53,7 +56,7 @@
 	<p>{translate key="about.submissionPreparationChecklist.description"}</p>
 	<ol>
 		{foreach from=$submissionChecklist item=checklistItem}
-			<li>{$checklistItem.content|nl2br}</li>	
+			<li>{$checklistItem.content|nl2br}</li>
 		{/foreach}
 	</ol>
 	<div class="separator">&nbsp;</div>
@@ -85,11 +88,11 @@
 	{/if}
 	{if $currentJournal->getSetting('fastTrackFeeEnabled')}
 		<p>{$currentJournal->getLocalizedSetting('fastTrackFeeName')|escape}: {$currentJournal->getSetting('fastTrackFee')|string_format:"%.2f"} ({$currentJournal->getSetting('currency')})<br />
-		{$currentJournal->getLocalizedSetting('fastTrackFeeDescription')|nl2br}<p>	
+		{$currentJournal->getLocalizedSetting('fastTrackFeeDescription')|nl2br}<p>
 	{/if}
 	{if $currentJournal->getSetting('publicationFeeEnabled')}
 		<p>{$currentJournal->getLocalizedSetting('publicationFeeName')|escape}: {$currentJournal->getSetting('publicationFee')|string_format:"%.2f"} ({$currentJournal->getSetting('currency')})<br />
-		{$currentJournal->getLocalizedSetting('publicationFeeDescription')|nl2br}<p>	
+		{$currentJournal->getLocalizedSetting('publicationFeeDescription')|nl2br}<p>
 	{/if}
 	{if $currentJournal->getLocalizedSetting('waiverPolicy') != ''}
 		<p>{$currentJournal->getLocalizedSetting('waiverPolicy')|nl2br}</p>

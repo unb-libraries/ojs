@@ -4,8 +4,8 @@
 <!--
   * locale/tr_TR/submission.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the tr_TR (Türkiye Türkçesi) locale.
   -->
@@ -20,7 +20,7 @@
 	<message key="metadata.filters.crossref.settings.email.validationMessage">Lütfen geçerli bir CrossRef e-postas adresi kaydediniz. E-postanızı CrossRef web sayfasında ücretsiz olarak kayıt edebilirsiniz.</message>
 	<message key="metadata.filters.isbndb.settings.apiKey.displayName">ISBNdb API Anahtarı</message>
 	<message key="metadata.filters.isbndb.settings.apiKey.validationMessage">Lütfen ISBNdb API anahtarınız giriniz. Henüz bir anahtarınız yok ise ISBNdb projesinden ücretsiz olarak talep edebilirsiniz.</message>
-	<message key="metadata.filters.pubmed.settings.email.displayName">PubMed kayıt e-postası</message>
+	<message key="metadata.filters.pubmed.settings.email.displayName">PubMed Kayıt e-Postası</message>
 	<message key="metadata.filters.pubmed.settings.email.validationMessage">Eğer varsa geçerli bir PubMed kayıt e-postası giriniz.</message>
 	<message key="metadata.filters.worldcat.settings.apiKey.displayName">WorldCat API Anahtarı</message>
 	<message key="metadata.filters.worldcat.settings.apiKey.validationMessage">Eğer varsa geçerli bir WorldCat API anahtarı giriniz.</message>

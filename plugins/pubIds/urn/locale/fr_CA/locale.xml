@@ -2,16 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * @file plugins/pubIds/urn/locale/en_US/locale.xml
+  * @file plugins/pubIds/urn/locale/fr_CA/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * URN plugin localization strings
   -->
- 
-<locale name="en_US" full_name="U.S. English">
+
+<locale name="fr_CA" full_name="Français (Canada)">
 	<message key="plugins.pubIds.urn.urns">URNs</message>
 
 	<!-- plugin -->
@@ -33,8 +33,7 @@
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.pattern.suppFiles">pour les fichiers supplémentaires.</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.patternExample">Par exemple, vol%viss%ipp%p Peut créer le suffixe URN "vol3iss2pp230".</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.description">Un suffixe URN peut prendre n'import quelle forme, mais il doit être unique pour chaque élément publié.</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.publisherId">Utilisez "l'identifiant personnalisé" pour des éléments publiés comme suffixe URN (cela doit être activé à l'étape 4.3). C'est le même identifiant qui sera utilisé pour des URLs publiques.</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">Entrez un suffixe individuel pour chaque élément publié indépendant et différent de "l'identifiant personnalisé" mentionné dans l'option précédente. Vous trouverez un champ de saisie URN supplémentaire dans chaque page de métadonnées de l'élément.</message>
+	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">Entrez un suffixe individuel pour chaque élément publié. Vous trouverez un champ de saisie URN supplémentaire dans chaque page de métadonnées de l'élément.</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs">Effacer les URNs</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.description">Si vous changez votre configuration URN, les URNs qui auront déjà été assignés ne seront pas affectés. Une fois que les changements dans la configuration sont sauvegardés, utilisez le bouton pour effacer tous les URNs existants pour que la nouvelle configuration prenne effet avec les objets existants.</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.confirm">Êtes vous sûr de vouloir effacer tous les URNs existants?</message>
@@ -76,4 +75,9 @@
 	<message key="plugins.pubIds.urn.form.customIdentifierNotUnique">Le suffixe d'URN spécifié est déjà utilisé pour un autre élément publié. Veuillez entrer un suffixe URN unique pour chaque élément.</message>
 	<message key="plugins.pubIds.urn.form.checkNoRequired">Le numéro de contrôle est manquant.</message>
 
+	<message key="plugins.pubIds.urn.editor.urnObjectTypeIssue">numéro</message>
+	<message key="plugins.pubIds.urn.editor.urnObjectTypeArticle">article</message>
+	<message key="plugins.pubIds.urn.editor.urnObjectTypeGalley">épreuve</message>
+	<message key="plugins.pubIds.urn.editor.urnObjectTypeSuppFile">fichier supplémentaire</message>
+	<message key="plugins.pubIds.urn.editor.urnNotYetGenerated">Ce que vous voyez est l'aperçu de l'URN qui peut être incomplète. Une URN n'a pas encore été générée. Publier le numéro et aller voir la page {$pubObjectType} publique générera automatiquement un URN unique pour ce {$pubObjectType}.</message>
 </locale>

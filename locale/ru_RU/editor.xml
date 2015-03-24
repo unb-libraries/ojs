@@ -4,8 +4,8 @@
 <!--
   * locale/ru_RU/editor.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
@@ -28,6 +28,7 @@
 	<message key="editor.allEditors">Все редакторы</message>
 	<message key="editor.me">Я</message>
 	<message key="editor.publicIdentificationExists">Открытый идентификатор «{$publicIdentifier}» уже используется для другого объекта (выпуска, статьи, гранки или дополнительного файла). Пожалуйста, выбирайте уникальные идентификаторы в рамках своего журнала.</message>
+	<message key="editor.publicGalleyIdentificationExists">Открытый идентификатор «{$publicIdentifier}» уже используется для другой гранки этой статьи. Пожалуйста, выберите уникальный идентификатор гранки в рамках этой статьи.</message>
 	<message key="editor.submissionArchive.noSubmissions">Нет рукописей в архиве.</message>
 	<message key="editor.submissionArchive.saveChanges">Сохранить изменения в архиве рукописей? Отмеченные для удаления рукописи будут навсегда удалены из системы.</message>
 	<message key="editor.submissionArchive.confirmDelete">Вы уверены, что хотите навсегда удалить эту рукопись?</message>
@@ -66,6 +67,7 @@
 	<message key="editor.issues.publicIssueIdentifier">Открытый идентификатор выпуска</message>
 	<message key="editor.issues.description">Описание</message>
 	<message key="editor.issues.accessStatus">Статус доступа</message>
+	<message key="editor.issues.resetArticlePublicationDates">Сбросить даты публикации статей</message>
 	<message key="editor.issues.accessDate">Дата открытого доступе</message>
 	<message key="editor.issues.enableOpenAccessDate">Включить отложенный открытый доступ</message>
 	<message key="editor.issues.coverPage">Изображение обложки</message>

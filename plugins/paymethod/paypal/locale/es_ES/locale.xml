@@ -3,7 +3,7 @@
 <!--
   * plugins/paymethod/paypal/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
+  * Copyright (c) 2013-2015 Simon Fraser University Library
   * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -32,4 +32,4 @@
 	<message key="plugins.paymethod.paypal.purchase.description">Descripción</message>
 	<message key="plugins.paymethod.paypal.purchase.cancelled">Se canceló su compra.</message>
 	<message key="plugins.paymethod.paypal.purchase.cancelled.title">Compra cancelada</message>
-</locale> 
+</locale>

@@ -7,8 +7,8 @@
 /**
  * @file classes/tasks/OpenAccessNotification.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OpenAccessNotification
@@ -42,7 +42,7 @@ class OpenAccessNotification extends ScheduledTask {
 			$email = new MailTemplate('OPEN_ACCESS_NOTIFY', $journal->getPrimaryLocale());
 
 			$email->setSubject($email->getSubject($journal->getPrimaryLocale()));
-			$email->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+			$email->setReplyTo(null);
 			$email->addRecipient($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 
 			$paramArray = array(

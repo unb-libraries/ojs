@@ -4,8 +4,8 @@
 <!--
   * ../pkp//locale/es_AR/user.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the es_AR (Español (Argentina)) locale.
@@ -126,4 +126,5 @@
 	<message key="user.profile.form.usergroupRequired">Un  grupo de usuario es requerido</message>
 	<message key="user.suffix">Subfijo</message>
 	<message key="user.profile.form.hashInvalid">El hash de reseteo de claves que esta intentando utilizar no es válido.</message>
+	<message key="user.login.changePasswordInstructionsOneStep"><![CDATA[Debe escoger una nueva contraseña antes de poder entrar al sitio.<br /><br /> Por favor ingrese su nombre de usuario y su nueva contraseña debajo, para cambiar la constraseña de su cuenta.]]></message>
 </locale>

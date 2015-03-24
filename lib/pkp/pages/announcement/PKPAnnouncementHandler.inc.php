@@ -3,8 +3,8 @@
 /**
  * @file pages/announcement/PKPAnnouncementHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPAnnouncementHandler
@@ -64,7 +64,7 @@ class PKPAnnouncementHandler extends Handler {
 			if ($announcement->getDateExpire() == null || strtotime($announcement->getDateExpire()) > time()) {
 				$templateMgr =& TemplateManager::getManager();
 				$templateMgr->assign('announcement', $announcement);
-				if ($announcement->getTypeId() == null) {
+				if (!$announcement->getTypeId()) {
 					$templateMgr->assign('announcementTitle', $announcement->getLocalizedTitle());
 				} else {
 					$templateMgr->assign('announcementTitle', $announcement->getAnnouncementTypeName() . ": " . $announcement->getLocalizedTitle());

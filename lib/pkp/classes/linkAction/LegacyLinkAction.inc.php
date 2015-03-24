@@ -4,8 +4,8 @@
 /**
  * @file classes/linkAction/LegacyLinkAction.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LegacyLinkAction
@@ -25,6 +25,10 @@ define('LINK_ACTION_TYPE_APPEND', 'append');
 define('LINK_ACTION_TYPE_REPLACE', 'replace');
 define('LINK_ACTION_TYPE_REMOVE', 'remove');
 define('LINK_ACTION_TYPE_REDIRECT', 'redirect');
+
+// Actions types for AJAX mode
+define('LINK_ACTION_TYPE_GET', 'get');
+define('LINK_ACTION_TYPE_POST', 'post');
 
 class LegacyLinkAction {
 	/** @var string the id of the action */

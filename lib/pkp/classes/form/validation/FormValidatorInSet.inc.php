@@ -3,8 +3,8 @@
 /**
  * @file classes/form/validation/FormValidatorInSet.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FormValidatorInSet
@@ -43,7 +43,9 @@ class FormValidatorInSet extends FormValidator {
 	 * @return boolean
 	 */
 	function isValid() {
-		return $this->isEmptyAndOptional() || in_array($this->getFieldValue(), $this->_acceptedValues);
+		import('lib.pkp.classes.validation.ValidatorInSet');
+		$validator = new ValidatorInSet($this->_acceptedValues);
+		return $this->isEmptyAndOptional() || $validator->isValid($this->getFieldValue());
 	}
 }
 

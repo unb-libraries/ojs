@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/quickSubmit/QuickSubmitForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class QuickSubmitForm
@@ -40,6 +40,10 @@ class QuickSubmitForm extends Form {
 		$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.emailRequired', create_function('$email, $regExp', 'return String::regexp_match($regExp, $email);'), array(ValidatorEmail::getRegexp()), false, array('email')));
 		$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.urlInvalid', create_function('$url, $regExp', 'return empty($url) ? true : String::regexp_match($regExp, $url);'), array(ValidatorUrl::getRegexp()), false, array('url')));
 
+		// Add ORCiD validation
+		import('lib.pkp.classes.validation.ValidatorORCID');
+		$this->addCheck(new FormValidatorArrayCustom($this, 'authors', 'required', 'user.profile.form.orcidInvalid', create_function('$orcid', '$validator = new ValidatorORCID(); return empty($orcid) ? true : $validator->isValid($orcid);'), array(), false, array('orcid')));
+
 		$supportedSubmissionLocales = $journal->getSetting('supportedSubmissionLocales');
 		if (!is_array($supportedSubmissionLocales) || count($supportedSubmissionLocales) < 1) $supportedSubmissionLocales = array($journal->getPrimaryLocale());
 		$this->addCheck(new FormValidatorInSet($this, 'locale', 'required', 'author.submit.form.localeRequired', $supportedSubmissionLocales));
@@ -69,7 +73,7 @@ class QuickSubmitForm extends Form {
 		$sections =& $sectionDao->getJournalSections($journal->getId());
 		$sectionTitles = $sectionAbstractsRequired = array();
 		while ($section =& $sections->next()) {
-			$sectionTitles[$section->getId()] = $section->getLocalizedTitle();
+			$sectionTitles[$section->getId()] = $section->getTitle($journal->getPrimaryLocale());
 			$sectionAbstractsRequired[(int) $section->getId()] = (int) (!$section->getAbstractsNotRequired());
 			unset($section);
 		}
@@ -278,6 +282,7 @@ class QuickSubmitForm extends Form {
 				}
 				$author->setCountry($authors[$i]['country']);
 				$author->setEmail($authors[$i]['email']);
+				$author->setData('orcid', $authors[$i]['orcid']);
 				$author->setUrl($authors[$i]['url']);
 				if (array_key_exists('competingInterests', $authors[$i])) {
 					$author->setCompetingInterests($authors[$i]['competingInterests'], null);
@@ -482,8 +487,8 @@ class QuickSubmitForm extends Form {
 
 		if ($issue && $issue->getPublished()) {
 			$submission->setStatus(STATUS_PUBLISHED);
-			if ($submission && !$submission->getDatePublished()) {
-				$submission->setDatePublished($issue->getDatePublished());
+			if ($publishedArticle && !$publishedArticle->getDatePublished()) {
+				$publishedArticle->setDatePublished($issue->getDatePublished());
 			}
 		} else {
 			$submission->setStatus(STATUS_QUEUED);

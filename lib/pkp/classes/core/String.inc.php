@@ -3,8 +3,8 @@
 /**
  * @file classes/core/String.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class String
@@ -373,6 +373,7 @@ class String {
 	 * @see http://ca.php.net/manual/en/function.mime_content_type.php
 	 */
 	function mime_content_type($filename, $suggestedExtension = '') {
+		$result = null;
 		if (function_exists('mime_content_type')) {
 			$result = mime_content_type($filename);
 			// mime_content_type appears to return a charset
@@ -417,6 +418,7 @@ class String {
 			'sldx:application/zip' => 'application/vnd.openxmlformats-officedocument.presentationml.slide',
 			'docx:application/zip' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 			'dotx:application/zip' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+			'epub:application/zip' => 'application/epub+zip',
 		);
 		if (isset($ambiguities[strtolower($ext.':'.$result)])) {
 			$result = $ambiguities[strtolower($ext.':'.$result)];
@@ -1110,6 +1112,22 @@ class String {
 	 */
 	function enumerateAlphabetically($steps) {
 		return chr(ord('A') + $steps);
+	}
+
+	/**
+	 * Create a new UUID (version 4)
+	 * @return string
+	 */
+	function generateUUID() {
+		mt_srand((double)microtime()*10000);
+		$charid = strtoupper(md5(uniqid(rand(), true)));
+		$hyphen = '-';
+		$uuid = substr($charid, 0, 8).$hyphen
+				.substr($charid, 8, 4).$hyphen
+				.'4'.substr($charid,13, 3).$hyphen
+				.strtoupper(dechex(hexdec(ord(substr($charid,16,1))) % 4 + 8)).substr($charid,17, 3).$hyphen
+				.substr($charid,20,12);
+		return $uuid;
 	}
 }
 

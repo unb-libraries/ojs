@@ -3,8 +3,8 @@
 <!--
   * plugins/importexport/quickSubmit/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -28,4 +28,4 @@
 	<message key="plugins.importexport.quickSubmit.success">Se añadió el artículo</message>
 	<message key="plugins.importexport.quickSubmit.successDescription">Se creó el artículo con éxito.</message>
 	<message key="plugins.importexport.quickSubmit.successReturn">Volver al módulo QuickSubmit.</message>
-</locale> 
+</locale>

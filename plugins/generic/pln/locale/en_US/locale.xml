@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/pln/locale/en_US/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
   *
   * PLN plugin localization strings
@@ -13,7 +13,7 @@
  
 <locale name="en_US" full_name="U.S. English">
 	<message key="plugins.generic.pln">PKP PLN Plugin</message>
-	<message key="plugins.generic.pln.description">The PKP PLN plugin will deposit your published content into the PKP Public LOCKSS Network for preservation.</message>
+	<message key="plugins.generic.pln.description">The PKP PLN plugin will deposit your published content into the PKP Private LOCKSS Network for preservation.</message>
 	<message key="plugins.generic.pln.manager.setup.description"><![CDATA[<strong>PKP Private LOCKSS Network</strong><br /><br />Please read the <a href="https://pkp.sfu.ca/pkp-lockss/" target="_blank">overview of the PKP PLN</a> and complete <a href="{$plnPluginURL}">this simple form</a>. This option will enable inclusion of your journal in the Public Knowledge Project Private LOCKSS Network (PKP PLN).]]></message>
 	
 	<message key="plugins.generic.pln.settings_page">PKP PLN Plugin - Settings</message>
@@ -27,7 +27,6 @@
 	<message key="plugins.generic.pln.settings.refresh">Refresh</message>
 	<message key="plugins.generic.pln.settings.refresh_help">If for some reason there are no terms listed above or you know these terms have been updated, click Refresh to update the terms listed above.</message>
 	
-	<message key="plugins.generic.pln.required.pln_network">Please choose a PLN network.</message>
 	<message key="plugins.generic.pln.required.object_type">Please choose an deposit object type.</message>
 	<message key="plugins.generic.pln.required.object_threshold">Please choose a deposit object threshold.</message>
 	<message key="plugins.generic.pln.required.terms_of_use_agreement">Agreement to the network's terms of use is required in order to deposit to the PLN.</message>
@@ -64,4 +63,5 @@
 	<message key="plugins.generic.pln.notifications.terms_updated">The PKP PLN terms of use have been updated. Agreement with new terms is required to continue depositing.</message>
 	<message key="plugins.generic.pln.notifications.curl_missing">CURL support must be enabled to proceed.</message>
 	<message key="plugins.generic.pln.notifications.zip_missing">ZipArchive support must be enabled to proceed.</message>
+	<message key="plugins.generic.pln.notifications.issn_setting">Your journal must have an ISSN before you can agree to the terms of service. You can enter the ISSN on the Journal Settings page. Once the journal ISSN is entered, the terms of service will be shown below.</message>
 </locale>

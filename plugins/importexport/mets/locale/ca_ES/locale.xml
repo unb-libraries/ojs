@@ -3,8 +3,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ca_ES (Català) locale.
@@ -24,4 +24,4 @@
 	<message key="plugins.importexport.METSExport.settings.organization">METS: atribut d'organització de l'element agent</message>
 	<message key="plugins.importexport.METSExport.settings.preservationLevel">Nivell de conservació PREMIS</message>
 	<message key="plugins.importexport.METSExport.settings.exportSuppFiles">Exporta els fitxers addicionals</message>
-</locale> 
+</locale>

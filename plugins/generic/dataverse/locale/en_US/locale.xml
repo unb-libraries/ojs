@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/dataverse/locale/en_US/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Dataverse plugin localization strings
@@ -19,14 +19,13 @@
 
 	<!-- Set up Dataverse: DVN URL and authentication details -->
 	<message key="plugins.generic.dataverse.settings.connect">Connect</message>
-	<message key="plugins.generic.dataverse.settings.dvnUri">Dataverse Network URL</message>
-	<message key="plugins.generic.dataverse.settings.dvnUriDescription">URL of Dataverse Network to which the journal's Dataverse belongs</message>
-	<message key="plugins.generic.dataverse.settings.usernameDescription">Username of account to be used to deposit files in Dataverse</message>
-	<message key="plugins.generic.dataverse.settings.passwordDescription">Password for username given above</message>
-	<message key="plugins.generic.dataverse.settings.dvnUriRequired">Dataverse Network URL is required.</message>
-	<message key="plugins.generic.dataverse.settings.dvnUriNotValid">Dataverse Network URL is not valid.</message>
-	<message key="plugins.generic.dataverse.settings.usernameRequired">Please enter a valid username for the specified Dataverse Network.</message>
-	<message key="plugins.generic.dataverse.settings.passwordRequired">Please enter a valid password for the specified Dataverse Network.</message>
+	<message key="plugins.generic.dataverse.settings.dvnUri">Dataverse URL</message>
+	<message key="plugins.generic.dataverse.settings.dvnUriDescription">Root Dataverse URL</message>
+	<message key="plugins.generic.dataverse.settings.usernameDescription">Username or API token</message>
+	<message key="plugins.generic.dataverse.settings.passwordDescription">Password. Not required for API token.</message>
+	<message key="plugins.generic.dataverse.settings.dvnUriRequired">Dataverse URL is required.</message>
+	<message key="plugins.generic.dataverse.settings.dvnUriNotValid">Can't connect to Dataverse.</message>
+	<message key="plugins.generic.dataverse.settings.usernameRequired">Please enter a Dataverse username.</message>
 
 	<!-- Set up Dataverse: select Dataverse -->
 	<message key="plugins.generic.dataverse.settings.selectDataverse">Select Dataverse</message>
@@ -149,6 +148,8 @@
 	<message key="plugins.generic.dataverse.suppFile.publishData.error">Please upload a file to deposit in Dataverse.</message>
 	<message key="plugins.generic.dataverse.suppFile.dataCitationDescription">The file will be added to the Dataverse study created for this submission:</message>
 	<message key="plugins.generic.dataverse.suppFile.studyLocked">This study is locked for processing. No changes can be made to submission data until processing has completed.</message>
+	<message key="plugins.generic.dataverse.suppFile.studyDescription">Study Description</message>
+	<message key="plugins.generic.dataverse.suppFile.studyDescription.description">Provide a summary of the purpose, nature, and scope of study data.</message>
 	<message key="plugins.generic.dataverse.suppFile.externalDataCitation">External Data Citation</message>
 	<message key="plugins.generic.dataverse.suppFile.externalDataCitation.description">If the data to be published with this submission is already in a different repository, please provide a data citation.</message>
 	<message key="plugins.generic.dataverse.suppFile.externalDataCitation.error">Please upload files to deposit in Dataverse OR provide an external data citation.</message>

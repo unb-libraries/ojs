@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/common.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -58,7 +58,7 @@
 	<message key="common.notice">Hinweis</message>
 	<message key="common.captchaField.altText">Bild zur Überprüfung</message>
 	<message key="common.captchaField.badCaptcha">Die Zeichen, die Sie eingegeben haben, entsprechen nicht den Zeichen im Bild. Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.</message>
-	<message key="common.captchaField.description">Geben Sie bitte die Zeichen so ein, wie Sie in der obigen Grafik erscheinen.</message>
+	<message key="common.captchaField.description">Geben Sie bitte die Zeichen so ein, wie sie in der obigen Grafik erscheinen.</message>
 	<message key="common.captchaField">Überprüfung</message>
 	<message key="common.ccLicense"><![CDATA[
 		<br /><br />
@@ -194,7 +194,7 @@
 	<message key="common.size">Größe</message>
 	<message key="common.source">Quelle</message>
 	<message key="common.status">Status</message>
-	<message key="common.subject">Gegenstand</message>
+	<message key="common.subject">Schlagwort</message>
 	<message key="common.suggest">Vorschlagen</message>
 	<message key="common.title">Titel</message>
 	<message key="common.top">Zum Seitenanfang</message>
@@ -344,12 +344,12 @@
 	<message key="notification.mailList.submit"><![CDATA[<a href="{$submitUrl}">Beitrag einreichen</a>]]></message>
 	<message key="notification.mailList.register">Sie können sich hier registrieren für ...</message>
 	<message key="notification.mailList.review"><![CDATA[Nehmen Sie am <a href="{$reviewUrl}">Begutachtungsprozess</a> teil]]></message>
-	<message key="notification.noneExist">Sie haben zurzeit keine Benachrichtungen.</message>
-	<message key="notification.notification">Benachrichtung</message>
-	<message key="notification.notifications">Benachrichtungen</message>
+	<message key="notification.noneExist">Sie haben zurzeit keine Benachrichtigungen.</message>
+	<message key="notification.notification">Benachrichtigung</message>
+	<message key="notification.notifications">Benachrichtigungen</message>
 	<message key="notification.notificationsNew">({$numNew} neu)</message>
-	<message key="notification.notificationsDescription"><![CDATA[Sie haben {$unreadCount} ungelesene und {$readCount} gelesene Benachrichtungen.  <a href="{$settingsUrl}">Klicken Sie hier</a>, um Ihre Benachrichtungseinstellungen zu verändern.]]></message>
-	<message key="notification.settings">Benachrichtungseinstellungen</message>
+	<message key="notification.notificationsDescription"><![CDATA[Sie haben {$unreadCount} ungelesene und {$readCount} gelesene Benachrichtigungen.  <a href="{$settingsUrl}">Klicken Sie hier</a>, um Ihre Benachrichtungseinstellungen zu verändern.]]></message>
+	<message key="notification.settings">Benachrichtigungseinstellungen</message>
 	<message key="notification.settingsDescription">Wählen Sie die System-Ereignisse aus, über die Sie benachrichtigt werden wollen. Nicht gewählte Elemente führen dazu, dass die jeweiligen Ereignisse nicht in Ihrem Benachrichtigungs-Feed angezeigt werden.</message>
 	<message key="notification.subscribe">Registrieren</message>
 	<message key="notification.subscribeError">Ihre Mailadresse ist für die Benachrichtigungen bereits registriert.</message>

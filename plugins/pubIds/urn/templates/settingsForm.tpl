@@ -1,8 +1,8 @@
 {**
  * plugins/pubIds/urn/templates/settingsForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * URN plugin settings
@@ -99,14 +99,6 @@
 						{fieldLabel name="urnSuffixDefault" key="plugins.pubIds.urn.manager.settings.urnSuffix.default"}
 						<br />
 						<span class="instruct">{translate key="plugins.pubIds.urn.manager.settings.urnSuffix.default.description"}</span>
-					</td>
-				</tr>
-				<tr>
-					<td width="5%" class="label" align="right" valign="top">
-						<input type="radio" name="urnSuffix" id="urnSuffixPublisherId" value="publisherId" {if $urnSuffix eq "publisherId"}checked{/if} />
-					</td>
-					<td width="95%" class="value">
-						{fieldLabel name="urnSuffixpublisherId" key="plugins.pubIds.urn.manager.settings.urnSuffix.publisherId"}
 					</td>
 				</tr>
 				<tr>

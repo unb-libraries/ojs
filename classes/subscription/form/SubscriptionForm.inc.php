@@ -7,8 +7,8 @@
 /**
  * @file classes/subscription/form/SubscriptionForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionForm
@@ -303,7 +303,7 @@ class SubscriptionForm extends Form {
 
 		import('classes.mail.MailTemplate');
 		$mail = new MailTemplate($mailTemplateKey);
-		$mail->setFrom($subscriptionEmail, $subscriptionName);
+		$mail->setReplyTo($subscriptionEmail, $subscriptionName);
 		$mail->addRecipient($user->getEmail(), $user->getFullName());
 		$mail->setSubject($mail->getSubject($journal->getPrimaryLocale()));
 		$mail->setBody($mail->getBody($journal->getPrimaryLocale()));

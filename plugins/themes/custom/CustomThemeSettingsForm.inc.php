@@ -3,8 +3,8 @@
 /**
  * @file plugins/themes/custom/CustomThemeSettingsForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CustomThemeSettingsForm
@@ -128,7 +128,7 @@ class CustomThemeSettingsForm extends Form {
 		if (!$customThemePerJournal && !$this->_canUsePluginPath()) {
 			$customThemePerJournal = true;
 		}
-		$plugin->updateSetting($journalId, 'customThemePerJournal', $customThemePerJournal, 'boolean');
+		$plugin->updateSetting($journalId, 'customThemePerJournal', $customThemePerJournal, 'bool');
 		if ($customThemePerJournal) {
 			$fileManager->writeJournalFile($journalId, $this->plugin->getStylesheetFilename(), $css);
 		} else {

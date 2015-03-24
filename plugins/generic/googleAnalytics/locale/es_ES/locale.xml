@@ -3,8 +3,8 @@
 <!--
   * plugins/generic/googleAnalytics/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -33,4 +33,4 @@
 	<message key="plugins.generic.googleAnalytics.authorAccount.description">Para seguir el número de lectores de un artículo publicado mediante Google Analytics, introduzca un número de cuenta a continuación (p. ej.  UA-xxxxxx-x).</message>
 	<message key="plugins.generic.googleAnalytics.authorAccountInvalid">No es válido el uso de uno o más números de cuenta de Google Analytics para los autores/as del envío.</message>
 	<message key="plugins.generic.googleAnalytics.manager.settings.analytics">Nuevo código de seguimiento para Universal Analytics (analytics.js)</message>
-</locale> 
+</locale>

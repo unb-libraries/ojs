@@ -1,19 +1,21 @@
 {**
  * plugins/generic/staticPages/editStaticPageForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for editing a Static Page
  *
  *}
+{strip}
 {if $staticPageId}
 	{assign var="pageTitle" value="plugins.generic.staticPages.editStaticPage"}
 {else}
 	{assign var="pageTitle" value="plugins.generic.staticPages.addStaticPage"}
 {/if}
 {include file="common/header.tpl"}
+{/strip}
 
 {translate key="plugins.generic.staticPages.editInstructions"}
 <br />

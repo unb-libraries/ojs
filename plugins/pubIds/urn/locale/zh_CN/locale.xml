@@ -2,16 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * plugins/pubIds/urn/locale/en_US/locale.xml
+  * plugins/pubIds/urn/locale/zh_CN/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * URN plugin localization strings
   -->
- 
-<locale name="en_US" full_name="U.S. English">
+
+<locale name="zh_CN" full_name="China">
 	<message key="plugins.pubIds.urn.urns">URNs</message>
 
 	<!-- plugin -->
@@ -33,8 +33,6 @@
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.pattern.suppFiles">附加文件</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.patternExample">例如，vol%viss%ipp%p对应的字首为“vol3iss2pp230”。</message>
 	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.description">URN字尾可以是任何形式，但对于发表的文章必须是唯一的。</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.publisherId">使用“自定义标识符”作为发表文章的URN字尾（启用设置4.3）.在公共网址上为统一的标识符。</message>
-	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">为发表的文章选定URN字尾，和上述提到的“自定义标识符”不同。在每个发表项目的元数据页面，您会发现一个附加的URN输入段。</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs">清除URNs</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.description">如果您变更URN配置，指定的URNs不会收到影像。一旦修改的URN配置被保存，点击此按钮清除所有现有的URN，这样新的设置会在现有的对象起作用。</message>
 	<message key="plugins.pubIds.urn.manager.settings.clearURNs.confirm">您确定删除所有现有的URNs？</message>
@@ -83,4 +81,5 @@
 	<message key="plugins.pubIds.urn.form.customIdentifierNotUnique">给定的URN字尾已被请用。请输入一个独特的URN字尾。</message>
 	<message key="plugins.pubIds.urn.form.checkNoRequired">核对数目丢失。</message>
 
+	<message key="plugins.pubIds.urn.manager.settings.urnSuffix.customIdentifier">为每一个出版的项目输入一个单独的URN后缀。你会在每个项目的元数据页面上发现附加的URN输入字段。</message>
 </locale>

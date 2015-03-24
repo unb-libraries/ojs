@@ -4,8 +4,8 @@
 <!--
   * plugins/importexport/datacite/locale/de_DE/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -22,7 +22,7 @@
 		Nachdem Sie Kontakt zu der Mitgliedsorganisation hergestellt haben, wird Ihnen ein
 		Zugang zum DataCite-Dienst zum Ausstellen persistenter Kennungen (DOI) und zur
 		Registrierung zugehöriger Metadaten ermöglicht. Wenn Sie über keinen eigenen Benutzer/innennamen und
-		Passwort verfügen, können Sie immerhin in das DataCite-XML-Format exportieren, aber Sie
+		kein eigenes Passwort verfügen, können Sie immerhin in das DataCite-XML-Format exportieren, aber Sie
 		können Ihre DOI nicht aus OJS heraus bei DataCite registrieren.
 		Bitte beachten Sie, dass das Passwort im Klartext, d.h. unverschlüsselt, gespeichert werden
 		wird, da der DataCite-Registrierungsdienst dies erfordert.

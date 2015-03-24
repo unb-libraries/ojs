@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/externalFeed/ExternalFeedPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ExternalFeedPlugin
@@ -250,7 +250,7 @@ class ExternalFeedPlugin extends GenericPlugin {
 		if ($this->getEnabled()) {
 			$smarty =& $params[1];
 			$output =& $params[2];
-			$output .= '<li>&#187; <a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'feeds'), $smarty) . '">' . TemplateManager::smartyTranslate(array('key'=>'plugins.generic.externalFeed.manager.feeds'), $smarty) . '</a></li>';
+			$output .= '<li><a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'feeds'), $smarty) . '">' . TemplateManager::smartyTranslate(array('key'=>'plugins.generic.externalFeed.manager.feeds'), $smarty) . '</a></li>';
 		}
 		return false;
 	}

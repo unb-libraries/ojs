@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/customBlockManager/SettingsForm.inc.php
  *
- * Copyright (c) 2003-2013 Simon Fraser University Library
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2003-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SettingsForm
@@ -79,10 +79,10 @@ class SettingsForm extends Form {
 
 		$deletedBlocks = explode(':',$this->getData('deletedBlocks'));
 		foreach ($deletedBlocks as $deletedBlock) {
-			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock.'CustomBlockPlugin', 'enabled');
-			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock.'CustomBlockPlugin', 'seq');
-			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock.'CustomBlockPlugin', 'context');
-			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock.'CustomBlockPlugin', 'blockContent');
+			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock, 'enabled');
+			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock, 'seq');
+			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock, 'context');
+			$pluginSettingsDao->deleteSetting($journalId, $deletedBlock, 'blockContent');
 		}
 
 		//sort the blocks in alphabetical order

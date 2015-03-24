@@ -1,16 +1,17 @@
 {**
  * plugins/generic/piwik/settingsForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Piwik plugin settings
  *
  *}
-
+{strip}
 {assign var="pageTitle" value="plugins.generic.piwik.manager.piwikSettings"}
 {include file="common/header.tpl"}
+{/strip}
 
 {translate key="plugins.generic.piwik.manager.settings.description"}
 

@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/PKPNotificationManager.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPNotificationManager
@@ -446,14 +446,16 @@ class PKPNotificationManager {
 		import('classes.mail.MailTemplate');
 		$site =& $request->getSite();
 		$mail = new MailTemplate('NOTIFICATION', null, null, null, true, true);
-		$mail->setFrom($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+		$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		$mail->assignParams(array(
 			'notificationContents' => $this->getNotificationContents($request, $notification),
 			'url' => $this->getNotificationUrl($request, $notification),
 			'siteTitle' => $site->getLocalizedTitle()
 		));
 		$mail->addRecipient($user->getEmail(), $user->getFullName());
-		$mail->send();
+		if (!HookRegistry::call('PKPNotificationManager::sendNotificationEmail', array($notification))) {
+			$mail->send();
+		}
 	}
 
 	/**
@@ -474,7 +476,7 @@ class PKPNotificationManager {
 			$dispatcher =& $router->getDispatcher();
 
 			$mail = new MailTemplate('NOTIFICATION_MAILLIST');
-			$mail->setFrom($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+			$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 			$mail->assignParams(array(
 				'notificationContents' => $this->getNotificationContents($request, $notification),
 				'url' => $this->getNotificationUrl($request, $notification),
@@ -513,7 +515,7 @@ class PKPNotificationManager {
 		}
 
 		$mail = new MailTemplate($template);
-		$mail->setFrom($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+		$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		$mail->assignParams($params);
 		$mail->addRecipient($email);
 		$mail->send();

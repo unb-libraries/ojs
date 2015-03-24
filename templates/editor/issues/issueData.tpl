@@ -1,8 +1,8 @@
 {**
  * templates/editor/issues/issueData.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for creation and modification of an issue
@@ -103,6 +103,8 @@
 					{math|assign:"maxYear" equation="x+2" x=$currentYear}
 				{/if}
 				{html_select_date prefix="datePublished" time=$datePublished|default:"---" all_extra="class=\"selectMenu\"" start_year=$minYear end_year=$maxYear year_empty="-" month_empty="-" day_empty="-"}
+				<br/>
+				<input type="checkbox" id="resetArticlePublicationDates" name="resetArticlePublicationDates" />&nbsp;{fieldLabel name="resetArticlePublicationDates" key="editor.issues.resetArticlePublicationDates"}<br/>
 			{else}
 				{translate key="editor.issues.unpublished"}
 			{/if}

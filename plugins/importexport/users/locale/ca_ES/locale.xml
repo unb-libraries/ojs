@@ -3,8 +3,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -57,4 +57,4 @@ Exemples:
 	<message key="plugins.importexport.users.export.exportAllUsers">Exporta'ls tots</message>
 	<message key="plugins.importexport.users.export.errorsOccurred">S'han produït errors durant l'exportació.</message>
 	<message key="plugins.importexport.users.export.couldNotWriteFile">No s'ha pogut escriure al fitxer "{$fileName}".</message>
-</locale> 
+</locale>

@@ -2,16 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * @file plugins/pubIds/doi/locale/en_US/locale.xml
+  * @file plugins/pubIds/doi/locale/fr_CA/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * DOI plugin localization strings
   -->
- 
-<locale name="en_US" full_name="U.S. English">
+
+<locale name="fr_CA" full_name="Français (Canada)">
 	<message key="plugins.pubIds.doi.displayName">DOI</message>
 	<message key="plugins.pubIds.doi.description">Ce plugiciel permet l'assignation d'identifiants d'objets numériques aux numéros, articles, épreuves et fichiers supplémentaires dans OJS.</message>
 
@@ -41,8 +41,7 @@
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPattern.example">Par exemple, vol%viss%ipp%p peut former un DOI tel que 10.1234/vol3iss2pp230</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault">Utiliser le modèle par défaut.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault.description"><![CDATA[%j.v%vi%i pour les numéros<br />%j.v%vi%i.%a pour les articles<br />%j.v%vi%i.%a.g%g pour les épreuves <br />%j.v%vi%i.%a.s%s pour les fichiers supplémentaires.]]></message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPublisherId">Utilisez les "identifiants personnalisés" pour les éléments publiés comme suffixe DOI (cela doit être activé à l'Étape 4). C'est le même identifiant qui sera utilisé pour les URLs publiques.</message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Entrez un suffixe DOI individuel pour chaque élément publié, indépendant et différent de "l'identifiant personnalisé" mentionné dans l'option précédente. Vous trouverez un champs de saisie DOI supplémentaire dans chaque page de métadonnées des éléments.</message>
+	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Entrez un suffixe DOI individuel pour chaque élément publié. Vous trouverez un champs de saisie DOI supplémentaire dans chaque page de métadonnées des éléments.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiIssueSuffixPatternRequired">Veuillez entrer le modèle de suffixe DOI pour les numéros.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiArticleSuffixPatternRequired">Veuillez entrer le modèle de suffixe DOI pour les articles.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiGalleySuffixPatternRequired">Veuillez entrer le modèle de suffixe DOI pour les épreuves.</message>
@@ -61,4 +60,5 @@
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeSuppFile">fichier supplémentaire</message>
 	<message key="plugins.pubIds.doi.editor.doiNotYetGenerated">Ce que vous voyez est l'aperçu d'un DOI qui risque d'être incomplet. Un DOI n'a pas encore été généré. Publier ce numéro et regarder la page publique {$pubObjectType} générera automatiquement un DOI unique pour {$pubObjectType}.</message>
 	<message key="plugins.pubIds.doi.editor.doiSuffixCustomIdentifierNotUnique">Ce DOI est déjà utilisé par un autre élément publié. Veuillez entrer un suffixe DOI unique pour chaque élément.</message>
+	<message key="plugins.pubIds.doi.manager.settings.explainCrossRefDois"><![CDATA[<strong>NOTE:</strong> Lorsque vous utilisez les DOI de <a href="http://www.crossref.org" target="_new">CrossRef</a> veuillez sélectionner les articles. L'article est vu comme une oeuvre, ex. entité du contenu intellectuel et artistique. Par conséquent, l'article est l'objet de diffusion sur lequel est basé l'outil d'export/enregistrement des DOI de Crossref.]]></message>
 </locale>

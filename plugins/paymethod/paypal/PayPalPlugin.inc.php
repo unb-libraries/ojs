@@ -3,7 +3,7 @@
 /**
  * @file plugins/paymethod/paypal/PayPalPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
+ * Copyright (c) 2013-2015 Simon Fraser University Library
  * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -169,7 +169,7 @@ class PayPalPlugin extends PaymethodPlugin {
 			$contactEmail = $journal->getSetting('contactEmail');
 		}
 		$mail = new MailTemplate('PAYPAL_INVESTIGATE_PAYMENT');
-		$mail->setFrom($contactEmail, $contactName);
+		$mail->setReplyTo(null);
 		$mail->addRecipient($contactEmail, $contactName);
 
 		$paymentStatus = $request->getUserVar('payment_status');
@@ -188,7 +188,7 @@ class PayPalPlugin extends PaymethodPlugin {
 				curl_setopt($ch, CURLOPT_URL, $this->getSetting($journal->getId(), 'paypalurl'));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POST, 1);
-				curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded', 'Content-Length: ' . strlen($req)));
+				curl_setopt($ch, CURLOPT_HTTPHEADER, array('User-Agent: PKP PayPal Service', 'Content-Type: application/x-www-form-urlencoded', 'Content-Length: ' . strlen($req)));
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $req);
 				$ret = curl_exec ($ch);
 				$curlError = curl_error($ch);

@@ -3,8 +3,8 @@
 /**
  * @file pages/editor/IssueManagementHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class IssueManagementHandler
@@ -255,9 +255,14 @@ class IssueManagementHandler extends EditorHandler {
 		}
 		$issueForm->readInputData();
 
-		if ($issueForm->validate($issue)) {
-			$issueForm->execute($issueId);
-			$issueForm->initData($issueId);
+		$pubIdPlugins =& PluginRegistry::loadCategory('pubIds', true);
+		if (!HookRegistry::call('Editor::IssueManagementHandler::editIssue', array(&$issue, &$issueForm))) {
+			if ($issueForm->validate($issue)) {
+				$issueForm->execute($issueId);
+				$issueForm->initData($issueId);
+				$this->validate($issueId, true);
+				$issue =& $this->issue;
+			}
 		}
 
 		$templateMgr->assign_by_ref('issue', $issue);
@@ -906,6 +911,11 @@ class IssueManagementHandler extends EditorHandler {
 			$articleDao =& DAORegistry::getDAO('ArticleDAO');
 			$publishedArticles =& $publishedArticleDao->getPublishedArticles($issueId);
 			foreach ($publishedArticles as $publishedArticle) {
+				// Set the publication date to the current date
+				$publishedArticle->setDatePublished(Core::getCurrentDate());
+				$publishedArticleDao->updatePublishedArticle($publishedArticle);
+
+				// Set the article status and affected metadata
 				$article =& $articleDao->getArticle($publishedArticle->getId());
 				if ($article && $article->getStatus() == STATUS_QUEUED) {
 					$article->setStatus(STATUS_PUBLISHED);
@@ -922,9 +932,11 @@ class IssueManagementHandler extends EditorHandler {
 					}
 					$articleSearchIndex->articleMetadataChanged($publishedArticle);
 				}
-				// delete article tombstone
+
+				// Delete article tombstone if necessary
 				$tombstoneDao =& DAORegistry::getDAO('DataObjectTombstoneDAO');
 				$tombstoneDao->deleteByDataObjectId($article->getId());
+
 				unset($article);
 			}
 		}
@@ -1051,7 +1063,7 @@ class IssueManagementHandler extends EditorHandler {
 					$recipients =& $institutionalSubscriptionDao->getSubscribedUsers($journal->getId());
 					break;
 				case 'allAuthors':
-					$recipients =& $authorDao->getAuthorsAlphabetizedByJournal($journal->getId(), null, null, true);
+					$recipients =& $authorDao->getAuthorsAlphabetizedByJournal($journal->getId(), null, null, true, true);
 					break;
 				case 'allUsers':
 					$recipients =& $roleDao->getUsersByJournalId($journal->getId());
@@ -1127,7 +1139,7 @@ class IssueManagementHandler extends EditorHandler {
 			$allUsersCount = $roleDao->getJournalUsersCount($journal->getId());
 
 			// FIXME: There should be a better way of doing this.
-			$authors =& $authorDao->getAuthorsAlphabetizedByJournal($journal->getId(), null, null, true);
+			$authors =& $authorDao->getAuthorsAlphabetizedByJournal($journal->getId(), null, null, true, true);
 			$authorCount = $authors->getCount();
 
 

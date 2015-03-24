@@ -4,8 +4,8 @@
 <!--
   * locale/en_US/default.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -130,6 +130,8 @@ Please follow the following protocol for making electronic revisions to your man
 	<pre>4. FORMATTING
 	The paragraph that begins "This last topic..." is not indented.</pre>]]></message>
 
+	<message key="default.journalSettings.emailHeader">The following message is being delivered on behalf of {$journalName}.
+________________________________________________________________________</message>
 	<message key="default.journalSettings.emailSignature">________________________________________________________________________
 {$journalName}
 {$indexUrl}/{$journalPath}</message>

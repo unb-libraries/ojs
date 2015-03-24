@@ -1,8 +1,8 @@
 {**
  * templates/user/changePassword.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form to change a user's password.
@@ -24,11 +24,11 @@
 <table class="data" width="100%">
 <tr valign="top">
 	<td width="20%" class="label">{fieldLabel name="oldPassword" key="user.profile.oldPassword"}</td>
-	<td width="80%" class="value"><input type="password" name="oldPassword" id="oldPassword" value="{$oldPassword|escape}" size="20" maxlength="32" class="textField" /></td>
+	<td width="80%" class="value"><input type="password" name="oldPassword" id="oldPassword" value="{$oldPassword|escape}" size="20" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="password" key="user.profile.newPassword"}</td>
-	<td class="value"><input type="password" name="password" value="{$password|escape}" id="password" size="20" maxlength="32" class="textField" /></td>
+	<td class="value"><input type="password" name="password" value="{$password|escape}" id="password" size="20" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td></td>
@@ -36,7 +36,7 @@
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="password2" key="user.profile.repeatNewPassword"}</td>
-	<td class="value"><input type="password" name="password2" id="password2" value="{$password2|escape}" size="20" maxlength="32" class="textField" /></td>
+	<td class="value"><input type="password" name="password2" id="password2" value="{$password2|escape}" size="20" class="textField" /></td>
 </tr>
 </table>
 

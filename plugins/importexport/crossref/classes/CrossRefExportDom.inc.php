@@ -3,7 +3,8 @@
 /**
  * @file plugins/importexport/crossref/classes/CrossRefExportDom.inc.php
  *
- * Copyright (c) 2003-2013 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportDom
@@ -164,7 +165,7 @@ class CrossRefExportDom extends DOIExportDom {
 		$head =& XMLCustomWriter::createElement($doc, 'head');
 
 		// DOI batch ID is a simple tracking ID: initials + timestamp
-		XMLCustomWriter::createChildWithText($doc, $head, 'doi_batch_id', $journal->getLocalizedSetting('initials') . '_' . time());
+		XMLCustomWriter::createChildWithText($doc, $head, 'doi_batch_id', $journal->getSetting('initials', $journal->getPrimaryLocale()) . '_' . time());
 		XMLCustomWriter::createChildWithText($doc, $head, 'timestamp', time());
 
 		$journalId = $journal->getId();
@@ -242,19 +243,19 @@ class CrossRefExportDom extends DOIExportDom {
 		$journalMetadataNode =& XMLCustomWriter::createElement($doc, 'journal_metadata');
 
 		/* Full Title of Journal */
-		$journalTitle = $journal->getLocalizedTitle();
+		$journalTitle = $journal->getTitle($journal->getPrimaryLocale());
 		// Attempt a fall back, in case the localized name is not set.
 		if ($journalTitle == '') {
-			$journalTitle = $journal->getLocalizedSetting('abbreviation');
+			$journalTitle = $journal->getSetting('abbreviation', $journal->getPrimaryLocale());
 		}
 		XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'full_title', $journalTitle);
 
 		/* Abbreviated title - defaulting to initials if no abbreviation found */
-		if ($journal->getLocalizedSetting('abbreviation') != '' ) {
-			XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'abbrev_title', $journal->getLocalizedSetting('abbreviation'));
+		if ($journal->getSetting('abbreviation', $journal->getPrimaryLocale()) != '' ) {
+			XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'abbrev_title', $journal->getSetting('abbreviation', $journal->getPrimaryLocale()));
 		}
 		else {
-			XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'abbrev_title', $journal->getLocalizedSetting('initials'));
+			XMLCustomWriter::createChildWithText($doc, $journalMetadataNode, 'abbrev_title', $journal->getSetting('initials', $journal->getPrimaryLocale()));
 		}
 
 		/* Both ISSNs are permitted for CrossRef, so sending whichever one (or both) */
@@ -299,7 +300,7 @@ class CrossRefExportDom extends DOIExportDom {
 		}
 
 		if ($issue->getDatePublished() && $issue->getPubId('doi')) {
-			$issueDoiNode =& $this->_generateDOIdataDom($doc, $issue->getPubId('doi'), Request::url(null, 'issue', 'view', $issue->getBestIssueId($journal)));
+			$issueDoiNode =& $this->_generateDOIdataDom($doc, $issue->getPubId('doi'), Request::url($journal->getPath(), 'issue', 'view', $issue->getBestIssueId($journal)));
 			XMLCustomWriter::appendChild($journalIssueNode, $issueDoiNode);
 		}
 
@@ -323,7 +324,7 @@ class CrossRefExportDom extends DOIExportDom {
 
 		/* Titles */
 		$titlesNode =& XMLCustomWriter::createElement($doc, 'titles');
-		XMLCustomWriter::createChildWithText($doc, $titlesNode, 'title', $article->getLocalizedTitle());
+		XMLCustomWriter::createChildWithText($doc, $titlesNode, 'title', $article->getTitle($article->getLocale()));
 		XMLCustomWriter::appendChild($journalArticleNode, $titlesNode);
 
 		/* AuthorList */
@@ -335,6 +336,13 @@ class CrossRefExportDom extends DOIExportDom {
 			XMLCustomWriter::appendChild($contributorsNode, $authorNode);
 		}
 		XMLCustomWriter::appendChild($journalArticleNode, $contributorsNode);
+
+		/* Abstracts */
+		if ($article->getAbstract($journal->getPrimaryLocale())) {
+			$abstractNode =& XMLCustomWriter::createElement($doc, 'jats:abstract');
+			XMLCustomWriter::createChildWithText($doc, $abstractNode, 'jats:p', $article->getAbstract($journal->getPrimaryLocale()));
+			XMLCustomWriter::appendChild($journalArticleNode, $abstractNode);
+		}
 
 		/* publication date of article */
 		if ($article->getDatePublished()) {
@@ -358,9 +366,17 @@ class CrossRefExportDom extends DOIExportDom {
 			XMLCustomWriter::appendChild($journalArticleNode, $pageNode);
 		}
 
+		/* License URL */
+		if ($article->getLicenseUrl()) {
+			$licenseNode =& XMLCustomWriter::createElement($doc, 'ai:program');
+			XMLCustomWriter::setAttribute($licenseNode, 'name', 'AccessIndicators');
+			XMLCustomWriter::createChildWithText($doc, $licenseNode, 'ai:license_ref', $article->getLicenseUrl());
+			XMLCustomWriter::appendChild($journalArticleNode, $licenseNode);
+		}
+
 		// DOI data node
 		$articleGalleyDao = DAORegistry::getDAO('ArticleGalleyDAO');
-		$DOIdataNode =& $this->_generateDOIdataDom($doc, $article->getPubId('doi'), Request::url(null, 'article', 'view', $article->getBestArticleId()), $articleGalleyDao->getGalleysByArticle($article->getId()));
+		$DOIdataNode =& $this->_generateDOIdataDom($doc, $article->getPubId('doi'), Request::url($journal->getPath(), 'article', 'view', $article->getBestArticleId()), $articleGalleyDao->getGalleysByArticle($article->getId()));
 
 		XMLCustomWriter::appendChild($journalArticleNode, $DOIdataNode);
 
@@ -412,7 +428,7 @@ class CrossRefExportDom extends DOIExportDom {
 
 					// DOI data node
 					$suppFileUrl = Request::url(
-						null, 'article', 'downloadSuppFile',
+						$journal->getPath(), 'article', 'downloadSuppFile',
 						array($article->getId(), $suppFile->getBestSuppFileId($journal))
 					);
 					$suppFileDoiNode =& $this->_generateDOIdataDom($doc, $suppFile->getPubId('doi'), $suppFileUrl);

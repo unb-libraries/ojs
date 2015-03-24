@@ -3,8 +3,8 @@
 <!--
   * plugins/gateways/resolver/locale/ca_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -17,4 +17,4 @@
 	<message key="plugins.gateways.resolver.description">Aquest mòdul determina números i articles a partir de la informació de citació.</message>
 	<message key="plugins.gateways.resolver.errors.errorMessage">No s'ha pogut determinar una entitat simple mitjançant la informació de citació indicada. Comproveu que la informació de citació sigui completa i que faci referència a una entitat d'aquesta versió de l'OJS.</message>
 	<message key="plugins.gateways.resolver.exportHoldings">Exporta el contingut</message>
-</locale> 
+</locale>

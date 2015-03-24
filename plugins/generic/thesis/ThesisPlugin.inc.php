@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/thesis/ThesisPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ThesisPlugin
@@ -150,7 +150,7 @@ class ThesisPlugin extends GenericPlugin {
 			$smarty =& $params[1];
 			$output =& $params[2];
 			$templateMgr = TemplateManager::getManager();
-			$output .= '<li>&#187; <a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'theses'), $smarty) . '">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.thesis.manager.theses'), $smarty) . '</a></li>';
+			$output .= '<li><a href="' . $this->smartyPluginUrl(array('op'=>'plugin', 'path'=>'theses'), $smarty) . '">' . $templateMgr->smartyTranslate(array('key'=>'plugins.generic.thesis.manager.theses'), $smarty) . '</a></li>';
 		}
 		return false;
 	}

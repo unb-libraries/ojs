@@ -1,8 +1,8 @@
 {**
  * templates/author/submit/complete.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * The submission process has been completed; notify the author.
@@ -24,7 +24,7 @@
 	{include file=$paymentButtonsTemplate orientation="vertical"}
 {/if}
 
-<p>&#187; <a href="{url op="index"}">{translate key="author.track"}</a></p>
+<ul><li><a href="{url op="index"}">{translate key="author.track"}</a></li></ul>
 </div>
 
 {include file="common/footer.tpl"}

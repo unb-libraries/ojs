@@ -3,8 +3,8 @@
 <!--
   * locale/ca_ES/manager.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -735,4 +735,4 @@
 	<message key="manager.setup.confirmResetLicense">Estàs segur de voler reiniciar la llicència i la informació del copyright adjunta al contingut publicat i substituir-la per la llicència actual de la revista?</message>
 	<message key="manager.subscriptions.form.dateRemindedBefore">S'ha enviat el recordatori pre-venciment</message>
 	<message key="manager.subscriptions.form.dateRemindedAfter">S'ha enviat el recordatori post-venciment</message>
-</locale> 
+</locale>

@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -360,11 +360,11 @@
 
 	<!-- Verwaltung der Website -->
 
-	<message key="admin.settings.oaiRegistrationDescription"><![CDATA[Um den Inhalt aller von dieser Website angebotenen Zeitschriften bei einem allgemein verbreiteten System von Forschungsdatenbanken zu indizieren, <a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">registrieren Sie</a> die URL Ihrer Website beim Metadaten-Harvester des Public Knowledge Project <a href="http://pkp.sfu.ca/harvester/" target="_blank"></a>. Der Harvester sammelt die Metadaten jedes indizierten Artikels dieser Zeitschrift und macht somit eine umfassende und genaue Suche auf allen Forschungs-Webseiten, die sich an dem Projekt <a href="http://www.openarchives.org/OAI/openarchivesprotocol.htm#Introduction" target="_blank"> Open Archives Initiative Protocol for Metadata Harvesting</a> beteiligen.
+	<message key="admin.settings.oaiRegistrationDescription"><![CDATA[Um den Inhalt aller von dieser Website angebotenen Zeitschriften bei einem allgemein verbreiteten System von Forschungsdatenbanken zu indizieren, <a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">registrieren Sie</a> die URL Ihrer Website beim Metadaten-Harvester des Public Knowledge Project <a href="http://pkp.sfu.ca/harvester/" target="_blank"></a>. Der Harvester sammelt die Metadaten jedes indizierten Artikels dieser Zeitschrift und ermöglicht somit eine umfassende und genaue Suche auf allen Forschungs-Webseiten, die sich an dem Projekt <a href="http://www.openarchives.org/OAI/openarchivesprotocol.htm#Introduction" target="_blank"> Open Archives Initiative Protocol for Metadata Harvesting</a> beteiligen.
 <br /><br />
 <a href="http://pkp.sfu.ca/harvester/add.php" target="_blank">Klicken Sie hier</a> und geben Sie <span class="highlight">{$siteUrl}</span> unter <strong>URL</strong> und <span class="highlight">{$oaiUrl}</span> unter <strong>OAI Base URL</strong> ein.
 <br /><br />
-Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Systemkonfiguration deaktiviert werden kann. Zukünftige Versionen von OJS werden es ermöglichen, die Aktivierung der OAI-Schnittstelle für jede einzelne Zeitschrift einer Website zu regeln.]]></message>
+Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Systemkonfiguration deaktiviert werden kann. Zukünftige Versionen von OJS werden es ermöglichen, die OAI-Schnittstelle für jede Zeitschrift einer Website gesondert zu aktivieren oder zu deaktivieren.]]></message>
 
 
 
@@ -426,10 +426,11 @@ Bitte beachten Sie, dass die OAI-Schnittstelle für diese Website in der OJS-Sys
 	Gutachter/innen die Bitte um Begutachtung, indem sie den eingereichten Beitrag an die E-Mail anhängen. Gutachter/innen mailen den Redakteur/innen ihr Einverständnis (oder einen abschlägigen Bescheid), außerdem das Gutachten und ihre Empfehlung. Redakteur/innen können das Einverständnis der Gutachter/innen (oder deren abschlägigen Bescheid) sowie das Gutachten und die Empfehlung auf der "In Begutachtung"-Seite des Beitrags einsehen, um den Begutachtungsprozess zu verfolgen.</message>
 
 
-	<message key="manager.setup.lockssDescription"><![CDATA[OJS unterstützt <a href="http://www.lockss.org/" target="_blank">LOCKSS</a> (Lots of Copies Keep Stuff Safe &ndash; viele Kopien sichern das Material) und gewährleistet so eine sichere und dauerhafte Archivierung der Zeitschrift. LOCKSS ist ein von der Stanforder Universitätsbibliothek entwickeltes offenes Programm, das Bibliotheken ermöglicht, ausgewählte Online-Zeitschriften dadurch zu sichern, dass sie registrierte Zeitschriften-Webseiten regelmäßig auf neue Inhalte prüfen und diese archivieren. Jedes Archiv wird fortlaufend mit anderen Bibliotheksarchiven verglichen, und falls Inhalte verloren gegangen oder beschädigt sind, werden diese anderen Archive oder die Zeitschriften genutzt, um sie wiederherzustellen.
-<br /><br />
-LOCKSS muss erst dann eingerichtet werden, wenn die Zeitschrift vollständig in Betrieb genommen wurde. Dann führen Sie bitte die folgenden beiden Schritte aus:]]></message>
+	<message key="manager.setup.preservationDescription"><![CDATA[Open Journal Systems unterstützt das System <a href="http://www.lockss.org/" target="_blank">LOCKSS</a> (Lots of Copies Keep Stuff Safe) um sichere und dauerhafte Archivierung Ihrer Zeitschrift zu gewährleisten. Ihnen stehen mehrere Möglichkeiten zur Verfügung, Ihre Zeitschrift in ein LOCKSS-Netzwerk aufzunehmen:]]></message>
 
+	<message key="manager.setup.lockssDescription"><![CDATA[<strong>Andere LOCKSS-Netzwerke</strong>
+<br /><br />
+Wenn Sie denken, dass Sie Zugriff auf eines oder mehrere der <a href="http://www.lockss.org/community/networks/" target="_blank">hier gelisteten</a> LOCKSS-Netzwerke haben, kontaktieren Sie bitte die/den entsprechende/n LOCKSS-Netzwerk-Administrator/in, um sich um Aufnahme zu bewerben. Dazu können Sie das Formular unten ausfüllen, um in diese Netzwerke aufgenommen zu werden. <em>Es werden keine Inhalte archiviert werden, bevor Sie das entsprechende Netzwerk benachrichtigt haben.</em>]]></message>
 	<!-- 3. Einrichtungsschritt -->
 	<message key="manager.setup.authorCopyrightNotice.sample"><![CDATA[<h3>Beispiele für die Anzeige von Creative-Commons-Lizenzen in den Copyright-Vermerken</h3>
 <h4>1. Empfohlene Copyright-Regelungen für Zeitschriften mit Open Access</h4>
@@ -794,7 +795,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="search.allJournals">allen Zeitschriften</message>
 	<message key="search.authorIndex">Autor/innenverzeichnis durchblättern</message>
 	<message key="search.authorDetails">Nähere Angaben zu den Autor/innen</message>
-	<message key="search.syntaxInstructions"><![CDATA[Suchhinweise: <ul>
+	<message key="search.syntaxInstructions"><![CDATA[<h4>Suchhinweise: </h4><ul>
 <li>Groß- und Kleinschreibung der Suchbegriffe werden nicht unterschieden.</li>
 <li>Häufig vorkommende Worte werden ignoriert</li>
 <li>Standardmäßig werden nur die Artikel aufgelistet, die <em>alle</em> Suchbegriffe enthalten (implizites <em>UND</em>).</li>
@@ -974,7 +975,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="installer.ojsUpgrade">Aktualisierung von OJS</message>
 	<message key="installer.installationInstructions"><![CDATA[<h4>OJS-Version {$version}</h4>
 
-<p>Danke für das Herunterladen von Open Journal Systems <strong>des Public Knowledge Projects (PKP)</strong>. Bevor Sie fortfahren, lesen Sie bitte die zum Programm gehörende <a href="{$baseUrl}/docs/README">README</a>-Datei. Näheres über das Public Knowledge Project und seine Programmentwicklungen finden Sie auf der <a href="http://pkp.sfu.ca/" target="_blank">Webseite des PKP</a>. Wenn Sie Programmfehler melden wollen oder technische Fragen zu Open Journal Systems haben, gehen Sie bitte zum <a href="http://pkp.sfu.ca/support/forum">Support Forum</a> von PKP oder besuchen Sie unseren <a href="http://pkp.sfu.ca/bugzilla/" target="_blank">Webservice für die Anzeige von Programmfehlern</a>. Wenn Sie im Support Forum keine geeignete Hilfestellung finden, können Sie uns auch unter <a href="mailto:pkp.contact@gmail.com"></a> per E-Mail kontaktieren.</p>
+<p>Danke für das Herunterladen von Open Journal Systems <strong>des Public Knowledge Projects (PKP)</strong>. Bevor Sie fortfahren, lesen Sie bitte die zum Programm gehörende <a href="{$baseUrl}/docs/README">README</a>-Datei. Näheres über das Public Knowledge Project und seine Programmentwicklungen finden Sie auf der <a href="http://pkp.sfu.ca/" target="_blank">Webseite des PKP</a>. Wenn Sie Programmfehler melden wollen oder technische Fragen zu Open Journal Systems haben, gehen Sie bitte zum <a href="http://forum.pkp.sfu.ca">Support Forum</a> von PKP oder besuchen Sie unseren <a href="https://github.com/pkp/pkp-lib#issues" target="_blank">Webservice für die Anzeige von Programmfehlern</a>. Wenn Sie im Support Forum keine geeignete Hilfestellung finden, können Sie uns auch unter <a href="mailto:pkp.contact@gmail.com"></a> per E-Mail kontaktieren.</p>
 
 <h4>Aktualisierungen</h4>
 
@@ -1012,7 +1013,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 <p>2. Ein Verzeichnis für die Ablage hochgeladener Dateien muss angelegt und beschreibbar gemacht werden (siehe "Datei-Einstellungen" unten).</p>]]></message>
 	<message key="installer.upgradeInstructions"><![CDATA[<h4>OJS-Version{$version}</h4>
 
-<p>Danke für das Herunterladen von Open Journal Systems <strong>des Public Knowledge Project</strong>. Bevor Sie fortfahren, lesen Sie bitte die zum Programm gehörenden Dateien <a href="{$baseUrl}/docs/README">README</a> und <a href="{$baseUrl}/docs/UPGRADE">UPGRADE</a>. Näheres über das Public Knowledge Project und seine Programmentwicklungen finden Sie auf der <a href="http://pkp.sfu.ca/" target="_blank">Webseite des PKP</a>. Wenn Sie Programmfehler melden wollen oder technische Fragen zu Open Journal Systems haben, gehen Sie bitte zum <a href="http://pkp.sfu.ca/support/forum">Support Forum</a> von PKP oder besuchen Sie unseren <a href="http://pkp.sfu.ca/bugzilla/" target="_blank">Webservice für die Anzeige von Programmfehlern</a>. Wenn Sie im Support Forum keine geeignete Hilfestellung finden, können Sie uns auch unter <a href="mailto:pkp.contact@gmail.com"></a> per E-Mail kontaktieren.</p>
+<p>Danke für das Herunterladen von Open Journal Systems <strong>des Public Knowledge Project</strong>. Bevor Sie fortfahren, lesen Sie bitte die zum Programm gehörenden Dateien <a href="{$baseUrl}/docs/README">README</a> und <a href="{$baseUrl}/docs/UPGRADE">UPGRADE</a>. Näheres über das Public Knowledge Project und seine Programmentwicklungen finden Sie auf der <a href="http://pkp.sfu.ca/" target="_blank">Webseite des PKP</a>. Wenn Sie Programmfehler melden wollen oder technische Fragen zu Open Journal Systems haben, gehen Sie bitte zum <a href="http://forum.pkp.sfu.ca">Support Forum</a> von PKP oder besuchen Sie unseren <a href="https://github.com/pkp/pkp-lib#issues" target="_blank">Webservice für die Anzeige von Programmfehlern</a>. Wenn Sie im Support Forum keine geeignete Hilfestellung finden, können Sie uns auch unter <a href="mailto:pkp.contact@gmail.com"></a> per E-Mail kontaktieren.</p>
 <p>Wir <strong>empfehlen dringend</strong>, dass Sie ein Backup Ihrer Datenbank, Dateiverzeichnisse und OJS-Installation machen, bevor Sie fortfahren.</p>
 <p>Falls Sie in einem <a href="http://www.php.net/features.safe-mode" target="_blank">PHP-Safe Mode</a> arbeiten, stellen Sie bitte sicher, dass die max_execution_time-Richtlinie in Ihrer php.ini-Konfigurationsdatei auf einen hohen Grenzwert eingestellt ist. Sollte dieses (oder irgendein anderes) Zeitlimit (z.B. die "Timeout"-Regelung von Apache) erreicht werden und der Upgrade-Prozess unterbrochen werden, müssen Sie manuell eingreifen.</p>]]></message>
 	<message key="installer.localeSettingsInstructions"><![CDATA[Zur durchgängigen Unterstützung von Unicode (UTF-8) verwenden Sie stets UTF-8 als Zeichensatz. Beachten Sie, dass MySQL >= 4.1.1 oder PostgreSQL >= 7.1-Datenbankserver erforderlich sind. Beachten Sie bitte außerdem, dass die Unterstützung von Unicode PHP >= 4.3.0 kompiliert mit der Bibliothek <a href="http://www.php.net/mbstring" target="_blank">mbstring</a> verlangt (in den meisten neueren PHP-Installationen standardmäßig aktiviert). Falls Ihr Server diese Anforderungen nicht erfüllt, können Schwierigkeiten mit erweiterten Schriftsätzen auftreten.
@@ -1037,10 +1038,10 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<li>Treten Sie unseren <a href="http://pkp.sfu.ca/informed" target="_new">Diskussionslisten</a> für OJS, OCS, den Harvester, Lemon8-XML, OMP oder allen genannten Themen bei.</li>
 	<li>Abonnieren Sie den <a href="http://pkp.sfu.ca/blog/feed" target="_new">RSS-Feed</a> des <a href="http://pkp.sfu.ca/blog" target="_new">PKP-Blogs</a>.</li>
 </ol>
-<p>Wenn Sie Fragen oder Kommentare haben, besuchen Sie bitte das <a href="http://pkp.sfu.ca/support/forum" target="_new">Support-Forum</a>.</p>]]></message>
+<p>Wenn Sie Fragen oder Kommentare haben, besuchen Sie bitte das <a href="http://forum.pkp.sfu.ca" target="_new">Support-Forum</a>.</p>]]></message>
 	<message key="installer.upgradeComplete"><![CDATA[<p>Die Aktualisierung von OJS auf Version {$version} wurde erfolgreich abgeschlossen.</p>
 <p>Bitte vergessen Sie nicht, die "installed"-Einstellung in Ihrer config.inc.php-Konfigurationsdatei wieder zurück auf <em>On</em> zu setzen.</p>
-<p>Wenn Sie sich noch nicht registriert haben und in Zukunft Neuigkeiten und Hinweise auf Aktualisierungen erhalten möchten, <strong>registrieren Sie sich bitte auf <a href="http://pkp.sfu.ca/ojs/register" target="_new">http://pkp.sfu.ca/ojs/register</a>.</strong> Wenn Sie Fragen oder Kommentare haben, besuchen Sie bitte das <a href="http://pkp.sfu.ca/support/forum" target="_new">Support-Forum</a>.</p>]]></message>
+<p>Wenn Sie sich noch nicht registriert haben und in Zukunft Neuigkeiten und Hinweise auf Aktualisierungen erhalten möchten, <strong>registrieren Sie sich bitte auf <a href="http://pkp.sfu.ca/ojs/register" target="_new">http://pkp.sfu.ca/ojs/register</a>.</strong> Wenn Sie Fragen oder Kommentare haben, besuchen Sie bitte das <a href="http://forum.pkp.sfu.ca" target="_new">Support-Forum</a>.</p>]]></message>
 
 	<!-- Warnungen zum Upgrade -->
 	<message key="site.upgradeAvailable.admin"><![CDATA[Eine neue Version von OJS ist verfügbar! Sie benutzen momentan OJS {$currentVersion}. Die aktuelleste Version ist OJS {$latestVersion}. Bitte gehen Sie zu <a href="http://pkp.sfu.ca/ojs_download" target="_new">dieser Seite</a>, um die aktuelle Version herunterzuladen und um Informationen zum Upgrade einzusehen.]]></message>

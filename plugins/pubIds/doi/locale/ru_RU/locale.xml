@@ -4,8 +4,8 @@
 <!--
   * plugins/pubIds/doi/locale/ru_RU/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Russian) locale.
@@ -43,8 +43,7 @@
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPattern.example">Например, vol%viss%ipp%p может создать DOI вида 10.1234/vol3iss2pp230</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault">Использовать шаблоны по умолчанию.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault.description"><![CDATA[%j.v%vi%i для выпусков<br />%j.v%vi%i.%a для статей<br />%j.v%vi%i.%a.g%g для гранок <br />%j.v%vi%i.%a.s%s для дополнительных файлов.]]></message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPublisherId">Использовать «Пользовательский идентификатор» для опубликованных элементов как суффикс DOI (должно быть включено на шаге 4.3 установки журнала). Это тот же самый идентификатор, который будет использоваться для публичных адресов (URL).</message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Ввести индивидуальный суффикс DOI для каждого опубликованного элемента, независимый и отличающийся от «Пользовательского идентификатора», который упоминается в предыдущей настройке. Вы увидите дополнительное поле ввода DOI на странице метаданных для каждого элемента.</message>
+	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Ввести индивидуальный суффикс DOI для каждого опубликованного элемента. Вы увидите дополнительное поле ввода DOI на странице метаданных для каждого элемента.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiIssueSuffixPatternRequired">Пожалуйста, введите шаблон суффикса DOI для выпусков.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiArticleSuffixPatternRequired">Пожалуйста, введите шаблон суффикса DOI для статей.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiGalleySuffixPatternRequired">Пожалуйста, введите шаблон суффикса DOI для гранок.</message>
@@ -63,4 +62,11 @@
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeSuppFile">дополнительный файл</message>
 	<message key="plugins.pubIds.doi.editor.doiNotYetGenerated">Вы видите, как будет выглядеть DOI (этот вид может быть неполным). DOI еще не был сгенерирован. Опубликование выпуска и просмотр страницы объекта типа «{$pubObjectType}» приведет к автоматической генерации уникального DOI для этого объекта типа «{$pubObjectType}».</message>
 	<message key="plugins.pubIds.doi.editor.doiSuffixCustomIdentifierNotUnique">Заданный суффикс DOI уже используется для другого опубликованного элемента. Пожалуйста, введите уникальный суффикс DOI для каждого элемента.</message>
+	<message key="plugins.pubIds.doi.editor.excludePubObject">Исключить объект типа «{$pubObjectType}» из объектов, которым назначается DOI.</message>
+	<message key="plugins.pubIds.doi.editor.doiReassign">Переназначить DOI</message>
+	<message key="plugins.pubIds.doi.editor.doiReassign.description">Поставьте галочку, чтобы удалить существующие DOI для объектов типа «{$pubObjectType}».</message>
+	<message key="plugins.pubIds.doi.editor.excludeIssueObjectsDoi">Исключить объекты выпуска</message>
+	<message key="plugins.pubIds.doi.editor.excludeIssueObjectsDoi.description">Используйте эту кнопку, чтобы исключить объекты (статьи, гранки и дополнительные файлы), запланированные на текущий момент к публикации в этом выпуске, из списка объектов, которым назначается DOI. Обратите внимание, что это не повлияет на объекты, которые будут добавлены/запланированы позже. Вы по-прежнему сможете воспользоваться настройками исключения отдельных объектов.</message>
+	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi">Удалить DOI у объектов выпуска</message>
+	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi.description">Используйте эту кнопку, чтобы удалить DOI всех объектов (статей, гранок и дополнительных файлов), запланированных на текущий момент к публикации в этом номере.</message>
 </locale>

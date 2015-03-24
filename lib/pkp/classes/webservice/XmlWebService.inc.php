@@ -3,8 +3,8 @@
 /**
  * @file classes/citation/XmlWebService.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XmlWebService
@@ -67,7 +67,7 @@ class XmlWebService extends WebService {
 		// Catch web service errors
 		if (is_null($xmlResult)) return $xmlResult;
 
-		if ($this->_lastResponseStatus >= 400 || $this->_lastResponseStatus <= 599) {
+		if ($this->_lastResponseStatus >= 400 && $this->_lastResponseStatus <= 599) {
 			$nullVar = null;
 			return $nullVar;
 		}

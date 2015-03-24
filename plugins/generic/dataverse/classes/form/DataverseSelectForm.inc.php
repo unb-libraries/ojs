@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/dataverse/classes/form/DataverseSelectForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataverseSelectForm
@@ -42,13 +42,7 @@ class DataverseSelectForm extends Form {
 	 */
 	function initData() {
 		// Get service document
-		$sd = $this->_plugin->getServiceDocument(
-						$this->_plugin->getSetting($this->_journalId, 'sdUri'),
-						$this->_plugin->getSetting($this->_journalId, 'username'),
-						$this->_plugin->getSetting($this->_journalId, 'password'),		 
-						'' // on behalf of
-					);
-		
+		$sd = $this->_plugin->getServiceDocument($this->_journalId);
 		$dataverses = array();
 		if (isset($sd)) {
 			foreach ($sd->sac_workspaces as $workspace) {

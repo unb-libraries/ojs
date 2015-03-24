@@ -1,8 +1,8 @@
 {**
  * templates/manager/plugins/plugins.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List available import/export plugins.
@@ -14,18 +14,20 @@
 {if $mainPage}
 	<p>{translate key="manager.plugins.description"}</p>
 
-	<ul id="plugins" class="plain">
+	<ul id="plugins">
 		{foreach from=$plugins item=plugin}
 			{if $plugin->getCategory() != $category}
 				{assign var=category value=$plugin->getCategory()}
-				<li>&#187; <a href="{url path=$category|escape}">{translate key="plugins.categories.$category"}</a></li>
+				<li><a href="{url path=$category|escape}">{translate key="plugins.categories.$category"}</a></li>
 			{/if}
 		{/foreach}
-		{if !$preventManagerPluginManagement}
-			<li>&nbsp;</li>
-			<li><b><a href="{url op="managePlugins" path=install}">{translate key="manager.plugins.install"}</a></b></li>
-		{/if}
 	</ul>
+
+	{if !$preventManagerPluginManagement}
+		<ul id="pluginManagement">
+			<li><b><a href="{url op="managePlugins" path=install}">{translate key="manager.plugins.install"}</a></b></li>
+		</ul>
+	{/if}
 {else}
 	{foreach from=$plugins item=plugin}
 		{if $plugin->getCategory() != $category}
@@ -36,7 +38,7 @@
 		{/if}
 	{/foreach}
 
-	<ul id="plugins" class="plain">
+	<ul id="plugins">
 		{foreach from=$plugins item=plugin}
 			{if !$plugin->getHideManagement()}
 			{if $plugin->getCategory() != $category}

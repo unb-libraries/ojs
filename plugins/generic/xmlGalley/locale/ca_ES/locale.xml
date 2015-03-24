@@ -3,8 +3,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -42,4 +42,4 @@
 	<message key="plugins.generic.xmlGalley.settings.customXSL">Full d'estil XSL personalitzat</message>
 	<message key="plugins.generic.xmlGalley.settings.customXSLRequired">Heu d'indicar un full d'estil XSL personalitzat.</message>
 	<message key="plugins.generic.xmlGalley.settings.customXSLInvalid">El fitxer XSL que heu carregat no és vàlid. Comproveu el fitxer i torneu-ho a intentar.</message>
-</locale> 
+</locale>

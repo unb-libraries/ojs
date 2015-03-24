@@ -3,8 +3,8 @@
 /**
  * @file pages/login/LoginHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class LoginHandler
@@ -39,7 +39,7 @@ class LoginHandler extends PKPLoginHandler {
 				$templateMgr =& TemplateManager::getManager();
 				$templateMgr->assign('pageTitle', 'manager.people');
 				$templateMgr->assign('errorMsg', 'manager.people.noAdministrativeRights');
-				$templateMgr->assign('backLink', $request->url(null, null, 'people', 'all'));
+				$templateMgr->assign('backLink', $request->url(null, 'manager', 'people', 'all'));
 				$templateMgr->assign('backLinkLabel', 'manager.people.allUsers');
 				return $templateMgr->display('common/error.tpl');
 			}
@@ -108,9 +108,9 @@ class LoginHandler extends PKPLoginHandler {
 		
 		// Set the sender based on the current context
 		if ($journal && $journal->getSetting('supportEmail')) {
-			$mail->setFrom($journal->getSetting('supportEmail'), $journal->getSetting('supportName'));
+			$mail->setReplyTo($journal->getSetting('supportEmail'), $journal->getSetting('supportName'));
 		} else { 
-			$mail->setFrom($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
+			$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		}
 	}
 

@@ -1,8 +1,8 @@
 {**
  * plugins/generic/referral/referralForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Referral form.
@@ -47,11 +47,11 @@
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="name" required="true" key="common.title"}</td>
-	<td class="value"><input type="text" name="name[{$formLocale|escape}]" value="{$name[$formLocale]|escape}" size="40" id="name" maxlength="80" class="textField" /></td>
+	<td class="value"><input type="text" name="name[{$formLocale|escape}]" value="{$name[$formLocale]|escape}" size="40" id="name" maxlength="255" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="url" required="true" key="common.url"}</td>
-	<td class="value"><input type="text" name="url" id="url" value="{$url|escape}" size="40" maxlength="80" class="textField" /></td>
+	<td class="value"><input type="text" name="url" id="url" value="{$url|escape}" size="40" maxlength="255" class="textField" /></td>
 </tr>
 <tr valign="top">
 	<td class="label">{fieldLabel name="status" key="common.status"}</td>

@@ -4,8 +4,8 @@
 <!--
   * installer.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ro_RO (Romanian) locale.
@@ -69,4 +69,6 @@
 	<message key="installer.publicFilesDirError">Directorul public pentru încărcarea fișierelor nu există sau nu poate fi inscripționat.</message>
 	<message key="installer.releaseNotes">Note de versiune</message>
 	<message key="installer.securitySettings">Setări de securitate</message>
+	<message key="installer.installParseFilterConfigFileError"><![CDATA[Eroare la parcurgerea fișierului de configurare a filtrelor <tt>{$file}</tt>.]]></message>
+	<message key="installer.oaiSettings">Setări OAI</message>
 </locale>

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/classes/DepositPackage.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class DepositPackage
@@ -90,7 +90,13 @@ class DepositPackage {
 		
 		$pkpJournalUrl = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'pkp:journal_url', $journal->getUrl());
 		$entry->appendChild($pkpJournalUrl);
-		
+
+		$pkpPublisher = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'pkp:publisherName', $journal->getSetting('publisherInstitution'));
+		$entry->appendChild($pkpPublisher);
+
+		$pkpPublisherUrl = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'pkp:publisherUrl', $journal->getSetting('publisherUrl'));
+		$entry->appendChild($pkpPublisherUrl);
+
 		$issn = '';
 		
 		if ($journal->getSetting('onlineIssn')) {
@@ -110,11 +116,11 @@ class DepositPackage {
 		
 		$url = $journal->getUrl() . '/' . PLN_PLUGIN_ARCHIVE_FOLDER . '/deposits/' . $this->_deposit->getUUID();
 		$pkpDetails = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'pkp:content', $url);
-		$pkpDetails->setAttribute('size', ceil(filesize($packageFile)/1024));
+		$pkpDetails->setAttribute('size', ceil(filesize($packageFile)/1000));
 		
 		$objectVolume = "";
 		$objectIssue = "";
-		$objectOublicationDate = 0;
+		$objectPublicationDate = 0;
 		
 		switch ($this->_deposit->getObjectType()) {
 			case PLN_PLUGIN_DEPOSIT_OBJECT_ARTICLE:
@@ -122,8 +128,8 @@ class DepositPackage {
 				while ($depositObject =& $depositObjects->next()) {
 					$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
 					$article = $publishedArticleDao->getPublishedArticleByArticleId($depositObject->getObjectId());
-					if ($article->getDatePublished() > $objectOublicationDate)
-						$objectOublicationDate = $article->getDatePublished();
+					if ($article->getDatePublished() > $objectPublicationDate)
+						$objectPublicationDate = $article->getDatePublished();
 					unset($depositObject);
 				}
 				break;
@@ -134,8 +140,8 @@ class DepositPackage {
 					$issue = $issueDao->getIssueById($depositObject->getObjectId());
 					$objectVolume = $issue->getVolume();
 					$objectIssue = $issue->getNumber();
-					if ($issue->getDatePublished() > $objectOublicationDate)
-						$objectOublicationDate = $issue->getDatePublished();
+					if ($issue->getDatePublished() > $objectPublicationDate)
+						$objectPublicationDate = $issue->getDatePublished();
 					unset($depositObject);
 				}
 				break;
@@ -143,7 +149,7 @@ class DepositPackage {
 		
 		$pkpDetails->setAttribute('volume', $objectVolume);
 		$pkpDetails->setAttribute('issue', $objectIssue);
-		$pkpDetails->setAttribute('pubdate', strftime("%F",strtotime($objectOublicationDate)));
+		$pkpDetails->setAttribute('pubdate', strftime("%F",strtotime($objectPublicationDate)));
 		
 		switch ($plnPlugin->getSetting($journal->getId(), 'checksum_type')) {
 			case 'SHA-1':
@@ -186,8 +192,8 @@ class DepositPackage {
 		// set up folder and file locations
 		$bagDir = $this->getDepositDir() . DIRECTORY_SEPARATOR . 'bag';
 		$packageFile = $this->getPackageFilePath();
-		$exportFile =  $bagDir . DIRECTORY_SEPARATOR . $this->_deposit->getObjectType() . '.xml';
-		$termsFile =  $bagDir . DIRECTORY_SEPARATOR . 'terms.xml';
+		$exportFile =  tempnam(sys_get_temp_dir(), 'ojs-pln-export-');
+		$termsFile =  tempnam(sys_get_temp_dir(), 'ojs-pln-terms-');
 		
 		$bag = new BagIt($bagDir);
 		
@@ -233,11 +239,13 @@ class DepositPackage {
 		$entry->setAttributeNS('http://www.w3.org/2000/xmlns/' ,'xmlns:pkp', PLN_PLUGIN_NAME);
 
 		$terms = unserialize($plnPlugin->getSetting($this->_deposit->getJournalId(), 'terms_of_use'));
+		$agreement = unserialize($plnPlugin->getSetting($this->_deposit->getJournalId(), 'terms_of_use_agreement'));
 		
 		$pkpTermsOfUse = $termsXml->createElementNS(PLN_PLUGIN_NAME, 'pkp:terms_of_use');
 		foreach ($terms as $termName => $termData) {
 			$element = $termsXml->createElementNS(PLN_PLUGIN_NAME, $termName, $termData['term']);
 			$element->setAttribute('updated',$termData['updated']);
+			$element->setAttribute('agreed', $agreement[$termName]);
 			$pkpTermsOfUse->appendChild($element);
 		}
 
@@ -251,10 +259,6 @@ class DepositPackage {
 		$bag->addFile($termsFile, 'terms' . $this->_deposit->getUUID() . '.xml');
 		$bag->update();
 		
-		// delete files
-		$fileManager->deleteFile($exportFile);
-		$fileManager->deleteFile($termsFile);
-
 		// create the bag
 		$bag->package($packageFile,'zip');
 		
@@ -272,12 +276,11 @@ class DepositPackage {
 		$depositDao =& DAORegistry::getDAO('DepositDAO');
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
 		$plnPlugin =& PluginRegistry::getPlugin('generic',PLN_PLUGIN_NAME);
-		$plnNetworks = unserialize(PLN_PLUGIN_NETWORKS);
 		$fileManager = new JournalFileManager($journalDao->getById($this->_deposit->getJournalId()));
 		$plnDir = $fileManager->filesDir . PLN_PLUGIN_ARCHIVE_FOLDER;
 		
 		// post the atom document
-		$url = 'http://' . $plnNetworks[$plnPlugin->getSetting($this->_deposit->getJournalID(), 'pln_network')];
+		$url = PLN_PLUGIN_NETWORK;
 		if ($this->_deposit->getUpdateStatus()) {
 			$url .= PLN_PLUGIN_CONT_IRI . '/' . $plnPlugin->getSetting($this->_deposit->getJournalID(), 'journal_uuid');
 			$url .= '/' . $this->_deposit->getUUID() . '/edit';
@@ -354,9 +357,8 @@ class DepositPackage {
 			
 		$depositDao =& DAORegistry::getDAO('DepositDAO');
 		$plnPlugin =& PluginRegistry::getPlugin('generic','plnplugin');
-		$plnNetworks = unserialize(PLN_PLUGIN_NETWORKS);
 		
-		$url = 'http://' . $plnNetworks[$plnPlugin->getSetting($this->_deposit->getJournalID(), 'pln_network')] . PLN_PLUGIN_CONT_IRI;
+		$url = PLN_PLUGIN_NETWORK . PLN_PLUGIN_CONT_IRI;
 		$url .= '/' . $plnPlugin->getSetting($this->_deposit->getJournalID(), 'journal_uuid');
 		$url .= '/' . $this->_deposit->getUUID() . '/state';
 		

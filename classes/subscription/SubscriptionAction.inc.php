@@ -3,8 +3,8 @@
 /**
  * @file classes/subscription/SubscriptionAction.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionAction
@@ -675,7 +675,7 @@ class SubscriptionAction {
 
 		import('classes.mail.MailTemplate');
 		$mail = new MailTemplate($mailTemplateKey);
-		$mail->setFrom($subscriptionContactEmail, $subscriptionContactName);
+		$mail->setReplyTo($subscriptionContactEmail, $subscriptionContactName);
 		$mail->addRecipient($subscriptionContactEmail, $subscriptionContactName);
 		$mail->setSubject($mail->getSubject($journal->getPrimaryLocale()));
 		$mail->setBody($mail->getBody($journal->getPrimaryLocale()));

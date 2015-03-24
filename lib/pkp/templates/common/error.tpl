@@ -1,8 +1,8 @@
 {**
  * error.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Generic error page.
@@ -16,9 +16,9 @@
 <span class="errorText">{translate key=$errorMsg params=$errorParams}</span>
 
 {if $backLink}
-<br /><br />
-&#187; <a id="backLink" href="{$backLink}">{translate key="$backLinkLabel"}</a>
+<ul>
+	<li><a id="backLink" href="{$backLink}">{translate key="$backLinkLabel"}</li>
+</ul>
 {/if}
 
 {include file="common/footer.tpl"}
-

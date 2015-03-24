@@ -3,8 +3,8 @@
 /**
  * @file plugins/themes/custom/CustomThemePlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CustomThemePlugin
@@ -69,7 +69,7 @@ class CustomThemePlugin extends ThemePlugin {
 	 */
 	function getStylesheetPath() {
 		$journal =& Request::getJournal();
-		if ($this->getSetting($journal->getId(), 'customThemePerJournal')) {
+		if ($journal && $this->getSetting($journal->getId(), 'customThemePerJournal')) {
 			import('classes.file.PublicFileManager');
 			$fileManager = new PublicFileManager();
 			return $fileManager->getJournalFilesPath($journal->getId());
@@ -146,13 +146,14 @@ class CustomThemePlugin extends ThemePlugin {
 		if ($verb != 'settings') return false;
 
 		$journal =& Request::getJournal();
+		$journalId = ($journal ? $journal->getId() : CONTEXT_ID_NONE);
 		$templateMgr =& TemplateManager::getManager();
 
 		$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 		$templateMgr->setCacheability(CACHEABILITY_MUST_REVALIDATE);
 
 		$this->import('CustomThemeSettingsForm');
-		$form = new CustomThemeSettingsForm($this, $journal->getId());
+		$form = new CustomThemeSettingsForm($this, $journalId);
 		if (Request::getUserVar('save')) {
 			$form->readInputData();
 			if ($form->validate()) {

@@ -1,8 +1,8 @@
 {**
  * templates/index/site.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Site index.
@@ -50,7 +50,7 @@
 {/if}
 
 <div id="journalListPageInfo">{page_info iterator=$journals}</div>
-<div id="journalListPageLinks">{page_links anchor="journals" name="journals" iterator=$journals}
+<div id="journalListPageLinks">{page_links anchor="journals" name="journals" iterator=$journals}</div>
 
 {include file="common/footer.tpl"}
 

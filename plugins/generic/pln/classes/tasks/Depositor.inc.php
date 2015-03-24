@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/classes/tasks/Depositor.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PLNPluginDepositor
@@ -73,12 +73,18 @@ class Depositor extends ScheduledTask {
 			}
 			
 			// check to make sure zip is installed
-			if (!$this->_plugin->curlInstalled()) {
+			if (!$this->_plugin->zipInstalled()) {
 				$this->addExecutionLogEntry(__('plugins.generic.pln.notifications.zip_missing'), SCHEDULED_TASK_MESSAGE_TYPE_WARNING);
 				$this->_plugin->createJournalManagerNotification($journal->getId(),PLN_PLUGIN_NOTIFICATION_TYPE_ZIP_MISSING);
 				continue;
 			}
 			
+                        if(!$this->_plugin->tarInstalled()) {
+				$this->addExecutionLogEntry(__('plugins.generic.pln.notifications.tar_missing'), SCHEDULED_TASK_MESSAGE_TYPE_WARNING);
+				$this->_plugin->createJournalManagerNotification($journal->getId(),PLN_PLUGIN_NOTIFICATION_TYPE_TAR_MISSING);
+				continue;
+                        }
+                        
 			// get the sword service document
 			$sdResult = $this->_plugin->getServiceDocument($journal->getId());
 			

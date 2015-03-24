@@ -3,8 +3,8 @@
 /**
  * @file classes/payment/ojs/OJSPaymentManager.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSPaymentManager
@@ -426,7 +426,7 @@ class OJSPaymentManager extends PaymentManager {
 
 				import('classes.mail.MailTemplate');
 				$mail = new MailTemplate('GIFT_AVAILABLE', $giftLocale);
-				$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+				$mail->setReplyTo(null);
 				$mail->assignParams(array(
 					'giftJournalName' => $giftJournalName,
 					'giftNoteTitle' => $giftNoteTitle,
@@ -459,7 +459,7 @@ class OJSPaymentManager extends PaymentManager {
 					$mail = new MailTemplate('GIFT_USER_LOGIN', $giftLocale);
 				}
 
-				$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+				$mail->setReplyTo(null);
 				$mail->assignParams($params);
 				$mail->addRecipient($recipientEmail, $user->getFullName());
 				$mail->send();

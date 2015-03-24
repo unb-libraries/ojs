@@ -1,8 +1,8 @@
 {**
  * plugins/generic/googleAnalytics/pageTagAnalytics.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Google Analytics analytics.js page tag.
@@ -16,7 +16,7 @@
 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-ga('create', '{$googleAnalyticsSiteId|escape}', 'auto');
+ga('create', '{/literal}{$googleAnalyticsSiteId|escape}{literal}', 'auto');
 ga('send', 'pageview');
 
 </script>

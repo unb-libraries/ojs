@@ -3,8 +3,8 @@
 <!--
   * locale/ca_ES/user.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -126,4 +126,4 @@
 	<message key="user.workingLanguages">Llengües de treball</message>
 	<message key="user.register.completeForm">Ompliu aquest formulari per registrar-vos en aquest lloc web.</message>
 	<message key="user.profile.form.hashInvalid">El reinici del hash de la paraula de pas que intenteu utilitzar no es vàlid.</message>
-</locale> 
+</locale>

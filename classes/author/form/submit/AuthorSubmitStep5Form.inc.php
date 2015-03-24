@@ -3,8 +3,8 @@
 /**
  * @file classes/author/form/submit/AuthorSubmitStep5Form.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class AuthorSubmitStep5Form
@@ -181,7 +181,7 @@ class AuthorSubmitStep5Form extends AuthorSubmitForm {
 		// Send author notification email
 		import('classes.mail.ArticleMailTemplate');
 		$mail = new ArticleMailTemplate($article, 'SUBMISSION_ACK', null, null, null, false);
-		$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+		$mail->setReplyTo(null);
 		if ($mail->isEnabled()) {
 			$mail->addRecipient($user->getEmail(), $user->getFullName());
 			// If necessary, BCC the acknowledgement to someone.

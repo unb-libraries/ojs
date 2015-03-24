@@ -4,8 +4,8 @@
 <!--
   * plugins/pubIds/doi/locale/de_DE/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * DOI plugin localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -42,8 +42,7 @@
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPattern.example">vol%viss%ipp%p würde z.B. einen DOI 10.1234/vol3iss2pp230 erzeugen.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault">Die Standardmuster benutzen.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiSuffixDefault.description"><![CDATA[%j.v%vi%i für Ausgaben<br />%j.v%vi%i.%a für Artikel<br />%j.v%vi%i.%a.g%g für Fahnen <br />%j.v%vi%i.%a.s%s für Zusatzdateien.]]></message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixPublisherId">Die eindeutige Kennung für Elemente als DOI-Suffix benutzen (muss in Schritt 4.3 der Zeitschrifteneinrichtung aktiviert werden). Dies ist dieselbe Kennung, die für öffentliche URL verwendet werden wird.</message>
-	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Für jedes veröffentlichte Element einen individuellen DOI-Suffix unabhängig und verschieden von der "benutzerdefinierten Kennung" aus der vorherigen Option vergeben. Sie werden ein zusätzliches DOI-Eingabefeld auf der Metadatenseite jedes Elements finden.</message>
+	<message key="plugins.pubIds.doi.manager.settings.doiSuffixCustomIdentifier">Für jedes veröffentlichte Element einen individuellen DOI-Suffix vergeben. Sie werden ein zusätzliches DOI-Eingabefeld auf der Metadatenseite jedes Elements finden.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiIssueSuffixPatternRequired">Bitte geben Sie das DOI-Suffix-Muster für Ausgaben ein.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiArticleSuffixPatternRequired">Bitte geben Sie das DOI-Suffix-Muster für Artikel ein.</message>
 	<message key="plugins.pubIds.doi.manager.settings.doiGalleySuffixPatternRequired">Bitte geben Sie das DOI-Suffix-Muster für Fahnen ein.</message>
@@ -60,6 +59,13 @@
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeArticle">Artikel</message>
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeGalley">Fahne</message>
 	<message key="plugins.pubIds.doi.editor.doiObjectTypeSuppFile">Zusatzdatei</message>
-	<message key="plugins.pubIds.doi.editor.doiNotYetGenerated">Es wurde noch kein DOI erzeugt. Die Veröffentlichung der Ausgabe und die Ansicht der öffentlichen {$pubObjectType}-Seite wird automatisch eindeutige DOI für diese/n {$pubObjectType}.</message>
+	<message key="plugins.pubIds.doi.editor.doiNotYetGenerated">Es wurde noch kein DOI erzeugt. Die Veröffentlichung der Ausgabe und die Ansicht der öffentlichen {$pubObjectType}-Seite wird automatisch eindeutige DOI für den/die/das {$pubObjectType} erzeugen.</message>
 	<message key="plugins.pubIds.doi.editor.doiSuffixCustomIdentifierNotUnique">Der angegebene DOI-Suffix wird bereits für ein anderes veröffentlichtes Element benutzt. Bitte vergeben Sie einen eindeutigen DOI-Suffix für jedes Element.</message>
+	<message key="plugins.pubIds.doi.editor.excludePubObject">Diese/diesen/dieses {$pubObjectType} von der Zuweisung eines DOI ausnehmen.</message>
+	<message key="plugins.pubIds.doi.editor.doiReassign">Neuen DOI vergeben</message>
+	<message key="plugins.pubIds.doi.editor.doiReassign.description">Wählen Sie diese Box, um den existierenden DOI für diese/diesen/dieses {$pubObjectType} zu löschen.</message>
+	<message key="plugins.pubIds.doi.editor.excludeIssueObjectsDoi">Objekte einer Ausgabe ausnehmen</message>
+	<message key="plugins.pubIds.doi.editor.excludeIssueObjectsDoi.description">Nutzen Sie diesen Knopf, um Objekte (Artikel, Fahnen, Zusatzdateien), die momentan für diese Ausgabe vorgesehen sind, von der DOI-Zuweisung auszunehmen. Beachten Sie bitte, dass dies nicht für Objekte gilt, die Sie später hinzufügen/für die Ausgabe einplanen. Sie können immer noch Ausnahmen für einzelne Objekte vornehmen.</message>
+	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi">DOI der Ausgabenobjekte löschen</message>
+	<message key="plugins.pubIds.doi.editor.clearIssueObjectsDoi.description">Nutzen Sie diesen Knopf, um die DOI aller Objekte (Artikel, Fahne, Zusatzdateien), die momentan für diese Ausgabe vorgesehen sind, zu löschen.</message>
 </locale>

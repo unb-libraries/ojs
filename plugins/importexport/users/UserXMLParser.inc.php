@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/users/UserXMLParser.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserXMLParser
@@ -133,7 +133,10 @@ class UserXMLParser {
 								$newUser->setSignature($attrib->getValue(), $locale);
 								break;
 							case 'interests':
-								$newUser->setTemporaryInterests($attrib->getValue());
+								$interests = $attrib->getValue(); // Bug #9054
+								$oldInterests = $newUser->getTemporaryInterests();
+								if ($oldInterests) $interests = $oldInterests . ',' . $interests;
+								$newUser->setTemporaryInterests($interests);
 								break;
 							case 'gossip':
 								$locale = $attrib->getAttribute('locale');
@@ -193,7 +196,7 @@ class UserXMLParser {
 
 			$journalDao =& DAORegistry::getDAO('JournalDAO');
 			$journal =& $journalDao->getById($this->journalId);
-			$mail->setFrom($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
+			$mail->setReplyTo($journal->getSetting('contactEmail'), $journal->getSetting('contactName'));
 		}
 
 		for ($i=0, $count=count($this->usersToImport); $i < $count; $i++) {

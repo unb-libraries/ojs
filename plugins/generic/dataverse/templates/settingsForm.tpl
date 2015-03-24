@@ -1,8 +1,8 @@
 {**
  * plugins/generic/dataverse/templates/settingsForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Dataverse plugin settings
@@ -33,9 +33,9 @@
 		
 		<h4>{translate key="about.sectionPolicies"}</h4>
 		<p>{translate key="plugins.generic.dataverse.settings.sectionPoliciesDescription"}</p>
-		<ul class="plain">
+		<ul>
 			{foreach from=$sections item=section}
-				<li>&#187; <a href="{url op='editSection' path=$section->getId()}" target="_blank">{$section->getLocalizedTitle()}</a></li>
+				<li><a href="{url op='editSection' path=$section->getId()}" target="_blank">{$section->getLocalizedTitle()}</a></li>
 			{/foreach}
 		</ul>
 		

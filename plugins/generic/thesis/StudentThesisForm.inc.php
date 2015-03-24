@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/thesis/StudentThesisForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StudentThesisForm
@@ -286,10 +286,10 @@ class StudentThesisForm extends Form {
 
 			import('classes.mail.MailTemplate');
 			$mail = new MailTemplate('THESIS_ABSTRACT_CONFIRM');
-			$mail->setFrom($thesisEmail, "\"" . $thesisName . "\"");
+			$mail->setReplyTo($thesisEmail, $thesisName);
 			$mail->assignParams($paramArray);
-			$mail->addRecipient($thesis->getSupervisorEmail(), "\"" . $supervisorName . "\"");
-			$mail->addCc($thesis->getStudentEmail(), "\"" . $studentName . "\"");
+			$mail->addRecipient($thesis->getSupervisorEmail(), $supervisorName);
+			$mail->addCc($thesis->getStudentEmail(), $studentName);
 			$mail->send();
 		}
 

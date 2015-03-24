@@ -3,8 +3,8 @@
 <!--
   * registry/journalSettings.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Default journal settings.
@@ -50,6 +50,10 @@
 	<setting type="string" locale="1">
 		<name>copyeditInstructions</name>
 		<value>{translate key="default.journalSettings.copyeditInstructions"}</value>
+	</setting>
+	<setting type="string" locale="0">
+		<name>emailHeader</name>
+		<value>{translate key="default.journalSettings.emailHeader"}</value>
 	</setting>
 	<setting type="string" locale="0">
 		<name>emailSignature</name>

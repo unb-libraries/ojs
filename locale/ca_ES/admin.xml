@@ -3,8 +3,8 @@
 <!--
   * locale/ca_ES/admin.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -100,4 +100,4 @@ Utilització (processament dels fitxers dins d'un directori amb cadena d'inici):
 	<message key="admin.settings.security">Seguretat</message>
 	<message key="admin.settings.security.plugins">Impedir que els/les gestors/es de la revista puguin instalar, actualitzar o suprimir mòduls.</message>
 	<message key="admin.languages.reloadDefaultEmailTemplates">Recarregar les plantilles de correu per defecte</message>
-</locale> 
+</locale>

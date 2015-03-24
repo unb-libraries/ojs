@@ -2,16 +2,16 @@
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 
 <!--
-  * @file plugins/generic/alm/locale/en_US/locale.xml
+  * @file plugins/generic/alm/locale/zh_CN/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * ALM plugin localization strings
   -->
 
-<locale name="en_US" full_name="U.S. English">
+<locale name="zh_CN" full_name="China">
 
 	<message key="plugins.generic.alm.displayName">ALM 插件</message>
 	<message key="plugins.generic.alm.description">在文章说平密钥中显示插件。为使用ALM服务，您需要DOIs。这项要求在未来有可能会放松。</message>
@@ -49,4 +49,5 @@
 {$payload}</message>
 	<message key="plugins.generic.alm.senderTask.name">ALM文章信息发件人</message>
 	
+	<message key="plugins.generic.alm.senderTask.warning.noJournal">任何杂志未启用ALM插件。文章信息未发送。</message>
 </locale>

@@ -1,8 +1,8 @@
 {**
  * templates/issue/interstitial.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Interstitial page used to display a note
@@ -35,7 +35,7 @@
 	<meta http-equiv="refresh" content="2;URL={url op="download" path=$issueId|to_array:$galley->getBestGalleyId($currentJournal)}"/>
 	{$additionalHeadData}
 </head>
-<body>
+<body id="pkp-{$pageTitle|replace:'.':'-'}">
 
 <div id="container">
 <div id="body">

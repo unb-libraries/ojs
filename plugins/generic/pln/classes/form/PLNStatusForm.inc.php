@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/PLNStatusForm.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class PLNStatusForm
@@ -50,9 +50,9 @@ class PLNStatusForm extends Form {
 		
 		if (!$networkStatusMessage) {
 			if ($networkStatus === true) {
-				$networkStatusMessage = __(PLN_PLUGIN_NOTIFICATION_PLN_ACCEPTING);
+				$networkStatusMessage = __('plugins.generic.pln.notifications.pln_accepting');
 			} else {
-				$networkStatusMessage = __(PLN_PLUGIN_NOTIFICATION_PLN_NOT_ACCEPTING);
+				$networkStatusMessage = __('plugins.generic.pln.notifications.pln_not_accepting');
 			}
 		}
 		$templateMgr =& TemplateManager::getManager();

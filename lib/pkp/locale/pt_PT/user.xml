@@ -4,8 +4,8 @@
 <!--
   * locale/pt_PT/user.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_PT (Português) locale.
@@ -127,4 +127,5 @@
 	<message key="user.profile.form.usergroupRequired">É obrigatório um grupo de utilizadores.</message>
 	<message key="user.suffix">Sufixo</message>
 	<message key="user.profile.form.hashInvalid">O hash de recuperação de senha não é válido.</message>
+	<message key="user.login.changePasswordInstructionsOneStep"><![CDATA[Tem de escolher uma nova senaga antes de aceder ao site.<br /><br />Por favor insira o nome de utilizador e senha em baixo para alterar a senha da sua conta.]]></message>
 </locale>

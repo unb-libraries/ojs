@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/lucene/locale/pt_BR/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * OJS solr/lucene search plugin localization strings
@@ -47,7 +47,7 @@
 	<message key="plugins.generic.lucene.results.orderDir.asc">Crescente</message>
 	<message key="plugins.generic.lucene.results.orderDir.desc">Decrescente</message>
 	<message key="plugins.generic.lucene.results.similarDocuments">documentos similares</message>
-	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[Dicas: <ul>
+	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[<h4>Dicas:</h4><ul>
 			<li>Termos de pesquisa não diferenciam maiúsculas de minúsculas</li>
 			<li>Palavras comuns são ignoradas</li>
 			<li>Por padrão, artigos contendo <em>qualquer</em> termo são recuperados (isto é, <em>OU</em> é implícito)</li>

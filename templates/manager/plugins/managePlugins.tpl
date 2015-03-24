@@ -1,8 +1,8 @@
 {**
  * templates/manager/plugins/managePlugins.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List available import/export plugins.
@@ -19,7 +19,7 @@
 			<p>{translate key="manager.plugins.installDescription"}</p>
 		{/if}
 
-		<form method="post" action="{url path="installPlugin"}" enctype="multipart/form-data">
+		<form method="post" action="{url op="managePlugins" path="installPlugin"}" enctype="multipart/form-data">
 			{if $error}
 				<span class="formError">{translate key="form.errorsOccurred"}:</span>
 				<ul class="formErrorList">
@@ -33,8 +33,8 @@
 				</ul>
 			{/if}
 			{if $uploaded}
-				<ul class="plain">
-					<li>&#187;&nbsp;
+				<ul>
+					<li>
 					{if is_array($message)}
 						{translate key=$message[0]} {$message[1]}
 					{else}
@@ -77,8 +77,8 @@
 				</ul>
 			{/if}
 			{if $uploaded}
-				<ul class="plain">
-					<li>&#187;&nbsp;
+				<ul>
+					<li>
 					{if is_array($message)}
 						{translate key=$message[0]} {$message[1]}
 					{else}

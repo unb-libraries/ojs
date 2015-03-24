@@ -1,8 +1,8 @@
 {**
  * plugins/blocks/user/block.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common site sidebar menu -- user tools.
@@ -38,7 +38,7 @@
 					</tr>
 					<tr>
 						<td><label for="sidebar-password">{translate key="user.password"}</label></td>
-						<td><input type="password" id="sidebar-password" name="password" value="{$password|escape}" size="12" maxlength="32" class="textField" /></td>
+						<td><input type="password" id="sidebar-password" name="password" value="{$password|escape}" size="12" class="textField" /></td>
 					</tr>
 					<tr>
 						<td colspan="2"><input type="checkbox" id="remember" name="remember" value="1" /> <label for="remember">{translate key="plugins.block.user.rememberMe"}</label></td>

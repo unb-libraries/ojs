@@ -1,8 +1,8 @@
 {**
  * templates/user/login.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2000-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2000-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User login form.
@@ -48,7 +48,7 @@
 	</tr>
 	<tr>
 		<td class="label"><label for="loginPassword">{translate key="user.password"}</label></td>
-		<td class="value"><input type="password" id="loginPassword" name="password" value="{$password|escape}" size="20" maxlength="32" class="textField" /></td>
+		<td class="value"><input type="password" id="loginPassword" name="password" value="{$password|escape}" size="20" class="textField" /></td>
 	</tr>
 	{if $showRemember}
 	<tr valign="middle">
@@ -63,17 +63,18 @@
 	</tr>
 	</table>
 
-	<p>
-		{if !$hideRegisterLink}&#187; <a href="{url page="user" op=$registerOp}">{translate key=$registerLocaleKey}</a><br />{/if}
-		&#187; <a href="{url page="login" op="lostPassword"}">{translate key="user.login.forgotPassword"}</a>
-	</p>
-{/if}{* !$implicitAuth *}
+	<ul>
+		{if !$hideRegisterLink}<li><a href="{url page="user" op=$registerOp}">{translate key=$registerLocaleKey}</a></li>{/if}
+		<li><a href="{url page="login" op="lostPassword"}">{translate key="user.login.forgotPassword"}</a></li>
+	</ul>
 
 <script type="text/javascript">
 <!--
 	document.getElementById('{if $username}loginPassword{else}loginUsername{/if}').focus();
 // -->
 </script>
+{/if}{* !$implicitAuth *}
+
 </form>
 
 {include file="common/footer.tpl"}

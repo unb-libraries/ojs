@@ -4,8 +4,8 @@
 <!--
   * locale/es_ES/user.xml
   *
-  * Copyright (c) 2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2014-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the 
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -127,4 +127,5 @@
 	<message key="user.workingLanguages">Idiomas de trabajo</message>
 	<message key="user.register.completeForm">Rellene el formulario para registrarse en el sitio.</message>
 	<message key="user.profile.form.hashInvalid">El reinicio del hash de la palabra de paso que intentas usar no es válido.</message>
-</locale> 
+	<message key="user.login.changePasswordInstructionsOneStep"><![CDATA[Tiene que escoger una nueva contraseña antes de poder entrar a este sitio.<br /><br />Introduzca su usuario y su nueva contraseña tras cambiar la contraseña de su cuenta.]]></message>
+</locale>

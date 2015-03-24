@@ -4,8 +4,8 @@
 <!--
   * metrics.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Metrics schema in XML.
@@ -38,8 +38,8 @@
 		</field>
 		<field name="file_type" type="I1" />
 		<field name="country_id" type="C2" size="2" />
-	    <field name="region" type="I2" />
-	    <field name="city" type="C2" size="255" />
+		<field name="region" type="C2" size="2" />
+		<field name="city" type="C2" size="255" />
 		<field name="metric_type" type="C2" size="255">
 			<NOTNULL />
 		</field>
@@ -53,6 +53,11 @@
 		<index name="metrics_metric_type_journal_id">
 			<col>metric_type</col>
 			<col>journal_id</col>
+		</index>
+		<index name="metrics_metric_type_assoc_type_submission_id">
+			<col>metric_type</col>
+			<col>assoc_type</col>
+			<col>submission_id</col>
 		</index>
 		<!-- TODO: more indexes, depending on use cases. -->
 	</table>

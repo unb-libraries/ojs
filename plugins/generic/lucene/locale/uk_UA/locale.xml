@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/lucene/locale/uk_UA/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * OJS solr/lucene search plugin localization strings
@@ -42,7 +42,7 @@
 	<message key="plugins.generic.lucene.results.orderDir.asc">Прямий порядок</message>
 	<message key="plugins.generic.lucene.results.orderDir.desc">Зворотній порядок</message>
 
-	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[Пошукові нотатки: <ul>
+	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[<h4>Пошукові нотатки:</h4><ul>
 <li>Пошукові терміни незалежні від регістру</li>
 <li>Слова загального вжитку ігноруються</li>
 <li>За замовчуванням повертаються ті статті, які містять <em>будь-який</em> з пошукових термінів (тобто застосовується оператор <em>OR</em>)</li>

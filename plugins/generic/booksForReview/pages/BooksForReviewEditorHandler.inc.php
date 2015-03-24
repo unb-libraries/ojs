@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/booksForReview/pages/BooksForReviewEditorHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class BooksForReviewEditorHandler
@@ -666,7 +666,7 @@ class BooksForReviewEditorHandler extends Handler {
 						);
 
 						$email->addRecipient($userEmail, $userName);
-						$email->setFrom($book->getEditorEmail(), $book->getEditorFullName());
+						$email->setReplyTo($book->getEditorEmail(), $book->getEditorFullName());
 						$email->assignParams($paramArray);
 					}
 					$returnUrl = $request->url(null, 'editor', 'assignBookForReviewAuthor', $bookId, array('returnPage' => $returnPage, 'userId' => $userId));
@@ -742,7 +742,7 @@ class BooksForReviewEditorHandler extends Handler {
 					);
 
 					$email->addRecipient($userEmail, $userFullName);
-					$email->setFrom($book->getEditorEmail(), $book->getEditorFullName());
+					$email->setReplyTo($book->getEditorEmail(), $book->getEditorFullName());
 					$email->assignParams($paramArray);
 				}
 				$returnUrl = $request->url(null, 'editor', 'denyBookForReviewAuthor', $bookId, array('returnPage' => $returnPage));
@@ -829,7 +829,7 @@ class BooksForReviewEditorHandler extends Handler {
 					);
 
 					$email->addRecipient($userEmail, $userFullName);
-					$email->setFrom($book->getEditorEmail(), $book->getEditorFullName());
+					$email->setReplyTo($book->getEditorEmail(), $book->getEditorFullName());
 					$email->assignParams($paramArray);
 				}
 				$returnUrl = $request->url(null, 'editor', 'notifyBookForReviewMailed', $bookId, array('returnPage' => $returnPage));
@@ -909,7 +909,7 @@ class BooksForReviewEditorHandler extends Handler {
 					);
 
 					$email->addRecipient($userEmail, $userFullName);
-					$email->setFrom($book->getEditorEmail(), $book->getEditorFullName());
+					$email->setReplyTo($book->getEditorEmail(), $book->getEditorFullName());
 					$email->assignParams($paramArray);
 				}
 				$returnUrl = $request->url(null, 'editor', 'removeBookForReviewAuthor', $bookId, array('returnPage' => $returnPage));

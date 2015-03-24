@@ -3,8 +3,8 @@
 <!--
   * plugins/generic/stopForumSpam/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -25,4 +25,4 @@
 	<message key="plugins.generic.stopForumSpam.manager.settings.checkUsername">Comprobar nombre de usuario/a de registro (se debe habilitar con precaución)</message>
 	<message key="plugins.generic.stopForumSpam.checkName">stopForumSpamPlugin</message>
 	<message key="plugins.generic.stopForumSpam.checkMessage"><![CDATA[El módulo <a href="http://www.stopforumspam.com" target="_blank">Stop Forum Spam</a> bloqueó este registro.]]></message>
-</locale> 
+</locale>

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/sword/SwordPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SwordPlugin
@@ -166,10 +166,8 @@ class SwordPlugin extends GenericPlugin {
 			$submittingUser =& $sectionEditorSubmission->getUser();
 
 			import('classes.mail.ArticleMailTemplate');
-			$contactName = $journal->getSetting('contactName');
-			$contactEmail = $journal->getSetting('contactEmail');
 			$mail = new ArticleMailTemplate($sectionEditorSubmission, 'SWORD_DEPOSIT_NOTIFICATION', null, null, $journal, true, true);
-			$mail->setFrom($contactEmail, $contactName);
+			$mail->setReplyTo(null);
 			$mail->addRecipient($submittingUser->getEmail(), $submittingUser->getFullName());
 
 			$mail->assignParams(array(

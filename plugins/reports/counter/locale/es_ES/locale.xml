@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE locale SYSTEM "../../../../../lib/pkp/dtd/locale.dtd">
 <!--
-  * plugins/generic/counter/locale/es_ES/locale.xml
+  * plugins/reports/counter/locale/es_ES/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Spanish_%28es_ES%29
@@ -28,4 +28,4 @@
 	<message key="plugins.reports.counter.1a.ytdPdf">PDF del último año</message>
 	<message key="plugins.reports.counter.1a.totalForAllJournals">Total para todas las revistas</message>
 	<message key="plugins.reports.counter.legacyStats">Los siguientes enlaces generan informes mediante datos antiguos del módulo COUNTER. Si desea generar informes COUNTER mediante el nuevo tipo de métrica COUNTER de OJS, utilice los siguientes enlaces.</message>
-</locale> 
+</locale>

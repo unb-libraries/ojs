@@ -1,8 +1,8 @@
 {**
  * templates/user/register.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User registration form.
@@ -13,7 +13,7 @@
 {include file="common/header.tpl"}
 {/strip}
 
-<form id="register" method="post" action="{url op="registerUser"}">
+<form id="registerForm" method="post" action="{url op="registerUser"}">
 
 <p>{translate key="user.register.completeForm"}</p>
 
@@ -66,7 +66,7 @@
 
 	<tr valign="top">
 		<td class="label">{fieldLabel name="password" required="true" key="user.password"}</td>
-		<td class="value"><input type="password" name="password" value="{$password|escape}" id="password" size="20" maxlength="32" class="textField" /></td>
+		<td class="value"><input type="password" name="password" value="{$password|escape}" id="password" size="20" class="textField" /></td>
 	</tr>
 
 	{if !$existingUser}
@@ -76,7 +76,7 @@
 		</tr>
 		<tr valign="top">
 			<td class="label">{fieldLabel name="password2" required="true" key="user.repeatPassword"}</td>
-			<td class="value"><input type="password" name="password2" id="password2" value="{$password2|escape}" size="20" maxlength="32" class="textField" /></td>
+			<td class="value"><input type="password" name="password2" id="password2" value="{$password2|escape}" size="20" class="textField" /></td>
 		</tr>
 
 		{if $captchaEnabled}

@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/objectsForReview/pages/ObjectsForReviewEditorHandler.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ObjectsForReviewEditorHandler
@@ -206,7 +206,7 @@ class ObjectsForReviewEditorHandler extends Handler {
 	 * @param $request PKPRequest
 	 */
 	function createObjectForReview($args, &$request) {
-		$this->editObjectForReview($args, &$request);
+		$this->editObjectForReview($args, $request);
 	}
 
 	/**
@@ -1099,7 +1099,7 @@ class ObjectsForReviewEditorHandler extends Handler {
 			$editorEmail = $editor->getEmail();
 			$editorContactSignature = $editor->getContactSignature();
 
-			if ($action = 'OFR_OBJECT_ASSIGNED') {
+			if ($action == 'OFR_OBJECT_ASSIGNED') {
 				$ofrPlugin =& $this->_getObjectsForReviewPlugin();
 				$journal =& $request->getJournal();
 				$dueWeeks = $ofrPlugin->getSetting($journal->getId(), 'dueWeeks');
@@ -1113,14 +1113,14 @@ class ObjectsForReviewEditorHandler extends Handler {
 					'submissionUrl' => $request->url(null, 'author', 'submit'),
 					'editorialContactSignature' => String::html2text($editorContactSignature)
 				);
-			} elseif ($action = 'OFR_OBJECT_DENIED') {
+			} elseif ($action == 'OFR_OBJECT_DENIED') {
 				$paramArray = array(
 					'authorName' => strip_tags($userFullName),
 					'objectForReviewTitle' => '"' . strip_tags($objectForReview->getTitle()) . '"',
 					'submissionUrl' => $request->url(null, 'author', 'submit'),
 					'editorialContactSignature' => String::html2text($editorContactSignature)
 				);
-			} elseif ($action = 'OFR_OBJECT_MAILED') {
+			} elseif ($action == 'OFR_OBJECT_MAILED') {
 				$paramArray = array(
 					'authorName' => strip_tags($userFullName),
 					'authorMailingAddress' => String::html2text($userMailingAddress),
@@ -1136,7 +1136,7 @@ class ObjectsForReviewEditorHandler extends Handler {
 				);
 			}
 			$email->addRecipient($userEmail, $userFullName);
-			$email->setFrom($editorEmail, $editorFullName);
+			$email->setReplyTo($editorEmail, $editorFullName);
 			$email->assignParams($paramArray);
 		}
 		$email->displayEditForm($returnUrl);

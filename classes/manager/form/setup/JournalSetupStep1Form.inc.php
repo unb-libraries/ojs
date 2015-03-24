@@ -3,8 +3,8 @@
 /**
  * @file classes/manager/form/setup/JournalSetupStep1Form.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class JournalSetupStep1Form
@@ -50,6 +50,7 @@ class JournalSetupStep1Form extends JournalSetupForm {
 				'contributors' => 'object',
 				'history' => 'string',
 				'envelopeSender' => 'string',
+				'emailHeader' => 'string',
 				'emailSignature' => 'string',
 				'searchDescription' => 'string',
 				'searchKeywords' => 'string',
@@ -64,6 +65,7 @@ class JournalSetupStep1Form extends JournalSetupForm {
 		$this->addCheck(new FormValidatorEmail($this, 'contactEmail', 'required', 'manager.setup.form.contactEmailRequired'));
 		$this->addCheck(new FormValidator($this, 'supportName', 'required', 'manager.setup.form.supportNameRequired'));
 		$this->addCheck(new FormValidatorEmail($this, 'supportEmail', 'required', 'manager.setup.form.supportEmailRequired'));
+		$this->addCheck(new FormValidatorEmail($this, 'envelopeSender', 'optional', 'user.profile.form.emailRequired'));
 	}
 
 	/**
@@ -106,7 +108,7 @@ class JournalSetupStep1Form extends JournalSetupForm {
 	 */
 	function display($request, $dispatcher) {
 		$templateMgr =& TemplateManager::getManager();
-		if (Config::getVar('email', 'allow_envelope_sender'))
+		if (Config::getVar('email', 'allow_envelope_sender') && !(Config::getVar('email', 'force_default_envelope_sender') && Config::getVar('email', 'default_envelope_sender')))
 			$templateMgr->assign('envelopeSenderEnabled', true);
 
 		// If Categories are enabled by Site Admin, make selection

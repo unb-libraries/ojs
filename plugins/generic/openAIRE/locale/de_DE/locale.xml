@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/openAIRE/locale/de_DE/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * OpenAIRE plugin localization strings for the de_DE (Deutschland) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -18,4 +18,4 @@
 	<message key="plugins.generic.openAIRE.metadata">OpenAIRE-spezifische Metadaten</message>
 	<message key="plugins.generic.openAIRE.projectID.description">(Die projectID entspricht der Grant Agreement number.)</message>
 	<message key="plugins.generic.openAIRE.projectIDValid">Bitte geben Sie eine gültige projectID ein (6 Ziffern)</message>
-</locale> 
+</locale>

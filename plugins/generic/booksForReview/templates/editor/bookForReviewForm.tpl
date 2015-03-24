@@ -1,13 +1,14 @@
 {**
  * @file plugins/generic/booksForReview/templates/editor/bookForReviewForm.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Book for review form under plugin management.
  *
  *}
+{strip}
 {assign var="pageCrumbTitle" value="$booksForReviewTitle"}
 {if $bookForReview}
 	{assign var="pageTitle" value="plugins.generic.booksForReview.editor.edit"}
@@ -16,6 +17,7 @@
 	{assign var="pageTitle" value="plugins.generic.booksForReview.editor.create"}
 {/if}
 {include file="common/header.tpl"}
+{/strip}
 
 <br/>
 

@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/datacite/DataciteExportPlugin.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DataciteExportPlugin
@@ -227,7 +227,6 @@ class DataciteExportPlugin extends DOIExportPlugin {
 		curl_setopt($curlCh, CURLOPT_USERPWD, "$username:$password");
 
 		// Set up SSL.
-		curl_setopt($curlCh, CURLOPT_SSLVERSION, 3);
 		curl_setopt($curlCh, CURLOPT_SSL_VERIFYPEER, false);
 
 		// Transmit meta-data.

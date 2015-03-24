@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/objectsForReview/classes/tasks/ObjectsForReviewReminder.inc.php
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ObjectsForReviewReminder
@@ -53,7 +53,7 @@ class ObjectsForReviewReminder extends ScheduledTask {
 
 		import('classes.mail.MailTemplate');
 		$mail = new MailTemplate($emailKey);
-		$mail->setFrom($editor->getEmail(), $editor->getFullName());
+		$mail->setReplyTo($editor->getEmail(), $editor->getFullName());
 		$mail->addRecipient($author->getEmail(), $author->getFullName());
 		$mail->setSubject($mail->getSubject($journal->getPrimaryLocale()));
 		$mail->setBody($mail->getBody($journal->getPrimaryLocale()));

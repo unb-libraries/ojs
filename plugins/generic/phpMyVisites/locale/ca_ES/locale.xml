@@ -3,8 +3,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Credits: http://pkp.sfu.ca/wiki/index.php?title=OJS:_Catalan_%28ca_ES%29
@@ -26,4 +26,4 @@
 	<message key="plugins.generic.phpmv.manager.settings.phpmvSiteId">Número de perfil del lloc</message>
 	<message key="plugins.generic.phpmv.manager.settings.phpmvSiteIdInstructions">A phpMyVisites, feu clic a Administració &amp;gt; Modifica el lloc. El número del perfil del lloc es mostra al costat del nom del perfil del lloc.</message>
 	<message key="plugins.generic.phpmv.manager.settings.phpmvSiteIdRequired">Introduïu un número de perfil del lloc.</message>
-</locale> 
+</locale>

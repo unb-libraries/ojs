@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/manager.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2000-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -118,7 +118,7 @@
 	<message key="manager.people.emailUsers.emailUsersEnrolledAs">E-Mail an alle Benutzer/innen senden, die eingetragen sind als</message>
 	<message key="manager.people.emailUsers">E-Mail an die Benutzer/innen senden</message>
 	<message key="manager.people.emailUsers.selectLocale">Eine Regionaleinstellung auswählen</message>
-	<message key="manager.people.emailUsers.selectUsers">Wählen Sie die Benutzer/innen, denen Sie eine E-Mail senden wollen, dadurch aus, dass Sie die Kästchen neben ihren Namen anklicken.</message>
+	<message key="manager.people.emailUsers.selectUsers">Wählen Sie die Benutzer/innen, denen Sie eine E-Mail senden wollen, indem Sie die Kästchen neben dem Namen anklicken.</message>
 	<message key="manager.people.enable">Aktivieren</message>
 	<message key="manager.people.enroll">Benutzer/in eintragen</message>
 	<message key="manager.people.enrollment">Eintragen</message>

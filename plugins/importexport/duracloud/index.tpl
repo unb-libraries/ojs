@@ -1,8 +1,8 @@
 {**
  * plugins/importexport/duracloud/index.tpl
  *
- * Copyright (c) 2013-2014 Simon Fraser University Library
- * Copyright (c) 2003-2014 John Willinsky
+ * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2003-2015 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * List of operations this plugin can perform
@@ -33,9 +33,9 @@
 
 	{if in_array($duracloudSpace, $spaces)}{* if $duracloudSpace valid *}
 		<h3>{translate key="manager.importExport"}</h3>
-		<ul class="plain">
-			<li>&#187; <a href="{plugin_url path="exportableIssues"}">{translate key="plugins.importexport.duracloud.export.issues"}</a></li>
-			<li>&#187; <a href="{plugin_url path="importableIssues"}">{translate key="plugins.importexport.duracloud.import.issues"}</a></li>
+		<ul>
+			<li><a href="{plugin_url path="exportableIssues"}">{translate key="plugins.importexport.duracloud.export.issues"}</a></li>
+			<li><a href="{plugin_url path="importableIssues"}">{translate key="plugins.importexport.duracloud.import.issues"}</a></li>
 		</ul>
 	{/if}{* $duracloudSpace is valid *}
 

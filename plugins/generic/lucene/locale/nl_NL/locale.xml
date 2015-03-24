@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/lucene/locale/nl_NL/locale.xml
   *
-  * Copyright (c) 2013-2014 Simon Fraser University Library
-  * Copyright (c) 2003-2014 John Willinsky
+  * Copyright (c) 2013-2015 Simon Fraser University Library
+  * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * OJS solr/lucene search plugin localization strings
@@ -42,7 +42,7 @@
 	<message key="plugins.generic.lucene.results.orderDir.asc">Oplopend</message>
 	<message key="plugins.generic.lucene.results.orderDir.desc">Aflopend</message>
 
-	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[Zoektips: <ul>
+	<message key="plugins.generic.lucene.results.syntaxInstructions"><![CDATA[<h4>Zoektips:</h4><ul>
 <li>Zoektermen zijn niet hoofdlettergevoelig</li>
 <li>Veelvoorkomende woorden worden genegeerd</li>
 <li>Standaard worden resultaten getoond als <em>een</em> term uit de zoekvraag wordt gevonden (dus: <em>OR</em> is impliciet)</li>
