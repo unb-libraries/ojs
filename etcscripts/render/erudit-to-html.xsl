@@ -21,14 +21,14 @@
   
   <xd:doc scope="component">
     <xd:desc>
-      <xd:p>Global variables: OJS base URL; default is <xd:i><xd:a href="http://journals.hil.unb.ca">http://journals.hil.unb.ca</xd:a></xd:i></xd:p>
+      <xd:p>Global variables: OJS base URL; default is <xd:i><xd:a href="http://journals.lib.unb.ca">http://journals.lib.unb.ca</xd:a></xd:i></xd:p>
     </xd:desc>
   </xd:doc>
-  <xsl:variable name="OJS_BASE_URL" select="string('http://journals.hil.unb.ca')"/>
+  <xsl:variable name="OJS_BASE_URL" select="string('http://journals.lib.unb.ca')"/>
   
   <xd:doc scope="component">
     <xd:desc>
-      <xd:p>Global variables: path to PHP thumbnail generator; default is <xd:i><xd:a href="http://journals.hil.unb.ca">http://journals.hil.unb.ca/Texts/XSLT/thumb.php</xd:a></xd:i></xd:p>
+      <xd:p>Global variables: path to PHP thumbnail generator; default is <xd:i><xd:a href="http://journals.lib.unb.ca">http://journals.lib.unb.ca/Texts/XSLT/thumb.php</xd:a></xd:i></xd:p>
     </xd:desc>
   </xd:doc>
   <xsl:variable name="THUMBNAIL_GENERATOR_URL" select="concat($OJS_BASE_URL, '/Texts/XSLT/thumb.php')"/>

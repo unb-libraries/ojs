@@ -3,7 +3,7 @@
 use strict;
 use DBI;
 
-require '/var/www/journals.hil.unb.ca/htdocs/etcscripts/crkn/fiche/db_auth.pl';
+require '/var/www/journals.lib.unb.ca/htdocs/etcscripts/crkn/fiche/db_auth.pl';
 our $ojs_db_conn;
 our $ojs_db_user;
 our $ojs_db_password;
@@ -53,9 +53,9 @@ if ($stmt) {
                         my $path       = $$path_ref{'path'};
 
                         if ($original_file_name =~ /\.html$/i) {
-                            $links{'htm'} = "http://journals.hil.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
+                            $links{'htm'} = "http://journals.lib.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
                         } elsif ($original_file_name =~ /\.pdf$/i)  {
-                            $links{'pdf'} = "http://journals.hil.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
+                            $links{'pdf'} = "http://journals.lib.unb.ca/index.php/$path/article/view/$article_id/$galley_id";
                         }
                     }
                 }

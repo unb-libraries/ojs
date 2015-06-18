@@ -12,6 +12,6 @@ So, Jen Whitney developed this bookmarklet and java plugin that provides the use
 1. Open the **Unassigned** articles in the **Editor** section. 
 2. Click the bookmarklet. 
 3. On the right, you'll see a new block with a list of IDs. 
-4. Via command line, go to the document root of the journals site (``/var/www/journals.hil.unb.ca/htdocs``). 
+4. Via command line, go to the document root of the journals site (``/var/www/journals.lib.unb.ca/htdocs``). 
 5. Run ``>php tools/deleteSubmissions.php`` after pasting in your list of IDs.  
 6. Feel smug and fresh having deleted your unnecessary cruft. 

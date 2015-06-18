@@ -552,7 +552,7 @@
        <xsl:variable name="pointeurFull" select="//pointeur[@xlink:label=concat($imgId, 'n')]" />
 
        <!-- use both images to generate the link and the img tag of our thumbnail -->
-       <img src="http://journals.hil.unb.ca/{$pointeurFull/@xlink:href}" alt="{$pointeurFull/@xlink:title}" border="0" />
+       <img src="http://journals.lib.unb.ca/{$pointeurFull/@xlink:href}" alt="{$pointeurFull/@xlink:title}" border="0" />
 
      </xsl:when>
 
@@ -570,7 +570,7 @@
      <xsl:variable name="lienTtoF" select="//lien[@xlink:to=concat($imgId, 'n')]" />
 
      <!-- use both images to generate the link and the img tag of our thumbnail -->
-     <img src="http://journals.hil.unb.ca/Texts/XSLT/thumb.php?{$pointeurThumb/@xlink:href}" alt="{$pointeurThumb/@xlink:title}" border="0" /> <br />
+     <img src="http://journals.lib.unb.ca/Texts/XSLT/thumb.php?{$pointeurThumb/@xlink:href}" alt="{$pointeurThumb/@xlink:title}" border="0" /> <br />
      <a href="{$pointeurFull/@xlink:href}"><xsl:value-of select="$lienTtoF/@xlink:title" /></a>
 
   </xsl:otherwise>
