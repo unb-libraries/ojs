@@ -8,7 +8,7 @@
   * Copyright (c) 2000-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the sv_SE (Swedish) locale.
+  * Localization strings for the sv_SE (Svenska) locale.
   *
   -->
 
@@ -66,4 +66,5 @@
 	<message key="admin.mergeUsers.allUsers">Alla existerande användare</message>
 	<message key="admin.mergeUsers.confirm">Är du säker på att du vill lägga samman användarkontot: "{$oldUsername}" med: "{$newUsername}"? Användarkontot: "{$oldUsername}" kommer då att raderas. Åtgärden kan inte ångras.</message>
 	<message key="admin.mergerUsers.noneEnrolled">Inga existerande användare.</message>
+	<message key="admin.categories">Kategorier</message>
 </locale>

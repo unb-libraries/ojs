@@ -108,6 +108,11 @@ citation_checking_max_processes = 3
 ; Display a message on the site admin and journal manager user home pages if there is an upgrade available
 show_upgrade_warning = On
 
+; Provide a unique site ID and OAI base URL to PKP for statistics and security
+; alert purposes only.
+enable_beacon = On
+
+
 ;;;;;;;;;;;;;;;;;;;;;
 ; Database Settings ;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -215,7 +220,7 @@ umask = 0022
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 [finfo]
-mime_database_path = /etc/magic.mime
+; mime_database_path = /etc/magic.mime
 
 
 ;;;;;;;;;;;;;;;;;;;;;
@@ -239,6 +244,12 @@ session_check_ip = On
 ; Valid values are: md5, sha1
 ; Note that sha1 requires PHP >= 4.3.0
 encryption = md5
+
+; The unique salt to use for generating password reset hashes
+salt = "YouMustSetASecretKeyHere!!"
+
+; The number of seconds before a password reset hash expires (defaults to 7200 / 2 hours)
+reset_seconds = 7200
 
 ; Allowed HTML tags for fields that permit restricted HTML.
 ; For PHP 5.0.5 and greater, allowed attributes must be specified individually

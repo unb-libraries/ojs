@@ -26,7 +26,8 @@ class UserManagementForm extends Form {
 	function UserManagementForm($userId = null) {
 		parent::Form('manager/people/userProfileForm.tpl');
 
-		if (!Validation::isJournalManager()) $userId = null;
+		$journal =& Request::getJournal();
+		if ($userId && !Validation::canAdminister($journal->getId(), $userId)) $userId = null;
 		$this->userId = isset($userId) ? (int) $userId : null;
 		$site =& Request::getSite();
 
@@ -181,9 +182,13 @@ class UserManagementForm extends Form {
 			$roleSymbolic = $roleDao->getRolePath($roleId);
 
 			$this->_data = array(
-				'enrollAs' => array($roleSymbolic)
+				'enrollAs' => array($roleSymbolic),
+				'generatePassword' => 1,
+				'sendNotify' => 1,
+				'mustChangePassword' => 1
 			);
 		}
+		return parent::initData();
 	}
 
 	/**
@@ -315,9 +320,8 @@ class UserManagementForm extends Form {
 				// FIXME Should try to create user here too?
 				$auth->doSetUserInfo($user);
 			}
-
+			parent::execute($user);
 			$userDao->updateObject($user);
-
 		} else {
 			$user->setUsername($this->getData('username'));
 			if ($this->getData('generatePassword')) {
@@ -338,6 +342,7 @@ class UserManagementForm extends Form {
 			}
 
 			$user->setDateRegistered(Core::getCurrentDate());
+			parent::execute($user);
 			$userId = $userDao->insertUser($user);
 
 			$isManager = Validation::isJournalManager();

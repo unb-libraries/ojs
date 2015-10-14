@@ -7,11 +7,11 @@
   * Copyright (c) 2009 Konstantin L. Metlov
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the ru_RU (Russian) locale.
+  * Localization strings for the ru_RU (Русский) locale.
   * With updates from Pavel Pisklakov (revising translation). 
   -->
  
-<locale name="ru_RU" full_name="Russian">
+<locale name="ru_RU" full_name="Русский">
 	<message key="plugins.block.user.displayName">Блок «Пользователь»</message>
 	<message key="plugins.block.user.description">Этот плагин добавляет на боковую панель инструменты для работы с учетной записью (например, вход в систему, выход, ссылка на профиль пользователя и т. д.).</message>
 	<message key="plugins.block.user.loggedInAs">Вы вошли в систему как...</message>
@@ -20,4 +20,5 @@
 	<message key="plugins.block.user.logout">Выйти</message>
 	<message key="plugins.block.user.signOutAsUser">Выйти как пользователь</message>
 	<message key="plugins.block.user.rememberMe">Запомнить меня</message>
+	<message key="plugins.block.user.implicitAuthLogin">Вход в журналы</message>
 </locale>

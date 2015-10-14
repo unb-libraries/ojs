@@ -8,11 +8,11 @@
   * Copyright (c) 2003-2015 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the ru_RU (Russian) locale.
+  * Localization strings for the ru_RU (Русский) locale.
   * With updates from Pavel Pisklakov (revising translation). 
   -->
 
-<locale name="ru_RU" full_name="Russian">
+<locale name="ru_RU" full_name="Русский">
 	<!--
 	 * Этот файл состоит из нескольких основных разделов, разделяемых
 	 * комментариями, подобными данному. Эти разделы называются:
@@ -732,6 +732,8 @@
 старый пароль.<br /><br />Введите ниже ваш адрес электронной почты для сброса вашего пароля. Подтверждение будет направлено вам на этот адрес электронной почты.]]></message>
 
 	<!-- Регистрация -->
+	<message key="user.register.emailValidation">Требуется подтверждение адреса электронной почты</message>
+	<message key="user.register.emailValidationDescription">Для продолжения работы Вам необходимо подтвердить Ваш адрес электронной почты. Пожалуйста, проверьте свой почтовый ящик для получения дальнейших инструкций. Как только Вы подтвердите свою учетную запись, Вы сможете войти в систему.</message>
 	<message key="user.register.selectJournal">Выбрать журнал для регистрации</message>
 	<message key="user.register.noJournals">На сайте нет журналов, в которых вы могли бы зарегистрироваться.</message>
 	<message key="user.register.privacyStatement">Заявление о конфиденциальности</message>
@@ -842,7 +844,7 @@
 	<message key="about.editorialTeam">Редакция</message>
 	<message key="about.editorialTeam.biography">Биография</message>
 	<message key="about.editorialPolicies">Редакционная политика</message>
-	<message key="about.focusAndScope">Тематика</message>
+	<message key="about.focusAndScope">Концепция журнала</message>
 	<message key="about.sectionPolicies">Политика разделов журнала</message>
 	<message key="about.submissions">Отправка статей</message>
 	<message key="about.sponsors">Спонсоры</message>
@@ -877,6 +879,10 @@
 	<message key="about.subscriptionTypes.duration">Продолжительность</message>
 	<message key="about.subscriptionTypes.cost">Цена</message>
 	<message key="about.availableSubscriptionTypes">Типы подписок</message>
+	<message key="about.purchaseIssue">Купить выпуск</message>
+	<message key="about.purchaseArticle">Купить статью</message>
+	<message key="about.purchaseIssueDescription">Читатели без подписки могут покупать отдельные выпуски. Доступны следующие способы оплаты и цены:</message>
+	<message key="about.purchaseArticleDescription">Читатели без подписки могут покупать отдельные статьи. Доступны следующие способы оплаты и цены:</message>
 	<message key="about.memberships">Членства</message>
 	<message key="about.journalSponsorship">Спонсоры журнала</message>
 	<message key="about.aboutThisPublishingSystem">Об этой издательской системе</message>
