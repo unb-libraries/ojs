@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageStats/UsageStatsPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UsageStatsPlugin
@@ -27,6 +27,9 @@ class UsageStatsPlugin extends GenericPlugin {
 	/** @var $_optedOut boolean */
 	var $_optedOut;
 
+	/** @var $_saltpath string */
+	var $_saltpath;
+
 	/**
 	* Constructor.
 	*/
@@ -36,6 +39,19 @@ class UsageStatsPlugin extends GenericPlugin {
 		// The upgrade and install processes will need access
 		// to constants defined in that report plugin.
 		import('plugins.generic.usageStats.UsageStatsReportPlugin');
+	}
+
+
+	//
+	// Public methods.
+	//
+	/**
+	 * Get the report plugin object that implements
+	 * the metric type details.
+	 */
+	function getReportPlugin() {
+		$this->import('UsageStatsReportPlugin');
+		return new UsageStatsReportPlugin();
 	}
 
 
@@ -61,6 +77,9 @@ class UsageStatsPlugin extends GenericPlugin {
 			}
 
 			$this->_dataPrivacyOn = $this->getSetting(CONTEXT_ID_NONE, 'dataPrivacyOption');
+			$this->_saltpath = $this->getSetting(CONTEXT_ID_NONE, 'saltFilepath');
+			// Check config for backward compatibility.
+			if (!$this->_saltpath) $this->_saltpath = Config::getVar('usageStats', 'salt_filepath');
 			$application = Application::getApplication();
 			$request = $application->getRequest();
 			$this->_optedOut = $request->getCookieVar('usageStats-opt-out');
@@ -71,6 +90,14 @@ class UsageStatsPlugin extends GenericPlugin {
 		}
 
 		return $success;
+	}
+
+	/**
+	 * Get the path to the salt file.
+	 * @return string
+	 */
+	function getSaltpath() {
+		return $this->_saltpath;
 	}
 
 	/**
@@ -123,10 +150,10 @@ class UsageStatsPlugin extends GenericPlugin {
 		if (!$returner) return false;
 		$this->import('UsageStatsSettingsForm');
 
+		$templateMgr =& TemplateManager::getManager();
+		$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 		switch($verb) {
 			case 'settings':
-				$templateMgr =& TemplateManager::getManager();
-				$templateMgr->register_function('plugin_url', array(&$this, 'smartyPluginUrl'));
 				$settingsForm = new UsageStatsSettingsForm($this);
 				$settingsForm->initData();
 				$settingsForm->display();
@@ -176,9 +203,7 @@ class UsageStatsPlugin extends GenericPlugin {
 		$plugin = null;
 		$category = $args[0];
 		if ($category == 'reports') {
-			$this->import('UsageStatsReportPlugin');
-			$plugin = new UsageStatsReportPlugin();
-		}
+			$plugin = $this->getReportPlugin();		}
 		if ($category ==  'blocks' && $this->getSetting(CONTEXT_ID_NONE, 'dataPrivacyOption')) {
 			$this->import('UsageStatsOptoutBlockPlugin');
 			$plugin = new UsageStatsOptoutBlockPlugin($this->getName());
@@ -224,6 +249,21 @@ class UsageStatsPlugin extends GenericPlugin {
 	}
 
 	/**
+	 * Validate that the path of the salt file exists and is writable.
+	 * @param $saltpath string
+	 * @return boolean
+	 */
+	function validateSaltpath($saltpath) {
+		if (!file_exists($saltpath)) {
+			touch($saltpath);
+		}
+		if (is_writable($saltpath)) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Log the usage event into a file.
 	 * @param $hookName string
 	 * @param $args array
@@ -232,7 +272,7 @@ class UsageStatsPlugin extends GenericPlugin {
 	function logUsageEvent($hookName, $args) {
 		$hookName = $args[0];
 		$usageEvent = $args[1];
-		
+
 		// Check the statistics opt-out.
 		if ($this->_optedOut) return false;
 
@@ -270,7 +310,7 @@ class UsageStatsPlugin extends GenericPlugin {
 		$this->import('GeoLocationTool');
 
 		$null = null;
-		$tool =& new GeoLocationTool();
+		$tool = new GeoLocationTool();
 		if ($tool->isPresent()) {
 			return $tool;
 		} else {
@@ -305,7 +345,6 @@ class UsageStatsPlugin extends GenericPlugin {
 		return 'usage_events_' . date("Ymd") . '.log';
 	}
 
-
 	//
 	// Private helper methods.
 	//
@@ -316,8 +355,8 @@ class UsageStatsPlugin extends GenericPlugin {
 		$salt = null;
 		if ($this->_dataPrivacyOn) {
 			// Salt management.
-			if (!Config::getVar('usageStats', 'salt_filepath')) return false;
-			$saltFilename = Config::getVar('usageStats', 'salt_filepath');
+			$saltFilename = $this->getSaltpath();
+			if (!$this->validateSaltpath($saltFilename)) return false;
 			$currentDate = date("Ymd");
 			$saltFilenameLastModified = date("Ymd", filemtime($saltFilename));
 			$file = fopen($saltFilename, 'r');

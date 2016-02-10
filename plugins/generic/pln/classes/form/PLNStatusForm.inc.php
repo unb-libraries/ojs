@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/PLNStatusForm.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class PLNStatusForm
@@ -59,6 +59,7 @@ class PLNStatusForm extends Form {
 		$templateMgr->assign('deposits', $depositDao->getDepositsByJournalId($journal->getId(),$rangeInfo));
 		$templateMgr->assign('networkStatus', $networkStatus);
 		$templateMgr->assign('networkStatusMessage', $networkStatusMessage);
+		$templateMgr->assign('plnStatusDocs', $this->_plugin->getSetting($journal->getId(), 'pln_status_docs'));
 		parent::display();
 	}
 	

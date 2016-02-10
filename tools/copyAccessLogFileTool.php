@@ -3,8 +3,8 @@
 /**
  * @file tools/CopyAcessLogFileTool.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CopyAccessLogFileTool
@@ -36,7 +36,7 @@ class CopyAccessLogFileTool extends CommandLineTool {
 	function CopyAccessLogFileTool($argv = array()) {
 		parent::CommandLineTool($argv);
 
-		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_ADMIN);
+		AppLocale::requireComponents(LOCALE_COMPONENT_OJS_ADMIN, LOCALE_COMPONENT_PKP_ADMIN);
 
 		if (count($this->argv) < 1 || count($this->argv) > 2)  {
 			$this->usage();
@@ -113,7 +113,7 @@ class CopyAccessLogFileTool extends CommandLineTool {
 
 		if ($fileMgr->fileExists($filePath, 'dir')) {
 			// Directory.
-			$filesToCopy = glob($filePath . DIRECTORY_SEPARATOR . '*.*');
+			$filesToCopy = glob($filePath . DIRECTORY_SEPARATOR . '*');
 			foreach ($filesToCopy as $file) {
 				// If a base filename is given as a parameter, check it.
 				if (count($this->argv) == 2) {
@@ -175,19 +175,34 @@ class CopyAccessLogFileTool extends CommandLineTool {
 		}
 
 		// Uncompress it, if needed.
-		$gunzipPath = escapeshellarg(Config::getVar('cli', 'gunzip'));
 		if ($isCompressed) {
-			exec($gunzipPath . ' ' . $tmpFilePath);
+			$fileMgr = new FileManager();
+			$errorMsg = null;
+			if (!$fileMgr->decompressFile($filePath, $errorMsg)) {
+				printf($errorMsg . "\n");
+				exit(1);
+			}
 			$tmpFilePath = substr($tmpFilePath, 0, -3);
 		}
 
 		// Filter only entries that contains journal paths.
-		$egrepPath = escapeshellarg(Config::getVar('cli', 'egrep'));
+		$egrepPath = Config::getVar('cli', 'egrep');
 		$destinationPath = $usageStatsDir . DIRECTORY_SEPARATOR .
 		FILE_LOADER_PATH_STAGING . DIRECTORY_SEPARATOR .
 		pathinfo($tmpFilePath, PATHINFO_BASENAME);
+		if (!is_executable($egrepPath)) {
+			printf(__('admin.error.executingUtil', array('utilPath' => $egrepPath, 'utilVar' => 'egrep')) . "\n");
+			exit(1);
+		}
+		$egrepPath = escapeshellarg(Config::getVar('cli', 'egrep'));
+		$output = array();
+		$returnValue = 0;
 		// Each journal path is already escaped, see the constructor.
-		exec($egrepPath . " -i '" . $this->_journalPaths . "' " . escapeshellarg($tmpFilePath) . " > " . escapeshellarg($destinationPath));
+		exec($egrepPath . " -i '" . $this->_journalPaths . "' " . escapeshellarg($tmpFilePath) . " > " . escapeshellarg($destinationPath), $output, $returnValue);
+		if ($returnValue > 1) {
+			printf(__('admin.error.executingUtil', array('utilPath' => $egrepPath, 'utilVar' => 'egrep')) . "\n");
+			exit(1);
+		}
 
 		if (!$fileMgr->deleteFile($tmpFilePath)) {
 			printf(__('admin.copyAccessLogFileTool.error.deletingFile', array('tmpFilePath' => $tmpFilePath)) . "\n");

@@ -3,8 +3,8 @@
 <!--
   * plugins/generic/usageStats/scheduledTasksAutoStage.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Usage statistics plugin scheduled tasks registry file.
@@ -22,7 +22,7 @@
 <scheduled_tasks>
 	<task class="plugins.generic.usageStats.UsageStatsLoader">
 		<descr>Extract transform and load usage statistics data into database.</descr>
-		<frequency hour="24"/>
+		<frequency hour="0"/>
 		<arg>autoStage</arg>
 	</task>
 </scheduled_tasks>

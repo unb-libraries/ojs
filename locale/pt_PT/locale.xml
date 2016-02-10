@@ -4,8 +4,8 @@
 <!--
   * locale/pt_PT/locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_PT (Português (Portugal)) locale.
@@ -764,7 +764,7 @@ Autores que publicam nesta revista concordam com os seguintes termos:
 	<message key="sectionEditor.review.enrollReviewer">Registar utilizador existente como Revisor</message>
 	<message key="submission.layout.imageInvalid">Formato de imagem inválido. Formatos aceitáveis são .gif, .jpg ou .png.  Verifique as configurações de MimeType do servidor e permissões de pastas.</message>
 	<message key="reviewer.article.restrictedFileAccess">Documentos podem ser visualizados somente após assumir a tarefa de revisão</message>
-	<message key="reviewer.article.enterCompetingInterests"><![CDATA[Declare se há conflito de interesses com relação à esta submissão (veja<a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">Política de Conflito de Interesses</a>).]]></message>
+	<message key="reviewer.article.enterCompetingInterests"><![CDATA[Declare se há conflito de interesses com relação à esta submissão (veja a <a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">Política de Conflito de Interesses</a>).]]></message>
 	<message key="reviewer.competingInterests">Conflito de Interesses</message>
 	<message key="submission.layout.noLayoutFile">Nenhum (Enviar versão final da edição de texto como Versão de Prova antes de enviar o pedido)</message>
 	<message key="submission.layout.referenceLinking">URLs para Referências</message>

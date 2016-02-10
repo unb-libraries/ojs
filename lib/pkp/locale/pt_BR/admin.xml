@@ -4,8 +4,8 @@
 <!--
   * locale/pt_BR/admin.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the pt_BR (Português (Brasil)) locale.
@@ -93,8 +93,10 @@
 	<message key="admin.scheduledTask.startTime">Tarefa iniciada.</message>
 	<message key="admin.scheduledTask.stopTime">Tarefa parada.</message>
 	<message key="admin.scheduledTask.noLog">Tarefa não produziu registros (logs).</message>
-	<message key="admin.scheduledTask.openAccessNotification">Notificação de acesso aberto</message>
 	<message key="admin.scheduledTask.reviewReminder">Lembrete de avaliador</message>
 	<message key="admin.scheduledTask.subscriptionExpiryReminder">Lembrete de expiração de assinatura.</message>
 	<message key="admin.fileLoader.fileProcessed">O arquivo {$filename} foi processado e arquivado.</message>
+	<message key="admin.scheduledTask.downloadLog">Sua instalação OJS executou automaticamente e finalizou esta tarefa, você pode baixar os registros (logs) aqui: {$url}</message>
+	<message key="admin.scheduledTask.confirmClearLogs">Você tem certeza de que deseja deletar todos os registros de execução de tarefas agendadas?</message>
+	<message key="admin.scheduledTask.clearLogs">Limpar Registros (logs) de Tarefas Agendadas</message>
 </locale>

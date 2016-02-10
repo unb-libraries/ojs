@@ -3,8 +3,8 @@
 /**
 * @file classes/statistics/StatisticsHelper.inc.php
 *
-* Copyright (c) 2013-2015 Simon Fraser University Library
-* Copyright (c) 2003-2015 John Willinsky
+* Copyright (c) 2013-2016 Simon Fraser University Library
+* Copyright (c) 2003-2016 John Willinsky
 * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 *
 * @class StatisticsHelper
@@ -52,7 +52,7 @@ define('STATISTICS_FILE_TYPE_OTHER', 3);
 define('STATISTICS_UNKNOWN_COUNTRY_ID', 'ZZ');
 
 // Constants used to filter time dimension to current time.
-define('STATISTICS_CURRENT_DAY', 'currentDay');
+define('STATISTICS_YESTERDAY', 'yesterday');
 define('STATISTICS_CURRENT_MONTH', 'currentMonth');
 
 class StatisticsHelper {

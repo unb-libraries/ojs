@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/pubmed/PubMedExportDom.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PubMedExportDom
@@ -179,7 +179,7 @@ class PubMedExportDom {
 
 		/* --- Abstract --- */
 		if ($article->getAbstract($article->getLocale())) {
-			$abstractNode = XMLCustomWriter::createChildWithText($doc, $root, 'Abstract', strip_tags($article->getAbstract($article->getLocale())), false);
+			$abstractNode = XMLCustomWriter::createChildWithText($doc, $root, 'Abstract', String::html2utf(strip_tags($article->getAbstract($article->getLocale()))), false);
 		}
 
 		if ($subject = $article->getSubject($article->getLocale())) {

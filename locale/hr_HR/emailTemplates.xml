@@ -4,8 +4,8 @@
 <!--
   * locale/hr_HR/emailTemplateData.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localized email templates XML file.
@@ -63,7 +63,7 @@ Hvala vam na interesu za naš rad,
 
 [Kratki opis časopisa]
 
-Adresa LOCKSS izdavače izjave za naš časopis je: {$articleUrl}/gateway/lockss
+Adresa LOCKSS izdavače izjave za naš časopis je: {$journalUrl}/gateway/lockss
 
 Prema našim spoznajama, vi već sudjelujete u sustavu LOCKSS. Vrlo rado ćemo vam pružiti bilo kakve dodatne metapodatke koji bi mogli biti potrebni u svrhu prijave našeg časopisa unutar vaše verzije LOCKSS sustava.
 
@@ -169,6 +169,50 @@ Srdačno,
 		<description>Ovim obrascem e-pošte urednik rubrike šalje upit recenzentu može li prihvatiti zadatak recenziranja članka. Zamolba sadrži osnovne informacije u vidu naslova i kratkog sadržaja članka, datum do kojeg bi recenzija trebala biti napisana te načina na koji se recenzent može prijaviti u sustav. Ova poruka se koristi kada je odabran standardni recenzijski postupak u 2. koraku Postavljanja časopisa (Ako nije, koristi se Zamolba za recenziju članka u privitku)</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST_ONECLICK">
+		<subject>Zamolba za recenziju članka</subject>
+		<body>Poštovana/i {$reviewerName},
+
+s obzirom na vaše iskustvo i područje ekspertize, rado bismo vam povjerili zadatak recenzije članka "{$articleTitle}" prijavljenog u naš časopis {$journalName}. Sažetak članka nalazi se u nastavku ove poruke. Nadamo se da ćete prihvatiti našu ponudu te izvršiti ovu, za nas iznimno važnu, zadaću.
+
+Molimo vas da se kao korisnik prijavite na mrežnu stranicu časopisa do {$weekLaterDate} kako biste naznačili hoćete li preuzeti recenziju ili ne. Potom, ukoliko prihvatite izradu recenzije, na istome mjestu možete pristupiti tekstu članka te zabilježili vašu recenziju i preporuku.
+
+Sama recenzija trebala bi biti završena zaključno s {$reviewDueDate}.
+
+Do priloga možete doći izravno prateći ovu kodiranu pozivnicu: {$submissionReviewUrl}
+
+Srdačno,
+{$editorialContactSignature}
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Ovim obrascem e-pošte urednik rubrike šalje upit recenzentu može li prihvatiti ili je prisiljen odbiti zadatak recenziranja članka. Zamolba sadrži osnovne informacije u vidu naslova i kratkog sadržaja članka, datum do kojeg bi recenzija trebala biti napisana te načina na koji  recenzent može pristupiti članku. Ova poruka se koristi kada je odabran standardni recenzijski postupak u 2. koraku Postavljanja časopisa, a recenzentu je omogućen pristup jednim klikom.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO">
+		<subject>Zamolba za recenziju članka</subject>
+		<body>Poštovana/i {$reviewerName},
+
+s obzirom na vaše iskustvo i područje ekspertize, rado bismo vam povjerili zadatak recenzije članka "{$articleTitle}" prijavljenog u naš časopis {$journalName}. Sažetak članka nalazi se u nastavku ove poruke. Nadamo se da ćete prihvatiti našu ponudu te izvršiti ovu, za nas iznimno važnu, zadaću.
+
+Molimo vas da se kao korisnik prijavite na mrežnu stranicu časopisa do {$weekLaterDate} kako biste naznačili hoćete li preuzeti recenziju ili ne. Potom, ukoliko prihvatite izradu recenzije, na istome mjestu možete pristupiti tekstu članka te zabilježili vašu recenziju i preporuku. Mrežna stranica časopisa je {$journalUrl}
+
+U slučaju da nemate pri ruci svoje korisničko ime ili lozinku za mrežnu stranicu časopisa, možete se koristiti ovom poveznicom kako biste promijenili lozinku (koju ćemo vam tada, zajedno s korisničkim imenom, poslati putem e-pošte). {$passwordResetUrl}
+
+Sama recenzija trebala bi biti završena zaključno s {$reviewDueDate}.
+
+URL članka: {$submissionReviewUrl}
+
+Srdačno,
+{$editorialContactSignature}
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Ovim obrascem e-pošte urednik rubrike šalje upit recenzentu može li prihvatiti zadatak recenziranja članka. Zamolba sadrži osnovne informacije u vidu naslova i kratkog sadržaja članka, datum do kojeg bi recenzija trebala biti napisana te načina na koji se recenzent može prijaviti u sustav. Ova poruka se koristi kada je odabran standardni recenzijski postupak u 2. koraku Postavljanja časopisa (Ako nije, koristi se Zamolba za recenziju članka u privitku)</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO_ONECLICK">
 		<subject>Zamolba za recenziju članka</subject>
 		<body>Poštovana/i {$reviewerName},
 
@@ -680,5 +724,41 @@ Hcala vam što ste kreirali korisnički račun pri časopisu {$journalName}. No,
 Srdačno,
 {$principalContactSignature}</body>
 		<description>Ova se poruka šalje novoregistriranim korisnicima kako bi im se zaželila dobrodošlica na sistem i zatražila potvrda njihove adrese e-pošte.</description>
+	</email_text>
+	<email_text key="NOTIFICATION">
+		<subject>Nova obavijest od {$siteTitle}</subject>
+		<body>Dobili ste obavijest od {$siteTitle}:
+
+{$notificationContents}
+
+Veza: {$url}
+
+{$principalContactSignature}</body>
+		<description>Ova poruka je poslata registriranim korisnicima koji su odabrali da im se šalju ovakve poruke.</description>
+	</email_text>
+	<email_text key="NOTIFICATION_MAILLIST">
+		<subject>Nova obavijest od {$siteTitle}</subject>
+		<body>Imate obavijest od {$siteTitle}:
+--
+{$notificationContents}
+
+Veza: {$url}
+--
+
+Ako želite prekinuti prijem obavijesti otiđite na {$unsubscribeLink}.
+
+{$principalContactSignature}</body>
+		<description>Ova poruka je poslata neregistriranim korisnicima koji su na listi za obavijesti.</description>
+	</email_text>
+	<email_text key="NOTIFICATION_MAILLIST_WELCOME">
+		<subject>Dobro došli u {$siteTitle} mailing listu!</subject>
+		<body>Zabilježili ste se za prijem obavijesti od {$siteTitle}.
+
+Kliknite na vezu i potvrdite vaš zahtjev i dodajte vašu e-adresu u listu: {$confirmLink}
+
+Ako želite prekinuti dobijati obavijesti otiđite na {$unsubscribeLink}.
+
+{$principalContactSignature}</body>
+		<description>Ova e-poruka je poslata neregistriranom korisniku koji se samo registritao u listu za obavijesti.</description>
 	</email_text>
 </email_texts>

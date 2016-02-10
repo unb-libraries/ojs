@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/crossref/classes/CrossRefExportDom.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportDom
@@ -20,10 +20,10 @@ if (!class_exists('DOIExportDom')) { // Bug #7848
 
 // XML attributes
 define('CROSSREF_XMLNS_XSI' , 'http://www.w3.org/2001/XMLSchema-instance');
-define('CROSSREF_XMLNS' , 'http://www.crossref.org/schema/4.3.3');
-define('CROSSREF_VERSION' , '4.3.3');
-define('CROSSREF_XSI_SCHEMAVERSION' , '4.3.3');
-define('CROSSREF_XSI_SCHEMALOCATION' , 'http://www.crossref.org/schema/4.3.3 http://www.crossref.org/schema/deposit/crossref4.3.3.xsd');
+define('CROSSREF_XMLNS' , 'http://www.crossref.org/schema/4.3.6');
+define('CROSSREF_VERSION' , '4.3.6');
+define('CROSSREF_XSI_SCHEMAVERSION' , '4.3.6');
+define('CROSSREF_XSI_SCHEMALOCATION' , 'http://www.crossref.org/schema/4.3.6 http://www.crossref.org/schema/deposit/crossref4.3.6.xsd');
 
 class CrossRefExportDom extends DOIExportDom {
 
@@ -199,7 +199,7 @@ class CrossRefExportDom extends DOIExportDom {
 	 */
 	function &_generateDepositorDom(&$doc, $name, $email) {
 		$depositor =& XMLCustomWriter::createElement($doc, 'depositor');
-		XMLCustomWriter::createChildWithText($doc, $depositor, 'name', $name);
+		XMLCustomWriter::createChildWithText($doc, $depositor, 'depositor_name', $name);
 		XMLCustomWriter::createChildWithText($doc, $depositor, 'email_address', $email);
 
 		return $depositor;
@@ -340,7 +340,7 @@ class CrossRefExportDom extends DOIExportDom {
 		/* Abstracts */
 		if ($article->getAbstract($journal->getPrimaryLocale())) {
 			$abstractNode =& XMLCustomWriter::createElement($doc, 'jats:abstract');
-			XMLCustomWriter::createChildWithText($doc, $abstractNode, 'jats:p', $article->getAbstract($journal->getPrimaryLocale()));
+			XMLCustomWriter::createChildWithText($doc, $abstractNode, 'jats:p', String::html2utf(strip_tags($article->getAbstract($journal->getPrimaryLocale()))));
 			XMLCustomWriter::appendChild($journalArticleNode, $abstractNode);
 		}
 

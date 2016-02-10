@@ -1,8 +1,8 @@
 {**
  * templates/submission/metadata/metadataEdit.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form for changing metadata of an article (used in MetadataForm)
@@ -226,7 +226,7 @@ function moveAuthor(dir, authorIndex) {
 		<td colspan="2" class="separator">&nbsp;</td>
 	</tr>
 	<tr valign="top">
-		<td class="label">{if $section->getAbstractsNotRequired()==0}{fieldLabel name="abstract" required="true" key="article.abstract"}{else}{fieldLabel name="abstract" key="article.abstract"}{/if}</td>
+		<td class="label">{if $section && $section->getAbstractsNotRequired()==0}{fieldLabel name="abstract" required="true" key="article.abstract"}{else}{fieldLabel name="abstract" key="article.abstract"}{/if}</td>
 		<td class="value"><textarea name="abstract[{$formLocale|escape}]" id="abstract" rows="15" cols="60" class="textArea">{$abstract[$formLocale]|escape}</textarea></td>
 	</tr>
 </table>

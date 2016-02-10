@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/PLNGatewayPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PLNGatewayPlugin
@@ -131,6 +131,23 @@ class PLNGatewayPlugin extends GatewayPlugin {
 		} else {
 			$templateMgr->assign('termsAccepted', 'no');
 		}
+		
+		$application =& PKPApplication::getApplication();
+		$products =& $application->getEnabledProducts('plugins.generic');
+		$curlVersion = 'not installed';
+		if(function_exists('curl_version')) {
+			$versionArray = curl_version();
+			$curlVersion = $versionArray['version'];
+		}
+		$prerequisites = array(
+			'phpVersion' => PHP_VERSION,
+			'curlVersion' => $curlVersion,
+			'zipInstalled' => class_exists('ZipArchive') ? 'yes' : 'no',
+			'tarInstalled' => class_exists('Archive_Tar') ? 'yes' : 'no',
+			'acron' => isset($products['acron']) ? 'yes' : 'no',
+			'tasks' => Config::getVar('scheduled_tasks', false) ? 'yes' : 'no',
+		);
+		$templateMgr->assign_by_ref('prerequisites', $prerequisites);
 
 		$termKeys = array_keys($terms);
 		$termsDisplay = array();

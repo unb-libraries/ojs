@@ -1,8 +1,8 @@
 {**
  * templates/user/index.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * User index.
@@ -223,7 +223,7 @@
 	{/if}
 	<li><a href="{url page="user" op="profile"}">{translate key="user.editMyProfile"}</a></li>
 
-	{if !$implicitAuth}
+	{if !$implicitAuth || $implicitAuth === $smarty.const.IMPLICIT_AUTH_OPTIONAL}
 		<li><a href="{url page="user" op="changePassword"}">{translate key="user.changeMyPassword"}</a></li>
 	{/if}
 

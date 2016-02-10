@@ -7,8 +7,8 @@
 ;
 ; config.TEMPLATE.inc.php
 ;
-; Copyright (c) 2013-2015 Simon Fraser University Library
-; Copyright (c) 2003-2015 John Willinsky
+; Copyright (c) 2013-2016 Simon Fraser University Library
+; Copyright (c) 2003-2016 John Willinsky
 ; Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
 ;
 ; OJS Configuration settings.
@@ -188,10 +188,11 @@ connection_charset = Off
 ; Must be set to "Off" if not supported by the database server
 database_charset = Off
 
-; Enable character normalization to utf-8 (recommended)
+; Enable character normalization to utf-8
 ; If disabled, strings will be passed through in their native encoding
 ; Note that client_charset and database collation must be set
 ; to "utf-8" for this to work, as characters are stored in utf-8
+; (Note that this is generally no longer needed, as UTF8 adoption is good.)
 charset_normalization = Off
 
 ;;;;;;;;;;;;;;;;;
@@ -263,12 +264,14 @@ allowed_html = "<a href|target> <em> <strong> <cite> <code> <ul> <ol> <li> <dl> 
 ; </p></sub></sup></u></i></b></dd></dt></dl></li></ol></ul></code></cite></strong></em></a>
 
 
-;Is implicit authentication enabled or not
-
+; Configure whether implicit authentication (request headers) is used.
+; Valid values are: On, Off, Optional
+; If On or Optional, request headers are consulted for account metadata so
+; ensure that users cannot spoof headers. If Optional, users may use either
+; implicit authentication or local accounts to access the system.
 ;implicit_auth = On
 
-;Implicit Auth Header Variables
-
+; Implicit Auth Header Variables
 ;implicit_auth_header_first_name = HTTP_GIVENNAME
 ;implicit_auth_header_last_name = HTTP_SN
 ;implicit_auth_header_email = HTTP_MAIL
@@ -280,8 +283,8 @@ allowed_html = "<a href|target> <em> <strong> <cite> <code> <ul> <ol> <li> <dl> 
 ; A space delimited list of uins to make admin
 ;implicit_auth_admin_list = "jdoe@email.ca jshmo@email.ca"
 
-; URL of the implicit auth 'Way Finder' page. See pages/login/LoginHandler.inc.php for usage.
-
+; URL of the implicit auth 'Way Finder' (Discovery Service [DS]) page.
+; See pages/login/LoginHandler.inc.php for usage.
 ;implicit_auth_wayf_url = "/Shibboleth.sso/wayf"
 
 
@@ -453,8 +456,8 @@ tar = /bin/tar
 ; egrep (used in copyAccessLogFileTool)
 egrep = /bin/egrep
 
-; gunzip (used in copyAccessLogFileTool)
-gunzip = /bin/gunzip
+; gzip (used in FileManager)
+gzip = /bin/gzip
 
 ; On systems that do not have PHP4's Sablotron/xsl or PHP5's libxsl/xslt
 ; libraries installed, or for those who require a specific XSLT processor,
@@ -499,3 +502,27 @@ display_errors = Off
 
 ; Display deprecation warnings
 deprecation_warnings = Off
+
+; Log web service request information for debugging
+log_web_service_info = Off
+
+;;;;;;;;;;;;;;;;
+; PLN Settings ;
+;;;;;;;;;;;;;;;;
+
+[lockss]
+
+; Domain name where deposits will be sent to.
+; The URL of your network's staging server. Do not change this unless instructed
+; to do so by someone from your network. You do not need to create an 
+; account or login on this server. 
+; 
+; For more information, please see https://pkp.sfu.ca/pkp-lockss/
+; 
+; If you do change this value, a journal manager must also reset each deposit in
+; each journal so that the new network will receive and process the deposits. 
+; Deposits can be reset for each journal on the PLN Plugin's status page at 
+; Journal Management > System Plugins > Generic Plugins > PKP PLN Plugin
+; 
+; pln_url = http://pkp-pln.lib.sfu.ca
+; pln_status_docs = http://pkp-pln.lib.sfu.ca/docs/status

@@ -3,8 +3,8 @@
 /**
  * @file pages/manager/StatisticsHandler.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StatisticsHandler
@@ -184,7 +184,7 @@ class StatisticsHandler extends ManagerHandler {
 	function generateReport(&$args, &$request) {
 		$this->validate();
 		$this->setupTemplate(true);
-		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION);
+		AppLocale::requireComponents(LOCALE_COMPONENT_PKP_SUBMISSION, LOCALE_COMPONENT_OJS_EDITOR);
 
 		$router =& $request->getRouter();
 		$context =& $router->getContext($request); /* @var $context Journal */

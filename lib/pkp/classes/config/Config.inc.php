@@ -7,8 +7,8 @@
 /**
  * @file classes/config/Config.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2000-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Config
@@ -28,8 +28,8 @@ class Config {
 	 * Retrieve a specified configuration variable.
 	 * @param $section string
 	 * @param $key string
-	 * @param $default string optional
-	 * @return string
+	 * @param $default mixed Optional default if the var doesn't exist
+	 * @return mixed May return boolean (in case of "off"/"on"/etc), numeric, string, or null.
 	 */
 	function getVar($section, $key, $default = null) {
 		$configData =& Config::getData();

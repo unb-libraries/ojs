@@ -4,8 +4,8 @@
 <!--
   * locale/en_US/manager.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings.
@@ -278,7 +278,7 @@
 	<message key="manager.setup.enableAnnouncements">Enable Journal Managers to add journal announcements.</message>
 	<message key="manager.setup.enableAnnouncementsHomepage1">Display</message>
 	<message key="manager.setup.enableAnnouncementsHomepage2">of the most recent announcements on the journal homepage.</message>
-	<message key="manager.setup.enablePageNumber">Page numbers for items will be calculated and entered manually in the Table of Contents (e.g., pp. 13-26).</message>
+	<message key="manager.setup.enablePageNumber">Page numbers for items will be calculated and entered manually in the Table of Contents (e.g., 13-26).</message>
 	<message key="manager.setup.enablePublicArticleId">Custom identifiers will be used to identify published items.</message>
 	<message key="manager.setup.enablePublicGalleyId">Custom identifiers will be used to identify galleys (e.g. HTML or PDF files) for published items.</message>
 	<message key="manager.setup.enablePublicIssueId">Custom identifiers will be used to identify issues.</message>
@@ -510,6 +510,7 @@
 	</message>
 	<message key="manager.statistics.reports">Report Generator</message>
 	<message key="manager.statistics.reports.aggregationColumns">Aggregate stats by:</message>
+	<message key="manager.statistics.reports.optionalColumns.description">Items in italic and marked with * represent data that is optional to the current way of counting statistics in OJS (metric type). You might have that data or not, depending on your statistics plugin configuration.</message>
 	<message key="manager.statistics.reports.defaultReportTemplates">Default report templates</message>
 	<message key="manager.statistics.reports.defaultReport.articleDownloads">Article file downloads</message>
 	<message key="manager.statistics.reports.defaultReport.articleAbstract">Article abstract page views</message>
@@ -529,7 +530,7 @@
 	<message key="manager.statistics.reports.objectType">Object Type</message>
 	<message key="manager.statistics.reports.objectId">Object id</message>
 	<message key="manager.statistics.reports.objectId.label">Define one or more object ids, comma separated (e.g. 1,2,3,4,5).</message>
-	<message key="manager.statistics.reports.today">Today</message>
+	<message key="manager.statistics.reports.yesterday">Yesterday</message>
 	<message key="manager.statistics.reports.currentMonth">Current month</message>
 	<message key="manager.statistics.reports.orderBy">Order by</message>
 	<message key="manager.statistics.reports.orderDir">Direction</message>

@@ -3,8 +3,8 @@
 /**
  * @file includes/functions.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2000-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup index
@@ -83,7 +83,7 @@ function fatalError($reason) {
 		$isErrorCondition = false;
 	}
 
-	echo "<h1>$reason</h1>";
+	echo "<h1>" . htmlspecialchars($reason) . "</h1>";
 
 	if ($showStackTrace && checkPhpVersion('4.3.0')) {
 		echo "<h4>Stack Trace:</h4>\n";
@@ -322,13 +322,19 @@ function arrayClean(&$array) {
 
 /**
  * Recursively strip HTML from a (multidimensional) array.
+ * Assumes entity decoding to UTF-8 (primarily for OAI-PMH)
  * @param $values array
  * @return array the cleansed array
  */
-function stripAssocArray($values) {
+function stripAssocArray($values, $useClientCharset = false) {
 	foreach ($values as $key => $value) {
 		if (is_scalar($value)) {
 			$values[$key] = strip_tags($values[$key]);
+			if ($useClientCharset && strtolower(Config::getVar('i18n', 'client_charset')) !== 'utf-8') {
+				$values[$key] = html_entity_decode($values[$key], ENT_QUOTES, Config::getVar('i18n', 'client_charset'));
+			} else {
+				$values[$key] = String::html2utf($values[$key]);
+			}
 		} else {
 			$values[$key] = stripAssocArray($values[$key]);
 		}

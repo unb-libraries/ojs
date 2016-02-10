@@ -3,8 +3,8 @@
 /**
  * @file classes/citation/XmlWebService.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2000-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class XmlWebService
@@ -63,7 +63,9 @@ class XmlWebService extends WebService {
 	function &call(&$webServiceRequest) {
 		// Call the web service
 		$xmlResult = parent::call($webServiceRequest);
-
+		if (Config::getVar('debug', 'log_web_service_info')) {
+			error_log('Time: ' . date('c') . "\nRequest: " . print_r($webServiceRequest, true) . "\nResponse: " . print_r($xmlResult, true) . "\nLast response status: " . $this->_lastResponseStatus . "\n");
+		}
 		// Catch web service errors
 		if (is_null($xmlResult)) return $xmlResult;
 

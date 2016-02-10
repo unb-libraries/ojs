@@ -3,8 +3,8 @@
 /**
  * @file classes/sword/OJSSwordDeposit.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class OJSSwordDeposit
@@ -171,7 +171,7 @@ class OJSSwordDeposit {
 			$url, $username, $password,
 			'',
 			$this->outPath . '/deposit.zip',
-			'http://purl.org/net/sword-types/METSDSpaceSIP',
+			'http://purl.org/net/sword/package/METSDSpaceSIP',
 			'application/zip', false, true
 		);
 		return $response;

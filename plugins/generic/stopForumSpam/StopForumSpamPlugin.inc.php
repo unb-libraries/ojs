@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/stopForumSpam/StopForumSpamPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class StopForumSpamPlugin
@@ -117,6 +117,13 @@ class StopForumSpamPlugin extends GenericPlugin {
 
 		// Prepare HTTP session.
 		$curlCh = curl_init();
+		if ($httpProxyHost = Config::getVar('proxy', 'http_host')) {
+			curl_setopt($curlCh, CURLOPT_PROXY, $httpProxyHost);
+			curl_setopt($curlCh, CURLOPT_PROXYPORT, Config::getVar('proxy', 'http_port', '80'));
+			if ($username = Config::getVar('proxy', 'username')) {
+				curl_setopt($curlCh, CURLOPT_PROXYUSERPWD, $username . ':' . Config::getVar('proxy', 'password'));
+			}
+		}
 		curl_setopt($curlCh, CURLOPT_RETURNTRANSFER, true);
 
 		// assemble the URL with our parameters.

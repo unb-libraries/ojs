@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/crossref/CrossRefExportPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportPlugin
@@ -120,34 +120,39 @@ class CrossRefExportPlugin extends DOIExportPlugin {
 		$this->registerDaoHook('IssueDAO');
 		$issueIterator =& $issueDao->getPublishedIssues($journal->getId(), Handler::getRangeInfo('issues'));
 
-		// Filter only issues that contain an article that have a DOI assigned.
+		// Get issues that should be excluded i.e. that have no objects eligible to export/register.
 		$publishedArticleDao =& DAORegistry::getDAO('PublishedArticleDAO');
-		$issues = array();
+		$excludes = array();
+		$allExcluded = true;
 		$numArticles = array();
 		while ($issue =& $issueIterator->next()) {
+			$excludes[$issue->getId()] = true;
 			$issueArticles =& $publishedArticleDao->getPublishedArticles($issue->getId());
 			$issueArticlesNo = 0;
-			$allArticlesRegistered = true;
+			$allArticlesRegistered[$issue->getId()] = true;
 			foreach ($issueArticles as $issueArticle) {
-				$articleRegistered = $issueArticle->getData('crossref::registeredDoi');
-				if ($issueArticle->getPubId('doi') && !isset($articleRegistered)) {
-					if (!in_array($issue, $issues)) $issues[] = $issue;
+				$articleRegistered = $issueArticle->getData($this->getPluginId().'::registeredDoi');
+				$errors = array();
+				if ($this->canBeExported($issueArticle, $errors)) {
+					$excludes[$issue->getId()] = false;
+					$allExcluded = false;
 					$issueArticlesNo++;
 				}
-				if ($allArticlesRegistered && !isset($articleRegistered)) {
-					$allArticlesRegistered = false;
+				if ($allArticlesRegistered[$issue->getId()] && !isset($articleRegistered)) {
+					$allArticlesRegistered[$issue->getId()] = false;
 				}
 			}
 			$numArticles[$issue->getId()] = $issueArticlesNo;
+			unset($issue);
 		}
-
-		// Instantiate issue iterator.
-		import('lib.pkp.classes.core.ArrayItemIterator');
-		$rangeInfo = Handler::getRangeInfo('articles');
-		$iterator = new ArrayItemIterator($issues, $rangeInfo->getPage(), $rangeInfo->getCount());
+		unset($issueIterator);
 
 		// Prepare and display the issue template.
-		$templateMgr->assign_by_ref('issues', $iterator);
+		// Get the issue iterator from the DB for the template again.
+		$issueIterator =& $issueDao->getPublishedIssues($journal->getId(), Handler::getRangeInfo('issues'));
+		$templateMgr->assign_by_ref('issues', $issueIterator);
+		$templateMgr->assign('allExcluded', $allExcluded);
+		$templateMgr->assign('excludes', $excludes);
 		$templateMgr->assign('numArticles', $numArticles);
 		$templateMgr->assign('allArticlesRegistered', $allArticlesRegistered);
 		$templateMgr->display($this->getTemplatePath() . 'issues.tpl');
@@ -208,6 +213,7 @@ class CrossRefExportPlugin extends DOIExportPlugin {
 			}
 			return parent::canBeExported($foundObject, $errors);
 		}
+		return false;
 	}
 
 	/**
@@ -258,7 +264,14 @@ class CrossRefExportPlugin extends DOIExportPlugin {
 	 * @see DOIExportPlugin::registerDoi()
 	 */
 	function registerDoi(&$request, &$journal, &$objects, $filename) {
-		$curlCh = curl_init ();
+		$curlCh = curl_init();
+		if ($httpProxyHost = Config::getVar('proxy', 'http_host')) {
+			curl_setopt($curlCh, CURLOPT_PROXY, $httpProxyHost);
+			curl_setopt($curlCh, CURLOPT_PROXYPORT, Config::getVar('proxy', 'http_port', '80'));
+			if ($username = Config::getVar('proxy', 'username')) {
+				curl_setopt($curlCh, CURLOPT_PROXYUSERPWD, $username . ':' . Config::getVar('proxy', 'password'));
+			}
+		}
 		curl_setopt($curlCh, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curlCh, CURLOPT_POST, true);
 		curl_setopt($curlCh, CURLOPT_HEADER, 1);
@@ -322,7 +335,14 @@ class CrossRefExportPlugin extends DOIExportPlugin {
 		$jsonManager = new JSONManager();
 
 		// Prepare HTTP session.
-		$curlCh = curl_init ();
+		$curlCh = curl_init();
+		if ($httpProxyHost = Config::getVar('proxy', 'http_host')) {
+			curl_setopt($curlCh, CURLOPT_PROXY, $httpProxyHost);
+			curl_setopt($curlCh, CURLOPT_PROXYPORT, Config::getVar('proxy', 'http_port', '80'));
+			if ($username = Config::getVar('proxy', 'username')) {
+				curl_setopt($curlCh, CURLOPT_PROXYUSERPWD, $username . ':' . Config::getVar('proxy', 'password'));
+			}
+		}
 		curl_setopt($curlCh, CURLOPT_RETURNTRANSFER, true);
 
 		$username = $this->getSetting($journal->getId(), 'username');

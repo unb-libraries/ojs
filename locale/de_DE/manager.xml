@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/manager.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -278,7 +278,7 @@
 	<message key="manager.setup.enableAnnouncements">Erlauben Sie den Zeitschriftenverwalter/innen, Mitteilungen hinzuzufügen.</message>
 	<message key="manager.setup.enableAnnouncementsHomepage1">Anzeige der</message>
 	<message key="manager.setup.enableAnnouncementsHomepage2">neuesten Mitteilungen auf der Startseite der Zeitschrift</message>
-	<message key="manager.setup.enablePageNumber">Für jeden Beitrag werden Seitenzahlen berechnet und manuell im Inhaltsverzeichnis der Zeitschrift eingetragen (z.B. S. 13-26).</message>
+	<message key="manager.setup.enablePageNumber">Für jeden Beitrag werden Seitenzahlen berechnet und manuell im Inhaltsverzeichnis der Zeitschrift eingetragen (z.B. 13-26).</message>
 	<message key="manager.setup.enablePublicArticleId">Eindeutige Kennungen werden für Artikel verwendet.</message>
 	<message key="manager.setup.enablePublicGalleyId">Eindeutige Kennungen werden für Fahnen (z.B. HTML- oder PDF-Dateien) zu Artikeln verwendet.</message>
 	<message key="manager.setup.enablePublicIssueId">Eindeutige Kennungen werden für Ausgaben verwendet.</message>
@@ -510,14 +510,15 @@
 	</message>
 	<message key="manager.statistics.reports">Berichterstellung</message>
 	<message key="manager.statistics.reports.aggregationColumns">Erzeuge Statistiken nach:</message>
+	<message key="manager.statistics.reports.optionalColumns.description">Elemente, die kursiv gesetzt und mit * markiert sind, stehen für optionale Daten fürdie momentane Statistikmethode in OJS sind (gewählte Metrik). Abhängig von Ihrer Konfiguration des Statistik-Plug-Ins haben Sie diese Daten oder nicht.</message>
 	<message key="manager.statistics.reports.defaultReportTemplates">Standard-Berichtsvorlagen</message>
 	<message key="manager.statistics.reports.defaultReport.articleDownloads">Downloads von Artikeldateien</message>
 	<message key="manager.statistics.reports.defaultReport.articleAbstract">Aufrufe der Abstractseiten von Artikeln</message>
-	<message key="manager.statistics.reports.defaultReport.articleAbstractAndDownloads">Article Abstracts und Downloads</message>
+	<message key="manager.statistics.reports.defaultReport.articleAbstractAndDownloads">Abstractseiten und Downloads</message>
 	<message key="manager.statistics.reports.defaultReport.issueDownloads">Downloads von Ausgabendateien</message>
-	<message key="manager.statistics.reports.defaultReport.issueTableOfContents">Issue Aufrufe der Inhaltsverzeichnis-Seiten</message>
-	<message key="manager.statistics.reports.defaultReport.issueTableOfContentsAndDownloads">Issue table of contents and downloads</message>
-	<message key="manager.statistics.reports.defaultReport.journalIndexPageViews">Journal Startseiten-Aufrufe</message>
+	<message key="manager.statistics.reports.defaultReport.issueTableOfContents">Aufrufe der Inhaltsverzeichnis-Seiten</message>
+	<message key="manager.statistics.reports.defaultReport.issueTableOfContentsAndDownloads">Inhaltsverzeichnisse und Downloads</message>
+	<message key="manager.statistics.reports.defaultReport.journalIndexPageViews">Startseiten-Aufrufe</message>
 	<message key="manager.statistics.reports.description">OJS erstellt Berichte, die die Details der Verarbeitung von Beiträgen aus der Perspektive von Beiträgen, Redakteur/innen, Gutachter/innen sowie Rubriken über einen festgelegten Zeitraum nachzeichnen. Die Berichte werden im CSV-Format erstellt, die mit einer Tabellenkalkulation betrachtet werden können.</message>
 	<message key="manager.statistics.reports.generateReport">Benutzerdefinierten Bericht erzeugen</message>
 	<message key="manager.statistics.reports.advancedOptions">Erweiterte Einstellungen</message>
@@ -529,7 +530,7 @@
 	<message key="manager.statistics.reports.objectType">Objekttyp</message>
 	<message key="manager.statistics.reports.objectId">Objekt-ID</message>
 	<message key="manager.statistics.reports.objectId.label">Definieren Sie eine oder mehrere Objekt-ID, jeweils mit Komma getrennt (z.B. 1,2,3,4,5).</message>
-	<message key="manager.statistics.reports.today">Heute</message>
+	<message key="manager.statistics.reports.yesterday">Gestern</message>
 	<message key="manager.statistics.reports.currentMonth">Aktueller Monat</message>
 	<message key="manager.statistics.reports.orderBy">Sortieren nach</message>
 	<message key="manager.statistics.reports.orderDir">Richtung</message>

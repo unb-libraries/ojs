@@ -4,8 +4,8 @@
 <!--
   * locale/ar_IQ/installer.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ar_IQ (العربية) locale.
@@ -69,4 +69,7 @@
 	<message key="installer.publicFilesDirError">حافظة الملفات العمومية غير موجودة أو أنها لا تقبل الكتابة عليها.</message>
 	<message key="installer.releaseNotes">ملاحظات الإطلاق</message>
 	<message key="installer.securitySettings">إعدادات الأمان</message>
+    <message key="installer.beacon">المرشد</message>
+    <message key="installer.beacon.enable">زود الموقع برمز تعريفي فريد ورابط أساسي لـ OAI فقط لأغراض إحصائية وما يتعلق بإشعارات الأمان لمشروع المعرفة العامة.</message>
+
 </locale>

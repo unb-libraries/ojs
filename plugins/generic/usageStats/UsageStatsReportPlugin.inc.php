@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageStats/UsageStatsReportPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UsageStatsReportPlugin
@@ -53,8 +53,8 @@ class UsageStatsReportPlugin extends ReportPlugin {
 	/**
 	 * @see ReportPlugin::display()
 	 */
-	function display(&$args) {
-		parent::display($args);
+	function display($args, $request) {
+		parent::display($args, $request);
 		$journal =& Request::getJournal();
 
 		$reportArgs = array(
@@ -138,6 +138,17 @@ class UsageStatsReportPlugin extends ReportPlugin {
 			ASSOC_TYPE_ISSUE_GALLEY,
 			ASSOC_TYPE_ARTICLE,
 			ASSOC_TYPE_GALLEY
+		);
+	}
+
+	/**
+	 * @see ReportPlugin::getOptionalColumns()
+	 */
+	function getOptionalColumns($metricType) {
+		if ($metricType !== OJS_METRIC_TYPE_COUNTER) return array();
+		return array(
+			STATISTICS_DIMENSION_CITY,
+			STATISTICS_DIMENSION_REGION
 		);
 	}
 }

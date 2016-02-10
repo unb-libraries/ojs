@@ -1,8 +1,8 @@
 {**
  * @file plugins/importexport/crossref/templates/articles.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Select articles for export.
@@ -88,7 +88,7 @@
 			{else}
 				<tr>
 					<td colspan="2" align="left">{page_info iterator=$articles}</td>
-					<td colspan="3" align="right">{page_links anchor="articles" name="articles" iterator=$articles}</td>
+					<td colspan="4" align="right">{page_links anchor="articles" name="articles" iterator=$articles}</td>
 				</tr>
 			{/if}
 		</table>

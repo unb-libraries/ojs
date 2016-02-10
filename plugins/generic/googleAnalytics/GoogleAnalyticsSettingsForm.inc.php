@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/googleAnalytics/GoogleAnalyticsSettingsForm.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class GoogleAnalyticsSettingsForm
@@ -107,7 +107,7 @@ class GoogleAnalyticsSettingsForm extends Form {
 		if (Validation::isSiteAdmin()) {
 			// Enable this code on the site level
 			if ($this->getData('enableSite')) {
-				$plugin->updateSetting(CONTEXT_ID_NONE, 'enabled', $this->getData('enableSite') == GOOGLE_ANALYTICS_SITE_ENABLE ? TRUE : FALSE, 'boolean');
+				$plugin->updateSetting(CONTEXT_ID_NONE, 'enabled', $this->getData('enableSite') == GOOGLE_ANALYTICS_SITE_ENABLE ? TRUE : FALSE, 'bool');
 				$plugin->updateSetting(CONTEXT_ID_NONE, 'trackingCode', $this->getData('enableSite') == GOOGLE_ANALYTICS_SITE_ENABLE ? $trackingCode : '', 'string');
 				$plugin->updateSetting(CONTEXT_ID_NONE, 'googleAnalyticsSiteId', $this->getData('enableSite') == GOOGLE_ANALYTICS_SITE_ENABLE ? trim($this->getData('googleAnalyticsSiteId'), "\"\';") : '', 'string');
 			}

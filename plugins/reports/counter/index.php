@@ -7,8 +7,8 @@
 /**
  * @file plugins/reports/counter/index.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @ingroup plugins_reports_counter
@@ -16,8 +16,13 @@
  *
  */
 
+// Because of the use of Namespaces, this plugin now requires PHP 5.3 or better
+if (version_compare(PHP_VERSION, '5.3.0') >= 0) {
+
 require_once(dirname(__FILE__) . '/CounterReportPlugin.inc.php');
 
 return new CounterReportPlugin();
+
+}
 
 ?>

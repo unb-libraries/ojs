@@ -4,8 +4,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the zh_CN (简体中文) locale.
@@ -14,7 +14,7 @@
  
 <locale name="zh_CN" full_name="简体中文">
 	<message key="plugins.generic.acron.name">Acron插件</message>
-	<message key="plugins.generic.acron.description">该款插件试图减轻周期性调度工具如cron对OCS的依赖。”</message>
+	<message key="plugins.generic.acron.description">该款插件试图减轻周期性调度工具如cron对OJS的依赖。”</message>
 	<message key="plugins.generic.acron.enabled">Acron插件已启用</message>
 	<message key="plugins.generic.acron.disabled">Acron插件已被禁用</message>
 

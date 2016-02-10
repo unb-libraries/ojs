@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/classes/DepositPackage.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class DepositPackage
@@ -15,8 +15,6 @@
 
 import('classes.file.JournalFileManager');
 import('lib.pkp.classes.scheduledTask.ScheduledTask');
-
-require_once(dirname(__FILE__).'/../lib/bagit.php');
 
 class DepositPackage {
 
@@ -67,7 +65,7 @@ class DepositPackage {
 	 */
 	function getDepositDir() {
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
-		$fileManager =& new JournalFileManager($journalDao->getById($this->_deposit->getJournalId()));
+		$fileManager = new JournalFileManager($journalDao->getById($this->_deposit->getJournalId()));
 		return $fileManager->filesDir . PLN_PLUGIN_ARCHIVE_FOLDER . DIRECTORY_SEPARATOR . $this->_deposit->getUUID();
 	}
 
@@ -195,6 +193,30 @@ class DepositPackage {
 
 		$entry->appendChild($pkpDetails);
 		$atom->appendChild($entry);
+
+		$locale = $journal->getPrimaryLocale();
+		$license = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'license');
+		$license->appendChild($atom->createElementNS('http://pkp.sfu.ca/SWORD', 'openAccessPolicy', $journal->getLocalizedSetting('openAccessPolicy', $locale)));
+		$license->appendChild($atom->createElementNS('http://pkp.sfu.ca/SWORD', 'licenseURL', $journal->getSetting('licenseURL')));
+		
+		$mode = $atom->createElementNS('http://pkp.sfu.ca/SWORD', 'publishingMode');
+		switch($journal->getSetting('publishingMode')) {
+			case PUBLISHING_MODE_OPEN:
+				$mode->nodeValue = 'Open';
+				break;
+			case PUBLISHING_MODE_SUBSCRIPTION:
+				$mode->nodeValue = 'Subscription';
+				break;
+			case PUBLISHING_MODE_NONE:
+				$mode->nodeValue = 'None';
+				break;
+		}
+		$license->appendChild($mode);
+		$license->appendChild($atom->createElementNS('http://pkp.sfu.ca/SWORD', 'copyrightNotice', $journal->getLocalizedSetting('copyrightNotice', $locale)));
+		$license->appendChild($atom->createElementNS('http://pkp.sfu.ca/SWORD', 'copyrightBasis', $journal->getSetting('copyrightYearBasis')));
+		$license->appendChild($atom->createElementNS('http://pkp.sfu.ca/SWORD', 'copyrightHolder', $journal->getSetting('copyrightHolderType')));
+		
+		$entry->appendChild($license);
 		$atom->save($atomFile);
 		
 		return $atomFile;
@@ -202,10 +224,17 @@ class DepositPackage {
 	}
 	
 	/**
-	 * Create a package containing the serialized deposit objects 
+	 * Create a package containing the serialized deposit objects. If the 
+	 * bagit library fails to load, null will be returned.
+	 * 
 	 * @return string The full path of the created zip archive
 	 */
 	function generatePackage() {
+		
+		if( ! @include_once(dirname(__FILE__).'/../lib/bagit.php')) {
+			$this->_logMessage(__("plugins.generic.pln.error.include.bagit"));
+			return;
+		}
 		
 		// get DAOs, plugins and settings
 		$journalDao =& DAORegistry::getDAO('JournalDAO');
@@ -318,7 +347,7 @@ class DepositPackage {
 		
 		// post the atom document
 		$url = $plnPlugin->getSetting($journalId, 'pln_network');
-		if ($this->_deposit->getUpdateStatus()) {
+		if ($this->_deposit->getLockssAgreementStatus()) {
 			$url .= PLN_PLUGIN_CONT_IRI . '/' . $plnPlugin->getSetting($journalId, 'journal_uuid');
 			$url .= '/' . $this->_deposit->getUUID() . '/edit';
 			$result = $plnPlugin->_curlPutFile(
@@ -337,9 +366,9 @@ class DepositPackage {
 		if (($result['status'] == PLN_PLUGIN_HTTP_STATUS_OK) || ($result['status'] == PLN_PLUGIN_HTTP_STATUS_CREATED)) {
 			$this->_deposit->setTransferredStatus();
 			// unset a remote error if this worked
-			$this->_deposit->setRemoteFailureStatus(false);
+			$this->_deposit->setLockssReceivedStatus(false);
 			// if this was an update, unset the update flag
-			$this->_deposit->setUpdateStatus(false);
+			$this->_deposit->setLockssAgreementStatus(false);
 			$this->_deposit->setLastStatusDate(time());
 			$depositDao->updateDeposit($this->_deposit);
 		} else {
@@ -349,7 +378,7 @@ class DepositPackage {
 			} else {
 				$this->_logMessage(__("plugins.generic.pln.error.http.deposit", array('error' => $result['status'])));
 			}
-			$this->_deposit->setRemoteFailureStatus();
+			$this->_deposit->setLockssReceivedStatus();
 			$this->_deposit->setLastStatusDate(time());
 			$depositDao->updateDeposit($this->_deposit);
 		}
@@ -373,15 +402,19 @@ class DepositPackage {
 		$depositDir = $plnDir . DIRECTORY_SEPARATOR . $this->_deposit->getUUID();
 		if ($fileManager->fileExists($depositDir,'dir')) $fileManager->rmtree($depositDir);
 		$fileManager->mkdir($depositDir);
-
-		if (!$fileManager->fileExists($this->generatePackage())) {
-			$this->_deposit->setLocalFailureStatus();
+		
+		$packagePath = $this->generatePackage();
+		if( ! $packagePath) {
+			return;
+		}
+		if (!$fileManager->fileExists($packagePath)) {
+			$this->_deposit->setPackagedStatus(false);
 			$depositDao->updateDeposit($this->_deposit);
 			return;
 		}
 		
 		if (!$fileManager->fileExists($this->generateAtomDocument())) {
-			$this->_deposit->setLocalFailureStatus();
+			$this->_deposit->setPackagedStatus(false);
 			$depositDao->updateDeposit($this->_deposit);
 			return;
 		}
@@ -407,34 +440,68 @@ class DepositPackage {
 		// retrieve the content document
 		$result = $plnPlugin->_curlGet($url);
 
-		// stop here if we didn't get an OK
 		if ($result['status'] != PLN_PLUGIN_HTTP_STATUS_OK) {
-			$this->_deposit->setRemoteFailureStatus();
-			$depositDao->updateDeposit($this->_deposit);
+			// stop here if we didn't get an OK
+			if($result['status'] === FALSE) {
+				error_log(__('plugins.generic.pln.error.network.swordstatement', array('error' => $result['error'])));
+			} else {
+				error_log(__('plugins.generic.pln.error.http.swordstatement', array('error' => $result['status'])));
+			}
 			return;
 		}
 
-		$contentState = new DOMDocument();
-		$contentState->preserveWhiteSpace = false;
-		$contentState->loadXML($result['result']);
+		$contentDOM = new DOMDocument();
+		$contentDOM->preserveWhiteSpace = false;
+		$contentDOM->loadXML($result['result']);
 
 		// get the remote deposit state
-		$element = $contentState->getElementsByTagName('category')->item(0);
-		$state = $element->getAttribute('term');
-
-		switch ($state) {
-			case 'agreement':
-				$this->_deposit->setSyncedStatus();
-			case 'disagreement':
-				$this->_deposit->setSyncingStatus();
-			case 'in_progress':
-				$this->_deposit->setReceivedStatus();
+		$processingState = $contentDOM->getElementsByTagName('category')->item(0)->getAttribute('term');
+		switch ($processingState) {
+			case 'depositedByJournal':
+				$this->_deposit->setTransferredStatus(true);
 				break;
-			case 'failed':
-				$this->_deposit->setRemoteFailureStatus();
+			case 'harvested':
+			case 'xml-validated':
+			case 'payload-validated':
+			case 'virus-checked':
+				$this->_deposit->setReceivedStatus(true);
 				break;
+			case 'bag-validated':
+			case 'reserialized':
+				$this->_deposit->setValidatedStatus(true);
+				break;
+			case 'deposited':
+				$this->_deposit->setSentStatus(true);
+				break;
+			default:
+				$this->_logMessage('Deposit ' . $this->_deposit->getId() . ' has unknown processing state ' . $processingState);
 		}
-
+		
+		$lockssState = $contentDOM->getElementsByTagName('category')->item(1)->getAttribute('term');
+		switch($lockssState) {
+			case '':
+				// do nothing.
+				break;
+			case 'received':
+				$this->_deposit->setLockssReceivedStatus();
+				break;
+			case 'syncing':
+				$this->_deposit->setLockssSyncingStatus();
+				break;
+			case 'agreement':
+				if( ! $this->_deposit->getLockssAgreementStatus()) {
+					$journalDao =& DAORegistry::getDAO('JournalDAO');
+					$fileManager = new JournalFileManager($journalDao->getById($this->_deposit->getJournalId()));
+					$depositDir = $this->getDepositDir();
+					$fileManager->rmtree($depositDir);
+				}
+				$this->_deposit->setLockssAgreementStatus(true);
+				break;
+			default:
+				$this->_logMessage('Deposit ' . $this->_deposit->getId() . ' has unknown LOCKSS state ' . $processingState);
+		}
+		
+		$this->_deposit->setLastStatusDate(time());
 		$depositDao->updateDeposit($this->_deposit);
 	}
 }

@@ -4,8 +4,8 @@
 <!--
   * locale/ru_RU/admin.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Русский) locale.
@@ -43,6 +43,7 @@
 	<message key="admin.scheduledTask.startTime">Начато выполнение задачи.</message>
 	<message key="admin.scheduledTask.stopTime">Закончено выполнение задачи.</message>
 	<message key="admin.scheduledTask.noLog">Задача не создавала записей для журнала событий.</message>
+	<message key="admin.scheduledTask.openAccessNotification">Уведомление об открытом доступе</message>
 	<message key="admin.scheduledTask.downloadLog">Ваша инсталляция OJS автоматически выполнила и завершила эту задачу, вы можете скачать файл с журналом событий по этой ссылке: {$url}</message>
 	<message key="admin.scheduledTask.confirmClearLogs">Вы уверены, что хотите удалить все журналы событий, содержащие информацию о выполнении запланированных задач?</message>
 	<message key="admin.scheduledTask.clearLogs">Удалить журналы событий с информацией о выполнении запланированных задач</message>
@@ -100,4 +101,6 @@
 	<message key="admin.fileLoader.moveFileFailed">Файл {$filename} не может быть перемещен из {$currentFilePath} в {$destinationPath}</message>
 	<message key="admin.fileLoader.fileProcessed">Файл {$filename} был обработан и помещен в архив.</message>
 	<message key="admin.fileLoader">Загрузчик файлов</message>
+	<message key="admin.error.utilExecutionProblem">Выполнение программы «{$utilPath}» закончилось следующей ошибкой: {$output}</message>
+	<message key="admin.error.executingUtil">Ошибка: не могу выполнить «{$utilPath}».  Проверьте вашу настройку {$utilVar} в файле config.inc.php.</message>
 </locale>

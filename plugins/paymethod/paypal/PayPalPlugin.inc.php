@@ -3,7 +3,7 @@
 /**
  * @file plugins/paymethod/paypal/PayPalPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
+ * Copyright (c) 2013-2016 Simon Fraser University Library
  * Copyright (c) 2006-2009 Gunther Eysenbach, Juan Pablo Alperin, MJ Suhonos
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -185,6 +185,13 @@ class PayPalPlugin extends PaymethodPlugin {
 				}
 				// Create POST response
 				$ch = curl_init();
+				if ($httpProxyHost = Config::getVar('proxy', 'http_host')) {
+					curl_setopt($ch, CURLOPT_PROXY, $httpProxyHost);
+					curl_setopt($ch, CURLOPT_PROXYPORT, Config::getVar('proxy', 'http_port', '80'));
+					if ($username = Config::getVar('proxy', 'username')) {
+						curl_setopt($ch, CURLOPT_PROXYUSERPWD, $username . ':' . Config::getVar('proxy', 'password'));
+					}
+				}
 				curl_setopt($ch, CURLOPT_URL, $this->getSetting($journal->getId(), 'paypalurl'));
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_POST, 1);

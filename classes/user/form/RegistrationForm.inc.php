@@ -7,8 +7,8 @@
 /**
  * @file classes/user/form/RegistrationForm.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class RegistrationForm
@@ -41,10 +41,10 @@ class RegistrationForm extends Form {
 	 */
 	function RegistrationForm() {
 		parent::Form('user/register.tpl');
-		$this->implicitAuth = Config::getVar('security', 'implicit_auth');
+		$this->implicitAuth = strtolower(Config::getVar('security', 'implicit_auth'));
 
-		if ($this->implicitAuth) {
-			// If implicit auth - it is always an existing user
+		if (Validation::isLoggedIn()) {
+			// If logged in
 			$this->existingUser = 1;
 		} else {
 			$this->existingUser = Request::getUserVar('existingUser') ? 1 : 0;

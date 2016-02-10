@@ -3,8 +3,8 @@
 /**
  * @file pages/user/UserHandler.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UserHandler
@@ -375,13 +375,15 @@ class UserHandler extends Handler {
 			$session->setSessionVar('currentLocale', $setLocale);
 		}
 
-		if(isset($_SERVER['HTTP_REFERER'])) {
-			$request->redirectUrl($_SERVER['HTTP_REFERER']);
-		}
-
 		$source = $request->getUserVar('source');
 		if (isset($source) && !empty($source)) {
 			$request->redirectUrl($request->getProtocol() . '://' . $request->getServerHost() . $source, false);
+		}
+
+		// TODO: this seems bad form, but is kept for legacy purposes
+		// Evaluate removal, or only trust the REFERER when it is a known base_url?
+		if(isset($_SERVER['HTTP_REFERER'])) {
+			$request->redirectUrl($_SERVER['HTTP_REFERER']);
 		}
 
 		$request->redirect(null, 'index');

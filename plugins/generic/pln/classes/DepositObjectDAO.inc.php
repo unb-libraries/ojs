@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/pln/DepositObjectDAO.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * @class DepositObjectDAO
@@ -83,7 +83,6 @@ class DepositObjectDAO extends DAO {
 	 * @param $objectType string
 	 */
 	function markHavingUpdatedContent($journalId, $objectType) {
-		$objects = array();
 		$depositDao =& DAORegistry::getDAO('DepositDAO');
 	
 		switch ($objectType) {
@@ -100,19 +99,22 @@ class DepositObjectDAO extends DAO {
 				while (!$result->EOF) {
 					$row = $result->GetRowAssoc(false);
 					$depositObject =& $this->getDepositObjectId($journalId,$row['deposit_object_id']);
-					$depositObject->setDateModified($row['last_modified']);
-					$this->updateDepositObject($depositObject);
 					$deposit =& $depositDao->getDepositById($journalId, $depositObject->getDepositId());
-					$deposit->setNewStatus();
-					$deposit->setUpdateStatus();
-					$depositDao->updateDeposit($deposit);
+					if($deposit->getSentStatus() || ! $deposit->getTransferredStatus()) {
+						// only update a deposit after it has been synced in LOCKSS.
+						$depositObject->setDateModified($row['last_modified']);
+						$this->updateDepositObject($depositObject);
+						$deposit->setNewStatus();
+						$deposit->setLockssAgreementStatus(true); // this is an update.
+						$depositDao->updateDeposit($deposit);
+					}
 					$result->MoveNext();
 				}
 				$result->Close();
 				break;
 			case PLN_PLUGIN_DEPOSIT_OBJECT_ISSUE:
 				$result =& $this->retrieve(
-					'SELECT DISTINCT pdo.deposit_object_id, i.last_modified as issue_modified, a.last_modified as article_modified
+					'SELECT DISTINCT pdo.deposit_object_id, i.last_modified as issue_modified, max(a.last_modified) as article_modified
 					FROM issues i
 					LEFT JOIN pln_deposit_objects pdo ON pdo.object_id = i.issue_id
 					LEFT JOIN published_articles pa ON pa.issue_id = i.issue_id
@@ -125,18 +127,20 @@ class DepositObjectDAO extends DAO {
 				while (!$result->EOF) {
 					$row = $result->GetRowAssoc(false);
 					$depositObject =& $this->getDepositObject($journalId,$row['deposit_object_id']);
-					
-					if ($row['issue_modified'] > $row['article_modified']) {
-						$depositObject->setDateModified($row['issue_modified']);
-					} else {
-						$depositObject->setDateModified($row['article_modified']);
-					}
-
-					$this->updateDepositObject($depositObject);
 					$deposit =& $depositDao->getDepositById($journalId, $depositObject->getDepositId());
-					$deposit->setNewStatus();
-					$deposit->setUpdateStatus();
-					$depositDao->updateDeposit($deposit);
+					if($deposit->getSentStatus() || ! $deposit->getTransferredStatus()) {
+						// only update a deposit after it has been synced in LOCKSS.
+						if ($row['issue_modified'] > $row['article_modified']) {
+							$depositObject->setDateModified($row['issue_modified']);
+						} else {
+							$depositObject->setDateModified($row['article_modified']);
+						}
+
+						$this->updateDepositObject($depositObject);
+						$deposit->setNewStatus();
+						$deposit->setLockssAgreementStatus(true); // this is an update.
+						$depositDao->updateDeposit($deposit);
+					}
 					$result->MoveNext();
 				}
 				$result->Close();

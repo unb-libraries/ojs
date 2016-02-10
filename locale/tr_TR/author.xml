@@ -4,15 +4,15 @@
 <!--
   * locale/tr_TR/author.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the tr_TR (Türkçe) locale.
   *
   -->
 
-<locale name="tr_TR" full_name = "Türkiye Türkçesi">
+<locale name="tr_TR" full_name="Türkçe">
 	<message key="author.submit">Yeni Gönderi</message>
 	<message key="author.track">Aktif Gönderiler</message>
 	<message key="author.competingInterests"><![CDATA[Çıkar Çatışması (Competing Interests) <a target="_new" class="action" href="{$competingInterestGuidelinesUrl}">CI Rehberi</a>]]></message>
@@ -93,7 +93,7 @@
 	<message key="author.submit.addSupplementaryFile">Ek Dosya Ekle</message>
 	<message key="author.submit.editSupplementaryFile">Ek Dosya Düzenle</message>
 	<message key="author.submit.supplementaryFileData">Ek Dosya Üst Verisi</message>
-	<message key="author.submit.supplementaryFileDataDescription">Yüklediğiniz bu ek belge için lütfen aşağıdaki formu doldurunuz. (Eğer belgeniz yayın hakkı devir formu ise (a) "Başlık" alanına makalenizin başlığını yazınız, (b) "Tür" alanında "diğer" seçeneğini seçiniz, (c) "Kısa Açıklama" alanına "Yayın Kakkı Devir Formu" ifadesini yazınız, (d) "Yayıncı" kısmına "Deri yayıncısını" yazınız ve (e) makalenizin dil kodunu "dil" alanında belirtiniz.)</message>
+	<message key="author.submit.supplementaryFileDataDescription">Yüklediğiniz bu ek belge için lütfen aşağıdaki formu doldurunuz. (Eğer belgeniz yayın hakkı devir formu ise (a) "Başlık" alanına makalenizin başlığını yazınız, (b) "Tür" alanında "diğer" seçeneğini seçiniz, (c) "Kısa Açıklama" alanına "Yayın Kakkı Devir Formu" ifadesini yazınız, (d) "Yayıncı" kısmına "Dergi yayıncısını" yazınız ve (e) makalenizin dil kodunu "dil" alanında belirtiniz.)</message>
 	<message key="author.submit.supplementaryFileUpload">Ek Dosya</message>
 	<message key="author.submit.suppFile.createrOrOwner">Dosya sahibi</message>
 	<message key="author.submit.suppFile.researchInstrument">Araştırma Enstürmanları</message>

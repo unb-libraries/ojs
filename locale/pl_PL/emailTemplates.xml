@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE email_texts SYSTEM "../../lib/pkp/dtd/emailTemplateData.dtd">
 <!--
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Plik językowy dla pl_PL
@@ -234,6 +234,55 @@ Dziękujemy za rozważenie naszej propozycji,
 		<description>Wiadomość od redaktora działu przesyłana do recenzenta. Zawiera prośbę o przygotowanie recenzji artykułu, jego tytuł i abstrakt, a także zalecenie dot. zresetowania hasła w sytuacji, gdy recenzent nie pamięta danych do logowania. Wysyłana, jeśli recenzent pracować będzie w systemie.</description>
 	</email_text>
 	<email_text key="REVIEW_REQUEST_ONECLICK">
+		<subject>Prośba o sporządzenie recenzji artykułu</subject>
+		<body>Szanowny/a Panie/Pani {$reviewerName}:
+
+w naszej opinii jest Pan/Pani właściwą osobą do sporządzenia recenzji artykułu "{$articleTitle}", zgłoszonego do czasopisma {$journalName}. Poniżej zamieszczamy abstrakt artykułu. Mamy nadzieję, że weźmie Pan/Pani pod uwagę realizację tak ważnego dla nas zadania.
+
+Prosimy o zalogowanie się na stronie czasopisma nie później niż {$weekLaterDate} w celu przyjęcia lub odrzucenia naszej prośby. Po akceptacji otrzyma Pan/Pani dostęp do zgłoszonego tekstu oraz możliwość przesłania swojej recenzji i rekomendacji. 
+
+Termin przygotowania recenzji: {$reviewDueDate}
+
+WWW tekstu: {$submissionReviewUrl}
+
+
+Dziękujemy za rozważenie naszej propozycji,
+{$editorialContactSignature}
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Wiadomość od redaktora działu przesyłana do recenzenta. Zawiera prośbę o przygotowanie recenzji artykułu, jego tytuł i abstrakt. Przesyłane, jeśli opcja one-click reviewer jest dostępna i jeśli recenzent nie jest mistrzem IT :)))</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO">
+		<subject>Prośba o sporządzenie recenzji artykułu</subject>
+		<body>Szanowny/a Panie/Pani {$reviewerName}:
+
+w naszej opinii jest Pan/Pani właściwą osobą do sporządzenia recenzji artykułu "{$articleTitle}", zgłoszonego do czasopisma {$journalName}. Poniżej zamieszczamy abstrakt artykułu. Mamy nadzieję, że weźmie Pan/Pani pod uwagę realizację tak ważnego dla nas zadania.
+
+Prosimy o zalogowanie się na stronie czasopisma nie później niż {$weekLaterDate} w celu przyjęcia lub odrzucenia naszej prośby. Po akceptacji otrzyma Pan/Pani dostęp do zgłoszonego tekstu oraz możliwość przesłania swojej recenzji i rekomendacji. 
+
+Strona czasopisma: {$journalUrl}
+
+Termin przygotowania recenzji: {$reviewDueDate}
+
+Jeśli nie posiada Pan/Pani danych niezbędnych do zalogowania się na stronie czasopisma, proszę o przejście na stronę:{$passwordResetUrl}
+
+WWW zgłoszonego tekstu: {$submissionReviewUrl}
+
+Dziękujemy za rozważenie naszej propozycji,
+{$editorialContactSignature}
+
+
+"{$articleTitle}"
+
+{$abstractTermIfEnabled}
+{$articleAbstract}</body>
+		<description>Wiadomość od redaktora działu przesyłana do recenzenta. Zawiera prośbę o przygotowanie recenzji artykułu, jego tytuł i abstrakt, a także zalecenie dot. zresetowania hasła w sytuacji, gdy recenzent nie pamięta danych do logowania. Wysyłana, jeśli recenzent pracować będzie w systemie.</description>
+	</email_text>
+	<email_text key="REVIEW_REQUEST_REMIND_AUTO_ONECLICK">
 		<subject>Prośba o sporządzenie recenzji artykułu</subject>
 		<body>Szanowny/a Panie/Pani {$reviewerName}:
 

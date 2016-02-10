@@ -4,8 +4,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_CA locale.
@@ -14,7 +14,7 @@
  
 <locale name="fr_CA" full_name="Français (Canada)">
 	<message key="plugins.generic.acron.name">Plugiciel Acron</message>
-	<message key="plugins.generic.acron.description">Ce plugiciel tente de réduire la dépendance d'OCS aux outils de planificiation périodique tel que 'cron.'</message>
+	<message key="plugins.generic.acron.description">Ce plugiciel tente de réduire la dépendance d'OJS aux outils de planificiation périodique tel que 'cron.'</message>
 
 	<message key="plugins.generic.acron.reload">Recharger les tâches planifiées</message>
 	<message key="plugins.generic.acron.enabled">Le plugiciel Acron a été activé.</message>

@@ -4,8 +4,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the eu_ES (Euskara) locale.
@@ -14,7 +14,7 @@
  
 <locale name="eu_ES" full_name="Euskara">
 	<message key="plugins.generic.acron.name">Acron plugina</message>
-	<message key="plugins.generic.acron.description"><![CDATA[Plugin honen xedea OCSk 'cron' eta atazak programatzeko antzeko tresnekiko duen dependentzia murriztea da.]]></message>
+	<message key="plugins.generic.acron.description"><![CDATA[Plugin honen xedea OJSk 'cron' eta atazak programatzeko antzeko tresnekiko duen dependentzia murriztea da.]]></message>
 
 	<message key="plugins.generic.acron.reload">Birkargatu ataza programatuak</message>
 	<message key="plugins.generic.acron.enabled">Acron plugin-a gaitu da.</message>

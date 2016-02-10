@@ -4,8 +4,8 @@
 <!--
   * plugins/generic/pln/locale/ru_RU/locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
   *
   * Localization strings for the ru_RU (Русский) locale.
@@ -16,22 +16,21 @@
 	<message key="plugins.generic.pln">Плагин «PKP PLN»</message>
 	<message key="plugins.generic.pln.description">Плагин «PKP PLN» отправляет ваш опубликованный контент для депонирования в Частную сеть LOCKSS от PKP.</message>
 	<message key="plugins.generic.pln.manager.setup.description"><![CDATA[<strong>Частная сеть LOCKSS от PKP</strong><br /><br />Пожалуйста, прочитайте <a href="https://pkp.sfu.ca/pkp-lockss/" target="_blank">обзор PKP PLN</a> и заполните <a href="{$plnPluginURL}">эту простую форму</a>. Эта настройка позволит включить ваш журналв Частную сеть LOCKSS, созданную Public Knowledge Project (PKP PLN).]]></message>
+	<message key="plugins.generic.pln.enabled">Плагин «PKP PLN» был включен.</message>
+	<message key="plugins.generic.pln.disabled">Плагин «PKP PLN» был отключен.</message>
 	
 	<message key="plugins.generic.pln.settings_page">Плагин «PKP PLN» — Настройки</message>
 	<message key="plugins.generic.pln.settings">Настройки</message>
+	<message key="plugins.generic.pln.settings.acron_required">Плагин PLN требуется либо плагин Acron, либо инструменты периодического запуска по расписанию, например, «cron».</message>
 	<message key="plugins.generic.pln.settings.saved">Настройки PKP PLN сохранены.</message>
 	<message key="plugins.generic.pln.settings.terms_of_use">Условия использования</message>
-	<message key="plugins.generic.pln.settings.terms_of_use_help">Перед депонированием в сети необходимо принять все условия ее использования.</message>
+	<message key="plugins.generic.pln.settings.terms_of_use_help">Как основное контактное лицо, я добросовестно принимаю и соглашаюсь со следующими условиями участия в частной сети LOCKSS, созданной Public Knowledge Project (PKP-PLN):</message>
 	<message key="plugins.generic.pln.settings.terms_of_use_agree">Я соглашаюсь</message>
 	<message key="plugins.generic.pln.settings.journal_uuid">Идентификатор журнала</message>
 	<message key="plugins.generic.pln.settings.journal_uuid_help">Это уникальный идентификатор вашего журнала для PKP PLN. Возможно Вам потребуется сообщить его администраторам PKP PLN для поддержки Вашего журнала.</message>
 	<message key="plugins.generic.pln.settings.refresh">Обновить</message>
 	<message key="plugins.generic.pln.settings.refresh_help">Если по какой-либо причине выше не показаны условия использования или вы знаете, что эти условия были изменены, щелкните на кнопке «Обновить» для обновления списка условий выше.</message>
-	<message key="plugins.generic.pln.settings.pln_network">URL сети PLN</message>
-	<message key="plugins.generic.pln.settings.pln_network_help">URL рабочего сервера вашей сети. Изменяйте его только в случае получения инструкций от кого-то из вашей сети.</message>
-	<message key="plugins.generic.pln.settings.pln_network_invalid">Указанный URL является неправильным. Пожалуйста, перепроверьте URL и попытайтесь снова.</message>
-	<message key="plugins.generic.pln.settings.pln_network_path_invalid">Адреса URL сети PLN должны состоять из схемы и имени хоста, а также могут включать номер порта. Они не должны содержать пути, строки запросов, имена пользователей, их пароли или фрагменты URL.</message>
-	
+
 	<message key="plugins.generic.pln.required.object_type">Пожалуйста, выберите тип депонируемого объекта.</message>
 	<message key="plugins.generic.pln.required.object_threshold">Пожалуйста, выберите порог депонируемых объектов.</message>
 	<message key="plugins.generic.pln.required.terms_of_use_agreement">Принятие условий использования сети является обязательным для депонирования в PLN.</message>
@@ -43,20 +42,32 @@
 	<message key="plugins.generic.pln.status.network_status">Статус сети: {$networkStatusMessage}</message>
 	<message key="plugins.generic.pln.status.deposits">Депонируемые объекты</message>
 	<message key="plugins.generic.pln.status">Статус</message>
+
+	<!-- Заголовки таблицы на странице статуса -->	
+	<message key="plugins.generic.pln.status.docs"><![CDATA[<a href="{$statusDocsUrl}">Здесь описаны статусы депонирования в PLN</a>.]]></message>
 	<message key="plugins.generic.pln.status.id">ID</message>
 	<message key="plugins.generic.pln.status.type">Тип</message>
 	<message key="plugins.generic.pln.status.items">Объекты</message>
-	<message key="plugins.generic.pln.status.packaged">Упакованы</message>
-	<message key="plugins.generic.pln.status.transferred">Переданы</message>
-	<message key="plugins.generic.pln.status.received">Получены</message>
-	<message key="plugins.generic.pln.status.syncing">Идет синхронизация</message>
-	<message key="plugins.generic.pln.status.synced">Синхронизированы</message>
-	<message key="plugins.generic.pln.status.updated">Обновлены</message>
+	<message key="plugins.generic.pln.status.checked">Отметка</message>
+	<message key="plugins.generic.pln.status.local_status">Локальный статус</message>
+	<message key="plugins.generic.pln.status.processing_status">Статус обработки</message>
+	<message key="plugins.generic.pln.status.lockss_status">Статус LOCKSS</message>
+	<message key="plugins.generic.pln.status.complete">Завершено</message>
+	<message key="plugins.generic.pln.status.confirmReset">Вы уверены, что хотите заменить эти депонируемые объекты? Они будут заново упакованы и отправлены на сервер обработки.</message>
+	
+	<!-- строки в таблице на странице статуса -->
+	<message key="plugins.generic.pln.status.unknown">Неизвестно</message>
+	<message key="plugins.generic.pln.status.new">Новый</message>
+	<message key="plugins.generic.pln.status.packaged">Упакован</message>
+	<message key="plugins.generic.pln.status.transferred">Передан</message>
+	<message key="plugins.generic.pln.status.received">Получен</message>
+	<message key="plugins.generic.pln.status.validated">Проверен</message>
+	<message key="plugins.generic.pln.status.sent">Отправлен</message>
+	<message key="plugins.generic.pln.status.syncing">Синхронизируется</message>
+	<message key="plugins.generic.pln.status.agreement">Соглашение</message>
+	<message key="plugins.generic.pln.status.updated">Обновлен</message>
 	<message key="plugins.generic.pln.status.local_failure">Локальная ошибка</message>
 	<message key="plugins.generic.pln.status.remote_failure">Удаленная ошибка</message>
-	<message key="plugins.generic.pln.status.reset">Сброс</message>
-	<message key="plugins.generic.pln.status.yes">Да</message>
-	<message key="plugins.generic.pln.status.no">Нет</message>
 
 	<message key="plugins.generic.pln.depositorTask.name">Задача депонирования PKP PLN</message>
 	<message key="plugins.generic.pln.notifications.processing_for">Депонирование выполняется для</message>
@@ -71,11 +82,16 @@
 	<message key="plugins.generic.pln.notifications.zip_missing">Для работы необходимо включить поддержку ZipArchive.</message>
 	<message key="plugins.generic.pln.notifications.issn_setting">У вашего журнала должен быть ISSN до того, как вы примение условия использования. Вы можете ввести ISSN на странице «Настройка журнала». После того как будет введен ISSN журнал, условия использования будут показаны ниже.</message>
 	<message key="plugins.generic.pln.notifications.tar_missing">В вашей системе должен быть исполняемый файл tar.</message>
+	<message key="plugins.generic.pln.notifications.archive_tar_missing">Расширение PHP Archive_Tar должно быть установлено до включения PKP PLN.</message>
+	<message key="plugins.generic.pln.notifications.php5_missing">PKP PLN требует PHP версии 5 или выше.</message>
 
+	<message key="plugins.generic.pln.error.include.bagit">Библиотеку BagIt, входящую в состав OJS, не удается загрузить, скорее всего из-за отсутствия необходимых для ее работы компонент.</message>
 	<message key="plugins.generic.pln.error.network.servicedocument">Ошибка сети {$error} при подключении к PLN для получения служебного документа.</message>
 	<message key="plugins.generic.pln.error.network.deposit">Ошибка сети {$error} при подключении к PLN для отправки депонируемого объекта.</message>
+	<message key="plugins.generic.pln.error.network.swordstatement">Ошибка сети {$error} при подключении к PLN для получения обновленного статуса депонируемого объекта.</message>
 	<message key="plugins.generic.pln.error.http.servicedocument">Сервер PLN вернул ошибку HTTP {$error} при попытке получения служебного документа.</message>
 	<message key="plugins.generic.pln.error.http.deposit">Сервер PLN вернул ошибку HTTP {$error} при отправке депонируемого объекта.</message>
+	<message key="plugins.generic.pln.error.http.swordstatement">PLN вернул ошибку HTTP {$error} при проверке статуса депонируемого объекта.</message>
 	<message key="plugins.generic.pln.error.depositor.missingpackage">Не удается найти файл пакета {$file}.</message>
 	<message key="plugins.generic.pln.error.depositor.export.articles.error">В процессе экспорта статей произошла ошибка. Более подробная информация может быть в журнале ошибок сервера.</message>
 	<message key="plugins.generic.pln.error.depositor.export.issue.error">При экспорте выпуска произошла ошибка. Более подробная информация может быть в журнале ошибок сервера.</message>

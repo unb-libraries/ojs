@@ -1,8 +1,8 @@
 {**
  * plugins/generic/pln/templates/settingsForm.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v3. For full terms see the file docs/COPYING.
  *
  * PLN plugin settings
@@ -12,12 +12,17 @@
 	{assign var="pageTitle" value="plugins.generic.pln.settings_page"}
 	{include file="common/header.tpl"}
 {/strip}
-
+		{if $prerequisitesMissing|@count > 0}
+			<ul>
+				{foreach from=$prerequisitesMissing item=message}
+					<li><span class='pkp_form_error'>{$message}</span></li>
+				{/foreach}
+			</ul>
+		{/if}
 <div id="plnSettings">
 	<form class="pkp_form" id="plnSettingsForm" method="post" action="{plugin_url path="settings"}">
 		{include file="common/formErrors.tpl"}
 		<table class="data">
-
 			<tr>
 				<td class="label">
 					{fieldLabel name="terms_of_use" key="plugins.generic.pln.settings.terms_of_use"}
@@ -57,16 +62,6 @@
 			</tr>
 
 			<tr><td colspan="2"><div class="separator">&nbsp;</div></td></tr>
-
-			<tr>
-				<td class="label">{fieldLabel name="pln_network" key="plugins.generic.pln.settings.pln_network"}</td>
-				<td class="value">
-					<p>{translate key="plugins.generic.pln.settings.pln_network_help"}</p>
-					<input type="text" id="pln_network" name="pln_network" class="textField" value="{$pln_network|escape}"/>
-				</td>
-			</tr>
-
-            <tr><td colspan="2"><div class="separator">&nbsp;</div></td></tr>
 
 			<tr>
 				<td class="label">

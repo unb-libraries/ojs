@@ -1,19 +1,21 @@
 {**
  * plugins/generic/browse/templates/searchIndex.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Display journal browse objects (sections or identify types)
  *
  *}
+{strip}
 {if $enableBrowseBySections}
 {assign var="pageTitle" value="plugins.generic.browse.search.sectionIndex"}
 {else if $enableBrowseByIdentifyTypes}
 {assign var="pageTitle" value="plugins.generic.browse.search.identifyTypeIndex"}
 {/if}
 {include file="common/header.tpl"}
+{/strip}
 
 <div id="results">
 {if $enableBrowseBySections}

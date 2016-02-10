@@ -1,8 +1,8 @@
 {**
  * templates/user/changePassword.tpl
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Form to change a user's password.
@@ -19,6 +19,9 @@
 
 {include file="common/formErrors.tpl"}
 
+{if $implicitAuth}
+<p><span class="instruct">{translate key="user.profile.implicitAuthChangePasswordInstructions"}</span></p>
+{/if}
 <p><span class="instruct">{translate key="user.profile.changePasswordInstructions"}</span></p>
 
 <table class="data" width="100%">

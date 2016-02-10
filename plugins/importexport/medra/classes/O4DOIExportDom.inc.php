@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/medra/classes/O4DOIExportDom.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class O4DOIExportDom
@@ -782,7 +782,7 @@ class O4DOIExportDom extends DOIExportDom {
 
 		// ISSN
 		if (!empty($issn)) {
-			$issn = String::regexp_replace('/[^0-9]/', '', $issn);
+			$issn = String::regexp_replace('/[^0-9xX]/', '', $issn);
 			XMLCustomWriter::appendChild($serialVersionElement, $this->_idElement('Product', O4DOI_ID_TYPE_ISSN, $issn));
 		}
 

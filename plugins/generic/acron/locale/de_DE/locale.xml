@@ -4,8 +4,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -14,7 +14,7 @@
  
 <locale name="de_DE" full_name="Deutsch (Deutschland)">
 	<message key="plugins.generic.acron.name">Acron-Plug-In</message>
-	<message key="plugins.generic.acron.description"><![CDATA[Dieses Plug-In versucht, OCS' Abhängigkeit von Zeitplanungswerkzeugen wie 'cron' zu reduzieren.]]></message>
+	<message key="plugins.generic.acron.description"><![CDATA[Dieses Plug-In versucht, OJS' Abhängigkeit von Zeitplanungswerkzeugen wie 'cron' zu reduzieren.]]></message>
 	<message key="plugins.generic.acron.enabled">Das Acron-Plugin ist aktiviert.</message>
 	<message key="plugins.generic.acron.disabled">Das Acron-Plugin ist deaktiviert.</message>
 

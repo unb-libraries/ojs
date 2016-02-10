@@ -3,8 +3,8 @@
 /**
  * @file pages/sectionEditor/SubmissionEditHandler.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubmissionEditHandler
@@ -66,6 +66,13 @@ class SubmissionEditHandler extends SectionEditorHandler {
 
 		$sectionDao =& DAORegistry::getDAO('SectionDAO');
 		$section =& $sectionDao->getSection($submission->getSectionId());
+		if (!$section) {
+			import('classes.notification.NotificationManager');
+			$notificationManager = new NotificationManager();
+			$notificationManager->createTrivialNotification(
+				$user->getId(), NOTIFICATION_TYPE_ERROR, array('contents' => __('author.submit.form.sectionRequired'))
+			);
+		}
 
 		$enableComments = $journal->getSetting('enableComments');
 

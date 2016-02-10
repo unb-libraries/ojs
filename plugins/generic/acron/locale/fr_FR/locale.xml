@@ -4,8 +4,8 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2000-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
   * Localization strings for the fr_FR locale.
@@ -14,7 +14,7 @@
 
 <locale name="fr_FR" full_name="Français (France)">
 	<message key="plugins.generic.acron.name">Plugin Acron</message>
-	<message key="plugins.generic.acron.description"><![CDATA[This plugin attempts to reduce the dependance of OCS on periodic scheduling tools such as 'cron.']]></message>
+	<message key="plugins.generic.acron.description"><![CDATA[This plugin attempts to reduce the dependance of OJS on periodic scheduling tools such as 'cron.']]></message>
 
 	<message key="plugins.generic.acron.reload">Recharger des tâches programmées</message>
 	<message key="plugins.generic.acron.disabled">Le plugiciel Acron a été activé.</message>

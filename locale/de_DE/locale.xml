@@ -4,8 +4,8 @@
 <!--
   * locale/de_DE/locale.xml
   *
-  * Copyright (c) 2013-2015 Simon Fraser University Library
-  * Copyright (c) 2003-2015 John Willinsky
+  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
   * Please contact Marco Tullney, marco.tullney@fu-berlin.de, with any questions regarding this translation.
@@ -55,7 +55,7 @@
 	<message key="submission.license.cc.by-nd4">CC Namensnennung - Keine Bearbeitungen 4.0</message>
 	<message key="submission.license.cc.by4">CC Namensnennung 4.0</message>
 	<message key="submission.license.cc.by-sa4">CC Namensnennung - Weitergabe unter gleichen Bedingungen 4.0</message>
-	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Dieses Werk steht unter der a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Lizenz Creative Commons Namensnennung - Nicht-kommerziell - Keine Bearbeitungen 4.0 International</a>.]]></message>
+	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Dieses Werk steht unter der <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Lizenz Creative Commons Namensnennung - Nicht-kommerziell - Keine Bearbeitungen 4.0 International</a>.]]></message>
 	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />Dieses Werk steht unter der <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Lizenz Creative Commons Namensnennung - Nicht-kommerziell 4.0 International</a>.]]></message>
 	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Dieses Werk steht unter der <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Lizenz Creative Commons Namensnennung - Nicht-kommerziell - Weitergabe unter gleichen Bedingungen 4.0 International</a>.]]></message>
 	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />Dieses Werk steht unter der <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Lizenz Creative Commons Namensnennung - Keine Bearbeitungen 4.0 International</a>.]]></message>
@@ -236,6 +236,7 @@
 <message key="user.orcid">ORCID-iD</message>
 	<message key="user.orcid.description"><![CDATA[ORCID-iDs können nur durch <a href="http://orcid.org/" target="_blank">die ORCID-Registrierung</a> vergeben werden. Sie müssen deren Vorgabe zum Schreiben von ORCID-iDs beachten und den vollen URI (eg. <em>http://orcid.org/0000-0002-1825-0097</em>) verwenden.]]></message>
 	<message key="user.profile.form.orcidInvalid">Die angegebene ORCID-iD ist ungültig.</message>
+	<message key="user.profile.implicitAuthChangePasswordInstructions">Wenn Sie sich via Shibboleth eingeloggt haben, befolgen Sie bitte die Vorgaben Ihrer Organisation, um Ihr Passwort dort zu ändern. Nutzer/innen, die direkt auf diesem OJS-System angemeldet sind, folgen bitte den untern aufgeführten Schritten.</message>
 
 	<!-- Funktionen -->
 	<message key="user.role.manager">Zeitschriftenverwalter/in</message>
@@ -729,6 +730,7 @@ Die Bewertung erfolgt auf einer Skala von 1-5 (Ausgezeichnet).<br />
 	<message key="user.login.registerNewAccount">Noch kein/e Benutzer/in? Registrieren Sie sich.</message>
 	<message key="user.login.resetPasswordInstructions"><![CDATA[Aus Sicherheitsgründen schickt das System den registrierten Benutzer/innen ein neues Passwort statt des aktuellen Passworts per E-Mail. <br /><br />
 Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. Eine Bestätigung geht an diese E-Mail-Adresse.]]></message>
+	<message key="user.login.implicitAuthLogin">Via Shibboleth einloggen</message>
 
 	<!-- Registrierung -->
 	<message key="user.register.emailValidation">Validierung der E-Mail-Adresse erforderlich</message>
@@ -747,6 +749,7 @@ Tragen Sie zur Wiederherstellung des Passwortes unten Ihre E-Mail-Adresse ein. E
 	<message key="user.register.reviewerDescriptionNoInterests">Sie sind bereit, bei der Zeitschrift eingereichte Beiträge im Peer Review zu begutachten.</message>
 	<message key="user.register.reviewerDescription">Sie sind bereit, bei der Website eingereichte Beiträge im Rahmen des Peer Review zu begutachten.</message>
 	<message key="user.register.reviewerInterests">Bitte geben Sie Begutachtungsinteressen an (Wissenschaftsbereiche und Forschungsmethoden):</message>
+	<message key="user.register.implicitAuth">Einloggen via Shibboleth mit einem existierenden Account bei einer Organisation</message>
 
 	<!-- Abonnements -->
 	<message key="user.subscriptions.mySubscriptions">Meine Abonnements</message>

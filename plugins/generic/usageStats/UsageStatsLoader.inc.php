@@ -3,8 +3,8 @@
 /**
  * @file plugins/generic/usageStats/UsageStatsLoader.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class UsageStatsLoader
@@ -48,6 +48,10 @@ class UsageStatsLoader extends FileLoader {
 	function UsageStatsLoader($args) {
 		$plugin =& PluginRegistry::getPlugin('generic', 'usagestatsplugin'); /* @var $plugin UsageStatsPlugin */
 		$this->_plugin =& $plugin;
+
+		if ($plugin->getSetting(CONTEXT_ID_NONE, 'compressArchives')) {
+			$this->setCompressArchives(true);
+		}
 
 		$arg = current($args);
 
@@ -167,10 +171,6 @@ class UsageStatsLoader extends FileLoader {
 			// Avoid internal apache requests.
 			if ($entryData['url'] == '*') continue;
 
-			// Avoid url with file extension (accept no extension or php only).
-			$fileExtension = pathinfo($entryData['url'], PATHINFO_EXTENSION);
-			if ($fileExtension && substr_count($fileExtension, 'php') == false) continue;
-
 			// Avoid non sucessful requests.
 			$sucessfulReturnCodes = array(200, 304);
 			if (!in_array($entryData['returnCode'], $sucessfulReturnCodes)) continue;
@@ -185,6 +185,10 @@ class UsageStatsLoader extends FileLoader {
 			$plugin = $this->_plugin;
 			if (!$plugin->getSetting(CONTEXT_ID_NONE, 'dataPrivacyOption')) {
 				list($countryCode, $cityName, $region) = $geoTool ? $geoTool->getGeoLocation($entryData['ip']) : array(null, null, null);
+				// Check optional columns setting.
+				$optionalColumns = $plugin->getSetting(CONTEXT_ID_NONE, 'optionalColumns');
+				if (!in_array(STATISTICS_DIMENSION_CITY, $optionalColumns)) $cityName = null;
+				if (!in_array(STATISTICS_DIMENSION_REGION, $optionalColumns)) $cityName = $region = null;
 			}
 			$day = date('Ymd', $entryData['date']);
 
@@ -314,19 +318,20 @@ class UsageStatsLoader extends FileLoader {
 			$parseRegex = $plugin->getSetting(0, 'accessLogFileParseRegex');
 		} else {
 			// Regex to parse this plugin's log access files.
-			$parseRegex = '/^(\S+) \S+ \S+ "(.*?)" (\S+) (\S+) "(.*?)"/';
+			$parseRegex = '/^(?P<ip>\S+) \S+ \S+ "(?P<date>.*?)" (?P<url>\S+) (?P<returnCode>\S+) "(?P<userAgent>.*?)"/';
 		}
 
 		// The default regex will parse only apache log files in combined format.
-		if (!$parseRegex) $parseRegex = '/^(\S+) \S+ \S+ \[(.*?)\] "\S+ (\S+).*?" (\S+) \S+ ".*?" "(.*?)"/';
+		if (!$parseRegex) $parseRegex = '/^(?P<ip>\S+) \S+ \S+ \[(?P<date>.*?)\] "\S+ (?P<url>\S+).*?" (?P<returnCode>\S+) \S+ ".*?" "(?P<userAgent>.*?)"/';
 
 		$returner = array();
 		if (preg_match($parseRegex, $entry, $m)) {
-			$returner['ip'] = $m[1];
-			$returner['date'] = strtotime($m[2]);
-			$returner['url'] = urldecode($m[3]);
-			$returner['returnCode'] = $m[4];
-			$returner['userAgent'] = $m[5];
+			$associative = count(array_filter(array_keys($m), 'is_string')) > 0;
+			$returner['ip'] = $associative ? $m['ip'] : $m[1];
+			$returner['date'] = strtotime($associative ? $m['date'] : $m[2]);
+			$returner['url'] = urldecode($associative ? $m['url'] : $m[3]);
+			$returner['returnCode'] = $associative ? $m['returnCode'] : $m[4];
+			$returner['userAgent'] = $associative ? $m['userAgent'] : $m[5];
 		}
 
 		return $returner;

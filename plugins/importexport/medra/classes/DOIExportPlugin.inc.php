@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/.../classes/DOIExportPlugin.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2003-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class DOIExportPlugin
@@ -481,23 +481,26 @@ class DOIExportPlugin extends ImportExportPlugin {
 		$this->registerDaoHook('IssueDAO');
 		$issueIterator =& $issueDao->getPublishedIssues($journal->getId(), Handler::getRangeInfo('issues'));
 
-		// Filter only issues that have a DOI assigned.
-		$issues = array();
+		// Get issues that should be excluded i.e. that have no DOI.
+		$excludes = array();
+		$allExcluded = true;
 		while ($issue =& $issueIterator->next()) {
-			if ($issue->getPubId('doi')) {
-				$issues[] =& $issue;
+			$excludes[$issue->getId()] = true;
+			$errors = array();
+			if ($this->canBeExported($issue, $errors)) {
+				$excludes[$issue->getId()] = false;
+				$allExcluded = false;
 			}
 			unset($issue);
 		}
 		unset($issueIterator);
 
-		// Instantiate issue iterator.
-		import('lib.pkp.classes.core.ArrayItemIterator');
-		$rangeInfo = Handler::getRangeInfo('articles');
-		$iterator = new ArrayItemIterator($issues, $rangeInfo->getPage(), $rangeInfo->getCount());
-
 		// Prepare and display the issue template.
-		$templateMgr->assign_by_ref('issues', $iterator);
+		// Get the issue iterator from the DB for the template again.
+		$issueIterator =& $issueDao->getPublishedIssues($journal->getId(), Handler::getRangeInfo('issues'));
+		$templateMgr->assign_by_ref('issues', $issueIterator);
+		$templateMgr->assign('allExcluded', $allExcluded);
+		$templateMgr->assign('excludes', $excludes);
 		$templateMgr->display($this->getTemplatePath() . 'issues.tpl');
 	}
 
@@ -1035,10 +1038,11 @@ class DOIExportPlugin extends ImportExportPlugin {
 		$this->registerDaoHook('PublishedArticleDAO');
 		$allArticles = $this->getAllPublishedArticles($journal);
 
-		// Filter only articles that have a DOI assigned.
+		// Filter only articles that can be exported.
 		$articles = array();
 		foreach($allArticles as $article) {
-			if ($article->getPubId('doi')) {
+			$errors = array();
+			if ($this->canBeExported($article, $errors)) {
 				$articles[] = $article;
 			}
 			unset($article);
@@ -1092,9 +1096,10 @@ class DOIExportPlugin extends ImportExportPlugin {
 			// Retrieve galleys for the article.
 			$articleGalleys =& $galleyDao->getGalleysByArticle($article->getId());
 
-			// Filter only galleys that have a DOI assigned.
+			// Filter only galleys that can be exported.
 			foreach ($articleGalleys as $galley) {
-				if ($galley->getPubId('doi')) {
+				$errors = array();
+				if ($this->canBeExported($galley, $errors)) {
 					$galleys[] =& $galley;
 				}
 				unset($galley);

@@ -3,8 +3,8 @@
 /**
  * @file classes/notification/PKPNotificationManager.inc.php
  *
- * Copyright (c) 2013-2015 Simon Fraser University Library
- * Copyright (c) 2000-2015 John Willinsky
+ * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2000-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPNotificationManager
@@ -117,6 +117,7 @@ class PKPNotificationManager {
 		switch ($type) {
 			case NOTIFICATION_TYPE_SUCCESS:
 			case NOTIFICATION_TYPE_ERROR:
+			case NOTIFICATION_TYPE_WARNING:
 				if (!is_null($this->getNotificationSettings($notification->getId()))) {
 					$notificationSettings = $this->getNotificationSettings($notification->getId());
 					return $notificationSettings['contents'];
@@ -445,7 +446,7 @@ class PKPNotificationManager {
 
 		import('classes.mail.MailTemplate');
 		$site =& $request->getSite();
-		$mail = new MailTemplate('NOTIFICATION', null, null, null, true, true);
+		$mail = new MailTemplate('NOTIFICATION', null, null, null, false, true);
 		$mail->setReplyTo($site->getLocalizedContactEmail(), $site->getLocalizedContactName());
 		$mail->assignParams(array(
 			'notificationContents' => $this->getNotificationContents($request, $notification),
