@@ -31,6 +31,7 @@ my $outfile   = '-';
 my $delete    = 0;
 my $overwrite = 0;
 my $verbose   = 0;
+my $gemini    = 0;
 
 # Process command line...
 my $options_ok = GetOptions (
@@ -38,6 +39,7 @@ my $options_ok = GetOptions (
   'delete'    => \$delete,        # --delete flag is boolean
   'overwrite' => \$overwrite,     # --overwrite flag is boolean
   'verbose'   => \$verbose,       # --verbose flag is boolean
+  'gemini'    => \$gemini,        # --gemini flag is boolean
   
   # Standard meta-options
   'usage'   => sub { print show_usage() and exit; },
@@ -156,13 +158,17 @@ Readonly my @REPLACEABLES => (
       &{$sub}($xhtml);
     }
     
+    my $writemode = '';
     # Decode in-place: replace entities with Unicode characters.
-    decode_entities($xhtml);
+    if( $gemini ) {
+      decode_entities($xhtml);
+      $writemode .= ':encoding(UTF-8)';
+    }
 
     print {interactive} "Writing to $xml_file" if $verbose;
 
     # Write Erudit "XML" to target file. Let Fatal.pm take care of exceptions.
-    open my $XML_FILE, ">:encoding(UTF-8)", $xml_file;
+    open my $XML_FILE, ">$writemode", $xml_file;
     print {$XML_FILE} $xhtml;
     close $XML_FILE;
     
@@ -185,7 +191,7 @@ exit 0;
 ###############################################################################
 sub show_usage {
   my $usage = <<'END_USAGE';
-Usage: eruditify [-d] [-o] [-v] article.html [article2.html ...]
+Usage: eruditify [-d] [-o] [-v] [-g] article.html [article2.html ...]
 END_USAGE
 # end heredoc
 
@@ -207,6 +213,7 @@ Options:
   -d, --delete    Delete HTML source files after processing.
   -o, --overwrite If target XML file exists, overwrite without prompting.
   -v, --verbose   Display details of script progress.
+  -g, --gemini    Correct character encoding from gemini.
   -u, --usage     Print the usage line of this summary.
   -h, --help      Print this summary.
 
