@@ -12,7 +12,7 @@
   *
   -->
 
-<locale name="it_IT" full_name = "Italiano">
+<locale name="it_IT" full_name="Italiano">
 	<message key="about.aboutSite">Informazioni sul sito</message>
 	<message key="about.contact">Contatti</message>
 	<message key="about.contact.email">Email</message>
@@ -273,7 +273,7 @@
 		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
 			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
 		</a>
-		<br/>
+		<br />
 		Se non diversamente indicato, i contenuti di questa rivista sono pubblicati sotto licenza
  <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
@@ -328,7 +328,9 @@
 	<message key="announcement.postedOn">Pubblicato il {$postDate}</message>
 	<message key="common.accepted">Accettato</message>
 	<message key="common.titleSmallWords">of a the and an or nor but is if then else when at from by on off for in out over to into with</message>
-	<message key="common.warning">Attenzione</message>
+	<message key="common.warning">Warning</message>
+	<message key="common.error">Error</message>
+	<message key="common.notice">Notice</message>
 	<message key="common.confirm">Conferma</message>
 	<message key="common.content">Contenuto</message>
 	<message key="common.declined">Rifiutato</message>
@@ -374,7 +376,6 @@
 	<message key="common.notified">Notificato</message>
 	<message key="common.reset">Reset</message>
 	<message key="grid.action.downloadFile">Scarica questo file</message>
-	<message key="common.error">Errore</message>
 	<message key="defaultMetric.title">Metriche di default</message>
 	<message key="defaultMetric.availableMetrics">Metriche disponibili</message>
 	<message key="search.activeFilters">Filtri avanzati</message>

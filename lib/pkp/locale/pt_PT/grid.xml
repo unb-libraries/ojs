@@ -8,11 +8,11 @@
   * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
-  * Localization strings for the en_US (English) locale.
+  * Localization strings for the pt_PT (Português (Portugal)) locale.
   *
   -->
 
-<locale name="en_US" full_name = "English">
+<locale name="pt_PT" full_name="Português (Portugal)">
 	<!-- Common -->
 	<message key="grid.noItems">Nenhuns Itens</message>
 	<message key="grid.settings">Configurações</message>
@@ -187,7 +187,7 @@
 	<message key="grid.user.step2">Passo #2: Adicionar Papéis Utilizador a {$userFullName}</message>
 	<message key="grid.user.addRoles">Adicionar Papéis</message>
 	<message key="grid.user.selectUser">Seleccionar Utilizador</message>
-	<message key="grid.user.pleaseSelectUser">Por favor seleccione utilizador</message>
+	<message key="grid.user.pleaseSelectUser">Por favor, seleccione utilizador</message>
 	<message key="grid.preparedEmails.title">Templates de e-mail padrão</message>
 	<message key="grid.preparedEmails.description">A imprensa facilita a comunicação de fluxo de trabalho através do uso de mensagens de e-mail padrão. O texto padrão destes modelos de e-mail pode ser facilmente modificado abaixo.</message>
 	<message key="grid.preparedEmails.currentList">Lista Actual</message>
