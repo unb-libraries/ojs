@@ -25,6 +25,7 @@ exit;
 }
 
 my $fh = $cgi->upload( 'source' );
+binmode $fh, ':utf8';
 my $xhtml = do { local $/; <$fh>; };
 
 Readonly my $SPACE    => ' ';
@@ -58,9 +59,6 @@ foreach my $sub (@REPLACEABLES) {
   &{$sub}($xhtml);
 }
     
-# Decode in-place: replace entities with Unicode characters.
-decode_entities($xhtml);
-
 print $cgi->header(-charset => 'utf-8', -attachment => $cgi->param('source'));
 binmode STDOUT, ":utf8";
 print $xhtml;
