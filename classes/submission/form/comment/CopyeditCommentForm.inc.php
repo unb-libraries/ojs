@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/form/comment/CopyeditCommentForm.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -62,12 +62,12 @@ class CopyeditCommentForm extends CommentForm {
 	/**
 	 * Email the comment.
 	 */
-	function email() {
+	function email($request) {
 		$article = $this->article;
 		$roleDao =& DAORegistry::getDAO('RoleDAO');
 		$signoffDao =& DAORegistry::getDAO('SignoffDAO');
 		$userDao =& DAORegistry::getDAO('UserDAO');
-		$journal =& Request::getJournal();
+		$journal =& $request->getJournal();
 
 		// Create list of recipients:
 		$recipients = array();
@@ -129,7 +129,7 @@ class CopyeditCommentForm extends CommentForm {
 			}
 		}
 
-		parent::email($recipients);
+		parent::email($recipients, $request);
 	}
 }
 

@@ -3,7 +3,7 @@
 /**
  * @file classes/author/form/submit/AuthorSubmitStep5Form.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -141,7 +141,7 @@ class AuthorSubmitStep5Form extends AuthorSubmitForm {
 		$article->setSubmissionProgress(0);
 		$article->stampStatusModified();
 		$articleDao->updateArticle($article);
-		
+
 		// Setup default copyright/license metadata at finalization of submission.
 		$article->initializePermissions();
 		$articleDao->updateLocaleFields($article);
@@ -213,7 +213,7 @@ class AuthorSubmitStep5Form extends AuthorSubmitForm {
 		}
 
 		import('classes.article.log.ArticleLog');
-		ArticleLog::logEvent($this->request, $article, ARTICLE_LOG_ARTICLE_SUBMIT, 'log.author.submitted', array('authorName' => $user->getFullName()));
+		ArticleLog::logEvent($this->request, $article, ARTICLE_LOG_ARTICLE_SUBMIT, 'log.author.submitted', array('authorName' => $user->getFullName(), 'submissionId' => $article->getId()));
 
 		return $this->articleId;
 	}

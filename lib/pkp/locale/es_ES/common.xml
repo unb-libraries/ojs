@@ -3,7 +3,7 @@
 <!--
   * locale/es_ES/common.xml
   *
-  * Copyright (c) 2014-2016 Simon Fraser University Library
+  * Copyright (c) 2014-2017 Simon Fraser University
   * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the 
   *
@@ -61,10 +61,10 @@
 	<message key="common.captchaField.description">Introduzca las letras tal como aparecen en la imagen de arriba.</message>
 	<message key="common.captchaField">Validación</message>
 	<message key="common.ccLicense"><![CDATA[
-		<br /><br /> <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/4.0/"> <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png" /> </a> <br /> Esta obra está acreditada por una <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/4.0/">licencia de Reconocimiento 4.0 de Creative Commons</a>.
+		<br /><br /> <a target="_blank" rel="license" href="https://creativecommons.org/licenses/by/4.0/"> <img alt="Licencia Creative Commons" style="border-width:0" src="//licensebuttons.net/l/by/4.0/80x15.png" /> </a> <br /> Esta obra está acreditada por una <a rel="license" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">licencia de Reconocimiento 4.0 de Creative Commons</a>.
 	]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[
-	<div class="rtBlock"> <br /> <a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/4.0/"> <img alt="Licencia Creative Commons" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/80x15.png" /></a> <br /> Esta obra está acreditada por una <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/4.0/">licencia de Reconocimiento 4.0 de Creative Commons</a>. </div>
+	<div class="rtBlock"> <br /> <a target="_blank" rel="license" href="https://creativecommons.org/licenses/by/4.0/"> <img alt="Licencia Creative Commons" style="border-width:0" src="//licensebuttons.net/l/by/4.0/80x15.png" /></a> <br /> Esta obra está acreditada por una <a rel="license" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">licencia de Reconocimiento 4.0 de Creative Commons</a>. </div>
 	]]></message>
 	<message key="common.changesSaved">Se guardaron los cambios.</message>
 	<message key="common.chooseOne">Elija uno/a</message>

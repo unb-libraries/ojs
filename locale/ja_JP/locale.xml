@@ -4,7 +4,7 @@
 <!--
   * locale/ja_JP/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -707,7 +707,7 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 <h4>1. オープンアクセスを提供する雑誌向けのポリシー案</h4>
 この雑誌で出版する著者は次の契約条項に同意する。
 <ol type="a">
-	<li>著者は、作品の著作権を保持し、作品を最初に出版する権利をこの雑誌に与える。作品は、作品の著者とこの雑誌で最初に出版されたことを表示することにより他者がこの作品の利用を認める<a target="_new" href="http://creativecommons.org/licenses/by/3.0/">クリエイティブ･コモンズ表示ライセンス</a> によってもライセンスされる。</li>
+	<li>著者は、作品の著作権を保持し、作品を最初に出版する権利をこの雑誌に与える。作品は、作品の著者とこの雑誌で最初に出版されたことを表示することにより他者がこの作品の利用を認める<a target="_new" href="https://creativecommons.org/licenses/by/3.0/">クリエイティブ･コモンズ表示ライセンス</a> によってもライセンスされる。</li>
 	<li>著者は、この雑誌で最初に出版されたことを示すことにより、この雑誌で出版された版の作品を非独占的に配布する（機関リポジトリへの投稿や図書での出版など）ための独立した追加の契約協定を結ぶことができる。</li>
 	<li>著者は、投稿プロセスの前または間に作品をオンライン上（機関リポジトリや著者のWebサイトなど）に掲載することが許されており、奨励されている。出版される論文の生産的な交換だけでなく、より早くより多くの引用を得ることができるからである（<a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">オープンアクセスの効果</a>を参照のこと）。</li>
 </ol>
@@ -715,7 +715,7 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 <h4>エンバーゴ付きオープンアクセスを提供する雑誌向けののポリシー案</h4>
 この雑誌で発表を行う著者は次の契約条項に同意する。
 <ol type="a">
-	<li>著者は、作品の著作権を保持し、作品を最初に出版する権利をこの雑誌に与える。出版後［期間を指定］を経過した作品は、作品の著者とこの雑誌で最初に出版されたことを表示することにより他者がこの作品の利用を認める<a target="_new" href="http://creativecommons.org/licenses/by/3.0/">クリエイティブ･コモンズ表示ライセンス</a> によってもライセンスされる。</li>
+	<li>著者は、作品の著作権を保持し、作品を最初に出版する権利をこの雑誌に与える。出版後［期間を指定］を経過した作品は、作品の著者とこの雑誌で最初に出版されたことを表示することにより他者がこの作品の利用を認める<a target="_new" href="https://creativecommons.org/licenses/by/3.0/">クリエイティブ･コモンズ表示ライセンス</a> によってもライセンスされる。</li>
 	 <li>著者は、この雑誌で最初に出版されたことを示すことにより、この雑誌で出版された版の作品を非独占的に配布する（機関リポジトリへの投稿や図書での出版など）ための独立した追加の契約協定を結ぶことができる。</li>
 	 <li>著者は、投稿プロセスの前または間に作品をオンライン上（機関リポジトリや著者のWebサイトなど）に掲載することが許されており、奨励されている。出版される論文の生産的な交換だけでなく、より早くより多くの引用を得ることができるからである（<a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">オープンアクセスの効果</a>を参照のこと）。</li>
 </ol>]]></message>
@@ -810,10 +810,10 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 	<message key="subscriptionTypes.format.print">冊子</message>
 	<message key="subscriptionTypes.format.printOnline">冊子とオンライン</message>
 	<message key="notification.type.editing">編集イベント</message>
-	<message key="notification.type.galleyModified">"{$param}".</message>
+	<message key="notification.type.galleyModified">"{$title}".</message>
 	<message key="notification.type.submissions">投稿イベント</message>
-	<message key="notification.type.suppFileModified">"{$param}" の補足ファイルが修正された</message>
-	<message key="notification.type.userComment">読者が "{$param}" にコメントした。</message>
+	<message key="notification.type.suppFileModified">"{$title}" の補足ファイルが修正された</message>
+	<message key="notification.type.userComment">読者が "{$title}" にコメントした。</message>
 	<message key="subscriptions.individualDescription">個人購読では購読コンテンツにアクセスするためにはログインが必要です。</message>
 	<message key="subscriptions.institutionalDescription">機関購読ではログインは必要ありません。ユーザのドメインもしくはIPアドレス(またはその両方)によって購読コンテンツへのアクセスが提供されます。</message>
 	<message key="subscriptionManager.individualSubscriptions">個人購読</message>
@@ -836,14 +836,14 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 	<message key="user.subscriptions.form.deleteIpRange">削除</message>
 	<message key="user.subscriptions.form.addIpRange">追加</message>
 	<message key="notification.type.issuePublished">新しい巻号が出版された時</message>
-	<message key="notification.type.layoutComment">"{$param}" のレイアウトについてコメントがあった時</message>
-	<message key="notification.type.metadataModified">"{$param}" のメタデータが修正された時</message>
+	<message key="notification.type.layoutComment">"{$title}" のレイアウトについてコメントがあった時</message>
+	<message key="notification.type.metadataModified">"{$title}" のメタデータが修正された時</message>
 	<message key="notification.type.newAnnouncement">新しいお知らせが作成された時</message>
-	<message key="notification.type.reviewerComment">査読者が "{$param}" にコメントした時</message>
-	<message key="notification.type.reviewerFormComment">"{$param}" についての査読が査読フォームから送信された時</message>
+	<message key="notification.type.reviewerComment">査読者が "{$title}" にコメントした時</message>
+	<message key="notification.type.reviewerFormComment">"{$title}" についての査読が査読フォームから送信された時</message>
 	<message key="notification.type.reviewing">査読イベント</message>
 	<message key="notification.type.site">サイトイベント</message>
-	<message key="notification.type.submissionComment">編集者が "{$param}" にコメントした時</message>
+	<message key="notification.type.submissionComment">編集者が "{$title}" にコメントした時</message>
 	<message key="subscriptionTypes.year">年</message>
 	<message key="subscriptions.status">状態</message>
 	<message key="subscriptions.status.awaitingOnlinePayment">オンライン支払待ち</message>
@@ -853,7 +853,7 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 	<message key="user.subscriptions.form.subscriptionExists">このユーザアカウントはすでに個人購読中です。</message>
 	<message key="notification.mailListDescription">雑誌に追加された新しい重要なコンテンツについての通知をすぐに受け取るためにメールアドレスを入力してください。</message>
 	<message key="notification.notificationsPublicDescription"><![CDATA[このページでは新しい巻号の発行やお知らせのようなこの雑誌に関係する重要なおしらせを表示します。これらの通知は RSSフィード(右側の画像をクリックする)か，<a href="{$emailUrl}">メール</a>で受け取ることができます。]]></message>
-	<message key="notification.type.articleSubmitted">新しい論文, "{$param}", が投稿された時</message>
+	<message key="notification.type.articleSubmitted">新しい論文, "{$title}", が投稿された時</message>
 	<message key="installer.installApplication">Open Journal Systems をインストールする</message>
 	<message key="installer.upgradeApplication">Open Journal Systems をアップグレードする</message>
 	<message key="article.article">論文</message>
@@ -869,9 +869,9 @@ OJSのシステム設定を変更することにより、OAIインターフェ�
 	<message key="user.subscriptions.form.typeIdValid">有効な購読種別を選択してください。</message>
 	<message key="user.subscriptions.form.domainIPRangeRequired">選択された購読種別は購読の認証のためのドメイン名とIPアドレス(の両方もしくは片方)が必要です。</message>
 	<message key="user.subscriptions.form.domainValid">有効なドメイン名を入力してください。</message>
-	<message key="notification.type.copyeditComment">コピーエディタが "{$param}" にコメントした時</message>
-	<message key="notification.type.editorDecisionComment">"{$param}" の編集者の判断についてコメントがあった時</message>
-	<message key="notification.type.proofreadComment">"{$param}" について校正者のコメントがあった時</message>
+	<message key="notification.type.copyeditComment">コピーエディタが "{$title}" にコメントした時</message>
+	<message key="notification.type.editorDecisionComment">"{$title}" の編集者の判断についてコメントがあった時</message>
+	<message key="notification.type.proofreadComment">"{$title}" について校正者のコメントがあった時</message>
 	<message key="subscriptions.status.awaitingManualPayment">手作業による支払い待ち</message>
 	<message key="about.subscriptionTypes.format">フォーマット</message>
 	<message key="about.subscriptionTypes.duration">期間</message>

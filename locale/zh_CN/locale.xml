@@ -4,7 +4,7 @@
 <!--
   * locale/zh_CN/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -1018,24 +1018,24 @@
 	<message key="notification.mailListDescription">请输入您的电子邮件地址，便于接收该期刊重要的新内容通知.</message>
 	<message key="notification.notificationsPublicDescription">这页显示了杂志刊期或公告相关的重要更新. 您可以通过RSS(点击右侧的图片)或者<![CDATA[  <a href="{$emailUrl}">通过电子邮件.</a>订阅这个通知 ]]></message>
 
-	<message key="notification.type.articleSubmitted">一篇新文章, "{$param}", 已经提交.</message>
-	<message key="notification.type.copyeditComment">文本编辑已经评论了 "{$param}".</message>
+	<message key="notification.type.articleSubmitted">一篇新文章, "{$title}", 已经提交.</message>
+	<message key="notification.type.copyeditComment">文本编辑已经评论了 "{$title}".</message>
 	<message key="notification.type.editing">编辑事件</message>
-	<message key="notification.type.editorDecisionComment">在编辑的决定里已经对 "{$param}"进行了评论</message>
-	<message key="notification.type.galleyModified">草稿已经被修改，关于"{$param}".</message>
+	<message key="notification.type.editorDecisionComment">在编辑的决定里已经对 "{$title}"进行了评论</message>
+	<message key="notification.type.galleyModified">草稿已经被修改，关于"{$title}".</message>
 	<message key="notification.type.issuePublished">一个刊期已经出版</message>
-	<message key="notification.type.layoutComment">有一个关于"{$param}'s"的排版评论.</message>
-	<message key="notification.type.metadataModified">"{$param}"的原数据已经被修改.</message>
+	<message key="notification.type.layoutComment">有一个关于"{$title}'s"的排版评论.</message>
+	<message key="notification.type.metadataModified">"{$title}"的原数据已经被修改.</message>
 	<message key="notification.type.newAnnouncement">一条新的公告已经被创建.</message>	
-	<message key="notification.type.proofreadComment">一个校对已经对 "{$param}"进行了评论</message>
-	<message key="notification.type.reviewerComment">一个审稿人对 "{$param}"进行了评论.</message>
-	<message key="notification.type.reviewerFormComment">一个关于 "{$param}"的审稿评论已经提交.</message>
+	<message key="notification.type.proofreadComment">一个校对已经对 "{$title}"进行了评论</message>
+	<message key="notification.type.reviewerComment">一个审稿人对 "{$title}"进行了评论.</message>
+	<message key="notification.type.reviewerFormComment">一个关于 "{$title}"的审稿评论已经提交.</message>
 	<message key="notification.type.reviewing">审稿事件</message>
 	<message key="notification.type.site">站点事件</message>
-	<message key="notification.type.submissionComment">一个编辑已经对"{$param}"进行了评论.</message>
+	<message key="notification.type.submissionComment">一个编辑已经对"{$title}"进行了评论.</message>
 	<message key="notification.type.submissions">投稿时间</message>
-	<message key="notification.type.suppFileModified">"{$param}"的附件已经被修改.</message>
-	<message key="notification.type.userComment">一个读者对"{$param}"进行了评论</message>
+	<message key="notification.type.suppFileModified">"{$title}"的附件已经被修改.</message>
+	<message key="notification.type.userComment">一个读者对"{$title}"进行了评论</message>
 
 	<!--
 	 *
@@ -1140,12 +1140,12 @@
 	<message key="submission.copyrightStatement">版权所有（c）{$ COPYRIGHTYEAR} {$ copyrightHolder}</message>
 	<message key="user.profile.form.orcidInvalid">您指定的ORCID ID无效。</message>
 	<message key="submission.licenseURL">许可 URL</message>
-	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0国际许可协议</a>的许可。]]></message>
-	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用 4.0国际许可协议</a>的许可。]]></message>
-	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0国际许可协议</a>的许可。]]></message>
-	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-禁止演绎 4.0国际许可协议</a>的许可。]]></message>
-	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0国际许可协议</a>的许可]]></message>
-	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">知识共享署名-相同方式共享 4.0国际许可协议</a>的许可]]></message>
+	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-nd/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0国际许可协议</a>的许可。]]></message>
+	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用 4.0国际许可协议</a>的许可。]]></message>
+	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0国际许可协议</a>的许可。]]></message>
+	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nd/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-禁止演绎 4.0国际许可协议</a>的许可。]]></message>
+	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名 4.0国际许可协议</a>的许可]]></message>
+	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-sa/4.0/88x31.png" /></a><br />此作品已接受<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">知识共享署名-相同方式共享 4.0国际许可协议</a>的许可]]></message>
 	<message key="submission.copyrightYear">版权年限</message>
 	<message key="user.profile.profileImage">个人照片</message>
 	<message key="user.orcid">ORCID iD</message>

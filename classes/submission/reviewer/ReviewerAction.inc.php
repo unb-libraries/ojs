@@ -3,7 +3,7 @@
 /**
  * @file classes/submission/reviewer/ReviewerAction.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -127,7 +127,7 @@ class ReviewerAction extends Action {
 
 		// Only record the reviewers recommendation if
 		// no recommendation has previously been submitted.
-		if ($reviewAssignment->getRecommendation() === null || $reviewAssignment->getRecommendation === '') {
+		if ($reviewAssignment->getRecommendation() === null || $reviewAssignment->getRecommendation() === '') {
 			import('classes.mail.ArticleMailTemplate');
 			$email = new ArticleMailTemplate($reviewerSubmission, 'REVIEW_COMPLETE');
 			// Must explicitly set sender because we may be here on an access

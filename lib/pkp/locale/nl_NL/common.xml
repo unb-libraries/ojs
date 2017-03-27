@@ -4,7 +4,7 @@
 <!--
   * locale/nl_NL/common.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -289,16 +289,16 @@
 	<message key="notification.reminderSent">Uw nieuwe wachtwoord is verstuurd naar het opgegeven e-mail adres.</message>
 	<message key="notification.unsubscribe">Abonnement opzeggen.</message>
 	<message key="common.ccLicense"><![CDATA[<br /><br />
-		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
-			<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
+		<a target="_blank" rel="license" href="https://creativecommons.org/licenses/by/3.0/">
+			<img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by/3.0/80x15.png"/>
 		</a>
 		<br />
-		 Dit werk wordt gepubliceerd onder een <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  licentie</a>.]]></message>
+		 Dit werk wordt gepubliceerd onder een <a rel="license" target="_blank" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0  licentie</a>.]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by/3.0/80x15.png" /></a>
 		<br />
-		Dit werk wordt gepubliceerd onder een <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 licentie</a>.
+		Dit werk wordt gepubliceerd onder een <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 licentie</a>.
 	</div>]]></message>
 	<message key="notification.mailList.protectedContent"><![CDATA[<a href="{$subscribeUrl}">Abonneer</a> op beschermd materiaal.]]></message>
 	<message key="notification.mailList.submit"><![CDATA[<a href="{$submitUrl}">Stuur</a> een artikel in.]]></message>

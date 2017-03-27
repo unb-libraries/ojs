@@ -4,7 +4,7 @@
 <!--
   * locale/id_ID/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -402,14 +402,14 @@ LOCKSS dapat digunakan setelah penerbitan berlangsung sepenuhnya, dengan mengiku
 <h4>1. Kebijakan yang diajukan untuk jurnal yang menawarkan akses terbuka</h4>
 Syarat yang harus dipenuhi oleh Penulis sebagai berikut:
 <ol type="a">
-	<li>Penulis menyimpan hak cipta dan memberikan jurnal hak penerbitan pertama naskah secara simultan dengan lisensi di bawah <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> yang mengizinkan orang lain untuk berbagi pekerjaan dengan sebuah pernyataan kepenulisan pekerjaan dan penerbitan awal di jurnal ini.</li>
+	<li>Penulis menyimpan hak cipta dan memberikan jurnal hak penerbitan pertama naskah secara simultan dengan lisensi di bawah <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> yang mengizinkan orang lain untuk berbagi pekerjaan dengan sebuah pernyataan kepenulisan pekerjaan dan penerbitan awal di jurnal ini.</li>
 	<li>Penulis bisa memasukkan ke dalam penyusunan kontraktual tambahan terpisah untuk distribusi non ekslusif versi kaya terbitan jurnal (contoh: mempostingnya ke repositori institusional atau menerbitkannya dalam sebuah buku), dengan pengakuan penerbitan awalnya di jurnal ini.</li>
 	<li>Penulis diizinkan dan didorong untuk mem-posting karya mereka online (contoh: di repositori institusional atau di website mereka) sebelum dan selama proses penyerahan, karena dapat mengarahkan ke pertukaran produktif, seperti halnya sitiran yang lebih awal dan lebih hebat dari karya yang diterbitkan. (Lihat <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">Efek Akses Terbuka</a>).</li>
 </ol>
 
 <h4>Kebijakan yang diajukan untuk jurnal yang menawarkan akses terbuka yang tertunda</h4>
 Penulis yang menerbitkan dengan jurnal ini setuju pada persyaratan berikut ini:<ol type="a">
-	<li>Penulis menyimpan hak cipta dan memberikan jurnal hak penerbitan pertama, dengan pekerjaan [TENTUKAN PERIODE WAKTU] setelah penerbitan secara simultan dengan lisensi di bawah:  <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> yang memudahkan yang lain untuk berbagi karya dengan pengakuan penerbitan awal dan kepenulisan karya di jurnal ini.</li>
+	<li>Penulis menyimpan hak cipta dan memberikan jurnal hak penerbitan pertama, dengan pekerjaan [TENTUKAN PERIODE WAKTU] setelah penerbitan secara simultan dengan lisensi di bawah:  <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> yang memudahkan yang lain untuk berbagi karya dengan pengakuan penerbitan awal dan kepenulisan karya di jurnal ini.</li>
 	 <li>Penulis bisa memasukkan ke dalam penyusunan kontraktual tambahan terpisah untuk distribusi non-ekslusif versi kaya terbitan jurnal (contoh: mempostingnya ke repositori institusional atau menerbitkannya dalam sebuah buku), dengan pengakuan penerbitan awalnya di jurnal ini.</li>
 	 <li>Penulis diizinkan dan didorong untuk mem-posting karya mereka online (contoh: di repositori institusional atau di website mereka) sebelum dan selama proses penyerahan, karena dapat mengarahkan ke pertukaran produktif, seperti halnya sitiran yang lebih awal dan lebih hebat dari karya yang diterbitkan. (Lihat <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">Efek Akses Terbuka</a>).</li>
 </ol>]]></message>
@@ -1037,24 +1037,24 @@ Validasi mungkin gagal dalam pencarian URL memerlukan form data yang diposting.]
 	<message key="notification.mailListDescription">Masukkan alamat email Anda untuk menerima notifikasi langsung tentang konten baru yang penting dan ditambahkan ke jurnal.</message>
 	<message key="notification.notificationsPublicDescription">Halaman ini menunjukkan update penting yang berkaitan dengan jurnal ini seperti terbitan baru atau pengumuman. Anda bisa berlangganan ke notifikasi ini melalui RSS Feed (dengan meng-klik di gambar sebelah kanan), atau <![CDATA[  <a href="{$emailUrl}">melalui email.</a>]]></message>
 
-	<message key="notification.type.articleSubmitted">Artikel baru, "{$param}", telah diserahkan.</message>
-	<message key="notification.type.copyeditComment">Copy editor telah meninggalkan komentar di "{$param}".</message>
+	<message key="notification.type.articleSubmitted">Artikel baru, "{$title}", telah diserahkan.</message>
+	<message key="notification.type.copyeditComment">Copy editor telah meninggalkan komentar di "{$title}".</message>
 	<message key="notification.type.editing">Event Pengeditan</message>
-	<message key="notification.type.editorDecisionComment">Komentar telah ditinggalkan di keputusan editor untuk "{$param}".</message>
-	<message key="notification.type.galleyModified">Galley telah dimodifikasi untuk "{$param}".</message>
+	<message key="notification.type.editorDecisionComment">Komentar telah ditinggalkan di keputusan editor untuk "{$title}".</message>
+	<message key="notification.type.galleyModified">Galley telah dimodifikasi untuk "{$title}".</message>
 	<message key="notification.type.issuePublished">Sebuah terbitan telah terbit.</message>
-	<message key="notification.type.layoutComment">Komentar telah ditinggalkan tentang "{$param}'s" layout.</message>
-	<message key="notification.type.metadataModified">"{$param}'s" metadata telah di modifikasi.</message>
+	<message key="notification.type.layoutComment">Komentar telah ditinggalkan tentang "{$title}'s" layout.</message>
+	<message key="notification.type.metadataModified">"{$title}'s" metadata telah di modifikasi.</message>
 	<message key="notification.type.newAnnouncement">Pengumuman baru telah dibuat.</message>	
-	<message key="notification.type.proofreadComment">Komentar telah ditinggalkan oleh proofreader di "{$param}".</message>
-	<message key="notification.type.reviewerComment">Reviewer telah berkomentar di "{$param}".</message>
-	<message key="notification.type.reviewerFormComment">Form review telah diserahkan untuk "{$param}".</message>
+	<message key="notification.type.proofreadComment">Komentar telah ditinggalkan oleh proofreader di "{$title}".</message>
+	<message key="notification.type.reviewerComment">Reviewer telah berkomentar di "{$title}".</message>
+	<message key="notification.type.reviewerFormComment">Form review telah diserahkan untuk "{$title}".</message>
 	<message key="notification.type.reviewing">Events Review</message>
 	<message key="notification.type.site">Event Situs</message>
-	<message key="notification.type.submissionComment">Editor telah berkomentar di "{$param}".</message>
+	<message key="notification.type.submissionComment">Editor telah berkomentar di "{$title}".</message>
 	<message key="notification.type.submissions">Event Penyerahan Naskah</message>
-	<message key="notification.type.suppFileModified">"{$param}'s" file tambahan telah dimodifikasi.</message>
-	<message key="notification.type.userComment">Pembaca telah berkomentar di "{$param}"</message>
+	<message key="notification.type.suppFileModified">"{$title}'s" file tambahan telah dimodifikasi.</message>
+	<message key="notification.type.userComment">Pembaca telah berkomentar di "{$title}"</message>
 
 	<!--
 	 *

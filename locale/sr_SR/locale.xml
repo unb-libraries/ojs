@@ -4,7 +4,7 @@
 <!-- 
   * locale/sr_SR/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -689,7 +689,7 @@ Vaš server trenutno podržava mbstring: <strong>{$supportsMBString}</strong>]]>
 <h4>1. Predlog za časopise koji omogućuju otvoren pristup</h4>
 Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 <ol type="a">
-	<li>Autori zadržavaju autorska prava i pružaju časopisu pravo prvog objavljivanja rada i licenciraju ga <a target="_new" href="http://creativecommons.org/licenses/by/3.0/hr/">Creative Commons imenovanje licencom</a> koja omogućuje drugima da dijele rad uz uvjet navođenja autorstva i izvornog objavljivanja u ovom časopisu.</li>
+	<li>Autori zadržavaju autorska prava i pružaju časopisu pravo prvog objavljivanja rada i licenciraju ga <a target="_new" href="https://creativecommons.org/licenses/by/3.0/hr/">Creative Commons imenovanje licencom</a> koja omogućuje drugima da dijele rad uz uvjet navođenja autorstva i izvornog objavljivanja u ovom časopisu.</li>
 	<li>Autori mogu izraditi zasebne, ugovorne aranžmane za ne-ekskluzivnu distribuciju rada objavljenog u časopisu (npr. postavljanje u institucionalni repozitorij ili objavljivanje u knjizi), uz navođenje da je rad izvorno objavljen u ovom časopisu. </li>
 	<li>Autorima je dozvoljeno i potiču se da postave objavljeni rad on-line (npr. u institucionalnom repozitoriju ili na svojim mrežnim stranicama) prije i tijekom postupka prijave, s obzirom da takav postupak može voditi produktivnoj razmjeni ideja, te ranijoj i većoj citiranosti objavljenog rada (usp. <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>).</li>
 </ol>
@@ -697,7 +697,7 @@ Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 <h4>2. Prijedlog za časopise koji omogućuju odgođeni otvoren pristup</h4>
 Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 <ol type="a">
-	<li>Autori zadržavaju autorska prava i pružaju časopisu pravo prvog objavljivanja, pri čemu će rad [NAVEDITE VREMENSKI PERIOD] po objavljivanju biti podložan licenci  <a target="_new" href="http://creativecommons.org/licenses/by/3.0/hr/">Creative Commons imenovanje </a> koja omogućuje drugima da dijele rad uz uvijet navođenja autorstva i izvornog objavljivanja u ovom časopisu.</li>
+	<li>Autori zadržavaju autorska prava i pružaju časopisu pravo prvog objavljivanja, pri čemu će rad [NAVEDITE VREMENSKI PERIOD] po objavljivanju biti podložan licenci  <a target="_new" href="https://creativecommons.org/licenses/by/3.0/hr/">Creative Commons imenovanje </a> koja omogućuje drugima da dijele rad uz uvijet navođenja autorstva i izvornog objavljivanja u ovom časopisu.</li>
  <li>Autori mogu izraditi zasebne, ugovorne aranžmane za ne-ekskluzivnu distribuciju rada objavljenog u časopisu (npr. postavljanje u institucionalni repozitorij ili objavljivanje u knjizi), uz navođenje da je rad izvorno objavljen u ovom časopisu. </li>
  <li>Autorima je dozvoljeno i potiču se da postave objavljeni rad on-line (npr. u institucionalnom repozitoriju ili na svojim mrežnim stranicama) prije i tijekom postupka prijave, s obzirom da takav postupak može voditi produktivnoj razmjeni ideja, te ranijoj i većoj citiranosti objavljenog rada (usp. <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>).</li>
 </ol>]]></message>
@@ -858,10 +858,10 @@ Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 	<message key="about.subscriptionTypes.duration">Trajanje</message>
 	<message key="about.subscriptionTypes.cost">Cena</message>
 	<message key="payment.authorFees">Naknade za autora</message>
-	<message key="notification.type.articleSubmitted">Novi članak, "{$param}", je predat.</message>
-	<message key="notification.type.galleyModified">Fajl za prikaz je izmenjen za "{$param}".</message>
+	<message key="notification.type.articleSubmitted">Novi članak, "{$title}", je predat.</message>
+	<message key="notification.type.galleyModified">Fajl za prikaz je izmenjen za "{$title}".</message>
 	<message key="notification.type.issuePublished">Izdanje je objavljeno.</message>
-	<message key="notification.type.metadataModified">Metapodaci "{$param}" su promenjeni.</message>
+	<message key="notification.type.metadataModified">Metapodaci "{$title}" su promenjeni.</message>
 	<message key="notification.type.newAnnouncement">Novo obaveštenje je napravljeno.</message>
 	<message key="notification.type.site">Događaji na sajtu</message>
 	<message key="user.authorization.noJournal">Nema časopisa u kontekstu!</message>
@@ -885,18 +885,18 @@ Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 	<message key="rt.admin.validateUrls.description"><![CDATA[Potencijalono pogrešni URL-ovi za sajtove za pretragu su prikazani niže.<br />Potrebno je da ručno proverite svaki URL pošto ovo nije 100% ipsravno.]]></message>
 	<message key="notification.mailListDescription">Unesite Vašu imejl adresu kako biste primali trenutna obaveštenja o važnim novostima u vašem časopisu</message>
 	<message key="notification.notificationsPublicDescription"><![CDATA[Ova stranica prikazuje važne nadogradnje vezane za časopis, kao što su novi brojevi ili obaveštenja (vesti). Možete se pretplatiti na ova obaveštenja preko RSS-a (klikom na sliku desno) ili <a href="{$emailUrl}">putem imejla.</a>]]></message>
-	<message key="notification.type.copyeditComment">Lektor je ostavio komentar na "{$param}".</message>
+	<message key="notification.type.copyeditComment">Lektor je ostavio komentar na "{$title}".</message>
 	<message key="notification.type.editing">Događaji u uredništvu</message>
-	<message key="notification.type.editorDecisionComment">Ostavljen je komentar na urednikovu odluku "{$param}".</message>
-	<message key="notification.type.layoutComment">Ostavljen je komentar o "{$param}" izgledu.</message>
-	<message key="notification.type.proofreadComment">Korektor je ostavio komentar na "{$param}".</message>
-	<message key="notification.type.reviewerComment">Recenzent je ostavio komentar na "{$param}".</message>
-	<message key="notification.type.reviewerFormComment">Recenzija preko recenzentske forme je predata za "{$param}".</message>
+	<message key="notification.type.editorDecisionComment">Ostavljen je komentar na urednikovu odluku "{$title}".</message>
+	<message key="notification.type.layoutComment">Ostavljen je komentar o "{$title}" izgledu.</message>
+	<message key="notification.type.proofreadComment">Korektor je ostavio komentar na "{$title}".</message>
+	<message key="notification.type.reviewerComment">Recenzent je ostavio komentar na "{$title}".</message>
+	<message key="notification.type.reviewerFormComment">Recenzija preko recenzentske forme je predata za "{$title}".</message>
 	<message key="notification.type.reviewing">Događaji u čitalačkom delu</message>
-	<message key="notification.type.submissionComment">Urednik je komentarisao "{$param}".</message>
+	<message key="notification.type.submissionComment">Urednik je komentarisao "{$title}".</message>
 	<message key="notification.type.submissions">Događaji u delu za predaje</message>
-	<message key="notification.type.suppFileModified">"{$param}" dodatni fajl(ovi) je izmenjen.</message>
-	<message key="notification.type.userComment">Čitaoc je komentarisao "{$param}'s"</message>
+	<message key="notification.type.suppFileModified">"{$title}" dodatni fajl(ovi) je izmenjen.</message>
+	<message key="notification.type.userComment">Čitaoc je komentarisao "{$title}'s"</message>
 	<message key="user.authorization.copyeditorAssignmentMissing">Pristup nije dozvoljen! Niste dodati kao lektor za ovaj članak.</message>
 	<message key="user.authorization.sectionAssignment">Pokušavate da pristupite članku koji nije u vašoj sekciji.</message>
 	<message key="user.authorization.invalidCopyditorSubmission">Neispravna lektorska predaja ili predaja nije zahtevana!</message>
@@ -966,12 +966,12 @@ Autori koji objavljuju u ovom časopisu pristaju na sljedeće uvijete:
 	<message key="submission.license.cc.by-nd4">CC Attribution-NoDerivatives 4.0</message>
 	<message key="submission.license.cc.by4">CC Attribution 4.0</message>
 	<message key="submission.license.cc.by-sa4">CC Attribution-ShareAlike 4.0</message>
-	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Licencom</a>.]]></message>
-	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Licencom" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International Licencom</a>.]]></message>
-	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Licencom</a>.]]></message>
-	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />Ovaj rad je kreiran <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International Licencom</a>.]]></message>
-	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International Licencom</a>.]]></message>
-	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />Ovaj rad j elicenciran <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="//licensebuttons.net/l/by-nc-nd/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons Licencom" style="border-width:0" src="//licensebuttons.net/l/by-nc/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nd/4.0/88x31.png" /></a><br />Ovaj rad je kreiran <a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="//licensebuttons.net/l/by/4.0/88x31.png" /></a><br />Ovaj rad je licenciran<a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International Licencom</a>.]]></message>
+	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Licenca" style="border-width:0" src="//licensebuttons.net/l/by-sa/4.0/88x31.png" /></a><br />Ovaj rad j elicenciran <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International Licencom</a>.]]></message>
 	<message key="editor.submissionEditing.notes"><![CDATA[<ol>
 	<li>Naglašene stavke pokazuju da je urednik tražio da se izvrše aktivnosti kao što je dole naznačeno:
 		<ul>

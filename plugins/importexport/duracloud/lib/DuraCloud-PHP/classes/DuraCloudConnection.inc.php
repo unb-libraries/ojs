@@ -247,7 +247,7 @@ class DuraCloudConnection {
 			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
 			curl_setopt($ch, CURLOPT_HEADER, 1);
 			curl_setopt($ch, CURLOPT_USERAGENT, 'DuraCloud-PHP ' . DURACLOUD_PHP_VERSION); 
-			curl_setopt($ch, CURLOPT_SSLVERSION, 3);
+			curl_setopt($ch, CURLOPT_SSLVERSION, 6);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 		}

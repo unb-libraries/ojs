@@ -4,7 +4,7 @@
 <!--
   * locale/gl_ES/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -997,17 +997,17 @@ A validación pode fallar en URLs de pescuda que precisan o envío de formulario
 	<message key="rt.admin.settings.addComment.authenticated">Os usuarios teñen que estar rexistrados e autenticados para enviar, o envío anónimo NON se permete.</message>
 	<message key="rt.admin.settings.addComment.anonymous">Os usuarios teñen que estar rexistrados e autenticados para enviar, o envío anónimo SI se permete.</message>
 	<message key="rt.admin.settings.addComment.unauthenticated">Os usuarios NON teñen que estar rexistrados para enviar, o envío anónimo SI se permete.</message>
-	<message key="notification.type.articleSubmitted">Un novo artigo, "{$param}", foi enviado.</message>
+	<message key="notification.type.articleSubmitted">Un novo artigo, "{$title}", foi enviado.</message>
 	<message key="notification.type.editing">Editando Eventos</message>
-	<message key="notification.type.galleyModified">Unha galerada foi modificada para "{$param}".</message>
+	<message key="notification.type.galleyModified">Unha galerada foi modificada para "{$title}".</message>
 	<message key="notification.type.issuePublished">Unha consulta foi publicada.</message>
 	<message key="notification.type.newAnnouncement">Creouse un novo anuncio.</message>
-	<message key="notification.type.reviewerComment">Un revisor comentou en "{$param}".</message>
+	<message key="notification.type.reviewerComment">Un revisor comentou en "{$title}".</message>
 	<message key="notification.type.reviewing">Eventos de Revisión</message>
 	<message key="notification.type.site">Eventos do Sitio</message>
-	<message key="notification.type.submissionComment">Un editor comentou en "{$param}".</message>
+	<message key="notification.type.submissionComment">Un editor comentou en "{$title}".</message>
 	<message key="notification.type.submissions">Eventos de Envío</message>
-	<message key="notification.type.userComment">Un lector fixo un comentario en "{$param}"</message>
+	<message key="notification.type.userComment">Un lector fixo un comentario en "{$title}"</message>
 	<message key="manager.setup.citations">Permeter aos autores proporcionar por separado unha listaxe formateada de referencias (citas) como parte da súa presentación.</message>
 	<message key="payment.loginRequired.forArticle">Precísase unha subscrición ou pagamento do artigo para acceder ao ítem. Para verificar a subscrición, acceder a pagamentos previos, ou mercar o artigo, identifíquese na revista.</message>
 	<message key="payment.loginRequired.forDonation">Ten que estar autenticado para facer unha doazón.</message>
@@ -1021,13 +1021,13 @@ A validación pode fallar en URLs de pescuda que precisan o envío de formulario
 	<message key="rt.admin.settings.addComment">Angadir comentario (habilita aos lectores a enviar comentarios, co Administrador daa Revista con competencia para borralos).</message>
 	<message key="rt.metadata.pkp.doi">Identificador de Obxecto Digital</message>
 	<message key="notification.mailListDescription">Insire o teu enderezo de correo electrónico para recibir notificacións inmediatas de novo contido engadido á revista.</message>
-	<message key="notification.type.copyeditComment">Un corrector de estilo deixou un comentario en "{$param}".</message>
-	<message key="notification.type.editorDecisionComment">Fíxose un comentario como decisión do editor para "{$param}".</message>
-	<message key="notification.type.layoutComment">Fíxose un comentario sobre el deseño de "{$param}".</message>
-	<message key="notification.type.metadataModified">Modificouse o metadado de "{$param}".</message>
-	<message key="notification.type.proofreadComment">Fíxose un comentario sobre "{$param}" polo corrector de probas .</message>
-	<message key="notification.type.reviewerFormComment">Enviouse unha revisión de formulario de revisión para "{$param}"</message>
-	<message key="notification.type.suppFileModified">Ficheiros suplementares de "{$param}" foron modificados.</message>
+	<message key="notification.type.copyeditComment">Un corrector de estilo deixou un comentario en "{$title}".</message>
+	<message key="notification.type.editorDecisionComment">Fíxose un comentario como decisión do editor para "{$title}".</message>
+	<message key="notification.type.layoutComment">Fíxose un comentario sobre el deseño de "{$title}".</message>
+	<message key="notification.type.metadataModified">Modificouse o metadado de "{$title}".</message>
+	<message key="notification.type.proofreadComment">Fíxose un comentario sobre "{$title}" polo corrector de probas .</message>
+	<message key="notification.type.reviewerFormComment">Enviouse unha revisión de formulario de revisión para "{$title}"</message>
+	<message key="notification.type.suppFileModified">Ficheiros suplementares de "{$title}" foron modificados.</message>
 	<message key="debug.notes.currencyListLoad">Cargada listaxe de moedas "{$filename}" dende XML</message>
 	<message key="reviewer.article.selectRecommendation">Seleccionar unha recomendación e enviar a revisión para completar o proceso. Tes que inserir unha revisión ou subir un ficheiro antes de seleccionar unha recomendación.</message>
 	<message key="submission.layout.referenceLinking">Ligazón para a referéncia</message>
@@ -1065,7 +1065,7 @@ Título del sistema de clasificación]]></message>
 <h4>1. Política proposta para Revistas que fornecen Acceso Aberto</h4>
 Os autores que publican nesta revista están de acordo cos termos a seguir:
 <ol type="a">
-	<li>Os autores conservan os dereitos de autor e garanten á revista o dereito de ser a primeira publicación do traballo e ser licenciado baixo unha <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permete a outros compartir o traballo con un recoñecimiento da autoría do traballo e a publicación inicial nesta revista.</li>
+	<li>Os autores conservan os dereitos de autor e garanten á revista o dereito de ser a primeira publicación do traballo e ser licenciado baixo unha <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permete a outros compartir o traballo con un recoñecimiento da autoría do traballo e a publicación inicial nesta revista.</li>
 	<li>Os autores poden establecer por separado acordos suplementares para a distribución non exclusiva da versión da obra publicada na revista (por exemplo, colocalo nun repositorio institucional ou publicalo nun libro), cun recoñecimento da súa publicación inicial nesta revista.</li>
 	<li>Permítese e anímase aos autores a difundir os seus traballos en formato electrónico (por exemplo, en repositorios institucionais ou na súa própria páxina web) antes e durante o proceso de envío, xa que pode dar lugar a intercambios produtivos, así como a unha citación máior e máis temperán dos traballos publicados (Véase <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>) (en inglés).</li>
 </ol>
@@ -1073,7 +1073,7 @@ Os autores que publican nesta revista están de acordo cos termos a seguir:
 <h4>Política proposta para Revistas que fornecen Acceso Aberto Embargado</h4>
 Os autores que publican nesta revista están de acordo cos termos a seguir
 <ol type="a">
-	<li>Os autores conservan os dereitos de autor e conceden á revista o dereito da primeira publicación, co traballo [SPECIFY PERIOD OF TIME]sempre que logo da publicación esté licenciado baixo unha <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permete a otros compartir o traballo cun recoñecimento da autoría da obra e a publicación inicial nesta revista.</li>
+	<li>Os autores conservan os dereitos de autor e conceden á revista o dereito da primeira publicación, co traballo [SPECIFY PERIOD OF TIME]sempre que logo da publicación esté licenciado baixo unha <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permete a otros compartir o traballo cun recoñecimento da autoría da obra e a publicación inicial nesta revista.</li>
 	 <li>Os autores poden establecer por separado acordos suplementares para a distribución non exclusiva da versión da obra publicada na revista (por exemplo, situalo nun repositorio institucional ou publicalo nun libro), cun recoñecimento da súa publicación inicial nesta revista.</li>
 	 <li>Permítese e anímase aos autores a difundir os seus traballos en formato electrónico (por exemplo, en repositorios institucionais ou na súa própria páxina web) antes e durante o proceso de envío, xa que pode dar lugar a intercambios produtivos, así como a una citación maior e máis temperán dos traballos publicados (Véxase <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>) (en inglés).</li>
 </ol>]]></message>

@@ -3,7 +3,7 @@
 /**
  * @file plugins/pubIds/doi/DOIPubIdPlugin.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -243,7 +243,7 @@ class DOIPubIdPlugin extends PubIdPlugin {
 	 * @see PubIdPlugin::getResolvingURL()
 	 */
 	function getResolvingURL($journalId, $pubId) {
-		return 'http://dx.doi.org/'.$this->_doiURLEncode($pubId);
+		return 'https://doi.org/'.$this->_doiURLEncode($pubId);
 	}
 
 	/**

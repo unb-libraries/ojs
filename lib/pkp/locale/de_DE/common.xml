@@ -4,7 +4,7 @@
 <!--
   * locale/de_DE/common.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2000-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * Localization strings for the de_DE (Deutsch (Deutschland)) locale.
@@ -62,18 +62,18 @@
 	<message key="common.captchaField">Überprüfung</message>
 	<message key="common.ccLicense"><![CDATA[
 		<br /><br />
-		<a target="_blank" rel="license" href="http://creativecommons.org/licenses/by/3.0/">
-			<img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png"/>
+		<a target="_blank" rel="license" href="https://creativecommons.org/licenses/by/3.0/">
+			<img alt="Creative-Commons-Lizenz" style="border-width:0" src="//licensebuttons.net/l/by/3.0/80x15.png"/>
 		</a>
 		<br />
-		Diese Arbeit steht unter einer <a rel="license" target="_blank" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
+		Diese Arbeit steht unter einer <a rel="license" target="_blank" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 License</a>.
 	]]></message>
 	<message key="common.ccLicense.rt"><![CDATA[
 	<div class="rtBlock">
 		<br />
-		<a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
+		<a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank"><img alt="Creative-Commons-Lizenz" style="border-width:0" src="//licensebuttons.net/l/by/3.0/80x15.png" /></a>
 		<br />
-		Diese Arbeit steht unter einer <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 License</a>.
+		Diese Arbeit steht unter einer <a rel="license" href="https://creativecommons.org/licenses/by/3.0/" target="_blank">Creative Commons Attribution 3.0 License</a>.
 	</div>
 	]]></message>
 	<message key="common.changesSaved">Ihre Änderungen wurden gespeichert.</message>

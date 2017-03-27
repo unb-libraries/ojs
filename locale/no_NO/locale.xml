@@ -4,7 +4,7 @@
 <!--
   * locale/no_NO/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   * (Norwegian translation from english by Karl Henrik Flyum, Dept. of teacher education and school development, University of Oslo, Norway, 2006-2007)
@@ -149,12 +149,12 @@
 	<message key="submission.license.cc.by-nd4">CC Attribution-NoDerivatives 4.0</message>
 	<message key="submission.license.cc.by4">CC Attribution 4.0</message>
 	<message key="submission.license.cc.by-sa4">CC Attribution-ShareAlike 4.0</message>
-	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.]]></message>
 
 	<message key="submissions.sec">Seksj.</message>
 	<message key="submissions.step1">Trinn 1</message>
@@ -1040,24 +1040,24 @@ Valideringen kan for eksempel svikte på søkesteder som krever utfylling av skj
 	<message key="installer.upgradeApplication">Oppgrader Open Journal Systems</message>
 	<message key="notification.mailListDescription">Oppgi e-postadresse for å få umiddelbar varsling når viktig nytt innhold legges til i tidsskriftet.</message>
 	<message key="notification.notificationsPublicDescription"><![CDATA[Denne siden viser viktige oppdateringer som har med dette tidsskriftet å gjøre, som nye nummer eller kunngjøringer. Du kan abonnere på disse varslingene via RSS-tjenesten (ved å klikke på symbolene til høyre) eller <a href="{$emailUrl}">via e-post.</a>]]></message>
-	<message key="notification.type.articleSubmitted">En ny artikkel, "{$param}", har blitt innlevert.</message>
-	<message key="notification.type.copyeditComment">En manusredaktør har lagt inn en kommentar på "{$param}".</message>
+	<message key="notification.type.articleSubmitted">En ny artikkel, "{$title}", har blitt innlevert.</message>
+	<message key="notification.type.copyeditComment">En manusredaktør har lagt inn en kommentar på "{$title}".</message>
 	<message key="notification.type.editing">Redigeringshendelser</message>
-	<message key="notification.type.editorDecisionComment">Redaktørens beslutning vedrørende "{$param}" har blitt kommentert.</message>
-	<message key="notification.type.galleyModified">Et sideoppsett til "{$param}" har blitt endret.</message>
+	<message key="notification.type.editorDecisionComment">Redaktørens beslutning vedrørende "{$title}" har blitt kommentert.</message>
+	<message key="notification.type.galleyModified">Et sideoppsett til "{$title}" har blitt endret.</message>
 	<message key="notification.type.issuePublished">Et nummer har blitt publisert.</message>
-	<message key="notification.type.layoutComment">"{$param}'s" layout har blitt kommentert.</message>
-	<message key="notification.type.metadataModified">"{$param}'s" metadata har blitt endret.</message>
+	<message key="notification.type.layoutComment">"{$title}'s" layout har blitt kommentert.</message>
+	<message key="notification.type.metadataModified">"{$title}'s" metadata har blitt endret.</message>
 	<message key="notification.type.newAnnouncement">En ny kunngjøring har blitt lagt inn.</message>
-	<message key="notification.type.proofreadComment">En korrekturleser har kommentert "{$param}".</message>
-	<message key="notification.type.reviewerComment">En fagfellevurderer har kommentert "{$param}".</message>
-	<message key="notification.type.reviewerFormComment">Et vurderingsskjema har blitt sendt inn for "{$param}".</message>
+	<message key="notification.type.proofreadComment">En korrekturleser har kommentert "{$title}".</message>
+	<message key="notification.type.reviewerComment">En fagfellevurderer har kommentert "{$title}".</message>
+	<message key="notification.type.reviewerFormComment">Et vurderingsskjema har blitt sendt inn for "{$title}".</message>
 	<message key="notification.type.reviewing">Vurderingshendelser</message>
 	<message key="notification.type.site">Nettstedshendelser</message>
-	<message key="notification.type.submissionComment">En redaktør har kommentert "{$param}".</message>
+	<message key="notification.type.submissionComment">En redaktør har kommentert "{$title}".</message>
 	<message key="notification.type.submissions">Innleveringshendelser</message>
-	<message key="notification.type.suppFileModified">Tilleggsfilene til "{$param}" har blitt endret.</message>
-	<message key="notification.type.userComment">En leser har kommentert "{$param}".</message>
+	<message key="notification.type.suppFileModified">Tilleggsfilene til "{$title}" har blitt endret.</message>
+	<message key="notification.type.userComment">En leser har kommentert "{$title}".</message>
 	<message key="user.register.reviewerInterests">Angi interessante vurderingsområder (hovedområder og forskningsmetoder):</message>
 	<message key="user.subscriptions.subscriptionStatus">Abonnementsstatus</message>
 	<message key="user.subscriptions.status">Status</message>

@@ -4,7 +4,7 @@
 <!--
   * locale/ro_RO/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -457,7 +457,7 @@ Autorii care publică în această revistă sunt de acord cu următorii termeni:
 
 
 <ol type="a">
-	<li>Autorii reţin drepturile de autori şi acordă revistei dreptul de primă publicare, având opera simultan licenţiată sub <a target="_new" href="http://creativecommons.org/license/?lang=ro">Creative Commons Atribuire</a>, care permite dreptul de a copia, distribui şi transmite opera cu recunoaşterea autorului şi publicarea iniţială în această revistă. Trebuie să atribui opera în maniera specificată de autor sau licenţiator (dar sub nici o formă care ar sugera faptul că aceştia te-ar susţine sau ar aproba folosirea de către tine a operei). Pentru orice reutilizare sau distribuţie, trebuie să prezinţi clar celorlalţi termenii licenţei pentru această operă. Nimic din această licenţă nu împiedică sau restricţionează drepturile morale ale autorului.</li>
+	<li>Autorii reţin drepturile de autori şi acordă revistei dreptul de primă publicare, având opera simultan licenţiată sub <a target="_new" href="https://creativecommons.org/license/?lang=ro">Creative Commons Atribuire</a>, care permite dreptul de a copia, distribui şi transmite opera cu recunoaşterea autorului şi publicarea iniţială în această revistă. Trebuie să atribui opera în maniera specificată de autor sau licenţiator (dar sub nici o formă care ar sugera faptul că aceştia te-ar susţine sau ar aproba folosirea de către tine a operei). Pentru orice reutilizare sau distribuţie, trebuie să prezinţi clar celorlalţi termenii licenţei pentru această operă. Nimic din această licenţă nu împiedică sau restricţionează drepturile morale ale autorului.</li>
 	<li>Autorii pot intra în acorduri contractuale suplimentare separate pentru distribuţia non-exclusivă a versiunii operei publicate de revistă (de exemplu, postarea într-un depozit instituţional sau publicarea într-un volum), dar cu recunoaşterea publicării iniţiale în această revistă.</li>
 	<li>Autorilor li se permite şi sunt încurajaţi să-şi pună online opera (de exemplu în depozite instituţionale sau pe siteurile proprii) înainte sau în timpul procedurii de propunere, lucru care ar conduce la schimburi productive, precum şi la citări timpurii şi multiplicate a operei publicate (Vezi <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">Efectul Accesului Deschis</a>).</li>
 
@@ -475,7 +475,7 @@ Autorii care publică în această revistă să fie de acord cu următoarele con
 
 
 <ol type="a">
-	<li>Autorii reţin drepturile de autor şi permit revistei dreptul de primă publicare a operei [SPECIFICĂ PERIOADA DE TIMP] după momentul publicării simultan cu licenţierea sub o licenţă <a target="_new" href="http://creativecommons.org/license/?lang=ro">Creative Commons Atribuire</a> care permite altora să partajeze opera cu cu recunoaşterea autorului operei şi a publicării iniţiale în această revistă.</li>
+	<li>Autorii reţin drepturile de autor şi permit revistei dreptul de primă publicare a operei [SPECIFICĂ PERIOADA DE TIMP] după momentul publicării simultan cu licenţierea sub o licenţă <a target="_new" href="https://creativecommons.org/license/?lang=ro">Creative Commons Atribuire</a> care permite altora să partajeze opera cu cu recunoaşterea autorului operei şi a publicării iniţiale în această revistă.</li>
 	 <li>Autorii pot intra în acorduri contractuale suplimentare separate pentru distribuţia non-exclusivă a versiunii operei publicate de revistă (de exemplu, postarea într-un depozit instituţional sau publicarea într-un volum), dar cu recunoaşterea publicării iniţiale în această revistă.</li>
 	 <li>Autorilor li se permite şi sunt încurajaţi să-şi pună online opera (de exemplu în depozite instituţionale sau pe siteurile proprii) înainte sau în timpul procedurii de propunere, lucru care ar conduce la schimburi productive, precum şi la citări timpurii şi multiplicate a operei publicate (Vezi <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">Efectul Accesului Deschis</a>).</li>
 
@@ -1186,24 +1186,24 @@ Validarea poate eşua pe URL-urile de căutare care necesită date postate într
 	<message key="notification.mailListDescription">Introdu adresa de email pentru a primi înștiințări imediat ce un nou conținut este adăugat la revistă.</message>
 	<message key="notification.notificationsPublicDescription">Această pagină indică actualizările importante asociate cu această revistă precum noilenumere sau anunțurile. Te poți înscrie pentru a primi aceste anunțuri prin intermediul fluxurilor RSS (dând clic pe imaginea din dreapta) sau <![CDATA[  <a href="{$emailUrl}">prin email.</a>]]></message>
 	
-	<message key="notification.type.articleSubmitted">Un articol nou, "{$param}", a fost introdus ca propunere.</message>
-	<message key="notification.type.copyeditComment">Un (tehno)redactor a lăsat un comentariu la "{$param}".</message>
+	<message key="notification.type.articleSubmitted">Un articol nou, "{$title}", a fost introdus ca propunere.</message>
+	<message key="notification.type.copyeditComment">Un (tehno)redactor a lăsat un comentariu la "{$title}".</message>
 	<message key="notification.type.editing">Editarea evenimentelor</message>
-	<message key="notification.type.editorDecisionComment">A fost lăsat un comentariu la decizia redactorului pentru "{$param}".</message>
-	<message key="notification.type.galleyModified">A fost modificată o asamblare pentru "{$param}".</message>
+	<message key="notification.type.editorDecisionComment">A fost lăsat un comentariu la decizia redactorului pentru "{$title}".</message>
+	<message key="notification.type.galleyModified">A fost modificată o asamblare pentru "{$title}".</message>
 	<message key="notification.type.issuePublished">A fost publicat un nou număr.</message>
-	<message key="notification.type.layoutComment">A fost lăsat un comentariu la macheta "{$param}".</message>
-	<message key="notification.type.metadataModified">Metadatele "{$param}" au fost modificate.</message>
+	<message key="notification.type.layoutComment">A fost lăsat un comentariu la macheta "{$title}".</message>
+	<message key="notification.type.metadataModified">Metadatele "{$title}" au fost modificate.</message>
 	<message key="notification.type.newAnnouncement">A fost creat un anunț nou.</message>	
-	<message key="notification.type.proofreadComment">A fost lăsat un comentariu de către un corector pentru "{$param}".</message>
-	<message key="notification.type.reviewerComment">Un evaluator a comentat la "{$param}".</message>
-	<message key="notification.type.reviewerFormComment">A fost trimis un formular de evaluare pentru "{$param}".</message>
+	<message key="notification.type.proofreadComment">A fost lăsat un comentariu de către un corector pentru "{$title}".</message>
+	<message key="notification.type.reviewerComment">Un evaluator a comentat la "{$title}".</message>
+	<message key="notification.type.reviewerFormComment">A fost trimis un formular de evaluare pentru "{$title}".</message>
 	<message key="notification.type.reviewing">Evenimente la evaluare</message>
 	<message key="notification.type.site">Evenimente privind siteul</message>
-	<message key="notification.type.submissionComment">Un redactor a făcut un comentariu la "{$param}".</message>
+	<message key="notification.type.submissionComment">Un redactor a făcut un comentariu la "{$title}".</message>
 	<message key="notification.type.submissions">Evenimente privind propunerea</message>
-	<message key="notification.type.suppFileModified">Fișierele suplimentare ale "{$param}" au fost modificate.</message>
-	<message key="notification.type.userComment">Un cititor a făcut un comentariu la "{$param}"</message>
+	<message key="notification.type.suppFileModified">Fișierele suplimentare ale "{$title}" au fost modificate.</message>
+	<message key="notification.type.userComment">Un cititor a făcut un comentariu la "{$title}"</message>
 
 
 	<!--

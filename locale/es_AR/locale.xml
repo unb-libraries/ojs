@@ -4,7 +4,7 @@
 <!--
   * locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -910,17 +910,17 @@ La validación puede fallar en URLs de búsque que necesitan el envío de formul
 	<message key="rt.admin.settings.addComment.authenticated">Los usuarios tienen que estar registrados y autenticados para enviar, el envío anónimo NO se permite.</message>
 	<message key="rt.admin.settings.addComment.anonymous">Los usuarios tienen que estar registrados y autenticados para enviar, el envío anónimo SI se permite.</message>
 	<message key="rt.admin.settings.addComment.unauthenticated">Los usuarios NO tienen que estar registrados para enviar, el envío anónimo SI se permite.</message>
-	<message key="notification.type.articleSubmitted">Un nuevo artículo, "{$param}", ha sido enviado.</message>
+	<message key="notification.type.articleSubmitted">Un nuevo artículo, "{$title}", ha sido enviado.</message>
 	<message key="notification.type.editing">Editándo Eventos</message>
-	<message key="notification.type.galleyModified">Una galerada ha sido modificada para "{$param}".</message>
+	<message key="notification.type.galleyModified">Una galerada ha sido modificada para "{$title}".</message>
 	<message key="notification.type.issuePublished">Una consulta ha sido publicada.</message>
 	<message key="notification.type.newAnnouncement">Se ha creado un nuevo anuncio.</message>
-	<message key="notification.type.reviewerComment">Un revisor ha comentado en "{$param}".</message>
+	<message key="notification.type.reviewerComment">Un revisor ha comentado en "{$title}".</message>
 	<message key="notification.type.reviewing">Enevtos de Revisión</message>
 	<message key="notification.type.site">Eventos del Sitio</message>
-	<message key="notification.type.submissionComment">Un editor ha comentado en "{$param}".</message>
+	<message key="notification.type.submissionComment">Un editor ha comentado en "{$title}".</message>
 	<message key="notification.type.submissions">Eventos de Envío</message>
-	<message key="notification.type.userComment">Un lector ha hecho un comentario en "{$param}"</message>
+	<message key="notification.type.userComment">Un lector ha hecho un comentario en "{$title}"</message>
 	<message key="manager.setup.citations">Permitir a los autores proporcionar separadamente una lista formateada de referencias (citas) como parte de su presentación.</message>
 	<message key="payment.loginRequired.forArticle">Se requiere una suscripción o pago del artículo para acceder al ítem. Para verificar la suscripción, acceder a pagos previos, o comprar el artículo, autentiquese en la revista.</message>
 	<message key="payment.loginRequired.forDonation">Tiene que estar autenticado para hacer una donación.</message>
@@ -933,13 +933,13 @@ La validación puede fallar en URLs de búsque que necesitan el envío de formul
 	<message key="log.editor.decision">Una decisión ({$decision}) de un editor para el artículo {$articleId} fué registrada por {$editorName}.</message>
 	<message key="rt.admin.settings.addComment">Añadir comentario (habilita a los lectores a enviar comentarios, con el Administrador de la Revista capaz de borrarlos).</message>
 	<message key="notification.mailListDescription">Introduce tu dirección de correo electrónico para recibir notificaciones inmediatas de nuevo contenido añadido a la revista.</message>
-	<message key="notification.type.copyeditComment">Un corrector de estilo ha dejado un comentario en "{$param}".</message>
-	<message key="notification.type.editorDecisionComment">Un comentario ha sido dejado como decisión del editor para "{$param}".</message>
-	<message key="notification.type.layoutComment">Se ha dejado un comentario sobre el diseño de "{$param}".</message>
-	<message key="notification.type.metadataModified">Se han modificado el metadato de "{$param}".</message>
-	<message key="notification.type.proofreadComment">Se ha dejado un comentario sobre "{$param}" por el corrector de pruebas .</message>
-	<message key="notification.type.reviewerFormComment">Se he enviado una revisión de formulario de revisión para "{$param}"</message>
-	<message key="notification.type.suppFileModified">archivos suplementarios de "{$param}" han sido modificados.</message>
+	<message key="notification.type.copyeditComment">Un corrector de estilo ha dejado un comentario en "{$title}".</message>
+	<message key="notification.type.editorDecisionComment">Un comentario ha sido dejado como decisión del editor para "{$title}".</message>
+	<message key="notification.type.layoutComment">Se ha dejado un comentario sobre el diseño de "{$title}".</message>
+	<message key="notification.type.metadataModified">Se han modificado el metadato de "{$title}".</message>
+	<message key="notification.type.proofreadComment">Se ha dejado un comentario sobre "{$title}" por el corrector de pruebas .</message>
+	<message key="notification.type.reviewerFormComment">Se he enviado una revisión de formulario de revisión para "{$title}"</message>
+	<message key="notification.type.suppFileModified">archivos suplementarios de "{$title}" han sido modificados.</message>
 	<message key="debug.notes.currencyListLoad">Cargada lista de monedas "{$filename}" desde XML</message>
 	<message key="reviewer.article.selectRecommendation">Seleccionar una recomendación y enviar la revisión para completar el proceso. Tienes que introducir una revisión o subir un archivo antes de seleccionar una recomendación.</message>
 	<message key="submission.layout.referenceLinking">Enlace para la referéncia</message>
@@ -977,7 +977,7 @@ Título del sistema de clasificación]]></message>
 <h4>1. Política propuesta para Revistas que ofrecen Acceso Abierto</h4>
 Los autores que publican en esta revista están de acuerdo con los siguientes términos:
 <ol type="a">
-	<li>Los autores conservan los derechos de autor y garantizan a la revista el derecho de ser la primera publicación del trabajo al igual que licenciado bajo una <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permite a otros compartir el trabajo con un reconocimiento de la autoría del trabajo y la publicación inicial en esta revista.</li>
+	<li>Los autores conservan los derechos de autor y garantizan a la revista el derecho de ser la primera publicación del trabajo al igual que licenciado bajo una <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permite a otros compartir el trabajo con un reconocimiento de la autoría del trabajo y la publicación inicial en esta revista.</li>
 	<li>Los autores pueden establecer por separado acuerdos adicionales para la distribución no exclusiva de la versión de la obra publicada en la revista (por ejemplo, situarlo en un repositorio institucional o publicarlo en un libro), con un reconocimiento de su publicación inicial en esta revista.</li>
 	<li>Se permite y se anima a los autores a difundir sus trabajos electrónicamente (por ejemplo, en repositorios institucionales o en su propio sitio web) antes y durante el proceso de envío, ya que puede dar lugar a intercambios productivos, así como a una citación más temprana y mayor de los trabajos publicados (Véase <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>) (en inglés).</li>
 </ol>
@@ -985,7 +985,7 @@ Los autores que publican en esta revista están de acuerdo con los siguientes t�
 <h4>Política propuesta para Revistas que ofrecen Acceso Abierto Embargado</h4>
 Los autores que publican en esta revista están de acuerdo con los siguientes términos::
 <ol type="a">
-	<li>Los autores conservan los derechos de autor y conceden a la revista el derecho de la primera publicación, con el trabajo [SPECIFY PERIOD OF TIME] a la vez que tras la publicación esté licenciado bajo una <a target="_new" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permite a otros compartir el trabajo con un reconocimiento de la autoría de la obra y la publicación inicial en esta revista.</li>
+	<li>Los autores conservan los derechos de autor y conceden a la revista el derecho de la primera publicación, con el trabajo [SPECIFY PERIOD OF TIME] a la vez que tras la publicación esté licenciado bajo una <a target="_new" href="https://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution License</a> que permite a otros compartir el trabajo con un reconocimiento de la autoría de la obra y la publicación inicial en esta revista.</li>
 	 <li>Los autores pueden establecer por separado acuerdos adicionales para la distribución no exclusiva de la versión de la obra publicada en la revista (por ejemplo, situarlo en un repositorio institucional o publicarlo en un libro), con un reconocimiento de su publicación inicial en esta revista.</li>
 	 <li>Se permite y se anima a los autores a difundir sus trabajos electrónicamente (por ejemplo, en repositorios institucionales o en su propio sitio web) antes y durante el proceso de envío, ya que puede dar lugar a intercambios productivos, así como a una citación más temprana y mayor de los trabajos publicados (Véase <a target="_new" href="http://opcit.eprints.org/oacitation-biblio.html">The Effect of Open Access</a>) (en inglés).</li>
 </ol>]]></message>
@@ -1068,12 +1068,12 @@ Los autores que publican en esta revista están de acuerdo con los siguientes t�
 	<message key="submission.license.cc.by-nd4">CC Attribution-NoDerivatives 4.0</message>
 	<message key="submission.license.cc.by4">CC Attribution 4.0</message>
 	<message key="submission.license.cc.by-sa4">CC Attribution-ShareAlike 4.0</message>
-	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.]]></message>
-	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc/4.0/">Creative Commons Attribution-NonCommercial 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nc-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-nd4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-nd/4.0/">Creative Commons Attribution-NoDerivatives 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.]]></message>
+	<message key="submission.license.cc.by-sa4.footer"><![CDATA[<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="//licensebuttons.net/l/by-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.]]></message>
 	<message key="user.profile.profileImage">Imagen de Perfil</message>
 	<message key="user.orcid">ID de ORCID</message>
 	<message key="user.orcid.description"><![CDATA[Los IDs de ORCID solo pueden ser asignador por <a href="http://orcid.org/" target="_blank">el ORCID Registry </a>. Usted puede conformar sus estándares para expresar IDs de ORCID, e incluir la URI completa (ej. <em>http://orcid.org/0000-0002-1825-0097</em>]]></message>

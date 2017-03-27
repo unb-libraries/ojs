@@ -3,7 +3,7 @@
 /**
  * @file plugins/importexport/crossref/classes/form/CrossRefSettingsForm.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -43,7 +43,7 @@ class CrossRefSettingsForm extends DOIExportSettingsForm {
 	function display($request) {
 		$templateMgr =& TemplateManager::getManager($request);
 		$plugin = $this->_plugin;
-		$templateMgr->assign('unregisteredURL', $request->url(null, null, 'importexport', array('plugin', $plugin->getName(), 'all')));
+		$templateMgr->assign('unregisteredURL', $request->url(null, null, 'importexport', array('plugin', $plugin->getName(), 'articles')));
 		parent::display($request);
 	}
 

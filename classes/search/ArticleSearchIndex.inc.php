@@ -3,7 +3,7 @@
 /**
  * @file classes/search/ArticleSearchIndex.inc.php
  *
- * Copyright (c) 2013-2016 Simon Fraser University Library
+ * Copyright (c) 2013-2017 Simon Fraser University
  * Copyright (c) 2003-2016 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
@@ -212,7 +212,7 @@ class ArticleSearchIndex {
 			$articleId = $suppFile->getArticleId();
 			$this->_updateTextIndex(
 				$articleId,
-				ARTICLE_SEARCH_SUPPLEMENTARY_FILE,
+				ARTICLE_SEARCH_SUPPLEMENTARY_FILE_METADATA,
 				array_merge(
 					array_values((array) $suppFile->getTitle(null)),
 					array_values((array) $suppFile->getCreator(null)),

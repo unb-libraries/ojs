@@ -4,7 +4,7 @@
 <!--
   * plugins/importexport/medra/locale/it_IT/locale.xml
   *
-  * Copyright (c) 2013-2016 Simon Fraser University Library
+  * Copyright (c) 2013-2017 Simon Fraser University
   * Copyright (c) 2003-2016 John Willinsky
   * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
   *
@@ -52,5 +52,4 @@
 {$scriptName} {$pluginName} register journal_path {issues|articles|galleys} objectId1 [objectId2] ...
 ]]></message>
 	<message key="plugins.importexport.medra.senderTask.name">Registrazione automatica DOI mEDRA</message>
-	<message key="plugins.importexport.medra.senderTask.warning.noDOIprefix">Alla rivista con path {$path} manca il prefisso DOI.</message>
 </locale>
