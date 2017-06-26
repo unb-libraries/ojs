@@ -451,6 +451,7 @@ class String {
 					Config::getVar('security', 'allowed_html', DEFAULT_ALLOWED_HTML)
 				));
 				$config->set('Cache.SerializerPath', 'cache');
+				$config->set('HTML.TargetBlank', true);
 				$purifier = new HTMLPurifier($config);
 			}
 			return $purifier->purify($input);
