@@ -3,8 +3,8 @@
 /**
  * @file classes/oai/PKPOAIDAO.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class PKPOAIDAO
@@ -52,9 +52,10 @@ class PKPOAIDAO extends DAO {
 		$params = $this->getOrderedRecordParams(null, $setIds);
 
 		$result =& $this->retrieve(
-			$selectStatement . ' FROM mutex m ' .
+			$selectStatement . ' as the_date FROM mutex m ' .
 			$this->getRecordJoinClause(null, $setIds) . ' ' .
-			$this->getAccessibleRecordWhereClause(),
+			$this->getAccessibleRecordWhereClause() . 
+			'ORDER BY the_date',
 			$params
 		);
 

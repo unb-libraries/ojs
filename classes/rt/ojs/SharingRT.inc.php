@@ -7,8 +7,8 @@
 /**
  * @file classes/rt/ojs/SharingRT.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SharingRT
@@ -95,7 +95,7 @@ class SharingRT {
 			$btnStyle = 'share';
 		}
 		$btnRecord = $btnStyles[$btnStyle];
-		$btnUrl = (strpos(trim($btnRecord['img']), 'http://') !== 0 ? "http://s7.addthis.com/static/btn/" : "") . $btnRecord['img'];
+		$btnUrl = (strpos(trim($btnRecord['img']), 'http://') !== 0 ? "//s7.addthis.com/static/btn/" : "") . $btnRecord['img'];
 		$btnUrl = str_replace('%lang%', SharingRT::sharingLocale($journalRt->getSharingLanguage()), $btnUrl);
 		$btnWidth = $btnRecord['w'];
 		$btnHeight = $btnRecord['h'];

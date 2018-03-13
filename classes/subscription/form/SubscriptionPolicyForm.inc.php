@@ -3,8 +3,8 @@
 /**
  * @file classes/subscription/form/SubscriptionPolicyForm.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class SubscriptionPolicyForm
@@ -14,7 +14,7 @@
  */
 
 define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MIN', '0');
-define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MAX', '24');
+define('SUBSCRIPTION_OPEN_ACCESS_DELAY_MAX', '60');
 
 import('lib.pkp.classes.form.Form');
 

@@ -1,8 +1,8 @@
 {**
  * templates/sectionEditor/submissionEventLogEntry.tpl
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Show a single event log entry.
@@ -54,7 +54,7 @@
 		<td class="value">
 			<strong>{translate key=$logEntry->getEventTitle()}</strong>
 			<br /><br />
-			{$logEntry->getMessage()|strip_unsafe_html|nl2br}
+			{$logEntry->getTranslatedMessage()|strip_unsafe_html|nl2br}
 		</td>
 	</tr>
 </table>

@@ -3,8 +3,8 @@
 /**
  * @file classes/search/ArticleSearchDAO.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class ArticleSearchDAO
@@ -99,6 +99,8 @@ class ArticleSearchDAO extends DAO {
 		if (!empty($journal)) {
 			$sqlWhere .= ' AND i.journal_id = ?';
 			$params[] = $journal->getId();
+		} else {
+			$sqlWhere .= ' AND j.enabled = 1';
 		}
 
 		import('classes.article.Article'); // STATUS_PUBLISHED
@@ -108,8 +110,10 @@ class ArticleSearchDAO extends DAO {
 			FROM	articles a,
 				published_articles pa,
 				issues i,
+				journals j,
 				article_search_objects o NATURAL JOIN ' . $sqlFrom . '
 			WHERE	pa.article_id = a.article_id AND
+				a.journal_id = j.journal_id AND
 				a.status = ' . STATUS_PUBLISHED . ' AND
 				pa.article_id = o.article_id AND
 				i.issue_id = pa.issue_id AND

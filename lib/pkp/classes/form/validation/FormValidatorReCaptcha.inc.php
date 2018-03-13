@@ -3,8 +3,8 @@
 /**
  * @file classes/form/validation/FormValidatorReCaptcha.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2000-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2000-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FormValidatorReCaptcha
@@ -23,17 +23,22 @@ class FormValidatorReCaptcha extends FormValidator {
 	/** @var string */
 	var $_userIp;
 
+	/** @var string hostname to enforce on response */
+	var $_hostEnforced;
+
 	/**
 	 * Constructor.
 	 * @param $form object
 	 * @param $userIp string IP address of user request
 	 * @param $message string Key of message to display on mismatch
+	 * @param $host string A hostname to enforce
 	 */
-	function FormValidatorReCaptcha(&$form, $challengeField, $responseField, $userIp, $message) {
+	function FormValidatorReCaptcha(&$form, $challengeField, $responseField, $userIp, $message, $host = '') {
 		parent::FormValidator($form, $challengeField, FORM_VALIDATOR_REQUIRED_VALUE, $message);
 		$this->_challengeField = $challengeField;
 		$this->_responseField = $responseField;
 		$this->_userIp = $userIp;
+		$this->_hostEnforced = $host;
 	}
 
 
@@ -48,11 +53,14 @@ class FormValidatorReCaptcha extends FormValidator {
 	function isValid() {
 		import('lib.pkp.lib.recaptcha.recaptchalib');
 		$privateKey = Config::getVar('captcha', 'recaptcha_private_key');
+		$reCaptchaVersion = intval(Config::getVar('captcha', 'recaptcha_version', 0));
 		$form =& $this->getForm();
 		$challengeField = $form->getData($this->_challengeField);
 		$responseField = $form->getData($this->_responseField);
 
-		$checkResponse = recaptcha_check_answer (
+		$checkResponse = recaptcha_versioned_check_answer (
+			$reCaptchaVersion,
+			$this->_hostEnforced,
 			$privateKey,
 			$this->_userIp,
 			$challengeField,

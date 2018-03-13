@@ -1,8 +1,8 @@
 {**
  * plugins/blocks/navigation/block.tpl
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * Common site sidebar menu -- navigation links.
@@ -14,7 +14,7 @@
 
 	{url|assign:"searchFormUrl" page="search" op="search" escape=false}
 	{$searchFormUrl|parse_url:$smarty.const.PHP_URL_QUERY|parse_str:$formUrlParameters}
-	<form id="simplesearchForm" action="{$searchFormUrl|strtok:"?"|escape}">
+	<form id="simpleSearchForm" action="{$searchFormUrl|strtok:"?"|escape}">
 		{foreach from=$formUrlParameters key=paramKey item=paramValue}
 			<input type="hidden" name="{$paramKey|escape}" value="{$paramValue|escape}"/>
 		{/foreach}

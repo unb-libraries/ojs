@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/crossref/classes/CrossRefExportDom.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class CrossRefExportDom
@@ -23,7 +23,7 @@ define('CROSSREF_XMLNS_XSI' , 'http://www.w3.org/2001/XMLSchema-instance');
 define('CROSSREF_XMLNS' , 'http://www.crossref.org/schema/4.3.6');
 define('CROSSREF_VERSION' , '4.3.6');
 define('CROSSREF_XSI_SCHEMAVERSION' , '4.3.6');
-define('CROSSREF_XSI_SCHEMALOCATION' , 'http://www.crossref.org/schema/4.3.6 http://www.crossref.org/schema/deposit/crossref4.3.6.xsd');
+define('CROSSREF_XSI_SCHEMALOCATION' , 'http://www.crossref.org/schema/4.3.6 https://www.crossref.org/schemas/crossref4.3.6.xsd');
 
 class CrossRefExportDom extends DOIExportDom {
 
@@ -353,14 +353,29 @@ class CrossRefExportDom extends DOIExportDom {
 		}
 
 		/* publisher_item is the article pages */
-		if ($article->getPages() != '') {
-			// extract the first page for the first_page element, store the remaining bits in otherPages,
-			// after removing any preceding non-numerical characters.
-			if (preg_match('/^[^\d]*(\d+)\D*(.*)$/', $article->getPages(), $matches)) {
+		// CrossRef requires first_page and last_page of any contiguous range, then any other ranges go in other_pages
+		$pages = $article->getPageArray();
+		if (is_array($pages)) {
+			$firstRange = array_shift($pages);
+			$firstPage = array_shift($firstRange);
+			if (count($firstRange)) {
+				// There is a first page and last page for the first range
+				$lastPage = array_shift($firstRange);
+			} else {
+				// There is not a range in the first segment
+				$lastPage = '';
+			}
+			// CrossRef accepts no punctuation in first_page or last_page
+			if ((!empty($firstPage) || $firstPage === "0") && !preg_match('/[^[:alnum:]]/', $firstPage) && !preg_match('/[^[:alnum:]]/', $lastPage)) {
 				$pageNode =& XMLCustomWriter::createElement($doc, 'pages');
-				$firstPage = $matches[1];
-				$otherPages = $matches[2];
 				XMLCustomWriter::createChildWithText($doc, $pageNode, 'first_page', $firstPage);
+				if ($lastPage != '') {
+					XMLCustomWriter::createChildWithText($doc, $pageNode, 'last_page', $lastPage);
+				}
+				$otherPages = '';
+				foreach ($pages as $range) {
+					$otherPages .= ($otherPages ? ',' : '').implode('-', $range);
+				}
 				if ($otherPages != '') {
 					XMLCustomWriter::createChildWithText($doc, $pageNode, 'other_pages', $otherPages);
 				}

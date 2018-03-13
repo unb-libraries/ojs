@@ -7,8 +7,8 @@
 /**
  * @file classes/file/FileManager.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2000-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2000-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class FileManager
@@ -540,6 +540,11 @@ class FileManager {
 			$fileExtension = 'txt';
 		}
 
+		// consider .tar.gz extension
+		if (strtolower(substr($fileName, -7)) == '.tar.gz') {
+			$fileExtension = substr($fileName, -6);
+		}
+
 		return $fileExtension;
 	}
 
@@ -552,7 +557,7 @@ class FileManager {
 	function decompressFile($filePath, &$errorMsg) {
 		return $this->_executeGzip($filePath, true, $errorMsg);
 	}
-	
+
 	/**
 	 * Compress passed file.
 	 * @param $filePath string The file to be compressed.
@@ -574,7 +579,7 @@ class FileManager {
 	 * needs to be decompressed.
 	 * @param $errorMsg string
 	 * @return false|string The file path that was created with the operation
-	 * or false in case of fail. 
+	 * or false in case of fail.
 	 */
 	function _executeGzip($filePath, $decompress = false, &$errorMsg) {
 		PKPLocale::requireComponents(LOCALE_COMPONENT_PKP_ADMIN);

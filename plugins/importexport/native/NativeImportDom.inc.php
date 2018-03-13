@@ -3,8 +3,8 @@
 /**
  * @file plugins/importexport/native/NativeImportDom.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2003-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2003-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class NativeImportDom
@@ -788,19 +788,19 @@ class NativeImportDom {
 		if (($node = $articleNode->getChildByName('pages'))) $article->setPages($node->getValue());
 		if (($language = $articleNode->getAttribute('language'))) $article->setLanguage($language);
 
-		/* --- Handle covers --- */
+		/* --- Set IDs --- */
 		$hasErrors = false;
+		if (!NativeImportDom::handlePubIds($articleNode, $article, $journal, $issue, $article, $errors)) $hasErrors = true;
+
+		$articleDao->insertArticle($article);
+
+		/* --- Handle covers --- */
 		for ($index = 0; ($node = $articleNode->getChildByName('cover', $index)); $index++) {
 			if (!NativeImportDom::handleArticleCoverNode($journal, $node, $article, $coverErrors, $isCommandLine)) {
 				$errors = array_merge($errors, $coverErrors);
 				$hasErrors = true;
 			}
 		}
-
-		/* --- Set IDs --- */
-		if (!NativeImportDom::handlePubIds($articleNode, $article, $journal, $issue, $article, $errors)) $hasErrors = true;
-
-		$articleDao->insertArticle($article);
 
 		$dependentItems[] = array('article', $article);
 

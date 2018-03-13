@@ -7,8 +7,8 @@
 /**
  * @file classes/submission/Submission.inc.php
  *
- * Copyright (c) 2013-2017 Simon Fraser University
- * Copyright (c) 2000-2016 John Willinsky
+ * Copyright (c) 2013-2018 Simon Fraser University
+ * Copyright (c) 2000-2018 John Willinsky
  * Distributed under the GNU GPL v2. For full terms see the file docs/COPYING.
  *
  * @class Submission
@@ -918,6 +918,37 @@ class Submission extends DataObject {
 	 */
 	function getPages() {
 		return $this->getData('pages');
+	}
+
+	/**
+	 * get pages as a nested array of page ranges
+	 * for example, pages of "pp. ii-ix, 9,15-18,a2,b2-b6" will return array( array(0 => 'ii', 1, => 'ix'), array(0 => '9'), array(0 => '15', 1 => '18'), array(0 => 'a2'), array(0 => 'b2', 1 => 'b6') )
+	 * @return array
+	 */
+	function getPageArray() {
+		$pages = $this->getData('pages');
+		// Strip any leading word
+		if (preg_match('/^[[:alpha:]]+\W/', $pages)) {
+			// but don't strip a leading roman numeral
+			if (!preg_match('/^[MDCLXVUI]+\W/i', $pages)) {
+				// strip the word or abbreviation, including the period or colon
+				$pages = preg_replace('/^[[:alpha:]]+[:.]?/', '', $pages);
+			}
+		}
+		// strip leading and trailing space
+		$pages = trim($pages);
+		// shortcut the explode/foreach if the remainder is an empty value
+		if ($pages === '') {
+			return array();
+		}
+		// commas indicate distinct ranges
+		$ranges = explode(',', $pages);
+		$pageArray = array();
+		foreach ($ranges as $range) {
+			// hyphens (or double-hyphens) indicate range spans
+			$pageArray[] = array_map('trim', explode('-', str_replace('--', '-', $range), 2));
+		}
+		return $pageArray;
 	}
 
 	/**
