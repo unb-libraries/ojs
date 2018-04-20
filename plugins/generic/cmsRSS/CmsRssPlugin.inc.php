@@ -29,7 +29,7 @@ class CmsRssPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function getDisplayName() {
-		return Locale::translate('plugins.generic.cmsrss.displayName');
+		return __('plugins.generic.cmsrss.displayName');
 	}
 
 	/**
@@ -37,9 +37,9 @@ class CmsRssPlugin extends GenericPlugin {
 	 * @return string
 	 */
 	function getDescription() {
-		$description = Locale::translate('plugins.generic.cmsrss.description');
+		$description = __('plugins.generic.cmsrss.description');
 		if ( !$this->isCmsInstalled() )
-			$description .= "<br />".Locale::translate('plugins.generic.cmsrss.requirement.cms');
+			$description .= "<br />".__('plugins.generic.cmsrss.requirement.cms');
 		return $description;
 	}
 
@@ -177,16 +177,16 @@ class CmsRssPlugin extends GenericPlugin {
 		if ($this->getEnabled()) {
 			$verbs[] = array(
 				'disable',
-				Locale::translate('manager.plugins.disable')
+				__('manager.plugins.disable')
 			);
 			$verbs[] = array(
 				'settings',
-				Locale::translate('manager.plugins.cmsrss.edit')
+				__('manager.plugins.cmsrss.edit')
 			);
 		} else {
 			$verbs[] = array(
 				'enable',
-				Locale::translate('manager.plugins.enable')
+				__('manager.plugins.enable')
 			);
 		}
 		return $verbs;

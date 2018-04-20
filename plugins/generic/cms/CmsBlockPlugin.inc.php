@@ -31,7 +31,7 @@ class CmsBlockPlugin extends BlockPlugin {
 	 * @return string
 	 */
 	function getDisplayName() {
-		return Locale::translate('plugins.generic.cms.displayName');
+		return __('plugins.generic.cms.displayName');
 	}
 
 	/**
@@ -39,10 +39,10 @@ class CmsBlockPlugin extends BlockPlugin {
 	 * @return string
 	 */
 	function getDescription() {
-		$description = Locale::translate('plugins.generic.cms.description');
+		$description = __('plugins.generic.cms.description');
 		$plugin =& $this->getCmsPlugin();
 		if ( !$plugin->isTinyMCEInstalled() )
-			$description .= "<br />".Locale::translate('plugins.generic.cms.requirement.tinymce');
+			$description .= "<br />".__('plugins.generic.cms.requirement.tinymce');
 		return $description;
 	}
 

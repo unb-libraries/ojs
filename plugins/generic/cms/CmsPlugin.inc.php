@@ -24,13 +24,13 @@ class CmsPlugin extends GenericPlugin {
 	}
 
 	function getDisplayName() {
-		return Locale::translate('plugins.generic.cms.displayName');
+		return __('plugins.generic.cms.displayName');
 	} 		
 
 	function getDescription() {
-		$description = Locale::translate('plugins.generic.cms.description');
+		$description = __('plugins.generic.cms.description');
 		if ( !$this->isTinyMCEInstalled() )
-			$description .= "<br />".Locale::translate('plugins.generic.cms.requirement.tinymce');
+			$description .= "<br />".__('plugins.generic.cms.requirement.tinymce');
 		return $description;
 	}
 
@@ -144,18 +144,18 @@ class CmsPlugin extends GenericPlugin {
 		if ($this->getEnabled()) {
 			$verbs[] = array(
 				'disable',
-				Locale::translate('manager.plugins.disable')
+				__('manager.plugins.disable')
 			);
 			if ( $this->isTinyMCEInstalled() ) {
 				$verbs[] = array(
 					'edit', 
-					Locale::translate('manager.plugins.content')
+					__('manager.plugins.content')
 				);
 			}
 		} else {
 			$verbs[] = array(
 				'enable',
-				Locale::translate('manager.plugins.enable')
+				__('manager.plugins.enable')
 			);
 		}
 		return $verbs;
