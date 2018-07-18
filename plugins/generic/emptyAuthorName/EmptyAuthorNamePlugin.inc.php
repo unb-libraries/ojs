@@ -12,7 +12,8 @@ class EmptyAuthorNamePlugin extends GenericPlugin {
   function register($category, $path) {
     $success = parent::register($category, $path);
     if ($success && $this->getEnabled()) {
-      HookRegistry::register('metadataform::validate', array($this, 'callbackSaveMetadata')); 
+      HookRegistry::register('metadataform::validate', array($this, 'callbackSaveMetadata'));
+      HookRegistry::register('quicksubmitform::validate', array($this, 'callbackSaveMetadata'));
     }
     return $success;
   }

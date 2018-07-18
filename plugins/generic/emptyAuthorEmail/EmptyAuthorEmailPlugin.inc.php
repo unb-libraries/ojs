@@ -12,7 +12,8 @@ class EmptyAuthorEmailPlugin extends GenericPlugin {
   function register($category, $path) {
     $success = parent::register($category, $path);
     if ($success && $this->getEnabled()) {
-      HookRegistry::register('metadataform::validate', array($this, 'callbackSaveMetadata')); 
+      HookRegistry::register('metadataform::validate', array($this, 'callbackSaveMetadata'));
+      HookRegistry::register('quicksubmitform::validate', array($this, 'callbackSaveMetadata'));
     }
     return $success;
   }
@@ -32,7 +33,7 @@ class EmptyAuthorEmailPlugin extends GenericPlugin {
    */
   function callbackSaveMetadata($hookName, $params) {
     $metadataForm =& $params[0];
-    
+
     $errorIndex = 0;
     foreach ($metadataForm->_errors as $field => $formError) {
       if (preg_match("{authors.*email}", $formError->field)){
