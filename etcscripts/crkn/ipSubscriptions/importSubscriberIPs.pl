@@ -219,6 +219,10 @@ my $log = Log::Handler->new(
 
   $log->info( "Entries: " . $total ) if verbose();
 
+  $log->info( "Adding Erudit IPs") if verbose();
+  $sth->execute('Erudit (Prod)', '132.219.138.146', 2228980370, 2228980370);
+  $sth->execute('Erudit (Test)', '132.219.138.147', 2228980371, 2228980371);
+
   # Done.
   $dbh->disconnect;
   $log->info("Done.") if verbose();
